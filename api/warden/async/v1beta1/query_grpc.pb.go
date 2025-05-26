@@ -37,6 +37,7 @@ const (
 	Query_TaskById_FullMethodName           = "/warden.async.v1beta1.Query/TaskById"
 	Query_PendingTasks_FullMethodName       = "/warden.async.v1beta1.Query/PendingTasks"
 	Query_Plugins_FullMethodName            = "/warden.async.v1beta1.Query/Plugins"
+	Query_PluginValidators_FullMethodName   = "/warden.async.v1beta1.Query/PluginValidators"
 	Query_PluginsByValidator_FullMethodName = "/warden.async.v1beta1.Query/PluginsByValidator"
 )
 
@@ -55,6 +56,7 @@ type QueryClient interface {
 	// Queries Tasks that do not have a result yet.
 	PendingTasks(ctx context.Context, in *QueryPendingTasksRequest, opts ...grpc.CallOption) (*QueryPendingTasksResponse, error)
 	Plugins(ctx context.Context, in *QueryPluginsRequest, opts ...grpc.CallOption) (*QueryPluginsResponse, error)
+	PluginValidators(ctx context.Context, in *QueryPluginValidatorsRequest, opts ...grpc.CallOption) (*QueryPluginValidatorsResponse, error)
 	// Queries Plugins by validator.
 	PluginsByValidator(ctx context.Context, in *QueryPluginsByValidatorRequest, opts ...grpc.CallOption) (*QueryPluginsByValidatorResponse, error)
 }
@@ -117,6 +119,16 @@ func (c *queryClient) Plugins(ctx context.Context, in *QueryPluginsRequest, opts
 	return out, nil
 }
 
+func (c *queryClient) PluginValidators(ctx context.Context, in *QueryPluginValidatorsRequest, opts ...grpc.CallOption) (*QueryPluginValidatorsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(QueryPluginValidatorsResponse)
+	err := c.cc.Invoke(ctx, Query_PluginValidators_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *queryClient) PluginsByValidator(ctx context.Context, in *QueryPluginsByValidatorRequest, opts ...grpc.CallOption) (*QueryPluginsByValidatorResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(QueryPluginsByValidatorResponse)
@@ -142,6 +154,7 @@ type QueryServer interface {
 	// Queries Tasks that do not have a result yet.
 	PendingTasks(context.Context, *QueryPendingTasksRequest) (*QueryPendingTasksResponse, error)
 	Plugins(context.Context, *QueryPluginsRequest) (*QueryPluginsResponse, error)
+	PluginValidators(context.Context, *QueryPluginValidatorsRequest) (*QueryPluginValidatorsResponse, error)
 	// Queries Plugins by validator.
 	PluginsByValidator(context.Context, *QueryPluginsByValidatorRequest) (*QueryPluginsByValidatorResponse, error)
 	mustEmbedUnimplementedQueryServer()
@@ -168,6 +181,9 @@ func (UnimplementedQueryServer) PendingTasks(context.Context, *QueryPendingTasks
 }
 func (UnimplementedQueryServer) Plugins(context.Context, *QueryPluginsRequest) (*QueryPluginsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Plugins not implemented")
+}
+func (UnimplementedQueryServer) PluginValidators(context.Context, *QueryPluginValidatorsRequest) (*QueryPluginValidatorsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PluginValidators not implemented")
 }
 func (UnimplementedQueryServer) PluginsByValidator(context.Context, *QueryPluginsByValidatorRequest) (*QueryPluginsByValidatorResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PluginsByValidator not implemented")
@@ -283,6 +299,24 @@ func _Query_Plugins_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_PluginValidators_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryPluginValidatorsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).PluginValidators(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_PluginValidators_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).PluginValidators(ctx, req.(*QueryPluginValidatorsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Query_PluginsByValidator_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(QueryPluginsByValidatorRequest)
 	if err := dec(in); err != nil {
@@ -327,6 +361,10 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Plugins",
 			Handler:    _Query_Plugins_Handler,
+		},
+		{
+			MethodName: "PluginValidators",
+			Handler:    _Query_PluginValidators_Handler,
 		},
 		{
 			MethodName: "PluginsByValidator",

@@ -16,7 +16,15 @@ builds:
     binary: wardend
     hooks:
       pre:
-        - wget https://github.com/CosmWasm/wasmvm/releases/download/{{ .Env.LIBWASM_VERSION }}/libwasmvm_muslc.x86_64.a -O /usr/lib/libwasmvm_muslc.x86_64.a
+        - |
+          sh -eu -c '
+            wget -q "https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvm_muslc.x86_64.a" -O "/usr/lib/libwasmvm_muslc.x86_64.a"
+            CHECKSUM=$(sha256sum "/usr/lib/libwasmvm_muslc.x86_64.a" | awk "{print \$1}")
+            if [ "$CHECKSUM" != "${WASMVM_MUSLC_AMD64_CHECKSUM}" ]; then
+              echo "checksum mismatch!" >&2
+              exit 1
+            fi
+          '
     goos:
       - linux
     goarch:
@@ -28,7 +36,7 @@ builds:
       - -trimpath
     ldflags:
       - -X github.com/cosmos/cosmos-sdk/version.Name=warden
-      - -X github.com/cosmos/cosmos-sdk/version.AppName=wardend
+      - -X github.com/cosmos/cosmos-sdk/version.AppName={{ .ProjectName }}
       - -X github.com/cosmos/cosmos-sdk/version.Version={{ .Version }}
       - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
       - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,muslc,osusergo
@@ -46,7 +54,15 @@ builds:
     binary: wardend
     hooks:
       pre:
-        - wget https://github.com/CosmWasm/wasmvm/releases/download/{{ .Env.LIBWASM_VERSION }}/libwasmvm_muslc.aarch64.a -O /usr/lib/libwasmvm_muslc.aarch64.a
+        - |
+          sh -eu -c '
+            wget -q "https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvm_muslc.aarch64.a" -O "/usr/lib/libwasmvm_muslc.aarch64.a"
+            CHECKSUM=$(sha256sum "/usr/lib/libwasmvm_muslc.aarch64.a" | awk "{print \$1}")
+            if [ "$CHECKSUM" != "${WASMVM_MUSLC_ARM64_CHECKSUM}" ]; then
+              echo "checksum mismatch!" >&2
+              exit 1
+            fi
+          '
     goos:
       - linux
     goarch:
@@ -58,7 +74,7 @@ builds:
       - -trimpath
     ldflags:
       - -X github.com/cosmos/cosmos-sdk/version.Name=warden
-      - -X github.com/cosmos/cosmos-sdk/version.AppName=wardend
+      - -X github.com/cosmos/cosmos-sdk/version.AppName={{ .ProjectName }}
       - -X github.com/cosmos/cosmos-sdk/version.Version={{ .Version }}
       - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
       - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,muslc,osusergo
@@ -72,11 +88,19 @@ builds:
       - osusergo
 
   - id: wardend-darwin-amd64
-    main: ./cmd/wardend/main.go
+    main: ./cmd/wardend
     binary: wardend
     hooks:
       pre:
-        - wget https://github.com/CosmWasm/wasmvm/releases/download/{{ .Env.LIBWASM_VERSION }}/libwasmvmstatic_darwin.a -O /lib/libwasmvmstatic_darwin.a
+        - |
+          sh -eu -c '
+            wget -q "https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvmstatic_darwin.a" -O "/lib/libwasmvmstatic_darwin.a"
+            CHECKSUM=$(sha256sum "/lib/libwasmvmstatic_darwin.a" | awk "{print \$1}")
+            if [ "$CHECKSUM" != "${WASMVM_STATIC_DARWIN_CHECKSUM}" ]; then
+              echo "checksum mismatch!" >&2
+              exit 1
+            fi
+          '
     env:
       - CC=o64-clang
       - CGO_CFLAGS=-mmacosx-version-min=10.12
@@ -90,7 +114,7 @@ builds:
       - -trimpath
     ldflags:
       - -X github.com/cosmos/cosmos-sdk/version.Name=warden
-      - -X github.com/cosmos/cosmos-sdk/version.AppName=wardend
+      - -X github.com/cosmos/cosmos-sdk/version.AppName={{ .ProjectName }}
       - -X github.com/cosmos/cosmos-sdk/version.Version={{ .Version }}
       - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
       - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,static_wasm
@@ -102,11 +126,19 @@ builds:
       - static_wasm
 
   - id: wardend-darwin-arm64
-    main: ./cmd/wardend/main.go
+    main: ./cmd/wardend
     binary: wardend
     hooks:
       pre:
-        - wget https://github.com/CosmWasm/wasmvm/releases/download/{{ .Env.LIBWASM_VERSION }}/libwasmvmstatic_darwin.a -O /lib/libwasmvmstatic_darwin.a
+        - |
+          sh -eu -c '
+            wget -q "https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvmstatic_darwin.a" -O "/lib/libwasmvmstatic_darwin.a"
+            CHECKSUM=$(sha256sum "/lib/libwasmvmstatic_darwin.a" | awk "{print \$1}")
+            if [ "$CHECKSUM" != "${WASMVM_STATIC_DARWIN_CHECKSUM}" ]; then
+              echo "checksum mismatch!" >&2
+              exit 1
+            fi
+          '
     env:
       - CC=oa64-clang
       - CGO_LDFLAGS=-L/lib
@@ -119,7 +151,7 @@ builds:
       - -trimpath
     ldflags:
       - -X github.com/cosmos/cosmos-sdk/version.Name=warden
-      - -X github.com/cosmos/cosmos-sdk/version.AppName=wardend
+      - -X github.com/cosmos/cosmos-sdk/version.AppName={{ .ProjectName }}
       - -X github.com/cosmos/cosmos-sdk/version.Version={{ .Version }}
       - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
       - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,static_wasm
@@ -139,25 +171,25 @@ universal_binaries:
 
 archives:
   - id: zipped
-    builds:
+    ids:
       - wardend-darwin-universal
       - wardend-linux-amd64
       - wardend-linux-arm64
       - wardend-darwin-amd64
       - wardend-darwin-arm64
-    name_template: "{{.ProjectName}}-{{ .Version }}-{{ .Os }}-{{ .Arch }}"
-    format: tar.gz
+    name_template: "{{ .ProjectName }}-{{ .Version }}-{{ .Os }}-{{ .Arch }}"
+    formats: tar.gz
     files:
       - none*
   - id: binaries
-    builds:
+    ids:
       - wardend-darwin-universal
       - wardend-linux-amd64
       - wardend-linux-arm64
       - wardend-darwin-amd64
       - wardend-darwin-arm64
-    name_template: "{{.ProjectName}}-{{ .Version }}-{{ .Os }}-{{ .Arch }}"
-    format: binary
+    name_template: "{{ .ProjectName }}-{{ .Version }}-{{ .Os }}-{{ .Arch }}"
+    formats: binary
     files:
       - none*
 
@@ -170,49 +202,45 @@ changelog:
 
 release:
   mode: append
-  skip_upload: '{{ if eq .Env.RELEASE "true" }}false{{else}}true{{end}}'
+  skip_upload: '{{ if eq .Env.RELEASE "true" }}false{{ else }}true{{ end }}'
 
 dockers:
   - use: buildx
     goos: linux
     goarch: amd64
-    dockerfile: Dockerfile-releaser
+    dockerfile: cmd/wardend/Dockerfile
     image_templates:
-      - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{if eq .Env.RELEASE "true"}}v{{ .Version }}{{else}}{{ .ShortCommit }}{{end}}-amd64'
+      - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true" }}v{{ .Version }}{{ else }}{{ .ShortCommit }}{{ end }}-amd64'
     build_flag_templates:
       - "--pull"
       - "--platform=linux/amd64"
-      - "--label=org.opencontainers.image.created={{.Date}}"
-      - "--label=org.opencontainers.image.title={{.ProjectName}}d"
-      - "--label=org.opencontainers.image.description={{.ProjectName}}d"
-      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
-      - "--label=org.opencontainers.image.version=v{{.Version}}"
+      - "--label=org.opencontainers.image.created={{ .Date }}"
+      - "--label=org.opencontainers.image.title={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.description={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - "--label=org.opencontainers.image.version=v{{ .Version }}"
       - "--label=org.opencontainers.image.url=https://wardenprotocol.org"
       - "--label=org.opencontainers.image.source=https://github.com/warden-protocol/wardenprotocol"
       - "--label=org.opencontainers.image.licenses=Apache-2.0"
   - use: buildx
     goos: linux
     goarch: arm64
-    dockerfile: Dockerfile-releaser
+    dockerfile: cmd/wardend/Dockerfile
     image_templates:
-      - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{if eq .Env.RELEASE "true"}}v{{ .Version }}-arm64v8{{else}}{{ .ShortCommit }}-arm64v8{{end}}'
+      - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true" }}v{{ .Version }}-arm64v8{{ else }}{{ .ShortCommit }}-arm64v8{{ end }}'
     build_flag_templates:
       - "--pull"
       - "--platform=linux/arm64"
-      - "--label=org.opencontainers.image.created={{.Date}}"
-      - "--label=org.opencontainers.image.title={{.ProjectName}}d"
-      - "--label=org.opencontainers.image.description={{.ProjectName}}d"
-      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
-      - "--label=org.opencontainers.image.version=v{{.Version}}"
+      - "--label=org.opencontainers.image.created={{ .Date }}"
+      - "--label=org.opencontainers.image.title={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.description={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - "--label=org.opencontainers.image.version=v{{ .Version }}"
       - "--label=org.opencontainers.image.url=https://wardenprotocol.org"
       - "--label=org.opencontainers.image.source=https://github.com/warden-protocol/wardenprotocol"
       - "--label=org.opencontainers.image.licenses=Apache-2.0"
 docker_manifests:
-  - name_template: 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{if eq .Env.RELEASE "true" }}v{{ .Version }}{{else}}{{ .ShortCommit }}{{end}}'
-    create_flags:
-      - --insecure
-    push_flags:
-      - --insecure
+  - name_template: 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true" }}v{{ .Version }}{{ else }}{{ .ShortCommit }}{{ end }}'
     image_templates:
-      - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{if eq .Env.RELEASE "true"}}v{{ .Version }}-amd64{{else}}{{ .ShortCommit }}-amd64{{end}}'
-      - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{if eq .Env.RELEASE "true"}}v{{ .Version }}-arm64v8{{else}}{{ .ShortCommit }}-arm64v8{{end}}'
+      - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true" }}v{{ .Version }}-amd64{{ else }}{{ .ShortCommit }}-amd64{{ end }}'
+      - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true"}}v{{ .Version }}-arm64v8{{ else }}{{ .ShortCommit }}-arm64v8{{ end }}'

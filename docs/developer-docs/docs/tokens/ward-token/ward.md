@@ -2,9 +2,11 @@
 sidebar_position: 1
 ---
 
-# WARD
+# $WARD
 
-**WARD** is the native utility token integral to the Warden Protocol ecosystem. It's designed to facilitate various operations such as governance, staking, protocol fees and as a medium of payment for operators.
+**$WARD** is the native utility token for the Warden ecosystem, powering Warden Protocol.
+
+$WARD is designed to facilitate various operations—such as governance, staking, protocol fees—and to serve as a medium of payment for operators. For the [Warden App](/learn/glossary#warden-app), it'll act as a gas abstraction token and unlock gated functionality. 
 
 |Property|Details|
 |-|--|

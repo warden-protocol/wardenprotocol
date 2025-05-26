@@ -75,8 +75,7 @@ func (c *Test_AsyncPrecompile) Run(t *testing.T, _ framework.BuildResult) {
 	require.Equal(t, "echo", oneTask.Task.Plugin)
 	require.Equal(t, []byte("USDT"), oneTask.Task.Input)
 	require.Equal(t, async.TaskResult{
-		Output:    []byte{},
-		Submitter: []byte{},
+		Output: []byte{},
 	}, oneTask.Result)
 
 	onePendingTasksQuery, err := iAsyncClient.PendingTasks(alice.CallOps(t), async.TypesPageRequest{})

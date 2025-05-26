@@ -20,8 +20,15 @@ You'll take these steps:
 3. Deploy an Order: specify the Order input, including the price pair and threshold, and  monitor the result
 
 :::note
-This Order type serves as a foundation for building more advanced [Orders with price prediction](implement-orders-with-price-prediction). When implementing them, you'll add such features as mupltiple price sources (predicted and oracle), strict inequality comparisons (`<`, `>`), and a 24-hour execution time window.
+This Order type serves as a foundation for building more advanced [Orders with price prediction](implement-orders-with-price-prediction). When implementing them, you'll add such features as mupltiple price sources (predicted and oracle), strict inequality comparisons (`<`, `>`), and a 24-hour execution time window. In addition to the Warden and Slinky precompiles, you'll also use Async.
 :::
+
+## Prerequisites
+
+Before you start implementing automated Orders, take these steps:
+
+1. [Meet the prerequisites](prerequisites)
+2. [Build the infrastructure for Orders](build-the-infrastructure)
 
 ## 1. Implement Orders
 
@@ -31,20 +38,20 @@ In our example, the core logic of Orders resides in the `BasicOrder` contract.
 [`src/orders/BasicOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/orders/BasicOrder.sol)
 :::
 
-This contract implements the logic for price monitoring and trade execution using the [Slinky and Warden precompiles](build-the-infrastructure#2-create-mock-precompiles). Once the price threshold is met, the Order will construct a swap transaction, send it for signing, and record the transaction the [registry](build-the-infrastructure#1-create-helpers-and-utils).
+This contract implements the logic for price monitoring and trade execution using the [Slinky and Warden precompiles](build-the-infrastructure#4-create-mock-precompiles). Once the price threshold is met, the Order will construct a swap transaction, send it for signing, and record the transaction the [registry](build-the-infrastructure#3-implement-the-registry).
 
-To create this logic, `BasicOrder` to the `src/orders` directory and take these steps:
+To create this logic, add `BasicOrder` to the `src/orders` directory and take these steps:
 
 1. Declare the following state variables:
 
-   - The Order and execution data structures from [`Types` and `TypesV0`](build-the-infrastructure#1-create-helpers-and-utils)
+   - The Order and execution data structures from [`Types` and `TypesV0`](build-the-infrastructure#1-create-data-structures)
    - References to the Slinky precompile and the registry
    - State tracking (`_executed`, `_unsignedTx`, etc.)
 
 2. Create a `constructor` handling the following tasks:
 
    - Validate all inputs
-   - Set up a connection with [`AbstractOrder`](build-the-infrastructure#1-create-helpers-and-utils) (the transaction signing service)
+   - Set up a connection with [`AbstractOrder`](build-the-infrastructure#5-implement-transaction-signing) (the transaction signing service)
    - Validate the threshold price
    - Initialize the Slinky price feed
    - Store the Order and execution data
@@ -114,7 +121,7 @@ In our example, the creation of Orders is implemented in the `BasicOrderFactory`
 [`src/factories/BasicOrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/factories/BasicOrderFactory.sol)
 :::
 
-`BasicOrderFactory`, when triggered by [`OrderFactory`](build-the-infrastructure#4-implement-order-creation), deploys Orders (instances of [`BasicOrder`](#1-implement-orders)) and registers them in the [registry](build-the-infrastructure#1-create-helpers-and-utils). Orders are deployed with the `CREATE3` opcode to provide front-running protection, salt-based deployment security, and deterministic address computation.
+`BasicOrderFactory`, when triggered by [`OrderFactory`](build-the-infrastructure#6-implement-order-creation), deploys Orders (instances of [`BasicOrder`](#1-implement-orders)) and registers them in the [registry](build-the-infrastructure#3-implement-the-registry). Orders are deployed with the `CREATE3` opcode to provide front-running protection, salt-based deployment security, and deterministic address computation.
 
 To create this logic, add `BasicOrderFactory` to the `src/factories` directory and take the following steps:
 
@@ -205,7 +212,7 @@ To deploy an Order, take these steps:
    source .env
    ```
    
-4. Deploy the infrastructure by using the [main deployment script](build-the-infrastructure#5-create-deployment-scripts):
+4. Deploy the infrastructure by using the [main deployment script](build-the-infrastructure#7-create-deployment-scripts):
    
    ```bash
    forge script script/Deploy.s.sol:Deploy \
@@ -214,7 +221,7 @@ To deploy an Order, take these steps:
        --chain-id $CHAIN_ID
    ```
   
-   This will deploy the [`OrderFactory`](build-the-infrastructure#4-implement-order-creation) and [`Registry`](build-the-infrastructure#1-create-helpers-and-utils) contracts.
+   This will deploy the [`OrderFactory`](build-the-infrastructure#6-implement-order-creation) and [`Registry`](build-the-infrastructure#3-implement-the-registry) contracts.
 
 5. Set the Order parameters:
    
@@ -234,7 +241,7 @@ To deploy an Order, take these steps:
    0x7ff3...)`           # Encoded swap data
    ```
 
-7. Deploy an Order by using the [script for creating Orders](build-the-infrastructure#5-create-deployment-scripts):
+7. Deploy an Order by using the [script for creating Orders](build-the-infrastructure#7-create-deployment-scripts):
    
    ```
    forge script script/CreateOrder.s.sol:CreateOrder \

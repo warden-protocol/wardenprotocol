@@ -25,8 +25,15 @@ The price prediction model is just an example of what you can build with [`x/asy
 :::
 
 :::note
-This Order type extends the [basic automated Orders](implement-automated-orders): it supports two price sources (predicted and oracle), strict inequality comparisons (`<`, `>`), and a 24-hour execution time window.
+This Order type extends the [basic automated Orders](implement-automated-orders): it supports two price sources (predicted and oracle), strict inequality comparisons (`<`, `>`), and a 24-hour execution time window. In addition to the Warden and Slinky precompiles, you'll also use Async.
 :::
+
+## Prerequisites
+
+Before you start implementing automated Orders with price prediction, take these steps:
+
+1. [Meet the prerequisites](prerequisites)
+2. [Build the infrastructure for Orders](build-the-infrastructure)
 
 ## 1. Implement Orders
 
@@ -36,20 +43,20 @@ In our example, the core logic of Orders resides in the `AdvancedOrder` contract
 [`src/orders/AdvancedOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/orders/AdvancedOrder.sol)
 :::
 
-This contract uses the [Async, Slinky, and Warden precompiles](build-the-infrastructure#2-create-mock-precompiles) to fetch predicted and oracle prices, compare them, and execute trades. Once the comparison condition is met, the Order will construct a swap transaction, send it for signing, and record the transaction the [registry](build-the-infrastructure#1-create-helpers-and-utils).
+This contract uses the [Async, Slinky, and Warden precompiles](build-the-infrastructure#4-create-mock-precompiles) to fetch predicted and oracle prices, compare them, and execute trades. Once the comparison condition is met, the Order will construct a swap transaction, send it for signing, and record the transaction the [registry](build-the-infrastructure#3-implement-the-registry).
 
 To create this logic, add `AdvancedOrder` to the `src/orders` directory and take these steps:
 
 1. Declare the following state variables:
 
-   - The Order and execution data structures from [`Types` and `TypesV0`](build-the-infrastructure#1-create-helpers-and-utils)
+   - The Order and execution data structures from [`Types` and `TypesV0`](build-the-infrastructure#1-create-data-structures)
    - References to the Async and Slinky precompiles and the registry
    - State tracking (`_executed`, `_unsignedTx`, etc.)
 
 2. Create a `constructor` handling the following tasks:
 
    - Validate all inputs
-   - Set up a connection with [`AbstractOrder`](build-the-infrastructure#1-create-helpers-and-utils) (the transaction signing service)
+   - Set up a connection with [`AbstractOrder`](build-the-infrastructure#5-implement-transaction-signing) (the transaction signing service)
    - Initialize a prediction request through Async: call [`AddTask()`](/build-an-app/precompiles/x-async#create-a-new-task) with the `pricepred` Plugin 
    - Store the Order and execution data
    - Set an execution time window: Orders should be valid only for 24 hours
@@ -75,7 +82,7 @@ To create this logic, add `AdvancedOrder` to the `src/orders` directory and take
 
 5. Implement price normalization in `_normalizePrices()`.
 
-6. Create a `_checkPriceCondition` function checking if the price meets a given condition: `>=`/`<=`/`>`/`<` than the threshold. See the `PriceCondtion` enum in [`Types.sol`](build-the-infrastructure#1-create-helpers-and-utils).
+6. Create a `_checkPriceCondition` function checking if the price meets a given condition: `>=`/`<=`/`>`/`<` than the threshold. See the `PriceCondtion` enum in [`Types.sol`](build-the-infrastructure#1-create-data-structures).
 
 7. To test the contract, use the following code:
    
@@ -154,7 +161,7 @@ In our example, the creation of Orders is implemented in the `AdvancedOrderFacto
 [`src/factories/AdvancedOrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/factories/AdvancedOrderFactory.sol)
 :::
 
-`AdvancedOrderFactory`, when triggered by [`OrderFactory`](build-the-infrastructure#4-implement-order-creation), deploys Orders (instances of [`AdvancedOrder`](#1-implement-orders)) and registers them in the [registry](build-the-infrastructure#1-create-helpers-and-utils). Orders are deployed with the `CREATE3` opcode to provide front-running protection, salt-based deployment security, and deterministic address computation. The latter is crucial for Orders with price prediction since they may need to reference each other.
+`AdvancedOrderFactory`, when triggered by [`OrderFactory`](build-the-infrastructure#6-implement-order-creation), deploys Orders (instances of [`AdvancedOrder`](#1-implement-orders)) and registers them in the [registry](build-the-infrastructure#3-implement-the-registry). Orders are deployed with the `CREATE3` opcode to provide front-running protection, salt-based deployment security, and deterministic address computation. The latter is crucial for Orders with price prediction since they may need to reference each other.
 
 To create this logic, add `AdvancedOrderFactory` to the `src/factories` directory and take these steps:
 
@@ -430,4 +437,10 @@ Here are some of the common deployment issues and solutions for them:
 
 ## Next steps
 
-Congratulations! You have successfully implemented both automated Orders and automated Orders with price prediction! You can quickly glance through the [summary](summary) to get a quick overview of the project.
+Congratulations! You have successfully implemented both automated Orders and automated Orders with price prediction!
+
+Note that these Orders are just examples of what you can build with Agents. The sky is the limit! If you have an interesting idea, make a PR to the [example repo](https://github.com/warden-protocol/agent-kit-examples).
+
+Alternatively, you can reach out to us for any questions or feedback: developers@wardenprotocol.org
+
+Happy coding! 🚀

@@ -94,6 +94,6 @@
         {"source":"/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/prerequisites","destination":"/build-an-onchain-ai-agent/implement-orders-with-price-prediction#prerequisites", "statusCode": 301},
         {"source":"/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/implement-orders","destination":"/build-an-onchain-ai-agent/implement-orders-with-price-prediction#1-implement-orders", "statusCode": 301},
         {"source":"/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/implement-the-creation-of-orders","destination":"/build-an-onchain-ai-agent/implement-orders-with-price-prediction#2-implement-order-creation", "statusCode": 301},
-        {"source":"/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/deploy-an-order","destination":"/build-an-onchain-ai-agent/implement-orders-with-price-prediction#3-deploy-an-order", "statusCode": 301},
+        {"source":"/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/deploy-an-order","destination":"/build-an-onchain-ai-agent/implement-orders-with-price-prediction#3-deploy-an-order", "statusCode": 301}
     ]
 }

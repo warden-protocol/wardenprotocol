@@ -120,7 +120,7 @@ const config: Config = {
                 },
                 {
                     href: "https://help.wardenprotocol.org",
-                    label: "SpaceWard",
+                    label: "Help Center",
                     position: "right",
                 },
             ],

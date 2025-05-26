@@ -30,5 +30,5 @@ To bootstrap test cases, snapshots for the chain state are available under the
 `testdata/` folder. They allow the test cases to be set up quickly with some
 pre-determined accounts, Spaces, Keychains, etc.
 
-It's important to be able to regenerate snaphots when needed. All the recipes
+It's important to be able to regenerate snapshots when needed. All the recipes
 for snapshot must be included in the `justfile`.

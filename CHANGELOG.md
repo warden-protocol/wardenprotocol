@@ -48,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Consensus Breaking Changes
 
 - (x/async) Move to a push-based fair selection algorithm, instead of validators competing for solving pending Tasks
+- (x/async) Task can return errors instead of outputs, one of "output" or "error" fields will be set
 
 ### Bug Fixes
 

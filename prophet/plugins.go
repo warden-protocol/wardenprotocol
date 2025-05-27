@@ -36,13 +36,17 @@ func Execute(ctx context.Context, f Task) (res TaskResult, err error) {
 	log.Debug("start")
 
 	start := time.Now()
+	defer func() {
+		log.Debug("end", "took", time.Since(start))
+	}()
 
 	output, err := s.Execute(ctx, f.Input)
 	if err != nil {
-		return TaskResult{}, fmt.Errorf("executing task: %w", err)
+		return TaskResult{
+			Task:  f,
+			Error: err,
+		}, nil
 	}
-
-	log.Debug("end", "took", time.Since(start))
 
 	return TaskResult{
 		Task:   f,

@@ -58,17 +58,12 @@ func EVMAppOptions(chainID string) error {
 		return err
 	}
 
-	baseDenom, err := sdk.GetBaseDenom()
-	if err != nil {
-		return err
-	}
-
 	ethCfg := evmtypes.DefaultChainConfig(chainID)
 
-	err = evmtypes.NewEVMConfigurator().
+	err := evmtypes.NewEVMConfigurator().
 		WithChainConfig(ethCfg).
 		// NOTE: we're using the 18 decimals
-		WithEVMCoinInfo(baseDenom, uint8(coinInfo.Decimals)).
+		WithEVMCoinInfo(coinInfo).
 		Configure()
 	if err != nil {
 		return err

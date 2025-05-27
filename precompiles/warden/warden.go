@@ -8,9 +8,9 @@ import (
 	storetypes "cosmossdk.io/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	cmn "github.com/cosmos/evm/precompiles/common"
-	"github.com/cosmos/evm/x/vm/core/vm"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/vm"
 
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
@@ -106,7 +106,7 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz 
 
 	// This handles any out of gas errors that may occur during the execution of a precompile tx or query.
 	// It avoids panics and returns the out of gas error so the EVM can continue gracefully.
-	defer cmn.HandleGasError(ctx, contract, initialGas, &err)()
+	defer cmn.HandleGasError(ctx, contract, initialGas, &err, stateDB, snapshot)()
 
 	switch method.Name {
 	// transactions

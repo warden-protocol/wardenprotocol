@@ -2,9 +2,9 @@ package warden
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/evm/x/vm/core/vm"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/vm"
 
 	wardencommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	actkeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"

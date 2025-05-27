@@ -65,15 +65,10 @@ import (
 	_ "github.com/cosmos/cosmos-sdk/x/staking" // import for side-effects
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	evmtypes "github.com/cosmos/evm/x/vm/types"
-	ibchookstypes "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/types"
-	_ "github.com/cosmos/ibc-go/modules/capability" // import for side-effects
-	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
-	_ "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts" // import for side-effects
-	icatypes "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/types"
-	_ "github.com/cosmos/ibc-go/v8/modules/apps/29-fee" // import for side-effects
-	ibcfeetypes "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/types"
-	ibctransfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
-	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
+	_ "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts" // import for side-effects
+	icatypes "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/types"
+	ibctransfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
+	ibcexported "github.com/cosmos/ibc-go/v10/modules/core/exported"
 	marketmapmodulev1 "github.com/skip-mev/slinky/api/slinky/marketmap/module/v1"
 	oraclemodulev1 "github.com/skip-mev/slinky/api/slinky/oracle/module/v1"
 	_ "github.com/skip-mev/slinky/x/marketmap" // import for side-effects
@@ -90,7 +85,6 @@ import (
 	actmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/async/module" // import for side-effects
 	asyncmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
-	gmpmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/sched/module" // import for side-effects
 	schedmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1"
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/warden/module" // import for side-effects
@@ -98,8 +92,9 @@ import (
 
 	erc20types "github.com/cosmos/evm/x/erc20/types"
 	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
-	_ "github.com/cosmos/evm/x/vm/core/tracers/js"
-	_ "github.com/cosmos/evm/x/vm/core/tracers/native"
+
+	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
+	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
 	// Replace default transfer with EVM's transfer (if using IBC)
 )
 
@@ -128,14 +123,10 @@ var (
 	// NOTE: The genutils module must occur after staking so that pools are
 	// properly initialized with tokens from genesis accounts.
 	// NOTE: The genutils module must also occur after auth so that it can access the params from auth.
-	// NOTE: Capability module must occur first so that it can initialize any capabilities
-	// so that other modules that want to create or claim capabilities afterwards in InitChain
-	// can do so safely.
 	// NOTE: wasm module should be at the end as it can call other module functionality direct or via message dispatching during
 	// genesis phase. For example bank transfer, auth account check, staking, ...
 	genesisModuleOrder = []string{
 		// cosmos-sdk/ibc modules
-		capabilitytypes.ModuleName,
 		authtypes.ModuleName,
 		banktypes.ModuleName,
 		distrtypes.ModuleName,
@@ -157,7 +148,6 @@ var (
 		authz.ModuleName,
 		ibctransfertypes.ModuleName,
 		icatypes.ModuleName,
-		ibcfeetypes.ModuleName,
 		feegrant.ModuleName,
 		paramstypes.ModuleName,
 		upgradetypes.ModuleName,
@@ -171,8 +161,6 @@ var (
 		actmoduletypes.ModuleName,
 		asyncmoduletypes.ModuleName,
 		schedmoduletypes.ModuleName,
-		gmpmoduletypes.ModuleName,
-		ibchookstypes.ModuleName,
 		// wasm module
 		wasmtypes.ModuleName,
 		// slinky modules
@@ -183,7 +171,6 @@ var (
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
 
-	// NOTE: capability module's beginblocker must come before any modules using capabilities (e.g. IBC).
 	beginBlockers = []string{
 		minttypes.ModuleName,
 
@@ -201,13 +188,9 @@ var (
 		authz.ModuleName,
 		genutiltypes.ModuleName,
 		// ibc modules
-		capabilitytypes.ModuleName,
 		ibcexported.ModuleName,
 		ibctransfertypes.ModuleName,
 		icatypes.ModuleName,
-		ibcfeetypes.ModuleName,
-		gmpmoduletypes.ModuleName,
-		ibchookstypes.ModuleName,
 		wasmtypes.ModuleName,
 		// chain modules
 		wardenmoduletypes.ModuleName,
@@ -232,11 +215,7 @@ var (
 		// ibc modules
 		ibcexported.ModuleName,
 		ibctransfertypes.ModuleName,
-		capabilitytypes.ModuleName,
 		icatypes.ModuleName,
-		ibcfeetypes.ModuleName,
-		gmpmoduletypes.ModuleName,
-		ibchookstypes.ModuleName,
 		wasmtypes.ModuleName,
 		// chain modules
 		wardenmoduletypes.ModuleName,
@@ -268,7 +247,6 @@ var (
 		{Account: stakingtypes.NotBondedPoolName, Permissions: []string{authtypes.Burner, stakingtypes.ModuleName}},
 		{Account: govtypes.ModuleName, Permissions: []string{authtypes.Burner}},
 		{Account: ibctransfertypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}},
-		{Account: ibcfeetypes.ModuleName},
 		{Account: icatypes.ModuleName},
 		{Account: actmoduletypes.ModuleName},
 		{Account: asyncmoduletypes.ModuleName},

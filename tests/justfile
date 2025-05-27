@@ -53,7 +53,7 @@ snapshot-base:
   wardend genesis add-genesis-account alice 10000000000000000000000000000000000000award --keyring-backend test --home $WARDEND_HOME
   replace 's/aevmos/award/' $WARDEND_HOME/config/genesis.json
   replace 's/aevmos/award/' $WARDEND_HOME/config/app.toml
-  
+
   # Change parameter token denominations to desired value
   jq '.app_state["staking"]["params"]["bond_denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
   jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json

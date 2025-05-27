@@ -4,15 +4,21 @@ import (
 	"fmt"
 	"maps"
 
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/vm"
+
 	evidencekeeper "cosmossdk.io/x/evidence/keeper"
-	authzkeeper "github.com/cosmos/cosmos-sdk/x/authz/keeper"
-	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
+
 	distributionkeeper "github.com/cosmos/cosmos-sdk/x/distribution/keeper"
 	govkeeper "github.com/cosmos/cosmos-sdk/x/gov/keeper"
 	slashingkeeper "github.com/cosmos/cosmos-sdk/x/slashing/keeper"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
+
+	channelkeeper "github.com/cosmos/ibc-go/v10/modules/core/04-channel/keeper"
+
 	bankprecompile "github.com/cosmos/evm/precompiles/bank"
 	"github.com/cosmos/evm/precompiles/bech32"
+	cmn "github.com/cosmos/evm/precompiles/common"
 	distprecompile "github.com/cosmos/evm/precompiles/distribution"
 	evidenceprecompile "github.com/cosmos/evm/precompiles/evidence"
 	govprecompile "github.com/cosmos/evm/precompiles/gov"
@@ -22,10 +28,7 @@ import (
 	stakingprecompile "github.com/cosmos/evm/precompiles/staking"
 	erc20Keeper "github.com/cosmos/evm/x/erc20/keeper"
 	transferkeeper "github.com/cosmos/evm/x/ibc/transfer/keeper"
-	"github.com/cosmos/evm/x/vm/core/vm"
 	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
-	channelkeeper "github.com/cosmos/ibc-go/v8/modules/core/04-channel/keeper"
-	"github.com/ethereum/go-ethereum/common"
 )
 
 const bech32PrecompileBaseGas = 6_000
@@ -36,11 +39,10 @@ const bech32PrecompileBaseGas = 6_000
 func NewAvailableStaticPrecompiles(
 	stakingKeeper stakingkeeper.Keeper,
 	distributionKeeper distributionkeeper.Keeper,
-	bankKeeper bankkeeper.Keeper,
+	bankKeeper cmn.BankKeeper,
 	erc20Keeper erc20Keeper.Keeper,
-	authzKeeper authzkeeper.Keeper,
 	transferKeeper transferkeeper.Keeper,
-	channelKeeper channelkeeper.Keeper,
+	channelKeeper *channelkeeper.Keeper,
 	evmKeeper *evmkeeper.Keeper,
 	govKeeper govkeeper.Keeper,
 	slashingKeeper slashingkeeper.Keeper,
@@ -57,7 +59,7 @@ func NewAvailableStaticPrecompiles(
 		panic(fmt.Errorf("failed to instantiate bech32 precompile: %w", err))
 	}
 
-	stakingPrecompile, err := stakingprecompile.NewPrecompile(stakingKeeper, authzKeeper)
+	stakingPrecompile, err := stakingprecompile.NewPrecompile(stakingKeeper)
 	if err != nil {
 		panic(fmt.Errorf("failed to instantiate staking precompile: %w", err))
 	}
@@ -65,7 +67,6 @@ func NewAvailableStaticPrecompiles(
 	distributionPrecompile, err := distprecompile.NewPrecompile(
 		distributionKeeper,
 		stakingKeeper,
-		authzKeeper,
 		evmKeeper,
 	)
 	if err != nil {
@@ -76,7 +77,6 @@ func NewAvailableStaticPrecompiles(
 		stakingKeeper,
 		transferKeeper,
 		channelKeeper,
-		authzKeeper,
 		evmKeeper,
 	)
 	if err != nil {
@@ -88,17 +88,17 @@ func NewAvailableStaticPrecompiles(
 		panic(fmt.Errorf("failed to instantiate bank precompile: %w", err))
 	}
 
-	govPrecompile, err := govprecompile.NewPrecompile(govKeeper, authzKeeper)
+	govPrecompile, err := govprecompile.NewPrecompile(govKeeper)
 	if err != nil {
 		panic(fmt.Errorf("failed to instantiate gov precompile: %w", err))
 	}
 
-	slashingPrecompile, err := slashingprecompile.NewPrecompile(slashingKeeper, authzKeeper)
+	slashingPrecompile, err := slashingprecompile.NewPrecompile(slashingKeeper)
 	if err != nil {
 		panic(fmt.Errorf("failed to instantiate slashing precompile: %w", err))
 	}
 
-	evidencePrecompile, err := evidenceprecompile.NewPrecompile(evidenceKeeper, authzKeeper)
+	evidencePrecompile, err := evidenceprecompile.NewPrecompile(evidenceKeeper)
 	if err != nil {
 		panic(fmt.Errorf("failed to instantiate evidence precompile: %w", err))
 	}

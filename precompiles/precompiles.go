@@ -1,8 +1,8 @@
 package precompiles
 
 import (
-	"github.com/cosmos/evm/x/vm/core/vm"
 	ethcmn "github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/vm"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
 
 	actprecompile "github.com/warden-protocol/wardenprotocol/precompiles/act"

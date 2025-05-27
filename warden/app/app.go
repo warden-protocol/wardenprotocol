@@ -10,6 +10,29 @@ import (
 	"path/filepath"
 	"time"
 
+	corevm "github.com/ethereum/go-ethereum/core/vm"
+	"github.com/spf13/cast"
+
+	// Force-load the tracer engines to trigger registration due to Go-Ethereum v1.10.15 changes
+	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
+	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
+
+	evmante "github.com/cosmos/evm/ante"
+	cosmosevmante "github.com/cosmos/evm/ante/evm"
+
+	srvflags "github.com/cosmos/evm/server/flags"
+	cosmosevmtypes "github.com/cosmos/evm/types"
+	cosmosevmutils "github.com/cosmos/evm/utils"
+	erc20keeper "github.com/cosmos/evm/x/erc20/keeper"
+	erc20types "github.com/cosmos/evm/x/erc20/types"
+	feemarketkeeper "github.com/cosmos/evm/x/feemarket/keeper"
+	transferkeeper "github.com/cosmos/evm/x/ibc/transfer/keeper"
+
+	// NOTE: override ICS20 keeper to support IBC transfers of ERC20 tokens
+	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
+	evmtypes "github.com/cosmos/evm/x/vm/types"
+	ibckeeper "github.com/cosmos/ibc-go/v10/modules/core/keeper"
+
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
@@ -58,19 +81,11 @@ import (
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	slashingkeeper "github.com/cosmos/cosmos-sdk/x/slashing/keeper"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
-	evmosante "github.com/cosmos/evm/ante"
 	evmosencodingcodec "github.com/cosmos/evm/encoding/codec"
-	ibchooks "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8"
-	ibchookskeeper "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/keeper"
-	ibchookstypes "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/types"
-	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
-	icacontrollerkeeper "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/controller/keeper"
-	icahostkeeper "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/host/keeper"
-	ibcfeekeeper "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/keeper"
-	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
+	icacontrollerkeeper "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/controller/keeper"
+	icahostkeeper "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/host/keeper"
 	marketmapkeeper "github.com/skip-mev/slinky/x/marketmap/keeper"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
-	"github.com/spf13/cast"
 
 	"github.com/warden-protocol/wardenprotocol/precompiles"
 	jsonprecompile "github.com/warden-protocol/wardenprotocol/precompiles/json"
@@ -83,8 +98,6 @@ import (
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 	asyncmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/async/keeper"
 	asynctypes "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
-	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
-	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
 	schedmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/sched/keeper"
 	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
@@ -93,18 +106,6 @@ import (
 	"math/big"
 
 	"cosmossdk.io/math"
-	evmevmante "github.com/cosmos/evm/ante/evm"
-	srvflags "github.com/cosmos/evm/server/flags"
-	cosmosevmtypes "github.com/cosmos/evm/types"
-	evmutils "github.com/cosmos/evm/utils"
-	erc20keeper "github.com/cosmos/evm/x/erc20/keeper"
-	erc20types "github.com/cosmos/evm/x/erc20/types"
-	feemarketkeeper "github.com/cosmos/evm/x/feemarket/keeper"
-	_ "github.com/cosmos/evm/x/vm/core/tracers/js"
-	_ "github.com/cosmos/evm/x/vm/core/tracers/native"
-	"github.com/cosmos/evm/x/vm/core/vm"
-	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
 
 	// Replace default transfer with EVM's transfer (if using IBC)
 	// NOTE: override ICS20 keeper to support IBC transfers of ERC20 tokens
@@ -166,24 +167,13 @@ type App struct {
 
 	// IBC
 	IBCKeeper           *ibckeeper.Keeper // IBC Keeper must be a pointer in the app, so we can SetRouter on it correctly
-	CapabilityKeeper    *capabilitykeeper.Keeper
-	IBCFeeKeeper        ibcfeekeeper.Keeper
 	ICAControllerKeeper icacontrollerkeeper.Keeper
 	ICAHostKeeper       icahostkeeper.Keeper
-	TransferKeeper      keeper.Keeper // for cross-chain fungible token transfers
-	IBCHooksKeeper      ibchookskeeper.Keeper
-	GmpKeeper           gmpkeeper.Keeper
-
-	// Scoped IBC
-	ScopedIBCKeeper           capabilitykeeper.ScopedKeeper
-	ScopedIBCTransferKeeper   capabilitykeeper.ScopedKeeper
-	ScopedICAControllerKeeper capabilitykeeper.ScopedKeeper
-	ScopedICAHostKeeper       capabilitykeeper.ScopedKeeper
+	TransferKeeper      transferkeeper.Keeper // for cross-chain fungible token transfers
 
 	// Wasm
-	WasmKeeper       wasmkeeper.Keeper
-	ScopedWasmKeeper capabilitykeeper.ScopedKeeper
-	ContractKeeper   *wasmkeeper.PermissionedKeeper
+	WasmKeeper     wasmkeeper.Keeper
+	ContractKeeper *wasmkeeper.PermissionedKeeper
 
 	WardenKeeper wardenmodulekeeper.Keeper
 	ActKeeper    actmodulekeeper.Keeper
@@ -201,10 +191,6 @@ type App struct {
 
 	// simulation manager
 	sm *module.SimulationManager
-
-	// IBC Hooks Middleware
-	Ics20WasmHooks   *ibchooks.WasmHooks
-	HooksICS4Wrapper ibchooks.ICS4Middleware
 
 	// processes
 	slinkyClient *SlinkyClient
@@ -294,9 +280,8 @@ func AppConfig() depinject.Config {
 		depinject.Supply(
 			// supply custom module basics
 			map[string]module.AppModuleBasic{
-				genutiltypes.ModuleName:  genutil.NewAppModuleBasic(genutiltypes.DefaultMessageValidator),
-				govtypes.ModuleName:      gov.NewAppModuleBasic(getGovProposalHandlers()),
-				ibchookstypes.ModuleName: ibchooks.AppModuleBasic{},
+				genutiltypes.ModuleName: genutil.NewAppModuleBasic(genutiltypes.DefaultMessageValidator),
+				govtypes.ModuleName:     gov.NewAppModuleBasic(getGovProposalHandlers()),
 				// this line is used by starport scaffolding # stargate/appConfig/moduleBasic
 			},
 		),
@@ -356,7 +341,6 @@ func New(
 				// Passing the getter, the app IBC Keeper will always be accessible.
 				// This needs to be removed after IBC supports App Wiring.
 				app.GetIBCKeeper,
-				app.GetCapabilityScopedKeeper,
 				// Supply Wasm keeper, similar to what we do for IBC keeper, since it doesn't support App Wiring yet.
 				app.GetWasmKeeper,
 				app.GetEvmKeeper,
@@ -722,11 +706,6 @@ func (app *App) GetFeemarketKeeper(_placeHolder int32) feemarketkeeper.Keeper {
 	return app.FeeMarketKeeper
 }
 
-// GetCapabilityScopedKeeper returns the capability scoped keeper.
-func (app *App) GetCapabilityScopedKeeper(moduleName string) capabilitykeeper.ScopedKeeper {
-	return app.CapabilityKeeper.ScopeToModule(moduleName)
-}
-
 func (app *App) TxConfig() client.TxConfig {
 	return app.txConfig
 }
@@ -759,7 +738,7 @@ func BlockedAddresses() map[string]bool {
 
 	// Add static EVM precompiles
 	blockedPrecompilesHex := evmtypes.AvailableStaticPrecompiles
-	for _, addr := range vm.PrecompiledAddressesBerlin {
+	for _, addr := range corevm.PrecompiledAddressesBerlin {
 		blockedPrecompilesHex = append(blockedPrecompilesHex, addr.Hex())
 	}
 
@@ -767,7 +746,7 @@ func BlockedAddresses() map[string]bool {
 	blockedPrecompilesHex = append(blockedPrecompilesHex, precompiles.WardenPrecompilesAddresses()...)
 
 	for _, precompile := range blockedPrecompilesHex {
-		result[evmutils.EthHexToCosmosAddr(precompile).String()] = true
+		result[cosmosevmutils.EthHexToCosmosAddr(precompile).String()] = true
 	}
 
 	return result
@@ -793,13 +772,13 @@ func (a *App) DefaultGenesis() map[string]json.RawMessage {
 	return genesis
 }
 
-func (app *App) setAnteHandler(txConfig client.TxConfig, wasmConfig wasmtypes.WasmConfig, txCounterStoreKey *storetypes.KVStoreKey, maxGasWanted uint64) {
+func (app *App) setAnteHandler(txConfig client.TxConfig, wasmConfig wasmtypes.NodeConfig, txCounterStoreKey *storetypes.KVStoreKey, maxGasWanted uint64) {
 	options := HandlerOptions{
 		HandlerOptions: authante.HandlerOptions{
 			ExtensionOptionChecker: cosmosevmtypes.HasDynamicFeeExtensionOption,
 			FeegrantKeeper:         app.FeeGrantKeeper,
 			SignModeHandler:        txConfig.SignModeHandler(),
-			SigGasConsumer:         evmosante.SigVerificationGasConsumer,
+			SigGasConsumer:         evmante.SigVerificationGasConsumer,
 			// TxFeeChecker:           evmevmante.NewDynamicFeeChecker(app.FeeMarketKeeper),
 		},
 		AccountKeeper:         app.AccountKeeper,
@@ -812,7 +791,7 @@ func (app *App) setAnteHandler(txConfig client.TxConfig, wasmConfig wasmtypes.Wa
 		EVMKeeper:             app.EVMKeeper,
 		FeeMarketKeeper:       app.FeeMarketKeeper,
 		Cdc:                   app.appCodec,
-		TxFeeChecker:          evmevmante.NewDynamicFeeChecker(app.FeeMarketKeeper),
+		TxFeeChecker:          cosmosevmante.NewDynamicFeeChecker(app.FeeMarketKeeper),
 
 		MaxTxGasWanted: maxGasWanted,
 	}

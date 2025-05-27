@@ -4,6 +4,38 @@ import (
 	"fmt"
 	"path/filepath"
 
+	"github.com/spf13/cast"
+
+	// Force-load the tracer engines to trigger registration due to Go-Ethereum v1.10.15 changes
+	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
+	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
+
+	srvflags "github.com/cosmos/evm/server/flags"
+	"github.com/cosmos/evm/x/erc20"
+	erc20keeper "github.com/cosmos/evm/x/erc20/keeper"
+	erc20types "github.com/cosmos/evm/x/erc20/types"
+	erc20v2 "github.com/cosmos/evm/x/erc20/v2"
+	"github.com/cosmos/evm/x/feemarket"
+	feemarketkeeper "github.com/cosmos/evm/x/feemarket/keeper"
+	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
+
+	// NOTE: override ICS20 keeper to support IBC transfers of ERC20 tokens
+
+	"github.com/cosmos/evm/x/ibc/transfer"
+	transferkeeper "github.com/cosmos/evm/x/ibc/transfer/keeper"
+	transferv2 "github.com/cosmos/evm/x/ibc/transfer/v2"
+	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
+	evmtypes "github.com/cosmos/evm/x/vm/types"
+	ibccallbacks "github.com/cosmos/ibc-go/v10/modules/apps/callbacks"
+	ibctransfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
+	ibc "github.com/cosmos/ibc-go/v10/modules/core"
+	ibcclienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
+	ibcconnectiontypes "github.com/cosmos/ibc-go/v10/modules/core/03-connection/types"
+	porttypes "github.com/cosmos/ibc-go/v10/modules/core/05-port/types"
+	ibcexported "github.com/cosmos/ibc-go/v10/modules/core/exported"
+	ibckeeper "github.com/cosmos/ibc-go/v10/modules/core/keeper"
+	ibctm "github.com/cosmos/ibc-go/v10/modules/light-clients/07-tendermint"
+
 	"cosmossdk.io/core/appmodule"
 	storetypes "cosmossdk.io/store/types"
 	"github.com/CosmWasm/wasmd/x/wasm"
@@ -18,73 +50,33 @@ import (
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	govv1beta1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	srvflags "github.com/cosmos/evm/server/flags"
-	"github.com/cosmos/evm/x/feemarket"
-	feemarketkeeper "github.com/cosmos/evm/x/feemarket/keeper"
-	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
 	evm "github.com/cosmos/evm/x/vm"
-	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
-	ibchooks "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8"
-	ibchookskeeper "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/keeper"
-	ibchookstypes "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/types"
-	"github.com/cosmos/ibc-go/modules/capability"
-	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
-	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
-	icamodule "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts"
-	icacontroller "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/controller"
-	icacontrollerkeeper "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/controller/keeper"
-	icacontrollertypes "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/controller/types"
-	icahost "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/host"
-	icahostkeeper "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/host/keeper"
-	icahosttypes "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/host/types"
-	icatypes "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/types"
-	ibcfee "github.com/cosmos/ibc-go/v8/modules/apps/29-fee"
-	ibcfeekeeper "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/keeper"
-	ibcfeetypes "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/types"
-	ibctransfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
-	ibc "github.com/cosmos/ibc-go/v8/modules/core"
-	ibcclienttypes "github.com/cosmos/ibc-go/v8/modules/core/02-client/types"
-	ibcconnectiontypes "github.com/cosmos/ibc-go/v8/modules/core/03-connection/types"
-	porttypes "github.com/cosmos/ibc-go/v8/modules/core/05-port/types"
-	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
-	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
-	solomachine "github.com/cosmos/ibc-go/v8/modules/light-clients/06-solomachine"
-	ibctm "github.com/cosmos/ibc-go/v8/modules/light-clients/07-tendermint"
-	"github.com/spf13/cast"
+	icamodule "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts"
+	icacontroller "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/controller"
+	icacontrollerkeeper "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/controller/keeper"
+	icacontrollertypes "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/controller/types"
+	icahost "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/host"
+	icahostkeeper "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/host/keeper"
+	icahosttypes "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/host/types"
+	icatypes "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/types"
+	ibcapi "github.com/cosmos/ibc-go/v10/modules/core/api"
+	solomachine "github.com/cosmos/ibc-go/v10/modules/light-clients/06-solomachine"
 
 	// NOTE: override ICS20 keeper to support IBC transfers of ERC20 tokens
 
-	transferkeeper "github.com/cosmos/evm/x/ibc/transfer/keeper"
-
-	"github.com/cosmos/evm/x/erc20"
-	erc20keeper "github.com/cosmos/evm/x/erc20/keeper"
-	erc20types "github.com/cosmos/evm/x/erc20/types"
-
 	wardenprecompiles "github.com/warden-protocol/wardenprotocol/precompiles"
-	gmpmiddleware "github.com/warden-protocol/wardenprotocol/warden/app/gmp"
 	wasminterop "github.com/warden-protocol/wardenprotocol/warden/app/wasm-interop"
-	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
-	gmpmodule "github.com/warden-protocol/wardenprotocol/warden/x/gmp/module"
-	gmptypes "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
-	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
-	ibctransfer "github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/module"
 	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 )
 
 // registerLegacyModules register IBC and WASM keepers and non dependency inject modules.
-func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts []wasmkeeper.Option) wasmtypes.WasmConfig {
+func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts []wasmkeeper.Option) wasmtypes.NodeConfig {
 	// set up non depinject support modules store keys
 	if err := app.RegisterStores(
-		storetypes.NewKVStoreKey(capabilitytypes.StoreKey),
 		storetypes.NewKVStoreKey(ibcexported.StoreKey),
 		storetypes.NewKVStoreKey(ibctransfertypes.StoreKey),
-		storetypes.NewKVStoreKey(ibcfeetypes.StoreKey),
 		storetypes.NewKVStoreKey(icahosttypes.StoreKey),
 		storetypes.NewKVStoreKey(icacontrollertypes.StoreKey),
-		storetypes.NewKVStoreKey(ibchookstypes.StoreKey),
-		storetypes.NewKVStoreKey(gmptypes.StoreKey),
-		storetypes.NewMemoryStoreKey(capabilitytypes.MemStoreKey),
 		storetypes.NewTransientStoreKey(paramstypes.TStoreKey),
 		// wasm kv store
 		storetypes.NewKVStoreKey(wasmtypes.StoreKey),
@@ -111,29 +103,14 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	app.ParamsKeeper.Subspace(feemarkettypes.ModuleName).WithKeyTable(feemarkettypes.ParamKeyTable())
 	app.ParamsKeeper.Subspace(erc20types.ModuleName)
 
-	// add capability keeper and ScopeToModule for ibc module
-	app.CapabilityKeeper = capabilitykeeper.NewKeeper(
-		app.AppCodec(),
-		app.GetKey(capabilitytypes.StoreKey),
-		app.GetMemKey(capabilitytypes.MemStoreKey),
-	)
-
-	// add capability keeper and ScopeToModule for ibc module
-	scopedIBCKeeper := app.CapabilityKeeper.ScopeToModule(ibcexported.ModuleName)
-	scopedIBCTransferKeeper := app.CapabilityKeeper.ScopeToModule(ibctransfertypes.ModuleName)
-	scopedICAControllerKeeper := app.CapabilityKeeper.ScopeToModule(icacontrollertypes.SubModuleName)
-	scopedICAHostKeeper := app.CapabilityKeeper.ScopeToModule(icahosttypes.SubModuleName)
-
 	authAddr := authtypes.NewModuleAddress(govtypes.ModuleName).String()
 
 	// Create IBC keeper
 	app.IBCKeeper = ibckeeper.NewKeeper(
 		app.appCodec,
-		app.GetKey(ibcexported.StoreKey),
+		runtime.NewKVStoreService(app.GetKey(ibcexported.StoreKey)),
 		app.GetSubspace(ibcexported.ModuleName),
-		app.StakingKeeper,
 		app.UpgradeKeeper,
-		scopedIBCKeeper,
 		authAddr,
 	)
 
@@ -144,100 +121,55 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	govRouter := govv1beta1.NewRouter()
 	govRouter.AddRoute(govtypes.RouterKey, govv1beta1.ProposalHandler)
 
-	app.IBCFeeKeeper = ibcfeekeeper.NewKeeper(
-		app.appCodec, app.GetKey(ibcfeetypes.StoreKey),
-		app.IBCKeeper.ChannelKeeper, // may be replaced with IBC middleware
-		app.IBCKeeper.ChannelKeeper,
-		app.IBCKeeper.PortKeeper, app.AccountKeeper, app.BankKeeper,
-	)
-
-	app.GmpKeeper = gmpkeeper.NewKeeper(
-		app.appCodec,
-		app.GetKey(gmptypes.ModuleName),
-		authAddr,
-		app.TransferKeeper,
-	)
-
 	// Create Transfer Keepers
 	ibcTransferKeeper := transferkeeper.NewKeeper(
 		app.appCodec,
-		app.GetKey(ibctransfertypes.StoreKey),
+		runtime.NewKVStoreService(app.GetKey(ibctransfertypes.StoreKey)),
 		app.GetSubspace(ibctransfertypes.ModuleName),
-		app.IBCFeeKeeper,
 		app.IBCKeeper.ChannelKeeper,
-		app.IBCKeeper.PortKeeper,
+		app.IBCKeeper.ChannelKeeper,
+		app.MsgServiceRouter(),
 		app.AccountKeeper,
 		app.BankKeeper,
-		scopedIBCTransferKeeper,
 		nil,
 		authAddr,
 	)
 
-	app.IBCHooksKeeper = ibchookskeeper.NewKeeper(
-		app.GetKey(ibchookstypes.StoreKey),
-	)
-	wasmHooks := ibchooks.NewWasmHooks(&app.IBCHooksKeeper, nil, AccountAddressPrefix)
-	app.Ics20WasmHooks = &wasmHooks
-	app.HooksICS4Wrapper = ibchooks.NewICS4Middleware(
-		app.IBCKeeper.ChannelKeeper,
-		app.Ics20WasmHooks,
-	)
-
 	// Create IBC transfer keeper
-	app.TransferKeeper = keeper.NewKeeper(
-		app.appCodec,
-		app.GetKey(ibctransfertypes.StoreKey),
-		app.GetSubspace(ibctransfertypes.ModuleName),
-		app.HooksICS4Wrapper,
-		app.IBCKeeper.ChannelKeeper,
-		app.IBCKeeper.PortKeeper,
-		app.AccountKeeper,
-		app.BankKeeper,
-		scopedIBCTransferKeeper,
-		app.GmpKeeper,
-	)
-	app.TransferKeeper.Keeper = ibcTransferKeeper
-
-	// Reassign the GMP transfer keeper
-	app.GmpKeeper.IBCKeeper = &app.TransferKeeper
+	app.TransferKeeper = ibcTransferKeeper
 
 	// Create interchain account keepers
 	app.ICAHostKeeper = icahostkeeper.NewKeeper(
 		app.appCodec,
-		app.GetKey(icahosttypes.StoreKey),
+		runtime.NewKVStoreService(app.GetKey(icahosttypes.StoreKey)),
 		app.GetSubspace(icahosttypes.SubModuleName),
-		app.IBCFeeKeeper, // use ics29 fee as ics4Wrapper in middleware stack
 		app.IBCKeeper.ChannelKeeper,
-		app.IBCKeeper.PortKeeper,
+		app.IBCKeeper.ChannelKeeper,
 		app.AccountKeeper,
-		scopedICAHostKeeper,
 		app.MsgServiceRouter(),
+		app.GRPCQueryRouter(),
 		authAddr,
 	)
-	app.ICAHostKeeper.WithQueryRouter(app.GRPCQueryRouter())
 
 	app.ICAControllerKeeper = icacontrollerkeeper.NewKeeper(
 		app.appCodec,
-		app.GetKey(icacontrollertypes.StoreKey),
+		runtime.NewKVStoreService(app.GetKey(icacontrollertypes.StoreKey)),
 		app.GetSubspace(icacontrollertypes.SubModuleName),
-		app.IBCFeeKeeper, // use ics29 fee as ics4Wrapper in middleware stack
 		app.IBCKeeper.ChannelKeeper,
-		app.IBCKeeper.PortKeeper,
-		scopedICAControllerKeeper,
+		app.IBCKeeper.ChannelKeeper,
 		app.MsgServiceRouter(),
 		authAddr,
 	)
 	app.GovKeeper.SetLegacyRouter(govRouter)
 
 	// wasm keepers
-	scopedWasmKeeper := app.CapabilityKeeper.ScopeToModule(wasmtypes.ModuleName)
 
 	app.ParamsKeeper.Subspace(wasmtypes.ModuleName)
 
 	homePath := cast.ToString(appOpts.Get(flags.FlagHome))
 	wasmDir := filepath.Join(homePath, "wasm")
 
-	wasmConfig, err := wasm.ReadWasmConfig(appOpts)
+	nodeConfig, err := wasm.ReadNodeConfig(appOpts)
 	if err != nil {
 		panic(fmt.Sprintf("error while reading wasm config: %s", err))
 	}
@@ -253,15 +185,14 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		app.BankKeeper,
 		app.StakingKeeper,
 		distrkeeper.NewQuerier(app.DistrKeeper),
-		app.IBCFeeKeeper, // ISC4 Wrapper: fee IBC middleware
 		app.IBCKeeper.ChannelKeeper,
-		app.IBCKeeper.PortKeeper,
-		scopedWasmKeeper,
+		app.IBCKeeper.ChannelKeeper,
 		app.TransferKeeper,
 		app.MsgServiceRouter(),
 		app.GRPCQueryRouter(),
 		wasmDir,
-		wasmConfig,
+		nodeConfig,
+		wasmtypes.VMConfig{},
 		AllCapabilities(),
 		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 		wasmOpts...,
@@ -274,7 +205,6 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		authtypes.NewModuleAddress(govtypes.ModuleName),
 		app.GetKey(feemarkettypes.StoreKey),
 		app.GetTransientKey(feemarkettypes.TransientKey),
-		app.GetSubspace(feemarkettypes.ModuleName),
 	)
 
 	tracer := cast.ToString(appOpts.Get(srvflags.EVMTracer))
@@ -290,7 +220,6 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		app.FeeMarketKeeper,
 		&app.Erc20Keeper,
 		tracer,
-		app.GetSubspace(evmtypes.ModuleName),
 	)
 
 	app.Erc20Keeper = erc20keeper.NewKeeper(
@@ -301,49 +230,63 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		app.BankKeeper,
 		app.EVMKeeper,
 		app.StakingKeeper,
-		app.AuthzKeeper,
-		&app.TransferKeeper.Keeper,
+		&app.TransferKeeper,
 	)
-
-	// integration point for custom authentication modules
-	var noAuthzModule porttypes.IBCModule
-	icaControllerIBCModule := ibcfee.NewIBCMiddleware(
-		icacontroller.NewIBCMiddleware(noAuthzModule, app.ICAControllerKeeper),
-		app.IBCFeeKeeper,
-	)
-
-	icaHostIBCModule := ibcfee.NewIBCMiddleware(icahost.NewIBCModule(app.ICAHostKeeper), app.IBCFeeKeeper)
 
 	// Create fee enabled wasm ibc Stack
-	var wasmStack porttypes.IBCModule
-	wasmStack = wasm.NewIBCHandler(app.WasmKeeper, app.IBCKeeper.ChannelKeeper, app.IBCFeeKeeper)
-	wasmStack = ibcfee.NewIBCMiddleware(wasmStack, app.IBCFeeKeeper)
+	wasmStackIBCHandler := wasm.NewIBCHandler(app.WasmKeeper, app.IBCKeeper.ChannelKeeper, app.IBCKeeper.ChannelKeeper)
 
-	var ibcStack porttypes.IBCModule
-	ibcStack = ibctransfer.NewIBCModule(app.TransferKeeper)
-	ibcStack = ibcfee.NewIBCMiddleware(ibcStack, app.IBCFeeKeeper)
-	ibcStack = ibchooks.NewIBCMiddleware(ibcStack, &app.HooksICS4Wrapper)
-	ibcStack = gmpmiddleware.NewIBCMiddleware(
-		ibcStack,
-		gmpmiddleware.NewGmpHandler(app.GmpKeeper, authtypes.NewModuleAddress(gmptypes.ModuleName).String()),
-	)
+	// Create Interchain Accounts Stack
+	// SendPacket, since it is originating from the application to core IBC:
+	// icaAuthModuleKeeper.SendTx -> icaController.SendPacket -> fee.SendPacket -> channel.SendPacket
+	var icaControllerStack porttypes.IBCModule
+	// integration point for custom authentication modules
+	// see https://medium.com/the-interchain-foundation/ibc-go-v6-changes-to-interchain-accounts-and-how-it-impacts-your-chain-806c185300d7
+	var noAuthzModule porttypes.IBCModule
+	icaControllerStack = icacontroller.NewIBCMiddlewareWithAuth(noAuthzModule, app.ICAControllerKeeper)
+	// app.ICAAuthModule = icaControllerStack.(ibcmock.IBCModule)
+	icaControllerStack = icacontroller.NewIBCMiddlewareWithAuth(icaControllerStack, app.ICAControllerKeeper)
+	icaControllerStack = ibccallbacks.NewIBCMiddleware(icaControllerStack, app.IBCKeeper.ChannelKeeper, wasmStackIBCHandler, wasm.DefaultMaxIBCCallbackGas)
+	icaICS4Wrapper := icaControllerStack.(porttypes.ICS4Wrapper)
+	// Since the callbacks middleware itself is an ics4wrapper, it needs to be passed to the ica controller keeper
+	app.ICAControllerKeeper.WithICS4Wrapper(icaICS4Wrapper)
+
+	// RecvPacket, message that originates from core IBC and goes down to app, the flow is:
+	// channel.RecvPacket -> icaHost.OnRecvPacket
+	icaHostStack := icahost.NewIBCModule(app.ICAHostKeeper)
+
+	// Create Transfer Stack
+	var transferStack porttypes.IBCModule
+	transferStack = transfer.NewIBCModule(app.TransferKeeper)
+	transferStack = ibccallbacks.NewIBCMiddleware(transferStack, app.IBCKeeper.ChannelKeeper, wasmStackIBCHandler, wasm.DefaultMaxIBCCallbackGas)
+	transferStack = erc20.NewIBCMiddleware(app.Erc20Keeper, transferStack)
+	transferICS4Wrapper := transferStack.(porttypes.ICS4Wrapper)
+	// Since the callbacks middleware itself is an ics4wrapper, it needs to be passed to the ica controller keeper
+	app.TransferKeeper.WithICS4Wrapper(transferICS4Wrapper)
+
+	var transferStackV2 ibcapi.IBCModule
+	transferStackV2 = transferv2.NewIBCModule(app.TransferKeeper)
+	transferStackV2 = erc20v2.NewIBCMiddleware(transferStackV2, app.Erc20Keeper)
 
 	// Create static IBC router, add transfer route, then set and seal it
 	ibcRouter := porttypes.NewRouter().
-		AddRoute(ibctransfertypes.ModuleName, ibcStack).
-		AddRoute(wasmtypes.ModuleName, wasmStack).
-		AddRoute(icacontrollertypes.SubModuleName, icaControllerIBCModule).
-		AddRoute(icahosttypes.SubModuleName, icaHostIBCModule)
+		AddRoute(ibctransfertypes.ModuleName, transferStack).
+		AddRoute(wasmtypes.ModuleName, wasmStackIBCHandler).
+		AddRoute(icacontrollertypes.SubModuleName, icaControllerStack).
+		AddRoute(icahosttypes.SubModuleName, icaHostStack)
+
+	ibcRouterV2 := ibcapi.NewRouter()
+	ibcRouterV2.AddRoute(ibctransfertypes.ModuleName, transferStackV2)
 
 	// this line is used by starport scaffolding # ibc/app/module
 
 	app.IBCKeeper.SetRouter(ibcRouter)
+	app.IBCKeeper.SetRouterV2(ibcRouterV2)
 
-	app.ScopedIBCKeeper = scopedIBCKeeper
-	app.ScopedIBCTransferKeeper = scopedIBCTransferKeeper
-	app.ScopedICAHostKeeper = scopedICAHostKeeper
-	app.ScopedICAControllerKeeper = scopedICAControllerKeeper
-	app.Ics20WasmHooks.ContractKeeper = &app.WasmKeeper
+	clientKeeper := app.IBCKeeper.ClientKeeper
+	storeProvider := app.IBCKeeper.ClientKeeper.GetStoreProvider()
+	tmLightClientModule := ibctm.NewLightClientModule(app.appCodec, storeProvider)
+	clientKeeper.AddRoute(ibctm.ModuleName, &tmLightClientModule)
 
 	// NOTE: we are just adding the default Ethereum precompiles here.
 	// Additional precompiles could be added if desired.
@@ -353,8 +296,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		app.DistrKeeper,
 		app.BankKeeper,
 		app.Erc20Keeper,
-		app.AuthzKeeper,
-		app.TransferKeeper.Keeper,
+		app.TransferKeeper,
 		app.IBCKeeper.ChannelKeeper,
 		app.EVMKeeper,
 		*app.GovKeeper,
@@ -389,25 +331,21 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	// register IBC modules
 	if err := app.RegisterModules(
 		ibc.NewAppModule(app.IBCKeeper),
-		ibctransfer.NewAppModule(app.TransferKeeper),
-		ibcfee.NewAppModule(app.IBCFeeKeeper),
+		transfer.NewAppModule(app.TransferKeeper),
 		icamodule.NewAppModule(&app.ICAControllerKeeper, &app.ICAHostKeeper),
-		capability.NewAppModule(app.appCodec, *app.CapabilityKeeper, false),
-		gmpmodule.NewAppModule(app.appCodec, app.GmpKeeper),
-		ibctm.AppModule{},
+		ibctm.NewAppModule(tmLightClientModule),
 		solomachine.AppModule{},
-		ibchooks.NewAppModule(app.AccountKeeper),
 		// wasm module
 		wasm.NewAppModule(app.AppCodec(), &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper, app.MsgServiceRouter(), app.GetSubspace(wasmtypes.ModuleName)),
 		// evmOS modules
-		evm.NewAppModule(app.EVMKeeper, app.AccountKeeper, app.GetSubspace(evmtypes.ModuleName)),
-		feemarket.NewAppModule(app.FeeMarketKeeper, app.GetSubspace(feemarkettypes.ModuleName)),
-		erc20.NewAppModule(app.Erc20Keeper, app.AccountKeeper, app.GetSubspace(erc20types.ModuleName)),
+		evm.NewAppModule(app.EVMKeeper, app.AccountKeeper),
+		feemarket.NewAppModule(app.FeeMarketKeeper),
+		erc20.NewAppModule(app.Erc20Keeper, app.AccountKeeper),
 	); err != nil {
 		panic(err)
 	}
 
-	return wasmConfig
+	return nodeConfig
 }
 
 // Since the IBC and WASM modules don't support dependency injection, we need to
@@ -416,13 +354,10 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 func RegisterLegacyModules(registry cdctypes.InterfaceRegistry) map[string]appmodule.AppModule {
 	modules := map[string]appmodule.AppModule{
 		ibcexported.ModuleName:      ibc.AppModule{},
-		ibctransfertypes.ModuleName: ibctransfer.NewAppModuleBasic(),
-		ibcfeetypes.ModuleName:      ibcfee.AppModule{},
+		ibctransfertypes.ModuleName: transfer.AppModule{},
 		icatypes.ModuleName:         icamodule.AppModule{},
-		capabilitytypes.ModuleName:  capability.AppModule{},
 		ibctm.ModuleName:            ibctm.AppModule{},
 		solomachine.ModuleName:      solomachine.AppModule{},
-		gmptypes.ModuleName:         gmpmodule.AppModule{},
 		wasmtypes.ModuleName:        wasm.AppModule{},
 		evmtypes.ModuleName:         evm.AppModule{},
 		feemarkettypes.ModuleName:   feemarket.AppModule{},

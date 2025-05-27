@@ -50,14 +50,20 @@ message Task {
 
 // TaskResult is the result of the execution of a Task.
 // It is submitted by validators as vote extensions.
-// Only one TaskResult per Task is allowed to be submitted, subsequent
-// attempts to submit a TaskResult will be rejected.
+// Only one TaskResult per Task is allowed to be submitted, subsequent attempts
+// to submit a TaskResult will be rejected.
 message TaskResult {
   // ID of the Task this result is for.
   uint64 id = 1;
   // Output of the Task.
   // The actual format is determined by the plugin being used.
+  // If error is set, output will be empty.
   bytes output = 2;
+  // Error reason if the Task could not be completed, in a human readable
+  // format.
+  // If error is set, the Task is considered failed and the output will be
+  // empty.
+  string error = 4;
   reserved 3;
 }
 

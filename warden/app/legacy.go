@@ -20,18 +20,19 @@ import (
 	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
 
 	// NOTE: override ICS20 keeper to support IBC transfers of ERC20 tokens
-
 	"github.com/cosmos/evm/x/ibc/transfer"
 	transferkeeper "github.com/cosmos/evm/x/ibc/transfer/keeper"
 	transferv2 "github.com/cosmos/evm/x/ibc/transfer/v2"
 	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
 	evmtypes "github.com/cosmos/evm/x/vm/types"
 	ibccallbacks "github.com/cosmos/ibc-go/v10/modules/apps/callbacks"
+	ibctransfer "github.com/cosmos/ibc-go/v10/modules/apps/transfer"
 	ibctransfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
 	ibc "github.com/cosmos/ibc-go/v10/modules/core"
 	ibcclienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
 	ibcconnectiontypes "github.com/cosmos/ibc-go/v10/modules/core/03-connection/types"
 	porttypes "github.com/cosmos/ibc-go/v10/modules/core/05-port/types"
+	ibcapi "github.com/cosmos/ibc-go/v10/modules/core/api"
 	ibcexported "github.com/cosmos/ibc-go/v10/modules/core/exported"
 	ibckeeper "github.com/cosmos/ibc-go/v10/modules/core/keeper"
 	ibctm "github.com/cosmos/ibc-go/v10/modules/light-clients/07-tendermint"
@@ -59,7 +60,6 @@ import (
 	icahostkeeper "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/host/keeper"
 	icahosttypes "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/host/types"
 	icatypes "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/types"
-	ibcapi "github.com/cosmos/ibc-go/v10/modules/core/api"
 	solomachine "github.com/cosmos/ibc-go/v10/modules/light-clients/06-solomachine"
 
 	// NOTE: override ICS20 keeper to support IBC transfers of ERC20 tokens
@@ -121,23 +121,6 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	govRouter := govv1beta1.NewRouter()
 	govRouter.AddRoute(govtypes.RouterKey, govv1beta1.ProposalHandler)
 
-	// Create Transfer Keepers
-	ibcTransferKeeper := transferkeeper.NewKeeper(
-		app.appCodec,
-		runtime.NewKVStoreService(app.GetKey(ibctransfertypes.StoreKey)),
-		app.GetSubspace(ibctransfertypes.ModuleName),
-		app.IBCKeeper.ChannelKeeper,
-		app.IBCKeeper.ChannelKeeper,
-		app.MsgServiceRouter(),
-		app.AccountKeeper,
-		app.BankKeeper,
-		nil,
-		authAddr,
-	)
-
-	// Create IBC transfer keeper
-	app.TransferKeeper = ibcTransferKeeper
-
 	// Create interchain account keepers
 	app.ICAHostKeeper = icahostkeeper.NewKeeper(
 		app.appCodec,
@@ -162,7 +145,55 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	)
 	app.GovKeeper.SetLegacyRouter(govRouter)
 
-	// wasm keepers
+	// Cosmos EVM keepers
+	app.FeeMarketKeeper = feemarketkeeper.NewKeeper(
+		app.appCodec,
+		authtypes.NewModuleAddress(govtypes.ModuleName),
+		app.GetKey(feemarkettypes.StoreKey),
+		app.GetTransientKey(feemarkettypes.TransientKey),
+	)
+
+	tracer := cast.ToString(appOpts.Get(srvflags.EVMTracer))
+
+	app.EVMKeeper = evmkeeper.NewKeeper(
+		app.appCodec,
+		app.GetKey(evmtypes.StoreKey),
+		app.GetTransientKey(evmtypes.TransientKey),
+		authtypes.NewModuleAddress(govtypes.ModuleName),
+		app.AccountKeeper,
+		app.BankKeeper,
+		app.StakingKeeper,
+		app.FeeMarketKeeper,
+		&app.Erc20Keeper,
+		tracer,
+	)
+
+	app.Erc20Keeper = erc20keeper.NewKeeper(
+		app.GetKey(erc20types.StoreKey),
+		app.AppCodec(),
+		authtypes.NewModuleAddress(govtypes.ModuleName),
+		app.AccountKeeper,
+		app.BankKeeper,
+		app.EVMKeeper,
+		app.StakingKeeper,
+		&app.TransferKeeper,
+	)
+
+	// instantiate IBC transfer keeper AFTER the ERC-20 keeper to use it in the instantiation
+	app.TransferKeeper = transferkeeper.NewKeeper(
+		app.appCodec,
+		runtime.NewKVStoreService(app.GetKey(ibctransfertypes.StoreKey)),
+		app.GetSubspace(ibctransfertypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		app.IBCKeeper.ChannelKeeper,
+		app.MsgServiceRouter(),
+		app.AccountKeeper,
+		app.BankKeeper,
+		app.Erc20Keeper,
+		authAddr,
+	)
+
+	// WASM keepers
 
 	app.ParamsKeeper.Subspace(wasmtypes.ModuleName)
 
@@ -199,39 +230,6 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	)
 
 	app.ContractKeeper = wasmkeeper.NewDefaultPermissionKeeper(&app.WasmKeeper)
-	// evmOS keepers
-	app.FeeMarketKeeper = feemarketkeeper.NewKeeper(
-		app.appCodec,
-		authtypes.NewModuleAddress(govtypes.ModuleName),
-		app.GetKey(feemarkettypes.StoreKey),
-		app.GetTransientKey(feemarkettypes.TransientKey),
-	)
-
-	tracer := cast.ToString(appOpts.Get(srvflags.EVMTracer))
-
-	app.EVMKeeper = evmkeeper.NewKeeper(
-		app.appCodec,
-		app.GetKey(evmtypes.StoreKey),
-		app.GetTransientKey(evmtypes.TransientKey),
-		authtypes.NewModuleAddress(govtypes.ModuleName),
-		app.AccountKeeper,
-		app.BankKeeper,
-		app.StakingKeeper,
-		app.FeeMarketKeeper,
-		&app.Erc20Keeper,
-		tracer,
-	)
-
-	app.Erc20Keeper = erc20keeper.NewKeeper(
-		app.GetKey(erc20types.StoreKey),
-		app.AppCodec(),
-		authtypes.NewModuleAddress(govtypes.ModuleName),
-		app.AccountKeeper,
-		app.BankKeeper,
-		app.EVMKeeper,
-		app.StakingKeeper,
-		&app.TransferKeeper,
-	)
 
 	// Create fee enabled wasm ibc Stack
 	wasmStackIBCHandler := wasm.NewIBCHandler(app.WasmKeeper, app.IBCKeeper.ChannelKeeper, app.IBCKeeper.ChannelKeeper)
@@ -258,8 +256,8 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	// Create Transfer Stack
 	var transferStack porttypes.IBCModule
 	transferStack = transfer.NewIBCModule(app.TransferKeeper)
+	// transferStack = erc20.NewIBCMiddleware(app.Erc20Keeper, transferStack)
 	transferStack = ibccallbacks.NewIBCMiddleware(transferStack, app.IBCKeeper.ChannelKeeper, wasmStackIBCHandler, wasm.DefaultMaxIBCCallbackGas)
-	transferStack = erc20.NewIBCMiddleware(app.Erc20Keeper, transferStack)
 	transferICS4Wrapper := transferStack.(porttypes.ICS4Wrapper)
 	// Since the callbacks middleware itself is an ics4wrapper, it needs to be passed to the ica controller keeper
 	app.TransferKeeper.WithICS4Wrapper(transferICS4Wrapper)
@@ -330,11 +328,11 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 
 	// register IBC modules
 	if err := app.RegisterModules(
+		solomachine.AppModule{},
 		ibc.NewAppModule(app.IBCKeeper),
-		transfer.NewAppModule(app.TransferKeeper),
 		icamodule.NewAppModule(&app.ICAControllerKeeper, &app.ICAHostKeeper),
 		ibctm.NewAppModule(tmLightClientModule),
-		solomachine.AppModule{},
+		transfer.NewAppModule(app.TransferKeeper),
 		// wasm module
 		wasm.NewAppModule(app.AppCodec(), &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper, app.MsgServiceRouter(), app.GetSubspace(wasmtypes.ModuleName)),
 		// evmOS modules
@@ -353,14 +351,16 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 // This needs to be removed after IBC supports App Wiring.
 func RegisterLegacyModules(registry cdctypes.InterfaceRegistry) map[string]appmodule.AppModule {
 	modules := map[string]appmodule.AppModule{
-		ibcexported.ModuleName:      ibc.AppModule{},
-		ibctransfertypes.ModuleName: transfer.AppModule{},
-		icatypes.ModuleName:         icamodule.AppModule{},
-		ibctm.ModuleName:            ibctm.AppModule{},
-		solomachine.ModuleName:      solomachine.AppModule{},
-		wasmtypes.ModuleName:        wasm.AppModule{},
-		evmtypes.ModuleName:         evm.AppModule{},
-		feemarkettypes.ModuleName:   feemarket.AppModule{},
+		ibcexported.ModuleName: ibc.AppModule{},
+		ibctransfertypes.ModuleName: transfer.AppModule{
+			AppModule: &ibctransfer.AppModule{},
+		},
+		icatypes.ModuleName:       icamodule.AppModule{},
+		ibctm.ModuleName:          ibctm.AppModule{},
+		solomachine.ModuleName:    solomachine.AppModule{},
+		wasmtypes.ModuleName:      wasm.AppModule{},
+		evmtypes.ModuleName:       evm.AppModule{},
+		feemarkettypes.ModuleName: feemarket.AppModule{},
 	}
 
 	for _, module := range modules {

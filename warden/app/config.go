@@ -27,9 +27,10 @@ var sealed = false
 // chain id
 var ChainsCoinInfo = map[string]evmtypes.EvmCoinInfo{
 	ChainID: {
-		Denom:        BaseDenom,
-		DisplayDenom: DisplayDenom,
-		Decimals:     evmtypes.EighteenDecimals,
+		Denom:         BaseDenom,
+		ExtendedDenom: BaseDenom,
+		DisplayDenom:  DisplayDenom,
+		Decimals:      evmtypes.EighteenDecimals,
 	},
 }
 
@@ -61,6 +62,7 @@ func EVMAppOptions(chainID string) error {
 	ethCfg := evmtypes.DefaultChainConfig(chainID)
 
 	err := evmtypes.NewEVMConfigurator().
+		WithExtendedEips(cosmosEVMActivators).
 		WithChainConfig(ethCfg).
 		// NOTE: we're using the 18 decimals
 		WithEVMCoinInfo(coinInfo).

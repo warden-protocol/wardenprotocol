@@ -4,5 +4,4 @@ sidebar_position: 6
 
 # Use AI agents
 
-## Overview
-
+**Agent Hub**, **AI Agents**: coming soon.

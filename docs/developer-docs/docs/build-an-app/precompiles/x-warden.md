@@ -19,7 +19,7 @@ In this article, you'll find a full list of available methods, allowing you to q
 To learn how to use this precompile, refer to [Interact with `x/warden`](/category/interact-with-xwarden).
 
 :::note Code
-You can find the `x/warden` precomile code on GitHub: [`IWarden.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol)
+You can find the `x/warden` precompile code on GitHub: [`IWarden.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol)
 :::
 
 ## Precompile address

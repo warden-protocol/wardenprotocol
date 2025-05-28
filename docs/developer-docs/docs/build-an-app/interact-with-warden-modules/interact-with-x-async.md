@@ -56,8 +56,8 @@ function tasks(TypesPageRequest calldata pagination, address creator) external v
 contract AsyncExample {
     IAsync constant ASYNC = IAsync(0x0000000000000000000000000000000000000903);
     
-    function queryTasks(uint64 limit, address creator) external view returns (TasksResponse memory) {
-        TypesPageRequest memory pagination = TypesPageRequest({
+    function queryTasks(uint64 limit, address creator) external view returns (IAsync.TasksResponse memory) {
+        IAsync.TypesPageRequest memory pagination = TypesPageRequest({
             key: new bytes(0),
             offset: 0,
             limit: limit,
@@ -87,8 +87,8 @@ function pendingTasks(TypesPageRequest calldata pagination) external view return
 contract AsyncExample {
     IAsync constant ASYNC = IAsync(0x0000000000000000000000000000000000000903);
     
-    function queryPendingTasks(uint64 limit) external view returns (PendingTasksResponse memory) {
-        TypesPageRequest memory pagination = TypesPageRequest({
+    function queryPendingTasks(uint64 limit) external view returns (IAsync.PendingTasksResponse memory) {
+        IAsync.TypesPageRequest memory pagination = TypesPageRequest({
             key: new bytes(0),
             offset: 0,
             limit: limit,
@@ -117,7 +117,7 @@ function taskById(uint64 taskId) external view returns (TaskByIdResponse memory 
 contract AsyncExample {
     IAsync constant ASYNC = IAsync(0x0000000000000000000000000000000000000903);
     
-    function queryTaskById(uint64 taskId) external view returns (TaskByIdResponse memory) {
+    function queryTaskById(uint64 taskId) external view returns (IAsync.TaskByIdResponse memory) {
         return ASYNC.taskById(taskId);
     }
 }
@@ -139,8 +139,8 @@ function plugins(TypesPageRequest calldata pagination) external view returns (Pl
 contract AsyncExample {
     IAsync constant ASYNC = IAsync(0x0000000000000000000000000000000000000903);
     
-    function queryPlugins(uint64 limit) external view returns (PluginsResponse memory) {
-        TypesPageRequest memory pagination = TypesPageRequest({
+    function queryPlugins(uint64 limit) external view returns (IAsync.PluginsResponse memory) {
+        IAsync.TypesPageRequest memory pagination = IAsync.TypesPageRequest({
             key: new bytes(0),
             offset: 0,
             limit: limit,

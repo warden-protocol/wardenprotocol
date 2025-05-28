@@ -56,6 +56,7 @@ struct TaskVote {
 struct TaskResult { 
     uint64 id;
     bytes output;
+    string error_reason;
 }
 
 struct TaskResponse {

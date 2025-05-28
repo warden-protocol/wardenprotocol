@@ -468,6 +468,11 @@
                       "internalType": "bytes",
                       "name": "output",
                       "type": "bytes"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "error_reason",
+                      "type": "string"
                     }
                   ],
                   "internalType": "struct TaskResult",
@@ -662,6 +667,11 @@
                       "internalType": "bytes",
                       "name": "output",
                       "type": "bytes"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "error_reason",
+                      "type": "string"
                     }
                   ],
                   "internalType": "struct TaskResult",

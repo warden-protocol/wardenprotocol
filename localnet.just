@@ -37,22 +37,14 @@ start bin="wardend" install="true":
     {{bin}} genesis add-genesis-account shulgin 10000000000000000000000000award
     {{bin}} genesis add-genesis-space {{shulgin}}
     {{bin}} genesis add-genesis-keychain {{shulgin}} "WardenKMS" "{\"key_req\":[],\"sig_req\":[]}"
-    replace 's/aevmos/award/' ~/.warden/config/genesis.json
-    replace 's/aevmos/award/' ~/.warden/config/app.toml
-      
-    # Change parameter token denominations to desired value
-    jq '.app_state["staking"]["params"]["bond_denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
-    jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
-    jq '.app_state["gov"]["params"]["min_deposit"][0]["denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
-    jq '.app_state["evm"]["params"]["evm_denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
-    jq '.app_state["mint"]["params"]["mint_denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
 
-    jq '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}' ~/.warden/config/genesis.json > temp.json && mv temp.json ~/.warden/config/genesis.json
     {{bin}} genesis gentx val 1000000000000000000000award
     {{bin}} genesis collect-gentxs
     {{bin}} genesis add-genesis-slinky-markets
     GENESIS="$HOME/.warden/config/genesis.json"
+    jq '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}' "$GENESIS" > "$GENESIS".tmp && mv "$GENESIS".tmp "$GENESIS"
     jq '.consensus["params"]["abci"]["vote_extensions_enable_height"] = "2"' "$GENESIS" > "$GENESIS".tmp && mv "$GENESIS".tmp "$GENESIS"
+    jq '.app_state["evm"]["params"]["evm_denom"]="award"' "$GENESIS" > $GENESIS.tmp && mv "$GENESIS".tmp "$GENESIS"
 
     post_start () {
       sleep 3

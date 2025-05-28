@@ -5,21 +5,15 @@ go 1.24
 replace (
 	// evmos integration - need this replace when importing cosmos/rosetta pkg
 	cosmossdk.io/core => cosmossdk.io/core v0.11.0
-	// need this replace to pick up the store changes (Copy func) in our cosmos-sdk fork
-	// cosmossdk.io/store => github.com/evmos/cosmos-sdk/store v0.0.0-20240718141609-414cbd051fbe
-	cosmossdk.io/store => github.com/cosmos/cosmos-sdk/store v1.1.2-0.20250319183239-53dea340efc7
 
 	// use cosmos fork of keyring
 	github.com/99designs/keyring => github.com/cosmos/keyring v1.2.0
 
-	github.com/CosmWasm/wasmd => github.com/warden-protocol/wasmd v0.55.1-0.20250526101710-349ae1674482
 	// evmos integration
-	// github.com/cosmos/cosmos-sdk => github.com/warden-protocol/cosmos-sdk v0.50.9-evmos-warden
-	github.com/cosmos/cosmos-sdk => github.com/backsapc/cosmos-sdk v0.50.13-evmos-warden
+	github.com/cosmos/cosmos-sdk => github.com/warden-protocol/cosmos-sdk v0.50.13-warden-evm
 	github.com/dgrijalva/jwt-go => github.com/dgrijalva/jwt-go/v4 v4.0.0-preview1
 	// evmos + types for slinky
-	// github.com/ethereum/go-ethereum => github.com/warden-protocol/go-ethereum v1.10.26-warden-evmos-rc2
-	github.com/ethereum/go-ethereum => github.com/backsapc/go-ethereum v1.10.26-evmos-rc4-patched-warden
+	github.com/ethereum/go-ethereum => github.com/warden-protocol/go-ethereum v1.10.26-evmos-rc4-patched-warden
 
 	// fix upstream GHSA-h395-qcrw-5vmq vulnerability.
 	github.com/gin-gonic/gin => github.com/gin-gonic/gin v1.7.0
@@ -47,7 +41,7 @@ require (
 	cosmossdk.io/x/feegrant v0.1.1
 	cosmossdk.io/x/tx v0.13.7
 	cosmossdk.io/x/upgrade v0.1.4
-	github.com/CosmWasm/wasmd v1.0.0
+	github.com/CosmWasm/wasmd v0.55.0
 	github.com/Jeffail/gabs/v2 v2.7.0
 	github.com/btcsuite/btcd/btcec/v2 v2.3.4
 	github.com/bufbuild/buf v1.53.0

@@ -32,7 +32,7 @@ Chiado is prepared for real-world asset integration. As we transition to mainnet
 
 ## Key changes
 
-When migrating ot Chiado, please keep in mind the following key changes:
+When migrating to Chiado, please keep in mind the following key changes:
 
 ### New denomination
 

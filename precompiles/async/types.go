@@ -214,8 +214,9 @@ func mapTaskResult(value *types.TaskResult) (TaskResult, error) {
 	}
 
 	return TaskResult{
-		Id:     value.Id,
-		Output: value.Output,
+		Id:          value.Id,
+		Output:      value.Output,
+		ErrorReason: value.Error,
 	}, nil
 }
 

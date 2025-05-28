@@ -301,4 +301,6 @@ contract AsyncExample {
 ```
 ## Next steps
 
-Learn how to use different AVR Plugins: [Run offchain computations with x/async AVR Plugins](../run-offchain-computations/introduction).
+Now you can learn how to use different AVR Plugins: [Run offchain computations with x/async AVR Plugins](../run-offchain-computations/introduction).
+
+After you feel confident with `x/async` and other precompiles, you can [build an AI Agent](/build-an-agent/introduction).

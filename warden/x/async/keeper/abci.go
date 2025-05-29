@@ -19,6 +19,7 @@ import (
 	"errors"
 	"fmt"
 	"slices"
+	"time"
 
 	"cosmossdk.io/collections"
 	cometabci "github.com/cometbft/cometbft/abci/types"
@@ -31,6 +32,35 @@ import (
 )
 
 func (k Keeper) BeginBlocker(ctx context.Context) error {
+	// prune old completed tasks
+	timeout := 24 * time.Hour
+
+	iterator, err := k.tasks.results.Iterate(ctx, nil)
+	if err != nil {
+		return err
+	}
+	defer iterator.Close()
+
+	now := sdk.UnwrapSDKContext(ctx).BlockTime()
+
+	var oldTaskIDs []uint64
+	for ; iterator.Valid(); iterator.Next() {
+		v, err := iterator.Value()
+		if err != nil {
+			return err
+		}
+
+		if v.CreatedAt.After(now.Add(timeout)) {
+			oldTaskIDs = append(oldTaskIDs, v.Id)
+		}
+	}
+
+	for _, id := range oldTaskIDs {
+		if err := k.tasks.pruneTask(ctx, id); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 

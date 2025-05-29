@@ -18,6 +18,8 @@
     ],
     "warden_chain": {
         "name": "warden",
-        "rpc_url": "http://localhost:26657"
+        "rpc_url": "http://localhost:26657",
+        "ism_address": "0x1234567890123456789012345678901234567890",
+        "private_key": "your-private-key-here"
     }
 } 

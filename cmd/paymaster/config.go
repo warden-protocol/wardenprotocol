@@ -30,8 +30,10 @@ type SourceChainConfig struct {
 
 // WardenChainConfig represents configuration for the Warden chain
 type WardenChainConfig struct {
-	Name   string `json:"name" env:"WARDEN_NAME"`
-	RPCURL string `json:"rpc_url" env:"WARDEN_RPC_URL"`
+	Name       string `json:"name" env:"WARDEN_NAME"`
+	RPCURL     string `json:"rpc_url" env:"WARDEN_RPC_URL"`
+	IsmAddress string `json:"ism_address" env:"WARDEN_ISM_ADDRESS"`
+	PrivateKey string `json:"private_key" env:"WARDEN_PRIVATE_KEY"`
 }
 
 // normalizeChainName converts chain name to a format suitable for env vars
@@ -150,6 +152,12 @@ func overrideFromEnv(config *Config) {
 	if rpc := os.Getenv("WARDEN_RPC_URL"); rpc != "" {
 		config.WardenChain.RPCURL = rpc
 	}
+	if ism := os.Getenv("WARDEN_ISM_ADDRESS"); ism != "" {
+		config.WardenChain.IsmAddress = ism
+	}
+	if pk := os.Getenv("WARDEN_PRIVATE_KEY"); pk != "" {
+		config.WardenChain.PrivateKey = pk
+	}
 }
 
 func setDefaults(config *Config) {
@@ -184,6 +192,10 @@ func validateConfig(config *Config) error {
 
 	if config.WardenChain.RPCURL == "" {
 		return fmt.Errorf("warden chain RPC URL is required")
+	}
+
+	if config.WardenChain.PrivateKey == "" {
+		return fmt.Errorf("warden chain private key is required")
 	}
 
 	return nil

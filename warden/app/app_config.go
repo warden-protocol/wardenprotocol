@@ -5,6 +5,7 @@ import (
 
 	erc20types "github.com/cosmos/evm/x/erc20/types"
 	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
+	precisebanktypes "github.com/cosmos/evm/x/precisebank/types"
 
 	// NOTE: override ICS20 keeper to support IBC transfers of ERC20 tokens
 	evmtypes "github.com/cosmos/evm/x/vm/types"
@@ -144,6 +145,7 @@ var (
 		// gentx transactions use MinGasPriceDecorator.AnteHandle
 		feemarkettypes.ModuleName,
 		erc20types.ModuleName,
+		precisebanktypes.ModuleName,
 
 		genutiltypes.ModuleName,
 		evidencetypes.ModuleName,
@@ -204,7 +206,8 @@ var (
 		// slinky modules
 		oracletypes.ModuleName,
 		marketmaptypes.ModuleName,
-
+		precisebanktypes.ModuleName,
+		vestingtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
 
@@ -234,6 +237,9 @@ var (
 		evmtypes.ModuleName,
 		feemarkettypes.ModuleName,
 		erc20types.ModuleName,
+
+		precisebanktypes.ModuleName,
+		vestingtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	}
 
@@ -257,9 +263,10 @@ var (
 		{Account: schedmoduletypes.ModuleName},
 		{Account: oracletypes.ModuleName, Permissions: []string{}},
 		{Account: wardenmoduletypes.ModuleName, Permissions: []string{}},
-		{Account: evmtypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}},   // Allows EVM module to mint/burn
-		{Account: feemarkettypes.ModuleName, Permissions: nil},                                      // Fee market doesn't need permissions
-		{Account: erc20types.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}}, // Allows erc20 module to mint/burn for token pairs
+		{Account: evmtypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}},         // Allows EVM module to mint/burn
+		{Account: feemarkettypes.ModuleName, Permissions: nil},                                            // Fee market doesn't need permissions
+		{Account: erc20types.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}},       // Allows erc20 module to mint/burn for token pairs
+		{Account: precisebanktypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}}, // Allows precise bank module to mint/burn for token pairs
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 

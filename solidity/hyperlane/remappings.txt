@@ -1,4 +1,5 @@
 @hyperlane-xyz/contracts/=node_modules/@hyperlane-xyz/core/contracts/
+@openzeppelin=node_modules/@openzeppelin
 forge-std/=node_modules/forge-std/
 precompile-common/=../../precompiles/common/
 precompile-warden/=../../precompiles/warden/

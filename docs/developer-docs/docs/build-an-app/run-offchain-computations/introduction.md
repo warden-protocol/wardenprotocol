@@ -22,7 +22,7 @@ The `x/async` module implements such concepts as [Tasks](/learn/warden-protocol-
 - A **Task** is an offchain user-defined unit of computation that is executed asynchronously. The result is stored onchain. A user can request a Task, specifying an input and an AVR Plugin.
 - An **AVR Plugin**, or **Asynchronous Verifiable Resource**, determines what format of input to accept and how to handle it.
 
-In other words, the type of the computation you're going to execute depends on the AVR Plugin you reference in a Task.
+In other words, the type of the computation you're going to execute depends on the AVR Plugin type you reference in a Task.
 
 You can learn how to use the available Plugins by following our tutorials:
 

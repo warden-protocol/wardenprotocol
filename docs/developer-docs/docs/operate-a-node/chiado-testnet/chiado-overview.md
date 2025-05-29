@@ -17,10 +17,11 @@ Chiado is our new and improved testnet. Please make sure to transition all your 
 | ------------------------------------------------------------------------------- | -------------------- | ------------- | ------------------------------------ |
 | [v0.5.4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.4) | genesis              |               |                                      |
 | [v0.6.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.2) | 2041100              | March 5, 2025 | [Upgrade to v0.6.2](upgrade/v0.6.2)  |
+| [v0.6.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.3) | 3111000              | May 20, 2025  | [Upgrade to v0.6.3](upgrade/v0.6.3)  |
 
 ## Binary
 
-The latest binary version compatible with Chiado is [wardend v.0.6.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.2).
+The latest binary version compatible with Chiado is [wardend v.0.6.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.3).
 
 
 ## Endpoints
@@ -62,6 +63,6 @@ Chiado's denomination is `award` / 0.000000000000000001 [WARD](/tokens/ward-toke
 
 ## Faucet
 
-Here is the faucet for getting [WARD](https://docs.wardenprotocol.org/tokens/ward-token/ward) on Chiado:
+Here is the faucet for getting [WARD](https://docs.wardenprotocol.org/tokens/ward) on Chiado:
 
 - [Chiado faucet](https://faucet.chiado.wardenprotocol.org/)

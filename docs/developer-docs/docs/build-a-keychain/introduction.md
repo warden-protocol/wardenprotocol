@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Keychains
 
-Every [Omnichain Application](/learn/glossary#omnichain-application) has at least one **Keychain**—a custodian that generates and stores [keys](/learn/glossary#key) and signs transactions.
+Every [Intelligent Application](/learn/glossary#intelligent-application) has at least one **Keychain**—a custodian that generates and stores [keys](/learn/glossary#key) and signs transactions.
 
 Warden Protocol allows users or external organizations to become **Keychain operators**. They can onboard their own Keychains and charge fees for [key requests](/learn/glossary#key-request) and [signature requests](/learn/glossary#signature-request). Note that Keychain operators typically use MPC networks to generate keys and signatures.
 

@@ -40,14 +40,17 @@ type (
 		authority          string
 		asyncModuleAddress sdk.AccAddress
 
+		accountKeeper types.AccountKeeper
+		bankKeeper    types.BankKeeper
 		stakingKeeper *stakingkeeper.Keeper
 
-		tasks              *TaskKeeper
 		plugins            collections.Map[string, types.Plugin]
 		pluginsByValidator collections.KeySet[collections.Pair[sdk.ConsAddress, string]]
-		accountKeeper      types.AccountKeeper
-		bankKeeper         types.BankKeeper
-		votes              collections.Map[collections.Pair[uint64, []byte], int32]
+		queuePriorities    QueuePriorityCollection
+		queueTotalWeights  QueueTotalWeightCollection
+		queueWeights       QueueWeightCollection
+		tasks              *TaskKeeper
+		votes              collections.Map[collections.Pair[uint64, sdk.ConsAddress], int32]
 
 		p *prophet.P
 
@@ -56,14 +59,17 @@ type (
 )
 
 var (
-	TaskSeqPrefix       = collections.NewPrefix(0)
-	TasksPrefix         = collections.NewPrefix(1)
-	TaskByAddressPrefix = collections.NewPrefix(2)
-	ResultsPrefix       = collections.NewPrefix(3)
-	VotesPrefix         = collections.NewPrefix(4)
-	PendingTasksPrefix  = collections.NewPrefix(5)
-	PluginsByValidator  = collections.NewPrefix(6)
-	PluginsPrefix       = collections.NewPrefix(7)
+	TaskSeqPrefix          = collections.NewPrefix(0)
+	TasksPrefix            = collections.NewPrefix(1)
+	TaskByAddressPrefix    = collections.NewPrefix(2)
+	ResultsPrefix          = collections.NewPrefix(3)
+	VotesPrefix            = collections.NewPrefix(4)
+	PendingTasksPrefix     = collections.NewPrefix(5)
+	PluginsByValidator     = collections.NewPrefix(6)
+	PluginsPrefix          = collections.NewPrefix(7)
+	QueueWeightPrefix      = collections.NewPrefix(8)
+	QueueTotalWeightPrefix = collections.NewPrefix(9)
+	QueuePriorityPrefix    = collections.NewPrefix(10)
 )
 
 func NewKeeper(
@@ -90,12 +96,15 @@ func NewKeeper(
 		sb,
 		VotesPrefix,
 		"votes",
-		collections.PairKeyCodec(collections.Uint64Key, collections.BytesKey),
+		collections.PairKeyCodec(collections.Uint64Key, sdk.ConsAddressKey),
 		collections.Int32Value,
 	)
 
 	plugins := collections.NewMap(sb, PluginsPrefix, "plugins", collections.StringKey, codec.CollValue[types.Plugin](cdc))
 	pluginsByValidator := collections.NewKeySet(sb, PluginsByValidator, "handlers_by_validator", collections.PairKeyCodec(sdk.ConsAddressKey, collections.StringKey))
+	queueWeights := collections.NewMap(sb, QueueWeightPrefix, "queue_weights", collections.PairKeyCodec(QueueIDKey, sdk.ConsAddressKey), WeightValue)
+	queueTotalWeights := collections.NewMap(sb, QueueTotalWeightPrefix, "queue_total_weight", QueueIDKey, WeightValue)
+	queuePriorities := collections.NewMap(sb, QueuePriorityPrefix, "queue_priorities", collections.PairKeyCodec(QueueIDKey, sdk.ConsAddressKey), PriorityValue)
 
 	_, err := sb.Build()
 	if err != nil {
@@ -103,18 +112,23 @@ func NewKeeper(
 	}
 
 	return Keeper{
-		cdc:                cdc,
-		storeService:       storeService,
+		cdc:          cdc,
+		storeService: storeService,
+		logger:       logger,
+
 		authority:          authority,
 		asyncModuleAddress: asyncModuleAddress,
-		logger:             logger,
 
-		tasks:              tasks,
+		accountKeeper: accountKeeper,
+		bankKeeper:    bankKeeper,
+		stakingKeeper: stakingKeeper,
+
 		plugins:            plugins,
 		pluginsByValidator: pluginsByValidator,
-		accountKeeper:      accountKeeper,
-		bankKeeper:         bankKeeper,
-		stakingKeeper:      stakingKeeper,
+		queuePriorities:    queuePriorities,
+		queueTotalWeights:  queueTotalWeights,
+		queueWeights:       queueWeights,
+		tasks:              tasks,
 		votes:              votes,
 
 		p: p,
@@ -133,21 +147,24 @@ func (k Keeper) Logger() log.Logger {
 	return k.logger.With("module", "x/"+types.ModuleName)
 }
 
-func (k Keeper) AddTaskResult(ctx context.Context, id uint64, submitter, output []byte) error {
-	if err := k.tasks.SetResult(ctx, types.TaskResult{
-		Id:        id,
-		Output:    output,
-		Submitter: submitter,
+func (k Keeper) AddTaskResult(ctx context.Context, id uint64, submitter sdk.ConsAddress, output []byte) error {
+	task, err := k.tasks.Get(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	if !task.Solver.Equals(submitter) {
+		return fmt.Errorf("task %d expected result from %s, got one from %s", id, task.Solver, submitter)
+	}
+
+	if err := k.tasks.SetResult(ctx, task, types.TaskResult{
+		Id:     id,
+		Output: output,
 	}); err != nil {
 		return err
 	}
 
 	if err := k.SetTaskVote(ctx, id, submitter, types.TaskVoteType_VOTE_TYPE_VERIFIED); err != nil {
-		return err
-	}
-
-	task, err := k.tasks.Get(ctx, id)
-	if err != nil {
 		return err
 	}
 
@@ -162,7 +179,7 @@ func (k Keeper) AddTaskResult(ctx context.Context, id uint64, submitter, output 
 	return nil
 }
 
-func (k Keeper) SetTaskVote(ctx context.Context, id uint64, voter []byte, vote types.TaskVoteType) error {
+func (k Keeper) SetTaskVote(ctx context.Context, id uint64, voter sdk.ConsAddress, vote types.TaskVoteType) error {
 	if !vote.IsValid() {
 		return fmt.Errorf("invalid vote type: %v", vote)
 	}
@@ -171,7 +188,7 @@ func (k Keeper) SetTaskVote(ctx context.Context, id uint64, voter []byte, vote t
 }
 
 func (k Keeper) GetTaskVotes(ctx context.Context, taskId uint64) ([]types.TaskVote, error) {
-	it, err := k.votes.Iterate(ctx, collections.NewPrefixedPairRange[uint64, []byte](taskId))
+	it, err := k.votes.Iterate(ctx, collections.NewPrefixedPairRange[uint64, sdk.ConsAddress](taskId))
 	if err != nil {
 		return nil, err
 	}
@@ -226,28 +243,10 @@ func (k *Keeper) GetPlugin(ctx context.Context, id string) (types.Plugin, error)
 	return k.plugins.Get(ctx, id)
 }
 
-// RegisterPluginValidator registers a validator as a plugin provider.
-func (k *Keeper) RegisterPluginValidator(ctx context.Context, validator sdk.ConsAddress, id string) error {
-	found, err := k.plugins.Has(ctx, id)
-	if err != nil {
-		return err
-	}
-	if !found {
-		return fmt.Errorf("plugin doesn't exist: %s", id)
-	}
-	return k.pluginsByValidator.Set(ctx, collections.Join(validator, id))
-}
-
 // HasPluginValidators returns whether there are some validators registered to the request plugin.
 func (k *Keeper) HasPluginValidators(ctx context.Context, id string) bool {
-	// TODO: will be implemented when we'll keep track of validators priorities.
-	return true
-}
-
-// ClearPlugins removes all handlers registered for a validator.
-func (k *Keeper) ClearPlugins(ctx context.Context, validator sdk.ConsAddress) error {
-	r := collections.NewPrefixedPairRange[sdk.ConsAddress, string](validator)
-	return k.pluginsByValidator.Clear(ctx, r)
+	v, _ := k.queueTotalWeights.Get(ctx, QueueID(id))
+	return v > 0
 }
 
 func (k Keeper) taskReadyCallback(
@@ -262,7 +261,7 @@ func (k Keeper) taskReadyCallback(
 	return k.schedKeeper.ExecuteCallback(ctx, task.CallbackId, output)
 }
 
-func (k Keeper) getCompletedTasksWithoutValidatorVote(ctx context.Context, valAddress []byte, limit int) ([]prophet.TaskResult, error) {
+func (k Keeper) getCompletedTasksWithoutValidatorVote(ctx context.Context, valAddress sdk.ConsAddress, limit int) ([]prophet.TaskResult, error) {
 	it, err := k.tasks.results.IterateRaw(ctx, nil, nil, collections.OrderDescending)
 	if err != nil {
 		return nil, err

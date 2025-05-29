@@ -1,5 +1,5 @@
 {
-  "name": "@warden/aws-kms-signer",
+  "name": "@warden-automated-orders/aws-kms-signer",
   "version": "1.0.0",
   "author": "",
   "license": "ISC",
@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-kms": "^3.696.0",
-    "asn1.js": "^5.4.1"
+    "asn1.js": "^5.4.1",
+    "viem": "^2.30.5"
   }
 }

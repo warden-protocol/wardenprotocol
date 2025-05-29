@@ -6,20 +6,17 @@
   "license": "ISC",
   "type": "module",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
-    "build": "yarn lint && tsc --build --force --verbose",
+    "build": "pnpm lint && tsc --build --force --verbose",
     "lint": "eslint --ext .ts --ignore-path .eslintignore .",
-    "build:blockchain-lib": "yarn workspace @warden-automated-orders/blockchain build",
-    "build:aws-kms-signer": "yarn workspace @warden/aws-kms-signer build",
-    "build:utils": "yarn workspace @warden-automated-orders/utils build",
-    "build:libs": "yarn build:utils && yarn build:aws-kms-signer && yarn build:blockchain-lib",
-    "build:scheduler": "yarn workspace @warden-automated-orders/scheduler build",
-    "build:relayer": "yarn workspace @warden-automated-orders/relayer build",
-    "scheduler": "yarn workspace @warden-automated-orders/scheduler start",
-    "relayer": "yarn workspace @warden-automated-orders/relayer start"
+    "build:blockchain-lib": "pnpm -F @warden-automated-orders/blockchain build",
+    "build:aws-kms-signer": "pnpm -F @warden-automated-orders/aws-kms-signer build",
+    "build:utils": "pnpm -F @warden-automated-orders/utils build",
+    "build:libs": "pnpm build:utils && pnpm build:aws-kms-signer && pnpm build:blockchain-lib",
+    "build:scheduler": "pnpm -F @warden-automated-orders/scheduler build",
+    "build:relayer": "pnpm -F @warden-automated-orders/relayer build",
+    "scheduler": "pnpm -F @warden-automated-orders/scheduler start",
+    "relayer": "pnpm -F @warden-automated-orders/relayer start"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
@@ -30,5 +27,7 @@
     "prettier": "^3.2.4",
     "typescript": "^5.6.3"
   },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  "dependencies": {
+    "@types/node": "^22.15.24"
+  }
 }

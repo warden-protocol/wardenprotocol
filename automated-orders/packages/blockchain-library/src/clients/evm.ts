@@ -30,7 +30,7 @@ import {
   Hash,
 } from 'viem';
 import { keccak256, hexToBytes } from 'viem';
-import { AwsKmsSigner } from '@warden/aws-kms-signer';
+import { AwsKmsSigner } from '@warden-automated-orders/aws-kms-signer';
 import { IEvmConfiguration } from '../types/evm/configuration.js';
 import { GasFeeData } from '../types/evm/gas.js';
 import { IEventPollingConfiguration } from '../types/evm/pollingConfiguration.js';
@@ -44,8 +44,8 @@ const { ecdsaRecover } = secp256k1;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const EcdsaSigAsnParse = define('EcdsaSig', function(this: any) {
   this.seq().obj(
-      this.key('r').int(),
-      this.key('s').int(),
+    this.key('r').int(),
+    this.key('s').int(),
   );
 });
 
@@ -89,7 +89,7 @@ export class EvmClient {
     this.signer = (await this.awsKmsSigner.getAddress()) as Hex;
   }
 
-  public async broadcastTx(rawTransaction: Hex, transactionSignature: Hex) : Promise<void> {
+  public async broadcastTx(rawTransaction: Hex, transactionSignature: Hex): Promise<void> {
     const ethRequest = parseTransaction(rawTransaction);
     const signature = parseSignature(transactionSignature);
 

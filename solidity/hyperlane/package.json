@@ -8,11 +8,12 @@
     "solhint": "^3.6.2"
   },
   "dependencies": {
-    "@hyperlane-xyz/core": "^7.1.6"
+    "@hyperlane-xyz/core": "^7.1.6",
+    "@openzeppelin/contracts-upgradeable": "^4.9.3"
   },
   "scripts": {
     "clean": "rm -rf cache out",
-    "build": "forge build src --via-ir",
+    "build": "forge build src --via-ir --extra-output-files abi",
     "lint": "yarn run lint:sol && yarn run prettier:check",
     "lint:sol": "forge fmt --check && yarn solhint \"{script,src,test}/**/*.sol\"",
     "prettier:check": "prettier --check \"**/*.{json,md,yml}\" --ignore-path \".prettierignore\"",

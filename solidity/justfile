@@ -1,3 +1,4 @@
+git_root := `git rev-parse --show-toplevel`
 shulgin_mnemonic := "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
 shulgin := "0x6EA8AC1673402989E7B653AE4E83B54173719C30"
 local_rpc_url := "http://127.0.0.1:8545"
@@ -94,3 +95,15 @@ create-advanced-order priceCondition confidenceLimit oraclePricePair predictPric
     --rpc-url $RPC_URL \
     --broadcast \
     -vvvv
+
+build-hyperlane:
+    cd hyperlane && yarn && yarn build
+
+hyperlane-all: build-hyperlane
+    just hyperlane-abigen MessageDispatcher
+    just hyperlane-abigen ERC5164PayableHook
+    just hyperlane-abigen AbstractMessageIdAuthorizedIsm
+    just hyperlane-abigen MessageExecutor
+
+hyperlane-abigen target:
+    abigen --abi {{git_root}}/solidity/hyperlane/out/{{target}}.sol/{{target}}.abi.json --pkg abigen --type {{target}} --out {{git_root}}/cmd/paymaster/abigen/{{target}}.go

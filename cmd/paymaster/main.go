@@ -199,7 +199,7 @@ func processMessagesDispatched(ctx context.Context, eventsCh <-chan *abigen.Mess
 	}
 	bind.NewKeyedTransactorWithChainID(privateKey, chainId)
 
-	ismTransactor, err := abigen.NewAbstractMessageIdAuthorizedIsmTransactor(common.HexToAddress(config.WardenChain.IsmAddress), client)
+	ismTransactor, err := abigen.NewMessageExecutorTransactor(common.HexToAddress(config.WardenChain.IsmAddress), client)
 	if err != nil {
 		return fmt.Errorf("error creating ism client: %w", err)
 

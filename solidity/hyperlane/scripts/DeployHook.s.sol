@@ -5,6 +5,7 @@ import "forge-std/src/Script.sol";
 import "forge-std/src/console.sol";
 import { StaticAggregationHookFactory } from "@hyperlane-xyz/contracts/hooks/aggregation/StaticAggregationHookFactory.sol";
 import { TypeCasts } from "@hyperlane-xyz/contracts/libs/TypeCasts.sol";
+import { IMailbox } from "@hyperlane-xyz/contracts/interfaces/IMailbox.sol";
 import { InterchainGasPaymaster } from "@hyperlane-xyz/contracts/hooks/igp/InterchainGasPaymaster.sol";
 import { ERC5164PayableHook } from "../src/ERC5164PayableHook.sol";
 

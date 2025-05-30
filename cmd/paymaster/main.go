@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/hex"
 	"flag"
 	"fmt"
 	"log"
@@ -226,17 +225,17 @@ func processMessagesDispatched(ctx context.Context, eventsCh <-chan *abigen.Mess
 }
 
 func processMessageDispatched(ctx context.Context, client *ethclient.Client, messageExecutorTransactor *abigen.MessageExecutorTransactor, parsedIsmABI abi.ABI, parsedMsgDispatched *abigen.MessageDispatcherMessageDispatched, from common.Address) error {
-	methodID := parsedMsgDispatched.Data[:4]
+	// methodID := parsedMsgDispatched.Data[:4]
 	args := parsedMsgDispatched.Data[4:]
 	functionName := "preVerifyMessage" // we check that payload was encoded as ism call accorging to hyperlance ERC5164 implementation
-	method, ok := parsedIsmABI.Methods[functionName]
-	if !ok {
-		return fmt.Errorf("function %s not found in ABI", functionName)
-	}
+	// method, ok := parsedIsmABI.Methods[functionName]
+	// if !ok {
+	// 	return fmt.Errorf("function %s not found in ABI", functionName)
+	// }
 
-	if hex.EncodeToString(method.ID) != hex.EncodeToString(methodID) {
-		return fmt.Errorf("function selector does not match")
-	}
+	// if hex.EncodeToString(method.ID) != hex.EncodeToString(methodID) {
+	// 	return fmt.Errorf("function selector does not match")
+	// }
 
 	unpackedArgs, err := parsedIsmABI.Unpack(functionName, args)
 	if err != nil {

@@ -44,7 +44,8 @@ contract MockAsyncPrecompile is IAsync {
         TaskVote[] memory emptyVotes = new TaskVote[](0);
         TaskResult memory taskResult = TaskResult({
             id: taskId,
-            output: input
+            output: input,
+            error_reason: ""
         });
         TaskResponse memory taskResponse = TaskResponse({
             task: task,

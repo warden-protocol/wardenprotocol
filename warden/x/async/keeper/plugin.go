@@ -72,8 +72,6 @@ func (k Keeper) releasePluginFees(
 }
 
 // rejected or timed-out.
-//
-//nolint:unused
 func (k Keeper) refundPluginFees(
 	ctx context.Context,
 	pluginUser sdk.AccAddress,

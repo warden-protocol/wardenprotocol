@@ -6,16 +6,16 @@ local_chain_id := "1337"
 orders: build-orders lint-orders test-orders
 
 build-orders:
-    cd orders && yarn && yarn build
+    cd orders && pnpm install && pnpm build
 
 lint-orders:
-    cd orders && yarn lint
+    cd orders && pnpm lint
 
 test-orders:
-    cd orders && yarn test
+    cd orders && pnpm test
 
 localnet-orders $RPC_URL=local_rpc_url $CHAIN_ID=local_chain_id $MNEMONIC=shulgin_mnemonic $SCHEDULER_ADDRESS=shulgin $FACTORY_OWNER_ADDRESS=shulgin:
-    cd orders && CHAIN_ID=$CHAIN_ID RPC_URL=$RPC_URL yarn deploy
+    cd orders && CHAIN_ID=$CHAIN_ID RPC_URL=$RPC_URL pnpm deploy
 
 # Example:
 # just solidity create-basic-order \

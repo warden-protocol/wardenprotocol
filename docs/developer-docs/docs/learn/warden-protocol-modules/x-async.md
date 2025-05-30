@@ -101,9 +101,9 @@ You can find usage examples in the following guides:
 
 The `http` Plugin allows making **HTTP requests** to any external service. For example, developers can use `x/async` as an advanced [oracle service](../oracle-services) for fetching token prices from external APIs. The `http` Plugin supports multiple APIs, so in this sense it includes multiple AVRs.
 
-Note that Warden automatically converts HTTP responses to the CBOR format.
-
 You can find a usage example in the following guide: [Use the HTTP Plugin](/build-an-app/run-offchain-computations/use-the-http-plugin/introduction).
+
+Note that responses from HTTP requests are returned as JSON data. To extract specific values from these responses, you can use the [JSON precompile](/build-an-app/precompiles/json).
 
 ## Prophets
 

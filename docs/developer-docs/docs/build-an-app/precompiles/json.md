@@ -14,7 +14,10 @@ In this article, you'll find a full list of available methods, allowing you to h
 - [Basic types and numbers](#basic-types-and-numbers)
 - [Arrays and nested objects](#arrays-and-nested-objects)
 
-To learn how to use this precompile, refer to [Use the JSON precompile](/category/use-the-json-precompile).
+To learn how to use this precompile, refer to the following guides:
+
+- [Use the JSON precompile](/category/use-the-json-precompile)
+- [Use the HTTP Plugin](../run-offchain-computations/use-the-http-plugin/introduction)
 
 :::note Code
 You can find the `JSON` precompile code on GitHub: [`IJson.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/json/IJson.sol)

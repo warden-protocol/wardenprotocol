@@ -235,7 +235,6 @@ contract SpaceQuery {
             reverse: false
         });
 
-        // Corrected the declaration
         (IWarden.Space[] memory spacesList, IWarden.PageResponse memory pageResponse) = warden.spaces(pageRequest);
         
         return (
@@ -286,7 +285,6 @@ contract SpaceQuery {
             reverse: false
         });
 
-        // Corrected the declaration
         (IWarden.Space[] memory spacesList, IWarden.PageResponse memory pageResponse) = warden.spacesByOwner(pageRequest, owner);
         
         return (

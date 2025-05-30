@@ -63,7 +63,7 @@ Create interfaces for interacting with the [`x/async` precompile](../../precompi
    }
    
    interface IAsync {
-       function addTask(string calldata handler, bytes calldata input, address callback) external returns (uint64);
+       function addTask(string calldata plugin, bytes calldata input, address callback) external returns (uint64);
        function taskById(uint64 id) external view returns (TaskByIdResponse memory);
    }
    ```

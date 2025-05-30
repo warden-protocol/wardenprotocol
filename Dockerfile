@@ -82,20 +82,21 @@ ENTRYPOINT ["/wardenkms"]
 ## node-builder
 FROM node:lts-alpine AS node-build-env
 RUN apk add --no-cache python3 build-base
-RUN npm install -g pnpm@9
+RUN npm install -g pnpm@10
 
 ## automated-orders libs
 FROM node-build-env AS automated-orders-libs
 USER node
 WORKDIR /app
-COPY --chown=node:node automated-orders/yarn.lock yarn.lock
+COPY --chown=node:node automated-orders/pnpm-lock.yaml pnpm-lock.yaml
+COPY --chown=node:node automated-orders/pnpm-workspace.yaml pnpm-workspace.yaml
 COPY --chown=node:node automated-orders/package.json package.json
 COPY --chown=node:node automated-orders/tsconfig.json tsconfig.json
 COPY --chown=node:node automated-orders/packages/utils-library packages/utils-library
 COPY --chown=node:node automated-orders/packages/aws-kms-signer packages/aws-kms-signer
 COPY --chown=node:node automated-orders/packages/blockchain-library packages/blockchain-library
-RUN yarn install --frozen-lockfile && \
-    yarn build:libs && \
+RUN pnpm install --frozen-lockfile && \
+    pnpm build:libs && \
     rm -rf packages/*/src packages/*/node_modules packages/*/tsconfig*
 
 ## snap
@@ -181,25 +182,27 @@ ENTRYPOINT ["pnpm", "relay"]
 FROM node-build-env AS automated-orders-scheduler
 USER node
 WORKDIR /app
-COPY --chown=node:node automated-orders/yarn.lock yarn.lock
+COPY --chown=node:node automated-orders/pnpm-lock.yaml pnpm-lock.yaml
+COPY --chown=node:node automated-orders/pnpm-workspace.yaml pnpm-workspace.yaml
 COPY --chown=node:node automated-orders/package.json package.json
 COPY --chown=node:node automated-orders/tsconfig.json tsconfig.json
 COPY --chown=node:node automated-orders/packages/scheduler packages/scheduler
 COPY --chown=node:node --from=automated-orders-libs ["/app/packages", "./packages"]
-RUN yarn install --frozen-lockfile && \
-    yarn build:scheduler && \
+RUN pnpm install --frozen-lockfile && \
+    pnpm build:scheduler && \
     rm -rf packages/*/src packages/*/node_modules packages/*/tsconfig*
-CMD ["yarn", "scheduler"]
+CMD ["pnpm", "scheduler"]
 
 FROM node-build-env AS automated-orders-relayer
 USER node
 WORKDIR /app
-COPY --chown=node:node automated-orders/yarn.lock yarn.lock
+COPY --chown=node:node automated-orders/pnpm-lock.yaml pnpm-lock.yaml
+COPY --chown=node:node automated-orders/pnpm-workspace.yaml pnpm-workspace.yaml
 COPY --chown=node:node automated-orders/package.json package.json
 COPY --chown=node:node automated-orders/tsconfig.json tsconfig.json
 COPY --chown=node:node automated-orders/packages/relayer packages/relayer
 COPY --chown=node:node --from=automated-orders-libs ["/app/packages", "./packages"]
-RUN yarn install --frozen-lockfile && \
-    yarn build:relayer && \
+RUN pnpm install --frozen-lockfile && \
+    pnpm build:relayer && \
     rm -rf packages/*/src packages/*/node_modules packages/*/tsconfig*
-CMD ["yarn", "relayer"]
+CMD ["pnpm", "relayer"]

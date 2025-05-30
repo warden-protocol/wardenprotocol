@@ -1,4 +1,4 @@
-import { IAwsKmsConfiguration } from "../../../../aws-kms-signer/dist/types/configuration.js";
+import { IAwsKmsConfiguration } from "@warden-automated-orders/aws-kms-signer";
 
 export interface IEvmConfiguration {
   rpcURL: string;

@@ -16,14 +16,14 @@ contract SendMessageScript is Script {
         vm.startBroadcast();
 
         MessageExecutor messageExecutor = new MessageExecutor();
-        ERC5164Ism ism = new ERC5164Ism(messageExecutor);
-        messageExecutor.initialize(ism);
+        ERC5164Ism ism = new ERC5164Ism(address(messageExecutor));
+        messageExecutor.initialize(address(ism));
         
 
         console.log("Deployed messageExecutor:");
         console.logAddress(address(messageExecutor));
         console.log("Deployed ERC5164Ism:");
-        console.logAddress(ism);
+        console.logAddress(address(ism));
 
         vm.stopBroadcast();
     }

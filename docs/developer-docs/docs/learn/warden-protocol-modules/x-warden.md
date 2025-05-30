@@ -19,7 +19,7 @@ This module implements Warden's core concepts:
 
 You can call the `x/warden` module from your EVM smart contract using the [`x/warden` precompile](/build-an-app/precompiles/x-warden), as shown in the [Interact with `x/warden`](/category/interact-with-xwarden) section.
 
-The `x/warden` module is used for signing transactions in our [automated Orders example](/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders/introduction).
+The `x/warden` module is used for signing transactions in our [automated Orders example](/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders).
 
 ## Concepts
 

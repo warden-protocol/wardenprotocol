@@ -59,7 +59,6 @@ func main() {
 		defer wg.Done()
 		wg.Add(1)
 		if err := processMessagesDispatched(ctx, eventsCh, config); err != nil {
-			cancel()
 			errCh <- fmt.Errorf("chain %s: %w", config.WardenChain.Name, err)
 		}
 	}()
@@ -70,7 +69,7 @@ func main() {
 		go func(chain SourceChainConfig) {
 			defer wg.Done()
 			if err := listenToEvents(ctx, chain, config, eventsCh); err != nil {
-				cancel() // Cancel context to stop other listeners first
+				fmt.Println("listenToEvents cancel")
 				errCh <- fmt.Errorf("chain %s: %w", chain.Name, err)
 			}
 		}(chain)
@@ -86,6 +85,7 @@ func main() {
 	// Wait for either an error, context cancellation, or all listeners done
 	select {
 	case err := <-errCh:
+		cancel() // Cancel context to stop other listeners / processor first
 		// Wait for all listeners to finish before exiting
 		<-doneCh
 		log.Fatalf("event listener or processor failed: %v", err)

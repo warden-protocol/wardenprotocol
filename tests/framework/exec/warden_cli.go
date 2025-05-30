@@ -36,7 +36,7 @@ func NewWardend(node *WardenNode, name string) *Wardend {
 }
 
 func (cli *Wardend) Tx(t *testing.T, command string) sdk.TxResponse {
-	ctx, cancel := context.WithTimeout(t.Context(), 15*time.Second)
+	ctx, cancel := context.WithTimeout(t.Context(), 5*time.Second)
 	defer cancel()
 
 	cmd := &Exec{

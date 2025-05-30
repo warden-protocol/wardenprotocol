@@ -5,41 +5,25 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"math/big"
 	"net/url"
 	"os"
 	"path/filepath"
 	"time"
 
-	corevm "github.com/ethereum/go-ethereum/core/vm"
-	"github.com/spf13/cast"
-
 	// Force-load the tracer engines to trigger registration due to Go-Ethereum v1.10.15 changes
 	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
 	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
 
-	evmante "github.com/cosmos/evm/ante"
-	cosmosevmante "github.com/cosmos/evm/ante/evm"
-	srvflags "github.com/cosmos/evm/server/flags"
-	cosmosevmtypes "github.com/cosmos/evm/types"
-	cosmosevmutils "github.com/cosmos/evm/utils"
-	erc20keeper "github.com/cosmos/evm/x/erc20/keeper"
-	erc20types "github.com/cosmos/evm/x/erc20/types"
-	feemarketkeeper "github.com/cosmos/evm/x/feemarket/keeper"
-	transferkeeper "github.com/cosmos/evm/x/ibc/transfer/keeper"
-	precisebankkeeper "github.com/cosmos/evm/x/precisebank/keeper"
-	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
-	ibckeeper "github.com/cosmos/ibc-go/v10/modules/core/keeper"
-
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
+	"cosmossdk.io/math"
 	storetypes "cosmossdk.io/store/types"
 	circuitkeeper "cosmossdk.io/x/circuit/keeper"
 	evidencekeeper "cosmossdk.io/x/evidence/keeper"
 	feegrantkeeper "cosmossdk.io/x/feegrant/keeper"
 	upgradekeeper "cosmossdk.io/x/upgrade/keeper"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
-
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	abci "github.com/cometbft/cometbft/abci/types"
@@ -58,6 +42,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/auth"
+	authante "github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	authsims "github.com/cosmos/cosmos-sdk/x/auth/simulation"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
@@ -80,12 +65,26 @@ import (
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	slashingkeeper "github.com/cosmos/cosmos-sdk/x/slashing/keeper"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
+	evmante "github.com/cosmos/evm/ante"
+	cosmosevmante "github.com/cosmos/evm/ante/evm"
 	evmosencodingcodec "github.com/cosmos/evm/encoding/codec"
+	srvflags "github.com/cosmos/evm/server/flags"
+	cosmosevmtypes "github.com/cosmos/evm/types"
+	cosmosevmutils "github.com/cosmos/evm/utils"
+	erc20keeper "github.com/cosmos/evm/x/erc20/keeper"
+	erc20types "github.com/cosmos/evm/x/erc20/types"
+	feemarketkeeper "github.com/cosmos/evm/x/feemarket/keeper"
+	transferkeeper "github.com/cosmos/evm/x/ibc/transfer/keeper" // NOTE: override ICS20 keeper to support IBC transfers of ERC20 tokens
+	precisebankkeeper "github.com/cosmos/evm/x/precisebank/keeper"
+	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
+	evmtypes "github.com/cosmos/evm/x/vm/types"
 	icacontrollerkeeper "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/controller/keeper"
 	icahostkeeper "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/host/keeper"
-
+	ibckeeper "github.com/cosmos/ibc-go/v10/modules/core/keeper"
+	corevm "github.com/ethereum/go-ethereum/core/vm"
 	marketmapkeeper "github.com/skip-mev/slinky/x/marketmap/keeper"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
+	"github.com/spf13/cast"
 
 	"github.com/warden-protocol/wardenprotocol/precompiles"
 	jsonprecompile "github.com/warden-protocol/wardenprotocol/precompiles/json"
@@ -101,16 +100,6 @@ import (
 	schedmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/sched/keeper"
 	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
-
-	// Add these imports
-	"math/big"
-
-	"cosmossdk.io/math"
-
-	// Replace default transfer with EVM's transfer (if using IBC)
-	// NOTE: override ICS20 keeper to support IBC transfers of ERC20 tokens
-
-	authante "github.com/cosmos/cosmos-sdk/x/auth/ante"
 )
 
 const (
@@ -122,9 +111,9 @@ const (
 var (
 	// DefaultNodeHome default home directories for the application daemon.
 	DefaultNodeHome string
-	CoinType        uint32 = 60 // spawntag:evm
+	CoinType        uint32 = 60
 
-	BaseDenomUnit int64 = 18 // spawntag:evm
+	BaseDenomUnit int64 = 18
 
 	BaseDenom    = "award"
 	DisplayDenom = "WARD"

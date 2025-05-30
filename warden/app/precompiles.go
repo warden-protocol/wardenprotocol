@@ -4,18 +4,11 @@ import (
 	"fmt"
 	"maps"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/vm"
-
 	evidencekeeper "cosmossdk.io/x/evidence/keeper"
-
 	distributionkeeper "github.com/cosmos/cosmos-sdk/x/distribution/keeper"
 	govkeeper "github.com/cosmos/cosmos-sdk/x/gov/keeper"
 	slashingkeeper "github.com/cosmos/cosmos-sdk/x/slashing/keeper"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
-
-	channelkeeper "github.com/cosmos/ibc-go/v10/modules/core/04-channel/keeper"
-
 	bankprecompile "github.com/cosmos/evm/precompiles/bank"
 	"github.com/cosmos/evm/precompiles/bech32"
 	cmn "github.com/cosmos/evm/precompiles/common"
@@ -29,6 +22,16 @@ import (
 	erc20Keeper "github.com/cosmos/evm/x/erc20/keeper"
 	transferkeeper "github.com/cosmos/evm/x/ibc/transfer/keeper"
 	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
+	channelkeeper "github.com/cosmos/ibc-go/v10/modules/core/04-channel/keeper"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/vm"
+	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
+
+	wardenprecompiles "github.com/warden-protocol/wardenprotocol/precompiles"
+	actkeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
+	asynckeeper "github.com/warden-protocol/wardenprotocol/warden/x/async/keeper"
+	schedkeeper "github.com/warden-protocol/wardenprotocol/warden/x/sched/keeper"
+	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 )
 
 const bech32PrecompileBaseGas = 6_000
@@ -47,6 +50,11 @@ func NewAvailableStaticPrecompiles(
 	govKeeper govkeeper.Keeper,
 	slashingKeeper slashingkeeper.Keeper,
 	evidenceKeeper evidencekeeper.Keeper,
+	wardenKeeper wardenkeeper.Keeper,
+	actKeeper actkeeper.Keeper,
+	oracleKeeper *oraclekeeper.Keeper,
+	asyncKeeper asynckeeper.Keeper,
+	schedKeeper schedkeeper.Keeper,
 ) map[common.Address]vm.PrecompiledContract {
 	// Clone the mapping from the latest EVM fork.
 	precompiles := maps.Clone(vm.PrecompiledContractsBerlin)
@@ -115,6 +123,26 @@ func NewAvailableStaticPrecompiles(
 	precompiles[govPrecompile.Address()] = govPrecompile
 	precompiles[slashingPrecompile.Address()] = slashingPrecompile
 	precompiles[evidencePrecompile.Address()] = evidencePrecompile
+
+	wardenprecompiles, err := wardenprecompiles.NewWardenPrecompiles(
+		wardenKeeper,
+		actKeeper,
+		*oracleKeeper,
+		asyncKeeper,
+		schedKeeper,
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	for a, p := range wardenprecompiles {
+		_, found := precompiles[a]
+		if found {
+			panic(fmt.Errorf("precompiles address already registered: %v", a))
+		}
+
+		precompiles[a] = p
+	}
 
 	return precompiles
 }

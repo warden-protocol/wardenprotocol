@@ -3,11 +3,10 @@ package app
 import (
 	"encoding/json"
 
+	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 	erc20types "github.com/cosmos/evm/x/erc20/types"
 	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
 	evmtypes "github.com/cosmos/evm/x/vm/types"
-
-	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 )
 
 // GenesisState of the blockchain is represented here as a map of raw json

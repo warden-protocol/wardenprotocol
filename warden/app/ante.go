@@ -43,7 +43,7 @@ type AccountKeeper interface {
 }
 
 // HandlerOptions extend the SDK's AnteHandler options by requiring the IBC
-// channel keeper, wasm keeper and EvmOS keepers.
+// channel keeper, wasm keeper and evm keepers.
 type HandlerOptions struct {
 	authante.HandlerOptions
 
@@ -53,7 +53,7 @@ type HandlerOptions struct {
 	TXCounterStoreService corestoretypes.KVStoreService
 	CircuitKeeper         *circuitkeeper.Keeper
 
-	// evmos
+	// evm
 	FeeMarketKeeper anteinterfaces.FeeMarketKeeper
 	EVMKeeper       anteinterfaces.EVMKeeper
 	TxFeeChecker    authante.TxFeeChecker

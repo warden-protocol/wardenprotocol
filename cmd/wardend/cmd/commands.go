@@ -24,9 +24,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
-	evmosclient "github.com/cosmos/evm/client"
+	evmclient "github.com/cosmos/evm/client"
 	"github.com/cosmos/evm/client/debug"
-	evmosserver "github.com/cosmos/evm/server"
+	evmserver "github.com/cosmos/evm/server"
 	srvflags "github.com/cosmos/evm/server/flags"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/spf13/cast"
@@ -51,9 +51,9 @@ func initRootCmd(
 		snapshot.Cmd(newApp),
 	)
 
-	evmosserver.AddCommands(
+	evmserver.AddCommands(
 		rootCmd,
-		evmosserver.NewDefaultStartOptions(newApp, app.DefaultNodeHome),
+		evmserver.NewDefaultStartOptions(newApp, app.DefaultNodeHome),
 		appExport,
 		addModuleInitFlags,
 	)
@@ -73,7 +73,7 @@ func initRootCmd(
 		),
 		queryCommand(),
 		txCommand(),
-		evmosclient.KeyCommands(app.DefaultNodeHome, true),
+		evmclient.KeyCommands(app.DefaultNodeHome, true),
 	)
 
 	// Add tx flags

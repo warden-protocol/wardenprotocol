@@ -2,7 +2,7 @@ package async
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	evmoscmn "github.com/cosmos/evm/precompiles/common"
+	evmcmn "github.com/cosmos/evm/precompiles/common"
 	ethcmn "github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 
@@ -42,12 +42,12 @@ func (p *Precompile) GetCreateTaskEvent(ctx sdk.Context, writerAddress *ethcmn.A
 		return nil, err
 	}
 
-	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
+	topics[1], err = evmcmn.MakeTopic(typedEvent.GetId())
 	if err != nil {
 		return nil, err
 	}
 
-	topics[2], err = evmoscmn.MakeTopic(creatorAddress)
+	topics[2], err = evmcmn.MakeTopic(creatorAddress)
 	if err != nil {
 		return nil, err
 	}

@@ -135,7 +135,7 @@ var (
 		minttypes.ModuleName,
 		crisistypes.ModuleName,
 		ibcexported.ModuleName,
-		// evmOS modules
+		// evm modules
 		evmtypes.ModuleName,
 		// NOTE: feemarket module needs to be initialized before genutil module:
 		// gentx transactions use MinGasPriceDecorator.AnteHandle
@@ -180,7 +180,7 @@ var (
 		icatypes.ModuleName,
 		wasmtypes.ModuleName,
 
-		// evmOS modules
+		// evm modules
 		erc20types.ModuleName,
 		feemarkettypes.ModuleName,
 		evmtypes.ModuleName,
@@ -229,7 +229,7 @@ var (
 		oracletypes.ModuleName,
 		marketmaptypes.ModuleName,
 
-		// evmOS modules
+		// evm modules
 		evmtypes.ModuleName,
 		feemarkettypes.ModuleName,
 		erc20types.ModuleName,

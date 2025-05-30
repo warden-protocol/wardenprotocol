@@ -67,7 +67,7 @@ import (
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	evmante "github.com/cosmos/evm/ante"
 	cosmosevmante "github.com/cosmos/evm/ante/evm"
-	evmosencodingcodec "github.com/cosmos/evm/encoding/codec"
+	evmencodingcodec "github.com/cosmos/evm/encoding/codec"
 	srvflags "github.com/cosmos/evm/server/flags"
 	cosmosevmtypes "github.com/cosmos/evm/types"
 	cosmosevmutils "github.com/cosmos/evm/utils"
@@ -173,7 +173,7 @@ type App struct {
 	OracleKeeper    *oraclekeeper.Keeper
 	MarketMapKeeper *marketmapkeeper.Keeper
 
-	// evmOS
+	// evm
 	FeeMarketKeeper   feemarketkeeper.Keeper
 	EVMKeeper         *evmkeeper.Keeper
 	Erc20Keeper       erc20keeper.Keeper
@@ -213,11 +213,11 @@ func getGovProposalHandlers() []govclient.ProposalHandler {
 }
 
 func ProvideCustomRegisterCrypto() runtime.CustomRegisterLegacyAminoCodec {
-	return evmosencodingcodec.RegisterLegacyAminoCodec
+	return evmencodingcodec.RegisterLegacyAminoCodec
 }
 
 func ProvideCustomRegisterInterfaces() runtime.CustomRegisterInterfaces {
-	return evmosencodingcodec.RegisterInterfaces
+	return evmencodingcodec.RegisterInterfaces
 }
 
 func registerProphetHanlders(appOpts servertypes.AppOptions) {
@@ -755,7 +755,7 @@ func (a *App) DefaultGenesis() map[string]json.RawMessage {
 	genesis[evmtypes.ModuleName] = a.appCodec.MustMarshalJSON(evmGenState)
 
 	// NOTE: for the example chain implementation we are also adding a default token pair,
-	// which is the base denomination of the chain (i.e. the WEVMOS contract)
+	// which is the base denomination of the chain (i.e. the Wevm contract)
 	erc20GenState := NewErc20GenesisState()
 	genesis[erc20types.ModuleName] = a.appCodec.MustMarshalJSON(erc20GenState)
 

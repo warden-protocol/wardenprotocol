@@ -14,7 +14,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
-	evmosconf "github.com/cosmos/evm/server/config"
+	evmconf "github.com/cosmos/evm/server/config"
 	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
 	evmtypes "github.com/cosmos/evm/x/vm/types"
 	"github.com/ethereum/go-ethereum/common"
@@ -235,7 +235,7 @@ func (k Keeper) estimateGas(
 
 	gasRes, err := evmKeeper.EstimateGasInternal(ctx, &evmtypes.EthCallRequest{
 		Args:   args,
-		GasCap: evmosconf.DefaultGasCap,
+		GasCap: evmconf.DefaultGasCap,
 	}, evmtypes.Internal)
 	if err != nil {
 		return 0, "", err

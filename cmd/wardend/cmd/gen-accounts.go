@@ -14,7 +14,7 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
-	evmoskr "github.com/cosmos/evm/crypto/keyring"
+	evmkr "github.com/cosmos/evm/crypto/keyring"
 	"github.com/spf13/cobra"
 )
 
@@ -53,7 +53,7 @@ contain valid denominations.
 						clientCtx.HomeDir,
 						inBuf,
 						clientCtx.Codec,
-						evmoskr.Option(),
+						evmkr.Option(),
 					)
 					if err != nil {
 						return err
@@ -84,7 +84,7 @@ contain valid denominations.
 			balances := banktypes.Balance{Address: addr.String(), Coins: coins.Sort()}
 			baseAccount := authtypes.NewBaseAccount(addr, nil, 0, 0)
 
-			// Create ClawbackvestingAccount or standard Evmos account
+			// Create ClawbackvestingAccount or standard evm account
 			switch {
 
 			default:

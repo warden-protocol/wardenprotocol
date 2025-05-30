@@ -3,16 +3,16 @@ module github.com/warden-protocol/wardenprotocol
 go 1.24
 
 replace (
-	// evmos integration - need this replace when importing cosmos/rosetta pkg
+	// evm integration - need this replace when importing cosmos/rosetta pkg
 	cosmossdk.io/core => cosmossdk.io/core v0.11.0
 
 	// use cosmos fork of keyring
 	github.com/99designs/keyring => github.com/cosmos/keyring v1.2.0
 
-	// evmos integration
+	// evm integration
 	github.com/cosmos/cosmos-sdk => github.com/warden-protocol/cosmos-sdk v0.50.13-warden-evm
 	github.com/dgrijalva/jwt-go => github.com/dgrijalva/jwt-go/v4 v4.0.0-preview1
-	// evmos + types for slinky
+	// evm + types for slinky
 	github.com/ethereum/go-ethereum => github.com/warden-protocol/go-ethereum v1.10.26-evmos-rc4-patched-warden
 
 	// fix upstream GHSA-h395-qcrw-5vmq vulnerability.

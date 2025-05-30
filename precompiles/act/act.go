@@ -7,7 +7,7 @@ import (
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	evmoscmn "github.com/cosmos/evm/precompiles/common"
+	evmcmn "github.com/cosmos/evm/precompiles/common"
 	"github.com/ethereum/go-ethereum/core/vm"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -29,7 +29,7 @@ var f embed.FS
 
 // Precompile defines the precompiled contract for x/act.
 type Precompile struct {
-	evmoscmn.Precompile
+	evmcmn.Precompile
 	actmodulekeeper actmodulekeeper.Keeper
 	eventsRegistry  *common.EthEventsRegistry
 	queryServer     types.QueryServer
@@ -38,7 +38,7 @@ type Precompile struct {
 // LoadABI loads the x/act ABI from the embedded abi.json file
 // for the x/act precompile.
 func LoadABI() (abi.ABI, error) {
-	return evmoscmn.LoadABI(f, "abi.json")
+	return evmcmn.LoadABI(f, "abi.json")
 }
 
 func NewPrecompile(actkeeper actmodulekeeper.Keeper, er *common.EthEventsRegistry) (*Precompile, error) {
@@ -48,7 +48,7 @@ func NewPrecompile(actkeeper actmodulekeeper.Keeper, er *common.EthEventsRegistr
 	}
 
 	p := Precompile{
-		Precompile: evmoscmn.Precompile{
+		Precompile: evmcmn.Precompile{
 			ABI:                  abi,
 			KvGasConfig:          storetypes.KVGasConfig(),
 			TransientKVGasConfig: storetypes.TransientGasConfig(),
@@ -96,7 +96,7 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 
 	// This handles any out of gas errors that may occur during the execution of a precompile tx or query.
 	// It avoids panics and returns the out of gas error so the EVM can continue gracefully.
-	defer evmoscmn.HandleGasError(ctx, contract, initialGas, &err, stateDB, snapshot)()
+	defer evmcmn.HandleGasError(ctx, contract, initialGas, &err, stateDB, snapshot)()
 
 	switch method.Name {
 	// transactions

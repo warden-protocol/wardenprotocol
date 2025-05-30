@@ -17,7 +17,7 @@ contract SendMessageScript is Script {
 
         MessageExecutor messageExecutor = new MessageExecutor();
         ERC5164Ism ism = new ERC5164Ism(MessageExecutor);
-        MessageExecutor.initialize(ism);
+        messageExecutor.initialize(ism);
         
 
         console.log("Deployed messageExecutor:");

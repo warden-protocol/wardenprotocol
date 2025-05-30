@@ -16,7 +16,7 @@ contract SendMessageScript is Script {
         vm.startBroadcast();
 
         MessageExecutor messageExecutor = new MessageExecutor();
-        ERC5164Ism ism = new ERC5164Ism(MessageExecutor);
+        ERC5164Ism ism = new ERC5164Ism(messageExecutor);
         messageExecutor.initialize(ism);
         
 

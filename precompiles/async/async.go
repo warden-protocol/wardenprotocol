@@ -7,10 +7,10 @@ import (
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	evmcmn "github.com/cosmos/evm/precompiles/common"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	ethcmn "github.com/ethereum/go-ethereum/common"
-	evmoscmn "github.com/evmos/evmos/v20/precompiles/common"
-	"github.com/evmos/evmos/v20/x/evm/core/vm"
+	"github.com/ethereum/go-ethereum/core/vm"
 
 	"github.com/warden-protocol/wardenprotocol/precompiles/common"
 	asyncmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/async/keeper"
@@ -28,7 +28,7 @@ var f embed.FS
 
 // Precompile defines the precompiled contract for x/async.
 type Precompile struct {
-	evmoscmn.Precompile
+	evmcmn.Precompile
 	asyncmodulekeeper asyncmodulekeeper.Keeper
 	eventsRegistry    *common.EthEventsRegistry
 	queryServer       types.QueryServer
@@ -37,7 +37,7 @@ type Precompile struct {
 // LoadABI loads the x/async ABI from the embedded abi.json file
 // for the x/async precompile.
 func LoadABI() (abi.ABI, error) {
-	return evmoscmn.LoadABI(f, "abi.json")
+	return evmcmn.LoadABI(f, "abi.json")
 }
 
 func NewPrecompile(asynckeeper asyncmodulekeeper.Keeper, er *common.EthEventsRegistry) (*Precompile, error) {
@@ -47,7 +47,7 @@ func NewPrecompile(asynckeeper asyncmodulekeeper.Keeper, er *common.EthEventsReg
 	}
 
 	p := Precompile{
-		Precompile: evmoscmn.Precompile{
+		Precompile: evmcmn.Precompile{
 			ABI:                  abi,
 			KvGasConfig:          storetypes.KVGasConfig(),
 			TransientKVGasConfig: storetypes.TransientGasConfig(),
@@ -83,7 +83,7 @@ func (p *Precompile) RequiredGas(input []byte) uint64 {
 		return 0
 	}
 
-	return p.Precompile.RequiredGas(input, p.IsTransaction(method.Name))
+	return p.Precompile.RequiredGas(input, p.IsTransaction(method))
 }
 
 // Run implements vm.PrecompiledContract.
@@ -95,7 +95,7 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 
 	// This handles any out of gas errors that may occur during the execution of a precompile tx or query.
 	// It avoids panics and returns the out of gas error so the EVM can continue gracefully.
-	defer evmoscmn.HandleGasError(ctx, contract, initialGas, &err)()
+	defer evmcmn.HandleGasError(ctx, contract, initialGas, &err, stateDB, snapshot)()
 
 	switch method.Name {
 	// transactions
@@ -129,8 +129,8 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 	return bz, nil
 }
 
-func (p *Precompile) IsTransaction(method string) bool {
-	switch method {
+func (p *Precompile) IsTransaction(method *abi.Method) bool {
+	switch method.Name {
 	// transactions
 	case AddTaskMethod:
 		return true

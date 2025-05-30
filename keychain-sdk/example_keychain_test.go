@@ -21,7 +21,7 @@ func Main() {
 		Logger: logger, // not required, but recommended
 
 		// setup the connection to the Warden Protocol node
-		ChainID:      "warden",
+		ChainID:      "warden_1337-1",
 		GRPCURL:      "localhost:9090",
 		GRPCInsecure: true,
 

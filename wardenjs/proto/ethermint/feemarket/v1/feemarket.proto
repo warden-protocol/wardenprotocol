@@ -6,7 +6,7 @@ package ethermint.feemarket.v1;
 import "amino/amino.proto";
 import "gogoproto/gogo.proto";
 
-option go_package = "github.com/evmos/evmos/v20/x/feemarket/types";
+option go_package = "github.com/cosmos/evm/x/feemarket/types";
 
 // Params defines the EVM module parameters
 message Params {

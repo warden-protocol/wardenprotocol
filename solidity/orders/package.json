@@ -14,14 +14,13 @@
   "scripts": {
     "clean": "rm -rf cache out",
     "build": "forge build src --via-ir",
-    "lint": "yarn run lint:sol && yarn run prettier:check",
-    "lint:sol": "forge fmt --check && yarn solhint \"{script,src,test}/**/*.sol\"",
+    "lint": "pnpm run lint:sol && pnpm run prettier:check",
+    "lint:sol": "forge fmt --check && pnpm solhint \"{script,src,test}/**/*.sol\"",
     "prettier:check": "prettier --check \"**/*.{json,md,yml}\" --ignore-path \".prettierignore\"",
     "prettier:write": "prettier --write \"**/*.{json,md,yml}\" --ignore-path \".prettierignore\"",
     "test": "forge test --via-ir",
     "test:coverage": "forge coverage",
     "test:coverage:report": "forge coverage --report lcov && genhtml lcov.info --branch-coverage --output-dir coverage",
     "deploy": "forge script script/Deploy.s.sol:Deploy --chain $CHAIN_ID --rpc-url $RPC_URL --broadcast -vvvv --via-ir --slow"
-  },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  }
 }

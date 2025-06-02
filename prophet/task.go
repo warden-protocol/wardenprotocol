@@ -22,6 +22,7 @@ type TaskReader interface {
 type TaskResult struct {
 	Task
 	Output []byte
+	Error  error
 }
 
 // getID implements [getIDer].

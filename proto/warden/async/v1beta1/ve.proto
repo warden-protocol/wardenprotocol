@@ -41,6 +41,7 @@ message AsyncVoteExtension {
 message VEResultItem {
   uint64 task_id = 1;
   bytes output = 2;
+  string error_reason = 3;
 }
 
 message VEVoteItem {

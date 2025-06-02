@@ -2,18 +2,18 @@
 
 ### Commands
 
-Before using commands install dependencies with `yarn install`.
+Before using commands install dependencies with `pnpm install`.
 
 #### Build
 
 ```sh
-yarn build
+pnpm build
 ```
 
 #### Tests
 
 ```sh
-yarn test
+pnpm test
 ```
 
 ### Order

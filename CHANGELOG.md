@@ -43,10 +43,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features (non-breaking)
 
 - (go-client) Fix handling of EthAccounts in AuthQueryClient
+- (x/async) Improve error message when there are no solvers registered for a plugin
+- (x/async) Add a list of plugins to register onchain to the genesis file
 
 ### Consensus Breaking Changes
 
 - (x/async) Move to a push-based fair selection algorithm, instead of validators competing for solving pending Tasks
+- (x/async) Task can return errors instead of outputs, one of "output" or "error" fields will be set
 
 ### Bug Fixes
 

@@ -147,7 +147,7 @@ func (k Keeper) Logger() log.Logger {
 	return k.logger.With("module", "x/"+types.ModuleName)
 }
 
-func (k Keeper) AddTaskResult(ctx context.Context, id uint64, submitter sdk.ConsAddress, output []byte) error {
+func (k Keeper) AddTaskResult(ctx context.Context, id uint64, submitter sdk.ConsAddress, output []byte, errorReason string) error {
 	task, err := k.tasks.Get(ctx, id)
 	if err != nil {
 		return err
@@ -160,6 +160,7 @@ func (k Keeper) AddTaskResult(ctx context.Context, id uint64, submitter sdk.Cons
 	if err := k.tasks.SetResult(ctx, task, types.TaskResult{
 		Id:     id,
 		Output: output,
+		Error:  errorReason,
 	}); err != nil {
 		return err
 	}
@@ -172,8 +173,14 @@ func (k Keeper) AddTaskResult(ctx context.Context, id uint64, submitter sdk.Cons
 		return err
 	}
 
-	if err := k.releaseFee(ctx, task, submitter); err != nil {
-		return err
+	if errorReason == "" {
+		if err := k.releaseFee(ctx, task, submitter); err != nil {
+			return err
+		}
+	} else {
+		if err := k.refundPluginFees(ctx, sdk.MustAccAddressFromBech32(task.Creator), task.Fee); err != nil {
+			return err
+		}
 	}
 
 	return nil
@@ -279,6 +286,11 @@ func (k Keeper) getCompletedTasksWithoutValidatorVote(ctx context.Context, valAd
 		result, err := it.Value()
 		if err != nil {
 			return nil, err
+		}
+
+		if result.Error != "" {
+			// skip failed Task, won't verify
+			continue
 		}
 
 		found, err := k.votes.Has(ctx, collections.Join(id, valAddress))

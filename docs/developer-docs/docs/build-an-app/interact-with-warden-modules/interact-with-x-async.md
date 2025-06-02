@@ -19,45 +19,45 @@ This article explains how to use `x/async` to manage [Tasks](/learn/warden-proto
 
 ### Create a new Task
 
-To create a Task, use the following code in your contract. It calls the [`addFuture()` function](../precompiles/x-async#create-a-new-task) of the precompile.
+To create a Task, use the following code in your contract. It calls the [`addTask()` function](../precompiles/x-async#create-a-new-task) of the precompile.
 
 ```solidity
-function addFuture(string calldata handler, bytes calldata input, address callback) external returns (uint64 futureId);
+function addTask(string calldata plugin, bytes calldata input, address callback) external returns (uint64 taskId);
 
 contract AsyncExample {
     IAsync constant ASYNC = IAsync(0x0000000000000000000000000000000000000903);
     
-    function createFuture(string calldata handler, bytes calldata input, address callback) external returns (uint64) {
-        return ASYNC.addFuture(handler, input, callback);
+    function createTask(string calldata plugin, bytes calldata input, address callback) external returns (uint64) {
+        return ASYNC.addTask(plugin, input, callback);
     }
 }   
 ```
 
-After deploying your contract, you can interact with it by calling the `createFuture()` function:
+After deploying your contract, you can interact with it by calling the `createTask()` function:
 
 ```bash
-cast send $CONTRACT_ADDRESS "createFuture(string,bytes,address)" \
-  "my-handler" "0x1234" "address" \
+cast send $CONTRACT_ADDRESS "createTask(string,bytes,address)" \
+  "my-plugin" "0x1234" "address" \
   --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
 :::tip
-- You need to specify an AVR Plugin (`handler`). The following Plugin types are currently available: `pricepred`, `http`. To learn more, see [`x/async`: AVR Plugins](/learn/warden-protocol-modules/x-async#avr-plugins). 
+- You need to specify an AVR Plugin (`plugin`). The following Plugins are currently available: `pricepred`, `http`. To learn more, see [`x/async`: AVR Plugins](/learn/warden-protocol-modules/x-async#avr-plugins). 
 - The `callback` parameter is optional. The callback contract must have a `cb()` function, allowing it to be invoked once the Task is ready.
 :::
 
 ### Query Tasks
 
-To get a list of all Tasks in all states (including pending ones), use the following code in your contract. It calls the [`futures()` function](../precompiles/x-async#query-tasks) of the precompile.
+To get a list of all Tasks in all states (including pending ones), use the following code in your contract. It calls the [`tasks()` function](../precompiles/x-async#query-tasks) of the precompile.
 
 ```solidity
-function futures(TypesPageRequest calldata pagination, address creator) external view returns (FuturesResponse memory response);
+function tasks(TypesPageRequest calldata pagination, address creator) external view returns (TasksResponse memory response);
 
 contract AsyncExample {
     IAsync constant ASYNC = IAsync(0x0000000000000000000000000000000000000903);
     
-    function queryFutures(uint64 limit, address creator) external view returns (FuturesResponse memory) {
-        TypesPageRequest memory pagination = TypesPageRequest({
+    function queryTasks(uint64 limit, address creator) external view returns (IAsync.TasksResponse memory) {
+        IAsync.TypesPageRequest memory pagination = TypesPageRequest({
             key: new bytes(0),
             offset: 0,
             limit: limit,
@@ -65,30 +65,30 @@ contract AsyncExample {
             reverse: false
         });
         
-        return ASYNC.futures(pagination, creator);
+        return ASYNC.tasks(pagination, creator);
     }
 }
 ```
 
-After deploying your contract, you can interact with it by calling the `queryFutures()` function:
+After deploying your contract, you can interact with it by calling the `queryTasks()` function:
 
 ```bash
-cast call $CONTRACT_ADDRESS "queryFutures(uint64,address)" 10 \
+cast call $CONTRACT_ADDRESS "queryTasks(uint64,address)" 10 \
   $CREATOR_ADDRESS --rpc-url $RPC_URL
 ```
 
 ### Query pending Tasks
 
-To get a list of all pending Tasks, use the following code in your contract. It calls the [`pendingFutures()` function](../precompiles/x-async#query-pending-tasks) of the precompile.
+To get a list of all pending Tasks, use the following code in your contract. It calls the [`pendingTasks()` function](../precompiles/x-async#query-pending-tasks) of the precompile.
 
 ```solidity
-function pendingFutures(TypesPageRequest calldata pagination) external view returns (PendingFuturesResponse memory response);
+function pendingTasks(TypesPageRequest calldata pagination) external view returns (PendingTasksResponse memory response);
 
 contract AsyncExample {
     IAsync constant ASYNC = IAsync(0x0000000000000000000000000000000000000903);
     
-    function queryPendingFutures(uint64 limit) external view returns (PendingFuturesResponse memory) {
-        TypesPageRequest memory pagination = TypesPageRequest({
+    function queryPendingTasks(uint64 limit) external view returns (IAsync.PendingTasksResponse memory) {
+        IAsync.TypesPageRequest memory pagination = TypesPageRequest({
             key: new bytes(0),
             offset: 0,
             limit: limit,
@@ -96,37 +96,67 @@ contract AsyncExample {
             reverse: false
         });
 
-        return ASYNC.pendingFutures(pagination);
+        return ASYNC.pendingTasks(pagination);
     }
 }
 ```
 
-After deploying your contract, you can interact with it by calling the `queryPendingFutures()` function:
+After deploying your contract, you can interact with it by calling the `queryPendingTasks()` function:
 
 ```bash
-cast call $CONTRACT_ADDRESS "queryPendingFutures(uint64)" 10 --rpc-url $RPC_URL
+cast call $CONTRACT_ADDRESS "queryPendingTasks(uint64)" 10 --rpc-url $RPC_URL
 ```
 
 ### Query a Task by ID
 
-To query a Task by ID, use the following code in your contract. It calls the [`futureById()` function](../precompiles/x-async#query-a-task-by-id) of the precompile.
+To query a Task by ID, use the following code in your contract. It calls the [`taskById()` function](../precompiles/x-async#query-a-task-by-id) of the precompile.
 
 ```solidity
-function futureById(uint64 futureId) external view returns (FutureByIdResponse memory response);
+function taskById(uint64 taskId) external view returns (TaskByIdResponse memory response);
 
 contract AsyncExample {
     IAsync constant ASYNC = IAsync(0x0000000000000000000000000000000000000903);
     
-    function queryFutureById(uint64 futureId) external view returns (FutureByIdResponse memory) {
-        return ASYNC.futureById(futureId);
+    function queryTaskById(uint64 taskId) external view returns (IAsync.TaskByIdResponse memory) {
+        return ASYNC.taskById(taskId);
     }
 }
 ```
 
-After deploying your contract, you can interact with it by calling the `queryFutureById()` function:
+After deploying your contract, you can interact with it by calling the `queryTaskById()` function:
 
 ```bash
-cast call $CONTRACT_ADDRESS "queryFutureById(uint64)" 1 --rpc-url $RPC_URL
+cast call $CONTRACT_ADDRESS "queryTaskById(uint64)" 1 --rpc-url $RPC_URL
+```
+
+### Query Plugins
+
+To get a list of all available Plugins, use the following code in your contract. It calls the [`plugins()` function](../precompiles/x-async#query-plugins) of the precompile.
+
+```solidity
+function plugins(TypesPageRequest calldata pagination) external view returns (PluginsResponse memory response);
+
+contract AsyncExample {
+    IAsync constant ASYNC = IAsync(0x0000000000000000000000000000000000000903);
+    
+    function queryPlugins(uint64 limit) external view returns (IAsync.PluginsResponse memory) {
+        IAsync.TypesPageRequest memory pagination = IAsync.TypesPageRequest({
+            key: new bytes(0),
+            offset: 0,
+            limit: limit,
+            countTotal: true,
+            reverse: false
+        });
+        
+        return ASYNC.plugins(pagination);
+    }
+}
+```
+
+After deploying your contract, you can interact with it by calling the `queryPlugins()` function:
+
+```bash
+cast call $CONTRACT_ADDRESS "queryPlugins(uint64)" 10 --rpc-url $RPC_URL
 ```
 
 ## Example contract
@@ -151,70 +181,81 @@ interface IAsync {
         uint64 total;
     }
     
-    struct Future {
+    struct Task {
         uint64 id;
         address creator;
-        string handler;
+        string plugin;
         bytes input;
     }
 
-    enum FutureVoteType {
+    enum TaskVoteType {
         Unspecified,
         Verified,
         Rejected
     }
 
-    struct FutureVote {
-        uint64 futureId;
+    struct TaskVote {
+        uint64 taskId;
         bytes Voter;
-        FutureVoteType vote;
+        TaskVoteType vote;
     }
         
-
-    struct FutureResult { 
+    struct TaskResult { 
         uint64 id;
         bytes output;
         bytes submitter;
     }
 
-    struct FutureResponse {
-        Future future;
-        FutureVote[] votes;
-        FutureResult result;
+    struct TaskResponse {
+        Task task;
+        TaskVote[] votes;
+        TaskResult result;
     }
     
-    struct FuturesResponse {
+    struct TasksResponse {
         TypesPageResponse pagination;
-        FutureResponse[] futures;
+        TaskResponse[] tasks;
     }
     
-    struct FutureByIdResponse {
-        FutureResponse futureResponse;
+    struct TaskByIdResponse {
+        TaskResponse taskResponse;
     }
     
-    struct PendingFuturesResponse {
+    struct PendingTasksResponse {
         TypesPageResponse pagination;
-        Future[] futures;
+        Task[] tasks;
     }
     
-    function addFuture(string calldata handler, bytes calldata input, address callback) external returns (uint64 futureId);
-    function futures(TypesPageRequest calldata pagination, address creator) external view returns (FuturesResponse memory response);
-    function pendingFutures(TypesPageRequest calldata pagination) external view returns (PendingFuturesResponse memory response);
-    function futureById(uint64 futureId) external view returns (FutureByIdResponse memory response);
+    struct Plugin {
+        string id;
+        address creator;
+        string description;
+    }
+
+    struct PluginsResponse {
+        TypesPageResponse pagination;
+        Plugin[] plugins;
+    }
     
-    event CreateFuture(uint64 indexed futureId, address indexed creator, string handler, address callbackAddress);
+    function addTask(string calldata plugin, bytes calldata input, address callback) external returns (uint64 taskId);
+    function tasks(TypesPageRequest calldata pagination, address creator) external view returns (TasksResponse memory response);
+    function pendingTasks(TypesPageRequest calldata pagination) external view returns (PendingTasksResponse memory response);
+    function taskById(uint64 taskId) external view returns (TaskByIdResponse memory response);
+    function plugins(TypesPageRequest calldata pagination) external view returns (PluginsResponse memory response);
+    
+    event CreateTask(uint64 indexed taskId, address indexed creator, string plugin, address callbackAddress);
 }
 
 contract AsyncExample {
     IAsync constant ASYNC = IAsync(0x0000000000000000000000000000000000000903);
     
     // Create a new Task
-    function createFuture(string calldata handler, bytes calldata input, address callback) external returns (uint64) {
-        return ASYNC.addFuture(handler, input, callback);
+    function createTask(string calldata plugin, bytes calldata input, address callback) external returns (uint64) {
+        return ASYNC.addTask(plugin, input, callback);
     }
     
     // Query all Tasks
-    function queryFutures(uint64 limit, address creator) external view returns (IAsync.FuturesResponse memory) {
+    function queryTasks(uint64 limit, address creator) external view returns (IAsync.TasksResponse memory) {
         IAsync.TypesPageRequest memory pagination = IAsync.TypesPageRequest({
             key: new bytes(0),
             offset: 0,
@@ -223,11 +264,11 @@ contract AsyncExample {
             reverse: false
         });     
 
-        return ASYNC.futures(pagination, creator);
+        return ASYNC.tasks(pagination, creator);
     }
 
     // Query pending Tasks
-    function queryPendingFutures(uint64 limit) external view returns (IAsync.PendingFuturesResponse memory) {
+    function queryPendingTasks(uint64 limit) external view returns (IAsync.PendingTasksResponse memory) {
         IAsync.TypesPageRequest memory pagination = IAsync.TypesPageRequest({
             key: new bytes(0),
             offset: 0,
@@ -236,15 +277,30 @@ contract AsyncExample {
             reverse: false
         });
 
-        return ASYNC.pendingFutures(pagination);
+        return ASYNC.pendingTasks(pagination);
     }
     
     // Query a Task by ID
-    function queryFutureById(uint64 futureId) external view returns (IAsync.FutureByIdResponse memory) {
-        return ASYNC.futureById(futureId);
+    function queryTaskById(uint64 taskId) external view returns (IAsync.TaskByIdResponse memory) {
+        return ASYNC.taskById(taskId);
+    }
+
+    // Query all Plugins
+    function queryPlugins(uint64 limit) external view returns (IAsync.PluginsResponse memory) {
+        IAsync.TypesPageRequest memory pagination = IAsync.TypesPageRequest({
+            key: new bytes(0),
+            offset: 0,
+            limit: limit,
+            countTotal: true,
+            reverse: false
+        });
+        
+        return ASYNC.plugins(pagination);
     }
 }
 ```
 ## Next steps
 
-Learn how to use different AVR Plugins: [Run offchain computations with x/async AVR Plugins](../run-offchain-computations/introduction).
+Now you can learn how to use different AVR Plugins: [Run offchain computations with x/async AVR Plugins](../run-offchain-computations/introduction).
+
+After you feel confident with `x/async` and other precompiles, you can [build an AI Agent](/build-an-agent/introduction).

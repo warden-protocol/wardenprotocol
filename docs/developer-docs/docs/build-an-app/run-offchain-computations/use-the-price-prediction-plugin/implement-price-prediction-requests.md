@@ -70,7 +70,7 @@ struct PricePredictOutput {
 
 contract PricePredExample {
     // The ID of the last Task created by run()
-    uint64 public lastFutureId;
+    uint64 public lastTaskId;
 
     // Prices returned for the last Task
     uint256 public bitcoinPrice;
@@ -93,7 +93,7 @@ contract PricePredExample {
             metrics,
             falsePositiveRate);
         
-        lastFutureId = IASYNC_CONTRACT.addFuture("pricepred", abi.encode(input), address(0));
+        lastTaskId = IASYNC_CONTRACT.addTask("pricepred", abi.encode(input), address(0));
 
         // Reset predictions while the Task is running
         bitcoinPrice = 0;
@@ -102,18 +102,18 @@ contract PricePredExample {
     }
 
     function cb() external {
-        FutureByIdResponse memory future = IASYNC_CONTRACT.futureById(lastFutureId);
-        if (future.futureResponse.result.id == 0) revert("Not ready yet"); 
-        PricePredictOutput memory pricePredictOutput = abi.decode(future.futureResponse.result.output, (PricePredictOutput));
+        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastTaskId);
+        if (task.taskResponse.result.id == 0) revert("Not ready yet"); 
+        PricePredictOutput memory pricePredictOutput = abi.decode(task.taskResponse.result.output, (PricePredictOutput));
         bitcoinPrice = pricePredictOutput.predictions[0];
         bitcoinMetricCount = pricePredictOutput.metrics[0][0];
         bitcoinMetricConfidence = pricePredictOutput.metrics[0][1];
     }
     
     // A helper function to check if the price prediction is ready
-    function isFutureReady() external view returns (bool) {
-        FutureByIdResponse memory future = IASYNC_CONTRACT.futureById(lastFutureId);
-        return future.futureResponse.result.id != 0;
+    function isTaskReady() external view returns (bool) {
+        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastTaskId);
+        return task.taskResponse.result.id != 0;
     }
 }
 ```

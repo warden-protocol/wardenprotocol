@@ -12,10 +12,13 @@ In this article, you'll find a full list of available methods, allowing you to q
 
 - [Tasks](/learn/warden-protocol-modules/x-async#task)
 
-To learn how to use this precompile, refer to [Interact with `x/async`](../interact-with-warden-modules/interact-with-x-async).
+To learn how to use this precompile, refer to the following guides:
+
+- [Interact with `x/async`](../interact-with-warden-modules/interact-with-x-async)
+- [Run offchain computations with x/async AVR Plugins](../run-offchain-computations/introduction)
 
 :::note Code
-You can find the `x/async` precomile code on GitHub: [`IAsync.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/async/IAsync.sol)
+You can find the `x/async` precompile code on GitHub: [`IAsync.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/async/IAsync.sol)
 :::
 
 ## Precompile address
@@ -30,19 +33,19 @@ To reference the `IAsync` precompile in your code, use the following precompile 
 
 ### Create a new Task
 
-- **Method**: `addFuture()`
-- **Description**: Creates a Task. Emits the [`CreateFuture` event](#createfuture).
+- **Method**: `addTask()`
+- **Description**: Creates a Task. Emits the [`CreateTask` event](#createtask).
 - **Code**:
   ```
-  function addFuture(
-      string calldata handler,
+  function addTask(
+      string calldata plugin,
       bytes calldata input,
       address callback
-  ) external returns (uint64 futureId);
+  ) external returns (uint64 taskId);
   ```
 - **Parameters**:
   ```sol
-  @param handler The unique name of the plugin
+  @param plugin The unique name of the plugin
   @param input The plugin's input
   @param callback The address of callback contract
   ```
@@ -52,20 +55,20 @@ To reference the `IAsync` precompile in your code, use the following precompile 
   :::
 - **Output**:  
   ```sol
-  @return futureId The id of the task
+  @return taskId The id of the task
   ```
 - **Usage example**: [Create a new Task](../interact-with-warden-modules/interact-with-x-async#create-a-new-task)
 
 ### Query Tasks
 
-- **Method**: `futures()`
-- **Description**: Returns a list of all Tasks in all states (including pending ones). See the [`FuturesResponse` struct](#futureresponse).
+- **Method**: `tasks()`
+- **Description**: Returns a list of all Tasks in all states (including pending ones). See the [`TasksResponse` struct](#taskresponse).
 - **Code**:
   ```
-  function futures(
+  function tasks(
       Types.PageRequest calldata pagination,
       address creator
-  ) external view returns (FuturesResponse memory response);
+  ) external view returns (TasksResponse memory response);
   ```
 - **Parameters**:
   ```sol
@@ -80,13 +83,13 @@ To reference the `IAsync` precompile in your code, use the following precompile 
 
 ### Query pending Tasks
 
-- **Method**: `pendingFutures()`
-- **Description**: Returns a list of all pending Tasks. See the [`PendingFuturesResponse` struct](#pendingfuturesresponse).
+- **Method**: `pendingTasks()`
+- **Description**: Returns a list of all pending Tasks. See the [`PendingTasksResponse` struct](#pendingtasksresponse).
 - **Code**:
   ```
-  function pendingFutures(
+  function pendingTasks(
       Types.PageRequest calldata pagination
-  ) external view returns (PendingFuturesResponse memory response);
+  ) external view returns (PendingTasksResponse memory response);
   ```
 - **Parameters**:
   ```sol
@@ -100,17 +103,17 @@ To reference the `IAsync` precompile in your code, use the following precompile 
 
 ### Query a Task by ID
 
-- **Method**: `futureById()`
-- **Description**: Returns a Task by ID (pending Tasks included). See the [`FutureByIdResponse` struct](#futurebyidresponse).
+- **Method**: `taskById()`
+- **Description**: Returns a Task by ID (pending Tasks included). See the [`TaskByIdResponse` struct](#taskbyidresponse).
 - **Code**:
   ```
-  function futureById(
+  function taskById(
       uint64 taskId
-  ) external view returns (FutureByIdResponse memory response);
+  ) external view returns (TaskByIdResponse memory response);
   ```
 - **Parameters**:
   ```sol
-  @param futureId The task id   
+  @param taskId The task id   
   ```
 - **Output**:  
   ```sol
@@ -118,9 +121,32 @@ To reference the `IAsync` precompile in your code, use the following precompile 
   ```
 - **Usage example**: [Query a Task by ID](../interact-with-warden-modules/interact-with-x-async#query-a-task-by-id)
 
+## Plugins
+
+### Query Plugins
+
+- **Method**: `plugins()`
+- **Description**: Returns a list of all available Plugins. See the [`PluginsResponse` struct](#pluginsresponse).
+- **Code**:
+  ```
+  function plugins(
+      Types.PageRequest calldata pagination
+  ) external view returns (PluginsResponse memory response);
+  ```
+- **Parameters**:
+  ```sol
+  @dev Defines a method to query available plugins.
+  @param pagination The pagination details
+  ```
+- **Output**:  
+  ```sol
+  @return response The paged plugins
+  ```
+- **Usage example**: [Query Plugins](../interact-with-warden-modules/interact-with-x-async#query-plugins)
+
 ## Structs
 
-### `Future`
+### `Task`
 
 - **Description**: A struct representing a Task.
 - **Code**:
@@ -128,87 +154,109 @@ To reference the `IAsync` precompile in your code, use the following precompile 
   struct Task {
       uint64 id;
       address creator;
-      string handler;
+      string plugin;
       bytes input;
   }
   ```
 
-### `FutureVote`
+### `TaskVote`
 
-- **Description**: A struct representing a vote on the results of a Task. Includes the [`FutureVoteType` enum](#futurevotetype).
+- **Description**: A struct representing a vote on the results of a Task. Includes the [`TaskVoteType` enum](#taskvotetype).
 - **Code**:
   ```
-  struct FutureVote {
+  struct TaskVote {
       uint64 taskId;
       bytes Voter;
-      FutureVoteType vote;
+      TaskVoteType vote;
   }
   ```
 
-### `FutureResult`
+### `TaskResult`
 
 - **Description**: A struct representing the result of a Task.
 - **Code**:
   ```
-  struct FutureResult {
+  struct TaskResult {
       uint64 id;
       bytes output;
       bytes submitter;
   }
   ```
 
-### `FutureResponse`
+### `TaskResponse`
 
-- **Description**: A struct representing a Task and its data. Includes the [`Future`](#future), [`FutureVote`](#futurevote), and [`FutureResult`](#futureresult) structs.
+- **Description**: A struct representing a Task and its data. Includes the [`Task`](#task), [`TaskVote`](#taskvote), and [`TaskResult`](#taskresult) structs.
 - **Code**:
   ```
-  struct FutureResponse {
-      Future future;
-      FutureVote[] votes;
-      FutureResult result;
+  struct TaskResponse {
+      Task task;
+      TaskVote[] votes;
+      TaskResult result;
   }
   ```
 
-### `FuturesResponse`
+### `TasksResponse`
 
-- **Description**: A response returned when you [query Task](#query-tasks). Includes the [`FutureResponse` struct](#futureresponse).
+- **Description**: A response returned when you [query Tasks](#query-tasks). Includes the [`TaskResponse` struct](#taskresponse).
 - **Code**:
   ```
-  struct FuturesResponse {
+  struct TasksResponse {
       Types.PageResponse pagination;
-      FutureResponse[] futures;
+      TaskResponse[] tasks;
   }
   ```
 
-### `PendingFuturesResponse`
+### `PendingTasksResponse`
 
-- **Description**: A response returned when you [query pending Task](#query-pending-tasks). Includes the [`Future` struct](#future).
+- **Description**: A response returned when you [query pending Task](#query-pending-tasks). Includes the [`Task` struct](#task).
 - **Code**:
   ```
-  struct PendingFuturesResponse {
+  struct PendingTasksResponse {
       Types.PageResponse pagination;
-      Future[] futures;
+      Task[] tasks;
   }
   ```
 
-### `FutureByIdResponse`
+### `TaskByIdResponse`
 
-- **Description**: A response returned when you [query a Task by ID](#query-a-task-by-id). Includes the [`FutureResponse` struct](#futureresponse).
+- **Description**: A response returned when you [query a Task by ID](#query-a-task-by-id). Includes the [`TaskResponse` struct](#taskresponse).
 - **Code**:
   ```
-  struct FutureByIdResponse {
-      FutureResponse futureResponse;
+  struct TaskByIdResponse {
+      TaskResponse taskResponse;
+  }
+  ```
+### `Plugin`
+
+- **Description**: A struct representing a Plugin.
+- **Code**:
+  ```
+  struct Plugin {
+    string id;
+    address creator;
+    string description;
+  }
+  ```
+
+### `PluginsResponse`
+
+- **Description**: A response returned when you [query Plugins](#query-plugins). Includes the [`Plugin` struct](#plugin).
+- **Code**:
+  ```
+  struct PluginsResponse {
+    Types.PageResponse pagination;
+    Plugin[] plugins;
   }
   ```
 
 ## Enums
 
-### `FutureVoteType`
+### `TaskVoteType`
 
 - **Description**: The Task vote type.
 - **Code**:
   ```
-  enum FutureVoteType {
+  enum TaskVoteType {
      Unspecified,
      Verified,
      Rejected
@@ -217,22 +265,22 @@ To reference the `IAsync` precompile in your code, use the following precompile 
 
 ## Events
 
-### `CreateFuture`
+### `CreateTask`
 
 - **Description**: An event emitted when [a Task is created](#create-a-new-task).
 - **Code**:  
   ```sol
-  event CreateFuture(
-      uint64 indexed futureId,
+  event CreateTask(
+      uint64 indexed taskId,
       address indexed creator,
-      string handler,
+      string plugin,
       address callbackAddress
   );
   ```
 - **Parameters**:
   ```
   @param creator The address of the creator
-  @param futureId The task Id
-  @param handler The name of the plugin
+  @param taskId The task Id
+  @param plugin The name of the plugin
   @param callbackAddress The address of callback contract
   ```

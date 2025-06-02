@@ -79,9 +79,14 @@ func (k Keeper) ExtendVoteHandler() sdk.ExtendVoteHandler {
 
 		results := make([]*types.VEResultItem, len(pResults))
 		for i, r := range pResults {
+			var errorReason string
+			if r.Error != nil {
+				errorReason = r.Error.Error()
+			}
 			results[i] = &types.VEResultItem{
-				TaskId: r.ID,
-				Output: r.Output,
+				TaskId:      r.ID,
+				Output:      r.Output,
+				ErrorReason: errorReason,
 			}
 		}
 
@@ -280,7 +285,7 @@ func (k Keeper) PreBlocker() sdk.PreBlocker {
 
 func (k Keeper) processVE(ctx sdk.Context, fromAddr sdk.ConsAddress, ve types.AsyncVoteExtension) error {
 	for _, r := range ve.Results {
-		if err := k.AddTaskResult(ctx, r.TaskId, fromAddr, r.Output); err != nil {
+		if err := k.AddTaskResult(ctx, r.TaskId, fromAddr, r.Output, r.ErrorReason); err != nil {
 			if err == types.ErrTaskAlreadyHasResult {
 				continue
 			}

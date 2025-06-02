@@ -18,6 +18,7 @@ package warden.async.v1beta1;
 import "amino/amino.proto";
 import "cosmos/base/v1beta1/coin.proto";
 import "gogoproto/gogo.proto";
+import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1";
 
@@ -64,6 +65,12 @@ message TaskResult {
   // If error is set, the Task is considered failed and the output will be
   // empty.
   string error = 4;
+  // created_at is the timestamp of when this result was added.
+  google.protobuf.Timestamp created_at = 5 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true,
+    (gogoproto.stdtime) = true
+  ];
   reserved 3;
 }
 

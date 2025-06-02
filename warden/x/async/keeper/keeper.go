@@ -157,10 +157,12 @@ func (k Keeper) AddTaskResult(ctx context.Context, id uint64, submitter sdk.Cons
 		return fmt.Errorf("task %d expected result from %s, got one from %s", id, task.Solver, submitter)
 	}
 
+	now := sdk.UnwrapSDKContext(ctx).BlockTime()
 	if err := k.tasks.SetResult(ctx, task, types.TaskResult{
-		Id:     id,
-		Output: output,
-		Error:  errorReason,
+		Id:        id,
+		Output:    output,
+		Error:     errorReason,
+		CreatedAt: now,
 	}); err != nil {
 		return err
 	}

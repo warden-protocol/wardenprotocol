@@ -34,5 +34,6 @@ func (c *AuthQueryClient) Account(ctx context.Context, addr string) (types.Accou
 	if err := account.Unmarshal(res.Account.Value); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal BaseAccount: %w", err)
 	}
+
 	return &account, nil
 }

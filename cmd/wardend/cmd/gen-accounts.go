@@ -86,7 +86,6 @@ contain valid denominations.
 
 			// Create ClawbackvestingAccount or standard evm account
 			switch {
-
 			default:
 				genAccount = baseAccount
 			}

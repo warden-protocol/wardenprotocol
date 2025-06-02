@@ -10,10 +10,6 @@ import (
 	"path/filepath"
 	"time"
 
-	// Force-load the tracer engines to trigger registration due to Go-Ethereum v1.10.15 changes
-	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
-	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
-
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
 	"cosmossdk.io/math"
@@ -80,6 +76,10 @@ import (
 	icahostkeeper "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/host/keeper"
 	ibckeeper "github.com/cosmos/ibc-go/v10/modules/core/keeper"
 	corevm "github.com/ethereum/go-ethereum/core/vm"
+
+	// Force-load the tracer engines to trigger registration due to Go-Ethereum v1.10.15 changes
+	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
+	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
 	marketmapkeeper "github.com/skip-mev/slinky/x/marketmap/keeper"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
 	"github.com/spf13/cast"
@@ -252,7 +252,6 @@ func registerProphetHanlders(appOpts servertypes.AppOptions) {
 
 // AppConfig returns the default app config.
 func AppConfig() depinject.Config {
-
 	return depinject.Configs(
 		// used in runtime.ProvideApp to register eth signing types
 		depinject.Provide(ProvideCustomRegisterCrypto),
@@ -467,7 +466,7 @@ func New(
 
 	app.App = appBuilder.Build(db, traceStore, updatedBaseAppOptions...)
 
-	app.App.SetTxEncoder(app.txConfig.TxEncoder())
+	app.SetTxEncoder(app.txConfig.TxEncoder())
 
 	if err := evmAppOptions(app.ChainID()); err != nil {
 		panic(err)
@@ -701,8 +700,6 @@ func BlockedAddresses() map[string]bool {
 }
 
 // DefaultGenesis returns a default genesis from the registered AppModuleBasic's.
-//
-// TODO: change all receivers to osApp
 func (a *App) DefaultGenesis() map[string]json.RawMessage {
 	genesis := a.App.DefaultGenesis()
 

@@ -76,9 +76,8 @@ func initRootCmd(
 		evmclient.KeyCommands(app.DefaultNodeHome, true),
 	)
 
-	// Add tx flags
-	var err error
-	rootCmd, err = srvflags.AddTxFlags(rootCmd)
+	// Add tx flags.
+	_, err := srvflags.AddTxFlags(rootCmd)
 	if err != nil {
 		panic(err)
 	}

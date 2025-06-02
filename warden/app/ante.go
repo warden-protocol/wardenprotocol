@@ -24,7 +24,7 @@ import (
 	"github.com/cosmos/ibc-go/v10/modules/core/keeper"
 )
 
-// BankKeeper defines the contract needed for supply related APIs (noalias)
+// BankKeeper defines the contract needed for supply related APIs (noalias).
 type BankKeeper interface {
 	IsSendEnabledCoins(ctx context.Context, coins ...sdk.Coin) error
 	SendCoins(ctx context.Context, from, to sdk.AccAddress, amt sdk.Coins) error
@@ -103,7 +103,7 @@ func newMonoEVMAnteHandler(options HandlerOptions) sdk.AnteHandler {
 	)
 }
 
-// Validate checks if the keepers are defined
+// Validate checks if the keepers are defined.
 func (options HandlerOptions) Validate() error {
 	if options.AccountKeeper == nil {
 		return errors.New("account keeper is required for ante builder")

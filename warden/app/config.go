@@ -72,6 +72,7 @@ func EVMAppOptions(chainID string) error {
 	}
 
 	sealed = true
+
 	return nil
 }
 

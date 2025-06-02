@@ -1,9 +1,8 @@
 package config
 
 import (
-	"github.com/cosmos/evm/types"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/evm/types"
 )
 
 const (

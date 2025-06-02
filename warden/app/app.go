@@ -101,10 +101,8 @@ const (
 	DisplayDenom = "ward"
 )
 
-var (
-	// DefaultNodeHome default home directories for the application daemon.
-	DefaultNodeHome string
-)
+// DefaultNodeHome default home directories for the application daemon.
+var DefaultNodeHome string
 
 var (
 	_ runtime.AppI            = (*App)(nil)

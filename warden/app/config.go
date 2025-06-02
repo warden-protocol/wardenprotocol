@@ -27,8 +27,8 @@ var sealed = false
 // chain id.
 var ChainsCoinInfo = map[string]evmtypes.EvmCoinInfo{
 	ChainID: {
-		Denom:         BaseDenom,
-		ExtendedDenom: BaseDenom,
+		Denom:         ChainDenom,
+		ExtendedDenom: ChainDenom,
 		DisplayDenom:  DisplayDenom,
 		Decimals:      evmtypes.EighteenDecimals,
 	},

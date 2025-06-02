@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"math/big"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -12,7 +11,6 @@ import (
 
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
-	"cosmossdk.io/math"
 	storetypes "cosmossdk.io/store/types"
 	circuitkeeper "cosmossdk.io/x/circuit/keeper"
 	evidencekeeper "cosmossdk.io/x/evidence/keeper"
@@ -97,20 +95,15 @@ import (
 )
 
 const (
-	AccountAddressPrefix = "warden"
-	Name                 = "warden"
-	ChainID              = "warden_1337-1"
+	Name         = "warden"
+	ChainID      = "warden_1337-1"
+	ChainDenom   = "award"
+	DisplayDenom = "ward"
 )
 
 var (
 	// DefaultNodeHome default home directories for the application daemon.
 	DefaultNodeHome string
-	CoinType        uint32 = 60
-
-	BaseDenomUnit int64 = 18
-
-	BaseDenom    = "award"
-	DisplayDenom = "WARD"
 )
 
 var (
@@ -181,15 +174,15 @@ type App struct {
 }
 
 func init() {
+	// Update power reduction based on the new 18-decimal base unit
+	sdk.DefaultPowerReduction = cosmosevmtypes.AttoPowerReduction
+
 	userHomeDir, err := os.UserHomeDir()
 	if err != nil {
 		panic(err)
 	}
 
 	DefaultNodeHome = filepath.Join(userHomeDir, "."+Name)
-
-	// Update power reduction based on the new 18-decimal base unit
-	sdk.DefaultPowerReduction = math.NewIntFromBigInt(new(big.Int).Exp(big.NewInt(10), big.NewInt(BaseDenomUnit), nil))
 }
 
 // getGovProposalHandlers return the chain proposal handlers.

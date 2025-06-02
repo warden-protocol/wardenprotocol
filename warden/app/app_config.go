@@ -86,6 +86,7 @@ import (
 	asyncmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/async/module"
 	schedmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/sched/module"
 	wardenmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/warden/module"
+	wardenconfig "github.com/warden-protocol/wardenprotocol/cmd/wardend/config"
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/act/module" // import for side-effects
 	actmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/async/module" // import for side-effects
@@ -97,18 +98,11 @@ import (
 )
 
 func init() {
-	// Set prefixes
-	accountPubKeyPrefix := AccountAddressPrefix + "pub"
-	validatorAddressPrefix := AccountAddressPrefix + "valoper"
-	validatorPubKeyPrefix := AccountAddressPrefix + "valoperpub"
-	consNodeAddressPrefix := AccountAddressPrefix + "valcons"
-	consNodePubKeyPrefix := AccountAddressPrefix + "valconspub"
-
-	// Set and seal config
 	config := sdk.GetConfig()
-	config.SetBech32PrefixForAccount(AccountAddressPrefix, accountPubKeyPrefix)
-	config.SetBech32PrefixForValidator(validatorAddressPrefix, validatorPubKeyPrefix)
-	config.SetBech32PrefixForConsensusNode(consNodeAddressPrefix, consNodePubKeyPrefix)
+
+	wardenconfig.SetBech32Prefixes(config)
+	wardenconfig.SetBip44CoinType(config)
+
 	config.Seal()
 }
 
@@ -306,7 +300,7 @@ func moduleConfig() depinject.Config {
 				{
 					Name: authtypes.ModuleName,
 					Config: appconfig.WrapAny(&authmodulev1.Module{
-						Bech32Prefix:             AccountAddressPrefix,
+						Bech32Prefix:             wardenconfig.Bech32PrefixAccAddr,
 						ModuleAccountPermissions: moduleAccPerms,
 						// By default modules authority is the governance module. This is configurable with the following:
 						// Authority: "group", // A custom module authority can be set using a module name
@@ -328,8 +322,8 @@ func moduleConfig() depinject.Config {
 					Config: appconfig.WrapAny(&stakingmodulev1.Module{
 						// NOTE: specifying a prefix is only necessary when using bech32 addresses
 						// If not specfied, the auth Bech32Prefix appended with "valoper" and "valcons" is used by default
-						Bech32PrefixValidator: AccountAddressPrefix + "valoper",
-						Bech32PrefixConsensus: AccountAddressPrefix + "valcons",
+						Bech32PrefixValidator: wardenconfig.Bech32PrefixValAddr,
+						Bech32PrefixConsensus: wardenconfig.Bech32PrefixConsAddr,
 					}),
 				},
 				{

@@ -108,83 +108,85 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz 
 	// It avoids panics and returns the out of gas error so the EVM can continue gracefully.
 	defer cmn.HandleGasError(ctx, contract, initialGas, &err, stateDB, snapshot)()
 
-	switch method.Name {
-	// transactions
-	case AddKeychainAdminMethod:
-		bz, err = p.AddKeychainAdminMethod(ctx, evm.Origin, stateDB, method, args)
-	case AddKeychainWriterMethod:
-		bz, err = p.AddKeychainWriterMethod(ctx, evm.Origin, stateDB, method, args)
-	case FulfilKeyRequestMethod:
-		bz, err = p.FulfilKeyRequestMethod(ctx, evm.Origin, types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED, stateDB, method, args)
-	case RejectKeyRequestMethod:
-		bz, err = p.FulfilKeyRequestMethod(ctx, evm.Origin, types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED, stateDB, method, args)
-	case FulfilSignRequestMethod:
-		bz, err = p.FulfilSignRequestMethod(ctx, evm.Origin, types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED, stateDB, method, args)
-	case RejectSignRequestMethod:
-		bz, err = p.FulfilSignRequestMethod(ctx, evm.Origin, types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED, stateDB, method, args)
-	case NewKeychainMethod:
-		bz, err = p.NewKeychainMethod(ctx, evm.Origin, stateDB, method, args)
-	case NewSpaceMethod:
-		bz, err = p.NewSpaceMethod(ctx, evm.Origin, stateDB, method, args)
-	case RemoveKeychainAdminMethod:
-		bz, err = p.RemoveKeychainAdminMethod(ctx, evm.Origin, stateDB, method, args)
-	case UpdateKeychainMethod:
-		bz, err = p.UpdateKeychainMethod(ctx, evm.Origin, stateDB, method, args)
-	case AddSpaceOwnerMethod:
-		bz, err = p.AddSpaceOwnerMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
-	case RemoveSpaceOwnerMethod:
-		bz, err = p.RemoveSpaceOwnerMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
-	case NewKeyRequestMethod:
-		bz, err = p.NewKeyRequestMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
-	case NewSignRequestMethod:
-		bz, err = p.NewSignRequestMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
-	case UpdateKeyMethod:
-		bz, err = p.UpdateKeyMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
-	case UpdateSpaceMethod:
-		bz, err = p.UpdateSpaceMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
+	return p.RunAtomic(snapshot, stateDB, func() ([]byte, error) {
+		switch method.Name {
+		// transactions
+		case AddKeychainAdminMethod:
+			bz, err = p.AddKeychainAdminMethod(ctx, evm.Origin, stateDB, method, args)
+		case AddKeychainWriterMethod:
+			bz, err = p.AddKeychainWriterMethod(ctx, evm.Origin, stateDB, method, args)
+		case FulfilKeyRequestMethod:
+			bz, err = p.FulfilKeyRequestMethod(ctx, evm.Origin, types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED, stateDB, method, args)
+		case RejectKeyRequestMethod:
+			bz, err = p.FulfilKeyRequestMethod(ctx, evm.Origin, types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED, stateDB, method, args)
+		case FulfilSignRequestMethod:
+			bz, err = p.FulfilSignRequestMethod(ctx, evm.Origin, types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED, stateDB, method, args)
+		case RejectSignRequestMethod:
+			bz, err = p.FulfilSignRequestMethod(ctx, evm.Origin, types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED, stateDB, method, args)
+		case NewKeychainMethod:
+			bz, err = p.NewKeychainMethod(ctx, evm.Origin, stateDB, method, args)
+		case NewSpaceMethod:
+			bz, err = p.NewSpaceMethod(ctx, evm.Origin, stateDB, method, args)
+		case RemoveKeychainAdminMethod:
+			bz, err = p.RemoveKeychainAdminMethod(ctx, evm.Origin, stateDB, method, args)
+		case UpdateKeychainMethod:
+			bz, err = p.UpdateKeychainMethod(ctx, evm.Origin, stateDB, method, args)
+		case AddSpaceOwnerMethod:
+			bz, err = p.AddSpaceOwnerMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
+		case RemoveSpaceOwnerMethod:
+			bz, err = p.RemoveSpaceOwnerMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
+		case NewKeyRequestMethod:
+			bz, err = p.NewKeyRequestMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
+		case NewSignRequestMethod:
+			bz, err = p.NewSignRequestMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
+		case UpdateKeyMethod:
+			bz, err = p.UpdateKeyMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
+		case UpdateSpaceMethod:
+			bz, err = p.UpdateSpaceMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
 
-	// queries
-	case AllKeysMethod:
-		bz, err = p.AllKeysMethod(ctx, evm.Origin, stateDB, method, args)
-	case KeyByIdMethod:
-		bz, err = p.KeyByIdMethod(ctx, evm.Origin, stateDB, method, args)
-	case KeysBySpaceIdMethod:
-		bz, err = p.KeysBySpaceIdMethod(ctx, evm.Origin, stateDB, method, args)
-	case KeyRequestMethod:
-		bz, err = p.KeyRequestMethod(ctx, evm.Origin, stateDB, method, args)
-	case KeyRequestsMethod:
-		bz, err = p.KeyRequestsMethod(ctx, evm.Origin, stateDB, method, args)
-	case KeychainMethod:
-		bz, err = p.KeychainMethod(ctx, evm.Origin, stateDB, method, args)
-	case KeychainsMethod:
-		bz, err = p.KeychainsMethod(ctx, evm.Origin, stateDB, method, args)
-	case SignRequestByIdMethod:
-		bz, err = p.SignRequestByIdMethod(ctx, evm.Origin, stateDB, method, args)
-	case SignRequestsMethod:
-		bz, err = p.SignRequestsMethod(ctx, evm.Origin, stateDB, method, args)
-	case SpaceByIdMethod:
-		bz, err = p.SpaceByIdMethod(ctx, evm.Origin, stateDB, method, args)
-	case SpacesMethod:
-		bz, err = p.SpacesMethod(ctx, evm.Origin, stateDB, method, args)
-	case SpacesByOwnerMethod:
-		bz, err = p.SpacesByOwnerMethod(ctx, evm.Origin, stateDB, method, args)
-	}
+		// queries
+		case AllKeysMethod:
+			bz, err = p.AllKeysMethod(ctx, evm.Origin, stateDB, method, args)
+		case KeyByIdMethod:
+			bz, err = p.KeyByIdMethod(ctx, evm.Origin, stateDB, method, args)
+		case KeysBySpaceIdMethod:
+			bz, err = p.KeysBySpaceIdMethod(ctx, evm.Origin, stateDB, method, args)
+		case KeyRequestMethod:
+			bz, err = p.KeyRequestMethod(ctx, evm.Origin, stateDB, method, args)
+		case KeyRequestsMethod:
+			bz, err = p.KeyRequestsMethod(ctx, evm.Origin, stateDB, method, args)
+		case KeychainMethod:
+			bz, err = p.KeychainMethod(ctx, evm.Origin, stateDB, method, args)
+		case KeychainsMethod:
+			bz, err = p.KeychainsMethod(ctx, evm.Origin, stateDB, method, args)
+		case SignRequestByIdMethod:
+			bz, err = p.SignRequestByIdMethod(ctx, evm.Origin, stateDB, method, args)
+		case SignRequestsMethod:
+			bz, err = p.SignRequestsMethod(ctx, evm.Origin, stateDB, method, args)
+		case SpaceByIdMethod:
+			bz, err = p.SpaceByIdMethod(ctx, evm.Origin, stateDB, method, args)
+		case SpacesMethod:
+			bz, err = p.SpacesMethod(ctx, evm.Origin, stateDB, method, args)
+		case SpacesByOwnerMethod:
+			bz, err = p.SpacesByOwnerMethod(ctx, evm.Origin, stateDB, method, args)
+		}
 
-	if err != nil {
-		return nil, err
-	}
+		if err != nil {
+			return nil, err
+		}
 
-	cost := ctx.GasMeter().GasConsumed() - initialGas
+		cost := ctx.GasMeter().GasConsumed() - initialGas
 
-	if !contract.UseGas(cost) {
-		return nil, vm.ErrOutOfGas
-	}
+		if !contract.UseGas(cost) {
+			return nil, vm.ErrOutOfGas
+		}
 
-	if err := p.AddJournalEntries(stateDB, snapshot); err != nil {
-		return nil, err
-	}
+		if err := p.AddJournalEntries(stateDB, snapshot); err != nil {
+			return nil, err
+		}
 
-	return bz, nil
+		return bz, nil
+	})
 }
 
 // IsTransaction checks if the given method name corresponds to a transaction or query.

@@ -96,33 +96,35 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 	// It avoids panics and returns the out of gas error so the EVM can continue gracefully.
 	defer evmcmn.HandleGasError(ctx, contract, initialGas, &err, stateDB, snapshot)()
 
-	switch method.Name {
-	// transactions
+	return p.RunAtomic(snapshot, stateDB, func() ([]byte, error) {
+		switch method.Name {
+		// transactions
 
-	// queries
-	case CallbackByIdMethod:
-		bz, err = p.CallbackByIdMethod(ctx, method, args)
-	case CallbacksMethod:
-		bz, err = p.CallbacksMethod(ctx, method, args)
-	case GetAddressMethod:
-		bz, err = p.GetAddressMethod(ctx, method, args)
-	}
+		// queries
+		case CallbackByIdMethod:
+			bz, err = p.CallbackByIdMethod(ctx, method, args)
+		case CallbacksMethod:
+			bz, err = p.CallbacksMethod(ctx, method, args)
+		case GetAddressMethod:
+			bz, err = p.GetAddressMethod(ctx, method, args)
+		}
 
-	if err != nil {
-		return nil, err
-	}
+		if err != nil {
+			return nil, err
+		}
 
-	cost := ctx.GasMeter().GasConsumed() - initialGas
+		cost := ctx.GasMeter().GasConsumed() - initialGas
 
-	if !contract.UseGas(cost) {
-		return nil, vm.ErrOutOfGas
-	}
+		if !contract.UseGas(cost) {
+			return nil, vm.ErrOutOfGas
+		}
 
-	if err := p.AddJournalEntries(stateDB, snapshot); err != nil {
-		return nil, err
-	}
+		if err := p.AddJournalEntries(stateDB, snapshot); err != nil {
+			return nil, err
+		}
 
-	return bz, nil
+		return bz, nil
+	})
 }
 
 func (p *Precompile) IsTransaction(method *abi.Method) bool {

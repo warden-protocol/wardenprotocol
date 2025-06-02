@@ -97,46 +97,48 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 	// It avoids panics and returns the out of gas error so the EVM can continue gracefully.
 	defer evmcmn.HandleGasError(ctx, contract, initialGas, &err, stateDB, snapshot)()
 
-	switch method.Name {
-	// transactions
-	case CheckActionMethod:
-		bz, err = p.CheckActionMethod(ctx, evm.Origin, stateDB, method, args)
-	case NewTemplateMethod:
-		bz, err = p.NewTemplateMethod(ctx, evm.Origin, stateDB, method, args)
-	case RevokeActionMethod:
-		bz, err = p.RevokeActionMethod(ctx, evm.Origin, stateDB, method, args)
-	case UpdateTemplateMethod:
-		bz, err = p.UpdateTemplateMethod(ctx, evm.Origin, stateDB, method, args)
-	case VoteForActionMethod:
-		bz, err = p.VoteForActionMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
-	// queries
-	case ActionsQuery:
-		bz, err = p.ActionsQuery(ctx, contract, method, args)
-	case ActionByIdQuery:
-		bz, err = p.ActionByIdQuery(ctx, contract, method, args)
-	case ActionsByAddressQuery:
-		bz, err = p.ActionsByAddressQuery(ctx, contract, method, args)
-	case TemplatesQuery:
-		bz, err = p.TemplatesQuery(ctx, contract, method, args)
-	case TemplateByIdQuery:
-		bz, err = p.TemplateByIdQuery(ctx, contract, method, args)
-	}
+	return p.RunAtomic(snapshot, stateDB, func() ([]byte, error) {
+		switch method.Name {
+		// transactions
+		case CheckActionMethod:
+			bz, err = p.CheckActionMethod(ctx, evm.Origin, stateDB, method, args)
+		case NewTemplateMethod:
+			bz, err = p.NewTemplateMethod(ctx, evm.Origin, stateDB, method, args)
+		case RevokeActionMethod:
+			bz, err = p.RevokeActionMethod(ctx, evm.Origin, stateDB, method, args)
+		case UpdateTemplateMethod:
+			bz, err = p.UpdateTemplateMethod(ctx, evm.Origin, stateDB, method, args)
+		case VoteForActionMethod:
+			bz, err = p.VoteForActionMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
+		// queries
+		case ActionsQuery:
+			bz, err = p.ActionsQuery(ctx, contract, method, args)
+		case ActionByIdQuery:
+			bz, err = p.ActionByIdQuery(ctx, contract, method, args)
+		case ActionsByAddressQuery:
+			bz, err = p.ActionsByAddressQuery(ctx, contract, method, args)
+		case TemplatesQuery:
+			bz, err = p.TemplatesQuery(ctx, contract, method, args)
+		case TemplateByIdQuery:
+			bz, err = p.TemplateByIdQuery(ctx, contract, method, args)
+		}
 
-	if err != nil {
-		return nil, err
-	}
+		if err != nil {
+			return nil, err
+		}
 
-	cost := ctx.GasMeter().GasConsumed() - initialGas
+		cost := ctx.GasMeter().GasConsumed() - initialGas
 
-	if !contract.UseGas(cost) {
-		return nil, vm.ErrOutOfGas
-	}
+		if !contract.UseGas(cost) {
+			return nil, vm.ErrOutOfGas
+		}
 
-	if err := p.AddJournalEntries(stateDB, snapshot); err != nil {
-		return nil, err
-	}
+		if err := p.AddJournalEntries(stateDB, snapshot); err != nil {
+			return nil, err
+		}
 
-	return bz, nil
+		return bz, nil
+	})
 }
 
 func (p *Precompile) IsTransaction(method *abi.Method) bool {

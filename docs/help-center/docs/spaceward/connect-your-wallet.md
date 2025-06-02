@@ -26,4 +26,4 @@ After connecting, you'll receive a **Warden address**.
 
 To get it, click your connected wallet icon in the top-right corner of the screen. A pop-up will open where you can see the wallet details and copy the address.
 
-![Get your connected wallet address](../../static/img/connected-wallet-address.png)
+![Get your connected wallet address](../../static/img/spaceward/connected-wallet-address.png)

@@ -10,12 +10,12 @@ slug: /
 
 Try SpaceWard: 👉 [SpaceWard on Chiado testnet](https://spaceward.chiado.wardenprotocol.org/)
 
-**SpaceWard** is the front-end interface for the Warden Protocol, enabling account aggregation and secure omnichain operations.
+**SpaceWard** is the front-end interface for Warden Protocol, enabling account aggregation and secure omnichain operations.
 
 - **For users**: Access the most secure multichain multisig wallet. Create Spaces and interact with the Web3 space. Create Rules to protect your wallets and program transactions.
 - **For builders**: [Build Omnichain Applications](https://docs.wardenprotocol.org/build-an-app/introduction) on Warden or any compatible blockchain.
 
-To engage with SpaceWard, you need to [connect your wallet](/spaceward/connect-your-wallet) with the Warden Protocol.
+To engage with SpaceWard, you need to [connect your wallet](/spaceward/connect-your-wallet) with Warden Protocol.
 
 ## Main features
 
@@ -35,7 +35,7 @@ Within SpaceWard, you have the ability to carry out a wide range of protocol-rel
 12. [Get your Warden address](/spaceward/connect-your-wallet#get-your-warden-address), [get test WARD](/spaceward/get-test-ward), or close the session
 13. [Access dApps](/spaceward/use-dapps#use-spaceward-collection) through WalletConnect and MetaMask Snap
 
-![SpaceWard overview](../../static/img/spaceward-overview.png)
+![SpaceWard overview](../../static/img/spaceward/spaceward-overview.png)
 
 ## Transaction flow
 

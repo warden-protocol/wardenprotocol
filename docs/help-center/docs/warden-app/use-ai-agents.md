@@ -4,4 +4,8 @@ sidebar_position: 6
 
 # Use AI agents
 
-**Agent Hub**, **AI Agents**: coming soon.
+*Coming soon*
+
+Warden App supports managing, swapping, and earning with **AI Agents** through a simple chat interface.
+
+Soon, we'll be launching the **Agent Hub**—your gateway to exploring a variety of specialized Agents.

@@ -6,26 +6,47 @@ sidebar_position: 5
 
 ## Overview
 
+This guide explains how to view, deposit, send, or swap your **assets** in the Warden App.
+
 ## View the balance
 
-1. The wallet icon
-2. **Addresses**: Select a network
-3. [Wallet](manage-your-wallet): View and manage your assets
+You can access your balance and a detailed breakdown of assets in the [wallet](manage-your-wallet).
+
+Just log in to the [Warden App](https://app.wardenprotocol.org) and click the wallet icon in the top right.
+
+![Access your wallet in the Warden App](../../static/img/warden-app/manage-your-wallet-1.png)
 
 ## Deposit assets
 
-1. The wallet icon
-2. **Addresses**: check the network
-3. **Deposit**
-   - **Pay with card** (**MoonPay**)
-   - **Transfer from wallet** (--> **Linked Wallets**)
-   - **Receive funds**
+To deposit an asset, take the following steps:
+
+1. Log in: 👉 [Warden App](https://app.wardenprotocol.org)
+2. Click the wallet icon in the top-right corner.
+3. Select **Deposit**.
+4. Select one of these options:
+   - **Pay with card**: Pay through MoonPay.
+   - **Transfer from wallet**: Link a Web3 wallet and deposit funds from it. 
+   - **Receive funds**: Copy your wallet address or scan the QR code.
+
+:::tip
+To view and unlink your linked wallets, see the [account settings](manage-your-wallet#configure-the-wallet).
+:::
+
+![Deposit assets in the Warden App](../../static/img/warden-app/manage-assets-1.png)
 
 ## Send or swap assets
 
-Before sending or swapping an asset, make sure your [wallet is funded](#deposit-assets) in a network where you wish to perform a transaction. Then take these steps:
+In the Warden App, you can send or swap assets using simple **chat commands**.
 
-1. [Create a new chat](use-the-ai-assistant) with the AI assistant. Alternatively, initiate a conversation by clicking **Send** in your wallet.
-2. Ask the assistant to send or swap an asset.
-3. Provide all the required details and confirm the transaction in the chat.
-4. The assistant will share the transaction details with you. You can always find them in your [activity history](manage-your-wallet#view-the-balance-and-activity).
+Make sure your [wallet is funded](#deposit-assets) and follow these steps:
+
+1. Log in: 👉 [Warden App](https://app.wardenprotocol.org)
+2. In the chat box, ask the [AI assistant](use-the-ai-assistant) to **send** or **swap** an asset. Alternatively, you can initiate a transfer by clicking **Send** in your wallet.
+4. Provide the required details and confirm the transaction in the chat.
+5. The assistant will share the transaction details with you. You can also find them anytime in your [activity history](manage-your-wallet#view-the-balance--activity).
+
+:::tip
+When specifying the recipient, you can refer to your [favorite addresses](manage-your-wallet#configure-the-wallet) by name.
+:::
+
+![Send assets in the Warden App](../../static/img/warden-app/manage-assets-2.png)

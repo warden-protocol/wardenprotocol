@@ -6,36 +6,53 @@ sidebar_position: 4
 
 ## Overview
 
-Your **wallet (account)**...
+This guide explains how to manage your **wallet (account)** in the Warden App.
 
-## Select a network
+In the wallet, you can view your balance and activity, whitelist addresses, manage authentication methods, and more.
 
-1. The wallet icon
-2. **Addresses**
+## View the balance & activity
 
-## View the activity & balance
+To view your balance and activity, take these steps:
 
-1. View your balance and [manage your assets](manage-assets)
-2. **Activity**: tx, overview, tx details + **Refresh**
+1. Log in: 👉 [Warden App](https://app.wardenprotocol.org)
+2. Click the wallet icon in the top-right corner of the screen.
+
+![Access your wallet in the Warden App](../../static/img/warden-app/manage-your-wallet-1.png)
+
+Here you can do the following:
+
+- View your balance and [manage your assets](manage-assets)
+- See a breakdown of your assets in the **Assets** tab
+- Review your activity and transaction details in the the **Activity** tab
+
+![View your balance and activity in the Warden App](../../static/img/warden-app/manage-your-wallet-2.png)
 
 ## Configure the wallet
 
-1. The wallet icon
-2. The settings icon
-   - **Linked Wallets**: [Deposit assets](manage-assets#deposit-assets)
-   - **Favorite Addresses**: Whitelist an address, reference it in the [AI chat](use-the-ai-assistant) by name
-   - **Passkeys**: Secure your account with a passkey (Touch ID, Face ID, a security key)
-   - **Login**: Add an authentication method (**Email**/**Google**/**Twitter**/**Telegram**)
+To configure your account, take the following steps:
+
+1. Click the wallet icon in the top-right corner.
+2. Click the gear icon and configure the following options:
+   - **Linked Wallets**: View and unlink Web3 wallets you've [deposited assets](manage-assets#deposit-assets) from.
+   - **Favorite Addresses**: Whitelist addresses to reference them by name in the [AI chat](use-the-ai-assistant).
+   - **Passkeys**: Secure your account with Touch ID, Face ID, or security key.
+   - **Login**: Add an authentication method: **Email**, **Google**, **Twitter**, or **Telegram**.
+
+![Configure your wallet in the Warden App](../../static/img/warden-app/manage-your-wallet-3.png)
 
 ## Get your address & key
 
-Get your address:
+To copy your wallet address, take these steps:
 
-1. The wallet icon
-2. **Addresses**: Copy your address
+1. Click the wallet icon in the top-right corner.
+2. Click **Addresses**.
+3. Select an address associated with the desired network.
 
-Get your private key:
+To get your private key, do this:
 
-- **Settings** > **Show Private Key**: Copy your private key
+1. Click the gear icon to open Settings.
+2. Select **Show Private Key** and copy your key.
 
-Never share the key with anyone!
+:::warning
+Never share your private key with anyone. It grants full access to your assets.
+:::

@@ -134,3 +134,30 @@ func (k *TaskKeeper) PendingTasks(ctx context.Context, solverAddr sdk.ConsAddres
 
 	return tasks, nil
 }
+
+func (k *TaskKeeper) pruneTask(ctx context.Context, id uint64) error {
+	t, err := k.tasks.Get(ctx, id)
+	if err != nil {
+		return err
+	}
+	creator := sdk.MustAccAddressFromBech32(t.Creator)
+	solver := t.Solver
+
+	if err := k.taskByCreator.Remove(ctx, collections.Join(creator, id)); err != nil {
+		return err
+	}
+
+	if err := k.results.Remove(ctx, id); err != nil {
+		return err
+	}
+
+	if err := k.tasks.Remove(ctx, id); err != nil {
+		return err
+	}
+
+	if err := k.pendingTasks.Remove(ctx, collections.Join(solver, id)); err != nil {
+		return err
+	}
+
+	return nil
+}

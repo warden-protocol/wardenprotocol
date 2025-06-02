@@ -53,8 +53,7 @@ snapshot-base:
 
   wardend keys add alice --keyring-backend test --home $WARDEND_HOME > /dev/null
   wardend genesis add-genesis-account alice 10000000000000000000000000000000000000award --keyring-backend test --home $WARDEND_HOME
-  replace 's/aevmos/award/' $WARDEND_HOME/config/genesis.json
-  replace 's/aevmos/award/' $WARDEND_HOME/config/app.toml
+
   jq '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
   jq '.app_state.async.active_plugins += {{async-plugins}}' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
   jq '.consensus["params"]["abci"]["vote_extensions_enable_height"] = "2"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
@@ -184,7 +183,6 @@ snapshot-many-users:
   wardend genesis add-genesis-account charlie 10000000000000000000000000award --keyring-backend test --home $WARDEND_HOME
   wardend genesis add-genesis-space $(wardend keys show -a alice --keyring-backend test --home $WARDEND_HOME) --home $WARDEND_HOME
 
-  jq '.app_state["evm"]["params"]["evm_denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
   jq '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
   jq '.app_state.async.active_plugins += {{async-plugins}}' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
   jq '.consensus["params"]["abci"]["vote_extensions_enable_height"] = "2"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json

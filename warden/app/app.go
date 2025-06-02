@@ -79,6 +79,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/echo"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/http"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/pricepred"
+	"github.com/warden-protocol/wardenprotocol/prophet/plugins/quantkit"
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
@@ -238,6 +239,11 @@ func registerProphetHanlders(appOpts servertypes.AppOptions) {
 		parsedTimeout := time.Duration(timeout) * time.Second
 
 		prophet.Register("http", http.NewPlugin(parsedURLs, parsedTimeout))
+	}
+
+	if cast.ToBool(appOpts.Get("quantkit.enabled")) {Add commentMore actions
+		prophet.Register("quantkit", venice.New(cast.ToString(appOpts.Get("quantkit.api-key")),
+		cast.ToString(appOpts.Get("quantkit.api-url"))))
 	}
 }
 

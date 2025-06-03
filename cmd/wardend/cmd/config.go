@@ -41,7 +41,7 @@ func initAppConfig() (string, interface{}) {
 		// Prophet plugins
 		PricePred pricepredconfig.Config `mapstructure:"pricepred"`
 		Http      httpconfig.Config      `mapstructure:"http"`
-		QuantKit  quantkitconfig.Config  `mapstructure:"quantkit"`
+		Quantkit  quantkitconfig.Config  `mapstructure:"quantkit"`
 	}
 
 	// Optionally allow the chain developer to overwrite the SDK's default
@@ -107,7 +107,7 @@ func initAppConfig() (string, interface{}) {
 		Rosetta:   *evmservercfg.DefaultRosettaConfig(),
 		PricePred: *pricePredictionConfig,
 		Http:      *httpConfig,
-		QuantKit:  *quantkitConfig,
+		Quantkit:  *quantkitConfig,
 	}
 
 	customAppTemplate := serverconfig.DefaultConfigTemplate +

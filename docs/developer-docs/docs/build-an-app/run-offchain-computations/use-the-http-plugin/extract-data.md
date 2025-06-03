@@ -6,7 +6,9 @@ sidebar_position: 4
 
 ## Overview
 
-Warden returns responses from HTTP requests as JSON data. To extract specific values from these responses, you can use the JSON precompile. This tutorial will guide you through extracting the Bitcoin price from the [CoinGecko API](https://docs.coingecko.com/reference/introduction) responses.
+Warden returns responses from HTTP requests as JSON data. To extract specific values from these responses, you can use the [`read()` function](../../precompiles/json#get-multiple-values) of the [JSON precompile](../../precompiles/json).
+
+This tutorial will guide you through extracting the Bitcoin price from the [CoinGecko API](https://docs.coingecko.com/reference/introduction) responses.
 
 ## 1. Create a contract
 

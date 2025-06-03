@@ -14,6 +14,8 @@
 package v1beta1
 
 import (
+	"time"
+
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 )
 
@@ -26,7 +28,9 @@ func NewParams() Params {
 
 // DefaultParams returns a default set of parameters.
 func DefaultParams() Params {
-	return Params{}
+	return Params{
+		TaskPruneTimeout: 24 * time.Hour,
+	}
 }
 
 // ParamSetPairs get the params.ParamSet.

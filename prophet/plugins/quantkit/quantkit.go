@@ -35,7 +35,7 @@ func (p Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {
 		return nil, err
 	}
 
-	return []byte(res), nil
+	return json.Marshal(res)
 }
 
 func (p Plugin) Verify(ctx context.Context, input, output []byte) error {
@@ -49,11 +49,11 @@ type quantkitClient struct {
 }
 
 type recommendOrdersPayload struct {
-	State state `json:state`
-	Begin         string `json:"begin"`
-	End           string `json:"end"`
-	Horizon	string `json:"horizon"`
-	StrategyName string `json:"strategy_name"`,
+	State        state  `json:"state"`
+	Begin        string `json:"begin"`
+	End          string `json:"end"`
+	Horizon      string `json:"horizon"`
+	StrategyName string `json:"strategy_name"`
 }
 
 type state struct {
@@ -61,7 +61,7 @@ type state struct {
 }
 
 type asset struct {
-	Amount int `json:"amount"`
+	Amount int    `json:"amount"`
 	CoinID string `json:"coin_id"`
 }
 
@@ -70,20 +70,19 @@ type quantkitRecommendOrderResponse struct {
 }
 
 type order struct {
-	Source string `json:"source"`
-	Dest string `json:"dest"`
+	Source string  `json:"source"`
+	Dest   string  `json:"dest"`
 	Amount float64 `json:"amount"`
 }
 
-func (c *quantkitClient) recommendOrders(ctx context.Context, state state, begin string, end string, horizon string, strategy string)
-	(quantkitRecommendOrderResponse, error) {
-	
+func (c *quantkitClient) recommendOrders(ctx context.Context, inPayload recommendOrdersPayload) (quantkitRecommendOrderResponse, error) {
+
 	body, err := json.Marshal(recommendOrdersPayload{
-		State: state,
-		Begin: begin,
-		End: end,
-		Horizon: horizon,
-		StrategyName strategy,
+		State:        inPayload.State,
+		Begin:        inPayload.Begin,
+		End:          inPayload.End,
+		Horizon:      inPayload.Horizon,
+		StrategyName: inPayload.StrategyName,
 	})
 	if err != nil {
 		return quantkitRecommendOrderResponse{}, err

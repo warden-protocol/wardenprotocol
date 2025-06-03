@@ -241,9 +241,9 @@ func registerProphetHanlders(appOpts servertypes.AppOptions) {
 		prophet.Register("http", http.NewPlugin(parsedURLs, parsedTimeout))
 	}
 
-	if cast.ToBool(appOpts.Get("quantkit.enabled")) {Add commentMore actions
-		prophet.Register("quantkit", venice.New(cast.ToString(appOpts.Get("quantkit.api-key")),
-		cast.ToString(appOpts.Get("quantkit.api-url"))))
+	if cast.ToBool(appOpts.Get("quantkit.enabled")) {
+		prophet.Register("quantkit", quantkit.New(cast.ToString(appOpts.Get("quantkit.api-key")),
+			cast.ToString(appOpts.Get("quantkit.api-url"))))
 	}
 }
 

@@ -1,6 +1,9 @@
 package config
 
 const (
+	// DefaultChainID is the default chain ID for the Warden protocol.
+	EVMChainID = 1337
+
 	// EighteenDecimalsChainID is the chain ID for the 18 decimals chain.
 	EighteenDecimalsChainID = 1337
 

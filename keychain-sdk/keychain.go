@@ -9,12 +9,10 @@ package keychain
 import (
 	"context"
 	"fmt"
-	"io"
 	"log/slog"
 
 	"google.golang.org/grpc/connectivity"
 
-	"github.com/warden-protocol/wardenprotocol/go-client"
 	"github.com/warden-protocol/wardenprotocol/keychain-sdk/internal/tracker"
 	"github.com/warden-protocol/wardenprotocol/keychain-sdk/internal/writer"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
@@ -28,27 +26,20 @@ type App struct {
 	keyRequestHandler  KeyRequestHandler
 	signRequestHandler SignRequestHandler
 
-	query              *client.QueryClient
 	txWriter           *writer.W
 	keyRequestTracker  *tracker.T
 	signRequestTracker *tracker.T
+
+	clientsPool *clientsPool
 }
 
 // NewApp creates a new Keychain application, using the given configuration.
 func NewApp(config Config) *App {
 	return &App{
 		config:             config,
-		keyRequestTracker:  tracker.New(),
-		signRequestTracker: tracker.New(),
+		keyRequestTracker:  tracker.New(config.ConsensusNodeThreshold),
+		signRequestTracker: tracker.New(config.ConsensusNodeThreshold),
 	}
-}
-
-func (a *App) logger() *slog.Logger {
-	if a.config.Logger == nil {
-		a.config.Logger = slog.New(slog.NewTextHandler(io.Discard, &slog.HandlerOptions{}))
-	}
-
-	return a.config.Logger
 }
 
 // SetKeyRequestHandler sets the handler for key requests.
@@ -65,23 +56,37 @@ func (a *App) SetSignRequestHandler(handler SignRequestHandler) {
 func (a *App) Start(ctx context.Context) error {
 	a.logger().Info("starting keychain", "keychain_id", a.config.KeychainID)
 
-	err := a.initConnections()
-	if err != nil {
+	clientsPool := newClientsPool(a.config)
+	if err := clientsPool.initConnections(a.logger()); err != nil {
 		return fmt.Errorf("failed to init connections: %w", err)
 	}
 
+	a.clientsPool = clientsPool
+
+	a.txWriter = writer.New(
+		a.config.BatchSize,
+		a.config.BatchInterval,
+		a.config.TxTimeout,
+		a.logger())
+	a.txWriter.Fees = a.config.TxFees
+	a.txWriter.GasLimit = a.config.GasLimit
+
 	keyRequestsCh := make(chan *wardentypes.KeyRequest)
 	defer close(keyRequestsCh)
-	go a.ingestKeyRequests(ctx, keyRequestsCh)
+	for _, appClient := range a.clientsPool.clients {
+		go a.ingestKeyRequests(ctx, keyRequestsCh, appClient)
+	}
 
 	signRequestsCh := make(chan *wardentypes.SignRequest)
 	defer close(signRequestsCh)
-	go a.ingestSignRequests(ctx, signRequestsCh)
+	for _, appClient := range a.clientsPool.clients {
+		go a.ingestSignRequests(ctx, signRequestsCh, appClient)
+	}
 
 	flushErrors := make(chan error)
 	defer close(flushErrors)
 	go func() {
-		if err := a.txWriter.Start(ctx, flushErrors); err != nil {
+		if err := a.txWriter.Start(ctx, a.clientsPool, flushErrors); err != nil {
 			a.logger().Error("tx writer exited with error", "error", err)
 		}
 	}()
@@ -101,31 +106,14 @@ func (a *App) Start(ctx context.Context) error {
 }
 
 // ConnectionState returns the current state of the gRPC connection.
-func (a *App) ConnectionState() connectivity.State {
-	return a.query.Conn().GetState()
+func (a *App) ConnectionState() map[string]connectivity.State {
+	return a.clientsPool.ConnectionState()
 }
 
-func (a *App) initConnections() error {
-	a.logger().Info("connecting to Warden Protocol using gRPC", "url", a.config.GRPCURL, "insecure", a.config.GRPCInsecure)
-	query, err := client.NewQueryClient(a.config.GRPCURL, a.config.GRPCInsecure)
-	if err != nil {
-		return fmt.Errorf("failed to create query client: %w", err)
-	}
-	a.query = query
-
-	conn := query.Conn()
-
-	identity, err := client.NewIdentityFromSeed(a.config.Mnemonic)
-	if err != nil {
-		return fmt.Errorf("failed to create identity: %w", err)
+func (a *App) logger() *slog.Logger {
+	if a.config.Logger == nil {
+		a.config.Logger = slog.New(slog.DiscardHandler)
 	}
 
-	a.logger().Info("keychain writer identity", "address", identity.Address.String())
-
-	txClient := client.NewTxClient(identity, a.config.ChainID, conn, query)
-	a.txWriter = writer.New(txClient, a.config.BatchSize, a.config.BatchInterval, a.config.TxTimeout, a.logger())
-	a.txWriter.Fees = a.config.TxFees
-	a.txWriter.GasLimit = a.config.GasLimit
-
-	return nil
+	return a.config.Logger
 }

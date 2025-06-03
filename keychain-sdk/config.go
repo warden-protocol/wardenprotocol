@@ -16,14 +16,6 @@ type Config struct {
 	// ChainID is the chain ID of the chain to connect to.
 	ChainID string
 
-	// GRPCURL is the URL of the gRPC server to connect to.
-	// e.g. "localhost:9090"
-	GRPCURL string
-
-	// GRPCInsecure determines whether to allow an insecure connection to the
-	// gRPC server.
-	GRPCInsecure bool
-
 	// KeychainID is the ID of the keychain this instance will fetch requests
 	// for.
 	KeychainID uint64
@@ -57,4 +49,20 @@ type Config struct {
 	// If the transaction isn't included in a block, it will be considered as
 	// failed (but the blockchain might still include in a block later).
 	TxTimeout time.Duration
+
+	// ConsensusNodeThreshold represents the number of nodes required to execute a pending key/sign request.
+	ConsensusNodeThreshold uint8
+
+	// Nodes is the list of URLs of the gRPC server to connect to.
+	Nodes []GRPCNodeConfig
+}
+
+type GRPCNodeConfig struct {
+	// Insecure determines whether to allow an insecure connection to the
+	// gRPC server.
+	Insecure bool
+
+	// Host is the URL of the gRPC server to connect to.
+	// e.g. "localhost:9090"
+	Host string
 }

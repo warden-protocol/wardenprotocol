@@ -70,8 +70,8 @@ type quantkitRecommendOrderResponse struct {
 }
 
 type order struct {
-	Source string  `json:"source"`
-	Dest   string  `json:"dest"`
+	Source string  `json:"src"`
+	Dest   string  `json:"dst"`
 	Amount float64 `json:"amount"`
 }
 

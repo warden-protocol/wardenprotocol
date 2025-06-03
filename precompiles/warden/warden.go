@@ -10,6 +10,7 @@ import (
 	cmn "github.com/cosmos/evm/precompiles/common"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/tracing"
 	"github.com/ethereum/go-ethereum/core/vm"
 
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
@@ -132,17 +133,17 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz 
 		case UpdateKeychainMethod:
 			bz, err = p.UpdateKeychainMethod(ctx, evm.Origin, stateDB, method, args)
 		case AddSpaceOwnerMethod:
-			bz, err = p.AddSpaceOwnerMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
+			bz, err = p.AddSpaceOwnerMethod(ctx, evm.Origin, contract.Caller(), stateDB, method, args)
 		case RemoveSpaceOwnerMethod:
-			bz, err = p.RemoveSpaceOwnerMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
+			bz, err = p.RemoveSpaceOwnerMethod(ctx, evm.Origin, contract.Caller(), stateDB, method, args)
 		case NewKeyRequestMethod:
-			bz, err = p.NewKeyRequestMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
+			bz, err = p.NewKeyRequestMethod(ctx, evm.Origin, contract.Caller(), stateDB, method, args)
 		case NewSignRequestMethod:
-			bz, err = p.NewSignRequestMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
+			bz, err = p.NewSignRequestMethod(ctx, evm.Origin, contract.Caller(), stateDB, method, args)
 		case UpdateKeyMethod:
-			bz, err = p.UpdateKeyMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
+			bz, err = p.UpdateKeyMethod(ctx, evm.Origin, contract.Caller(), stateDB, method, args)
 		case UpdateSpaceMethod:
-			bz, err = p.UpdateSpaceMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
+			bz, err = p.UpdateSpaceMethod(ctx, evm.Origin, contract.Caller(), stateDB, method, args)
 
 		// queries
 		case AllKeysMethod:
@@ -177,7 +178,7 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz 
 
 		cost := ctx.GasMeter().GasConsumed() - initialGas
 
-		if !contract.UseGas(cost) {
+		if !contract.UseGas(cost, nil, tracing.GasChangeCallPrecompiledContract) {
 			return nil, vm.ErrOutOfGas
 		}
 

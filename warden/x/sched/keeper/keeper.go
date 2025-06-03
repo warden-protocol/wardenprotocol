@@ -20,6 +20,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
+	"github.com/holiman/uint256"
 
 	"github.com/warden-protocol/wardenprotocol/precompiles/callbacks"
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
@@ -289,14 +290,17 @@ func (k Keeper) callEVM(
 	return res, nil
 }
 
-func (k Keeper) callbackFee(ctx context.Context, gas uint64) (feeAmt *big.Int, fee sdk.Coins) {
+func (k Keeper) callbackFee(ctx context.Context, gas uint64) (*uint256.Int, sdk.Coins) {
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
 	params := evmKeeper.GetParams(sdkCtx)
 	baseFee := evmKeeper.GetBaseFee(sdkCtx)
 	gasInt := new(big.Int).SetUint64(gas)
-	feeAmt = new(big.Int).Mul(baseFee, gasInt)
-	fee = sdk.Coins{{Denom: params.EvmDenom, Amount: sdkmath.NewIntFromBigInt(feeAmt)}}
+	feeAmt := new(big.Int).Mul(baseFee, gasInt)
+	fee := sdk.Coins{{Denom: params.EvmDenom, Amount: sdkmath.NewIntFromBigInt(feeAmt)}}
 
-	return feeAmt, fee
+	feeAmtUint256 := new(uint256.Int)
+	feeAmtUint256.SetFromBig(feeAmt)
+
+	return feeAmtUint256, fee
 }

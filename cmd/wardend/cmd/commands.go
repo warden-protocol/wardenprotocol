@@ -33,6 +33,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	"github.com/warden-protocol/wardenprotocol/cmd/wardend/config"
 	"github.com/warden-protocol/wardenprotocol/warden/app"
 )
 
@@ -196,6 +197,7 @@ func newApp(
 	app, err := app.New(
 		logger, db, traceStore, true,
 		appOpts,
+		config.EVMChainID,
 		app.EVMAppOptions,
 		wasmOpts,
 		baseappOptions...,
@@ -242,7 +244,7 @@ func appExport(
 	var emptyWasmOpts []wasmkeeper.Option
 
 	if height != -1 {
-		bApp, err = app.New(logger, db, traceStore, false, appOpts, app.EVMAppOptions, emptyWasmOpts)
+		bApp, err = app.New(logger, db, traceStore, false, appOpts, config.EVMChainID, app.EVMAppOptions, emptyWasmOpts)
 		if err != nil {
 			return servertypes.ExportedApp{}, err
 		}
@@ -251,7 +253,7 @@ func appExport(
 			return servertypes.ExportedApp{}, err
 		}
 	} else {
-		bApp, err = app.New(logger, db, traceStore, true, appOpts, app.EVMAppOptions, emptyWasmOpts)
+		bApp, err = app.New(logger, db, traceStore, true, appOpts, config.EVMChainID, app.EVMAppOptions, emptyWasmOpts)
 		if err != nil {
 			return servertypes.ExportedApp{}, err
 		}

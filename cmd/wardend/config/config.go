@@ -3,6 +3,7 @@ package config
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/evm/types"
+	evmtypes "github.com/cosmos/evm/x/vm/types"
 )
 
 const (
@@ -28,6 +29,24 @@ const (
 	// BaseDenomUnit defines the precision of the base denomination.
 	BaseDenomUnit = 18
 )
+
+// ChainsCoinInfo is a map of the chain id and its corresponding EvmCoinInfo
+// that allows initializing the app with different coin info based on the
+// chain id
+var ChainsCoinInfo = map[uint64]evmtypes.EvmCoinInfo{
+	EighteenDecimalsChainID: {
+		Denom:         BaseDenom,
+		ExtendedDenom: BaseDenom,
+		DisplayDenom:  DisplayDenom,
+		Decimals:      evmtypes.EighteenDecimals,
+	},
+	CosmosChainID: {
+		Denom:         "atest",
+		ExtendedDenom: "atest",
+		DisplayDenom:  "test",
+		Decimals:      evmtypes.EighteenDecimals,
+	},
+}
 
 // SetBech32Prefixes sets the global prefixes to be used when serializing addresses and public keys to Bech32 strings.
 func SetBech32Prefixes(config *sdk.Config) {

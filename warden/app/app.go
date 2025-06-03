@@ -43,6 +43,7 @@ import (
 	consensuskeeper "github.com/cosmos/cosmos-sdk/x/consensus/keeper"
 	crisiskeeper "github.com/cosmos/cosmos-sdk/x/crisis/keeper"
 	distrkeeper "github.com/cosmos/cosmos-sdk/x/distribution/keeper"
+	epochskeeper "github.com/cosmos/cosmos-sdk/x/epochs/keeper"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	"github.com/cosmos/cosmos-sdk/x/gov"
@@ -138,6 +139,7 @@ type App struct {
 	GroupKeeper           groupkeeper.Keeper
 	ConsensusParamsKeeper consensuskeeper.Keeper
 	CircuitBreakerKeeper  circuitkeeper.Keeper
+	EpochsKeeper          epochskeeper.Keeper
 
 	// IBC
 	IBCKeeper           *ibckeeper.Keeper // IBC Keeper must be a pointer in the app, so we can SetRouter on it correctly
@@ -289,6 +291,7 @@ func New(
 	traceStore io.Writer,
 	loadLatest bool,
 	appOpts servertypes.AppOptions,
+	evmChainID uint64,
 	evmAppOptions EVMOptionsFn,
 	wasmOpts []wasmkeeper.Option,
 	baseAppOptions ...func(*baseapp.BaseApp),
@@ -409,6 +412,7 @@ func New(
 		&app.SchedKeeper,
 		&app.MarketMapKeeper,
 		&app.OracleKeeper,
+		&app.EpochsKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)
@@ -457,7 +461,7 @@ func New(
 
 	app.SetTxEncoder(app.txConfig.TxEncoder())
 
-	if err := evmAppOptions(app.ChainID()); err != nil {
+	if err := evmAppOptions(evmChainID); err != nil {
 		panic(err)
 	}
 

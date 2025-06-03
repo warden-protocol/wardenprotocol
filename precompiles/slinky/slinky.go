@@ -10,6 +10,7 @@ import (
 	cmn "github.com/cosmos/evm/precompiles/common"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/tracing"
 	"github.com/ethereum/go-ethereum/core/vm"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
 	types "github.com/skip-mev/slinky/x/oracle/types"
@@ -117,7 +118,7 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz 
 
 		cost := ctx.GasMeter().GasConsumed() - initialGas
 
-		if !contract.UseGas(cost) {
+		if !contract.UseGas(cost, nil, tracing.GasChangeCallPrecompiledContract) {
 			return nil, vm.ErrOutOfGas
 		}
 

@@ -18,10 +18,8 @@
     "build:libs": "yarn build:utils && yarn build:aws-kms-signer && yarn build:blockchain-lib",
     "build:scheduler": "yarn workspace @warden-automated-orders/scheduler build",
     "build:relayer": "yarn workspace @warden-automated-orders/relayer build",
-    "build:t": "yarn build:libs && yarn workspace @warden-automated-orders/t build",
     "scheduler": "yarn workspace @warden-automated-orders/scheduler start",
-    "relayer": "yarn workspace @warden-automated-orders/relayer start",
-    "t": "yarn workspace @warden-automated-orders/t start"
+    "relayer": "yarn workspace @warden-automated-orders/relayer start"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",

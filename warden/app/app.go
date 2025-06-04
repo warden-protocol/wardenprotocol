@@ -85,6 +85,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/echo"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/http"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/pricepred"
+	"github.com/warden-protocol/wardenprotocol/prophet/plugins/quantkit"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/venice"
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
@@ -237,6 +238,11 @@ func registerProphetHandlers(appOpts servertypes.AppOptions) {
 		parsedTimeout := time.Duration(timeout) * time.Second
 
 		prophet.Register("http", http.NewPlugin(parsedURLs, parsedTimeout))
+	}
+
+	if cast.ToBool(appOpts.Get("quantkit.enabled")) {
+		prophet.Register("quantkit", quantkit.New(cast.ToString(appOpts.Get("quantkit.api-key")),
+			cast.ToString(appOpts.Get("quantkit.api-url"))))
 	}
 
 	if cast.ToBool(appOpts.Get("venice.enabled")) {

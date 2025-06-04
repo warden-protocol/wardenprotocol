@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 )
 
 type Plugin struct {
@@ -13,7 +14,9 @@ type Plugin struct {
 }
 
 func New(apiKey string, apiURL string) Plugin {
-	c := &http.Client{}
+	c := &http.Client{
+		Timeout: 30 * time.Second,
+	}
 
 	return Plugin{
 		quantkit: quantkitClient{
@@ -61,8 +64,8 @@ type state struct {
 }
 
 type asset struct {
-	Amount int    `json:"amount"`
-	CoinID string `json:"coin_id"`
+	Amount float64 `json:"amount"`
+	CoinID string  `json:"coin_id"`
 }
 
 type quantkitRecommendOrderResponse struct {
@@ -77,13 +80,7 @@ type order struct {
 
 func (c *quantkitClient) recommendOrders(ctx context.Context, inPayload recommendOrdersPayload) (quantkitRecommendOrderResponse, error) {
 
-	body, err := json.Marshal(recommendOrdersPayload{
-		State:        inPayload.State,
-		Begin:        inPayload.Begin,
-		End:          inPayload.End,
-		Horizon:      inPayload.Horizon,
-		StrategyName: inPayload.StrategyName,
-	})
+	body, err := json.Marshal(inPayload)
 	if err != nil {
 		return quantkitRecommendOrderResponse{}, err
 	}

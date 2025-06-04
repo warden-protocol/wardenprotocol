@@ -7,6 +7,7 @@ import (
 	"math/big"
 
 	"cosmossdk.io/collections"
+	"cosmossdk.io/collections/corecompat"
 	"cosmossdk.io/core/store"
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/log"
@@ -19,6 +20,7 @@ import (
 	evmtypes "github.com/cosmos/evm/x/vm/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
+	ethcore "github.com/ethereum/go-ethereum/core"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/holiman/uint256"
 
@@ -64,7 +66,7 @@ func NewKeeper(
 		panic("invalid authority address: " + authority)
 	}
 
-	sb := collections.NewSchemaBuilder(storeService)
+	sb := collections.NewSchemaBuilder(storeService.(corecompat.KVStoreService))
 
 	callbacks := NewCallbackKeeper(sb, cdc)
 
@@ -260,19 +262,23 @@ func (k Keeper) callEVM(
 
 	nonce := fromAcc.GetSequence()
 
-	msg := ethtypes.NewMessage(
-		from,
-		contract,
-		nonce,
-		big.NewInt(0), // amount
-		gasLimit,      // gasLimit
-		big.NewInt(0), // gasFeeCap
-		big.NewInt(0), // gasTipCap
-		big.NewInt(0), // gasPrice
-		data,
-		ethtypes.AccessList{}, // AccessList
-		false,                 // isFake
-	)
+	msg := ethcore.Message{
+		To:                    contract,
+		From:                  from,
+		Nonce:                 nonce,
+		Value:                 big.NewInt(0),
+		GasLimit:              gasLimit,
+		GasPrice:              big.NewInt(0),
+		GasFeeCap:             big.NewInt(0),
+		GasTipCap:             big.NewInt(0),
+		Data:                  data,
+		AccessList:            ethtypes.AccessList{},
+		BlobGasFeeCap:         big.NewInt(0),
+		BlobHashes:            []common.Hash{},
+		SetCodeAuthorizations: []ethtypes.SetCodeAuthorization{},
+		SkipNonceChecks:       false,
+		SkipFromEOACheck:      false,
+	}
 
 	evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
 	sdkCtx := sdk.UnwrapSDKContext(ctx)

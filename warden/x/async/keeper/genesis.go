@@ -37,6 +37,7 @@ func (k *Keeper) registerGenesisPlugins(ctx sdk.Context, activePlugins []string)
 		Fee:                          sdk.NewCoins(),
 		PluginCreatorRewardInPercent: math.LegacyZeroDec(),
 	}
+	maxTaskTimeout := k.GetParams(ctx).MaxTaskTimeout
 
 	for _, p := range activePlugins {
 		if err := k.AddPlugin(ctx, types.Plugin{
@@ -44,6 +45,7 @@ func (k *Keeper) registerGenesisPlugins(ctx sdk.Context, activePlugins []string)
 			Creator:     k.asyncModuleAddress.String(),
 			Description: "",
 			Fee:         zeroFees,
+			Timeout:     maxTaskTimeout,
 		}); err != nil {
 			return err
 		}

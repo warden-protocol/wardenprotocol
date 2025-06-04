@@ -18,9 +18,9 @@ Follow tutorials in this section to learn how to do the following:
 
 ## JSON parsing
 
-Responses from HTTP requests are returned as JSON data. To extract specific values from these responses, you can use the JSON precompile, which provides a convenient way to parse JSON data within your smart contract.
+Responses from HTTP requests are returned as JSON data. To extract specific values from these responses, you can use the [JSON precompile](../../precompiles/json), which provides a convenient way to parse JSON data within your smart contract.
 
-Extracting data from JSON responses requires using the JSON precompile's `read` function, as shown in [Extract data](extract-data).
+Parsing data requires using the [`read()` function](../../precompiles/json#get-multiple-values) of the precompile, as shown in [Extract data](extract-data).
 
 ## Get started
 

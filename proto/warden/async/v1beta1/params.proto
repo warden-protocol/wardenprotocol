@@ -24,4 +24,12 @@ option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/async/ty
 message Params {
   option (amino.name) = "warden/x/async/Params";
   option (gogoproto.equal) = true;
+
+  // task_prune_timeout is the amount of time after which a completed Task can
+  // be permanently pruned from the database.
+  google.protobuf.Duration task_prune_timeout = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true,
+    (gogoproto.stdduration) = true
+  ];
 }

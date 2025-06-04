@@ -5,7 +5,7 @@ import (
 
 	cmtcfg "github.com/cometbft/cometbft/config"
 	serverconfig "github.com/cosmos/cosmos-sdk/server/config"
-	evmservercfg "github.com/evmos/evmos/v20/server/config"
+	evmservercfg "github.com/cosmos/evm/server/config"
 	oracleconfig "github.com/skip-mev/slinky/oracle/config"
 
 	httpconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/http/config"
@@ -36,7 +36,7 @@ func initAppConfig() (string, interface{}) {
 		EVM     evmservercfg.EVMConfig     `mapstructure:"evm"`
 		JSONRPC evmservercfg.JSONRPCConfig `mapstructure:"json-rpc"`
 		TLS     evmservercfg.TLSConfig     `mapstructure:"tls"`
-		Rosetta evmservercfg.RosettaConfig `mapstructure:"rosetta"`
+		// Rosetta evmservercfg.RosettaConfig `mapstructure:"rosetta"` TODO AT: Check how to use rosetta
 
 		// Prophet plugins
 		PricePred pricepredconfig.Config `mapstructure:"pricepred"`
@@ -70,27 +70,8 @@ func initAppConfig() (string, interface{}) {
 	}
 
 	evmConfig := evmservercfg.DefaultEVMConfig()
-	jsonRpcConfig := evmservercfg.JSONRPCConfig{
-		Enable:                   true,
-		API:                      evmservercfg.GetDefaultAPINamespaces(),
-		Address:                  evmservercfg.DefaultJSONRPCAddress,
-		WsAddress:                evmservercfg.DefaultJSONRPCWsAddress,
-		GasCap:                   evmservercfg.DefaultGasCap,
-		AllowInsecureUnlock:      evmservercfg.DefaultJSONRPCAllowInsecureUnlock,
-		EVMTimeout:               evmservercfg.DefaultEVMTimeout,
-		TxFeeCap:                 evmservercfg.DefaultTxFeeCap,
-		FilterCap:                evmservercfg.DefaultFilterCap,
-		FeeHistoryCap:            evmservercfg.DefaultFeeHistoryCap,
-		BlockRangeCap:            evmservercfg.DefaultBlockRangeCap,
-		LogsCap:                  evmservercfg.DefaultLogsCap,
-		HTTPTimeout:              evmservercfg.DefaultHTTPTimeout,
-		HTTPIdleTimeout:          evmservercfg.DefaultHTTPIdleTimeout,
-		AllowUnprotectedTxs:      evmservercfg.DefaultAllowUnprotectedTxs,
-		MaxOpenConnections:       evmservercfg.DefaultMaxOpenConnections,
-		EnableIndexer:            false,
-		MetricsAddress:           evmservercfg.DefaultJSONRPCMetricsAddress,
-		FixRevertGasRefundHeight: evmservercfg.DefaultFixRevertGasRefundHeight,
-	}
+	jsonRpcConfig := evmservercfg.DefaultJSONRPCConfig()
+	jsonRpcConfig.Enable = true
 	tlsConfig := evmservercfg.DefaultTLSConfig()
 
 	pricePredictionConfig := pricepredconfig.DefaultConfig()
@@ -98,12 +79,12 @@ func initAppConfig() (string, interface{}) {
 	veniceConfig := veniceconfig.DefaultConfig()
 
 	customAppConfig := CustomAppConfig{
-		Config:    *srvCfg,
-		Oracle:    oracleConfig,
-		EVM:       *evmConfig,
-		JSONRPC:   jsonRpcConfig,
-		TLS:       *tlsConfig,
-		Rosetta:   *evmservercfg.DefaultRosettaConfig(),
+		Config:  *srvCfg,
+		Oracle:  oracleConfig,
+		EVM:     *evmConfig,
+		JSONRPC: *jsonRpcConfig,
+		TLS:     *tlsConfig,
+		// Rosetta:   *evmservercfg.DefaultRosettaConfig(),
 		PricePred: *pricePredictionConfig,
 		Http:      *httpConfig,
 		Venice:    *veniceConfig,
@@ -112,7 +93,7 @@ func initAppConfig() (string, interface{}) {
 	customAppTemplate := serverconfig.DefaultConfigTemplate +
 		oracleconfig.DefaultConfigTemplate +
 		evmservercfg.DefaultEVMConfigTemplate +
-		evmservercfg.DefaultRosettaConfigTemplate +
+		// evmservercfg.DefaultRosettaConfigTemplate +
 		pricepredconfig.DefaultConfigTemplate +
 		httpconfig.DefaultConfigTemplate +
 		veniceconfig.DefaultConfigTemplate

@@ -24,9 +24,9 @@ start bin="wardend" install="true":
     }
 
     rm -rf ~/.warden
-    {{bin}} init localnet --chain-id {{chain_id}} --default-denom award > /dev/null
     {{bin}} config set client chain-id {{chain_id}}
     {{bin}} config set client keyring-backend test
+    {{bin}} init localnet --chain-id {{chain_id}} --default-denom award > /dev/null
     {{bin}} config set app minimum-gas-prices 0award
     {{bin}} config set app api.enable true
     {{bin}} config set app api.enabled-unsafe-cors true
@@ -38,15 +38,15 @@ start bin="wardend" install="true":
     {{bin}} genesis add-genesis-account shulgin 10000000000000000000000000award
     {{bin}} genesis add-genesis-space {{shulgin}}
     {{bin}} genesis add-genesis-keychain {{shulgin}} "WardenKMS" "{\"key_req\":[],\"sig_req\":[]}"
-    replace 's/aevmos/award/' ~/.warden/config/genesis.json
-    replace 's/aevmos/award/' ~/.warden/config/app.toml
-    jq '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}' ~/.warden/config/genesis.json > temp.json && mv temp.json ~/.warden/config/genesis.json
-    jq '.app_state.async.active_plugins += {{async-plugins}}' ~/.warden/config/genesis.json > temp.json && mv temp.json ~/.warden/config/genesis.json
+
     {{bin}} genesis gentx val 1000000000000000000000award
     {{bin}} genesis collect-gentxs
     {{bin}} genesis add-genesis-slinky-markets
     GENESIS="$HOME/.warden/config/genesis.json"
+    jq '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}' "$GENESIS" > "$GENESIS".tmp && mv "$GENESIS".tmp "$GENESIS"
     jq '.consensus["params"]["abci"]["vote_extensions_enable_height"] = "2"' "$GENESIS" > "$GENESIS".tmp && mv "$GENESIS".tmp "$GENESIS"
+    jq '.app_state["evm"]["params"]["evm_denom"]="award"' "$GENESIS" > $GENESIS.tmp && mv "$GENESIS".tmp "$GENESIS"
+    jq '.app_state.async.active_plugins += {{async-plugins}}' ~/.warden/config/genesis.json > temp.json && mv temp.json ~/.warden/config/genesis.json
 
     post_start () {
       sleep 3

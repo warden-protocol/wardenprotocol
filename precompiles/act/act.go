@@ -7,10 +7,10 @@ import (
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	evmcmn "github.com/cosmos/evm/precompiles/common"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	ethcmn "github.com/ethereum/go-ethereum/common"
-	evmoscmn "github.com/evmos/evmos/v20/precompiles/common"
-	"github.com/evmos/evmos/v20/x/evm/core/vm"
+	"github.com/ethereum/go-ethereum/core/vm"
 
 	"github.com/warden-protocol/wardenprotocol/precompiles/common"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
@@ -28,7 +28,7 @@ var f embed.FS
 
 // Precompile defines the precompiled contract for x/act.
 type Precompile struct {
-	evmoscmn.Precompile
+	evmcmn.Precompile
 	actmodulekeeper actmodulekeeper.Keeper
 	eventsRegistry  *common.EthEventsRegistry
 	queryServer     types.QueryServer
@@ -37,7 +37,7 @@ type Precompile struct {
 // LoadABI loads the x/act ABI from the embedded abi.json file
 // for the x/act precompile.
 func LoadABI() (abi.ABI, error) {
-	return evmoscmn.LoadABI(f, "abi.json")
+	return evmcmn.LoadABI(f, "abi.json")
 }
 
 func NewPrecompile(actkeeper actmodulekeeper.Keeper, er *common.EthEventsRegistry) (*Precompile, error) {
@@ -47,7 +47,7 @@ func NewPrecompile(actkeeper actmodulekeeper.Keeper, er *common.EthEventsRegistr
 	}
 
 	p := Precompile{
-		Precompile: evmoscmn.Precompile{
+		Precompile: evmcmn.Precompile{
 			ABI:                  abi,
 			KvGasConfig:          storetypes.KVGasConfig(),
 			TransientKVGasConfig: storetypes.TransientGasConfig(),
@@ -83,7 +83,7 @@ func (p *Precompile) RequiredGas(input []byte) uint64 {
 		return 0
 	}
 
-	return p.Precompile.RequiredGas(input, p.IsTransaction(method.Name))
+	return p.Precompile.RequiredGas(input, p.IsTransaction(method))
 }
 
 // Run implements vm.PrecompiledContract.
@@ -95,52 +95,54 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 
 	// This handles any out of gas errors that may occur during the execution of a precompile tx or query.
 	// It avoids panics and returns the out of gas error so the EVM can continue gracefully.
-	defer evmoscmn.HandleGasError(ctx, contract, initialGas, &err)()
+	defer evmcmn.HandleGasError(ctx, contract, initialGas, &err, stateDB, snapshot)()
 
-	switch method.Name {
-	// transactions
-	case CheckActionMethod:
-		bz, err = p.CheckActionMethod(ctx, evm.Origin, stateDB, method, args)
-	case NewTemplateMethod:
-		bz, err = p.NewTemplateMethod(ctx, evm.Origin, stateDB, method, args)
-	case RevokeActionMethod:
-		bz, err = p.RevokeActionMethod(ctx, evm.Origin, stateDB, method, args)
-	case UpdateTemplateMethod:
-		bz, err = p.UpdateTemplateMethod(ctx, evm.Origin, stateDB, method, args)
-	case VoteForActionMethod:
-		bz, err = p.VoteForActionMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
-	// queries
-	case ActionsQuery:
-		bz, err = p.ActionsQuery(ctx, contract, method, args)
-	case ActionByIdQuery:
-		bz, err = p.ActionByIdQuery(ctx, contract, method, args)
-	case ActionsByAddressQuery:
-		bz, err = p.ActionsByAddressQuery(ctx, contract, method, args)
-	case TemplatesQuery:
-		bz, err = p.TemplatesQuery(ctx, contract, method, args)
-	case TemplateByIdQuery:
-		bz, err = p.TemplateByIdQuery(ctx, contract, method, args)
-	}
+	return p.RunAtomic(snapshot, stateDB, func() ([]byte, error) {
+		switch method.Name {
+		// transactions
+		case CheckActionMethod:
+			bz, err = p.CheckActionMethod(ctx, evm.Origin, stateDB, method, args)
+		case NewTemplateMethod:
+			bz, err = p.NewTemplateMethod(ctx, evm.Origin, stateDB, method, args)
+		case RevokeActionMethod:
+			bz, err = p.RevokeActionMethod(ctx, evm.Origin, stateDB, method, args)
+		case UpdateTemplateMethod:
+			bz, err = p.UpdateTemplateMethod(ctx, evm.Origin, stateDB, method, args)
+		case VoteForActionMethod:
+			bz, err = p.VoteForActionMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
+		// queries
+		case ActionsQuery:
+			bz, err = p.ActionsQuery(ctx, contract, method, args)
+		case ActionByIdQuery:
+			bz, err = p.ActionByIdQuery(ctx, contract, method, args)
+		case ActionsByAddressQuery:
+			bz, err = p.ActionsByAddressQuery(ctx, contract, method, args)
+		case TemplatesQuery:
+			bz, err = p.TemplatesQuery(ctx, contract, method, args)
+		case TemplateByIdQuery:
+			bz, err = p.TemplateByIdQuery(ctx, contract, method, args)
+		}
 
-	if err != nil {
-		return nil, err
-	}
+		if err != nil {
+			return nil, err
+		}
 
-	cost := ctx.GasMeter().GasConsumed() - initialGas
+		cost := ctx.GasMeter().GasConsumed() - initialGas
 
-	if !contract.UseGas(cost) {
-		return nil, vm.ErrOutOfGas
-	}
+		if !contract.UseGas(cost) {
+			return nil, vm.ErrOutOfGas
+		}
 
-	if err := p.AddJournalEntries(stateDB, snapshot); err != nil {
-		return nil, err
-	}
+		if err := p.AddJournalEntries(stateDB, snapshot); err != nil {
+			return nil, err
+		}
 
-	return bz, nil
+		return bz, nil
+	})
 }
 
-func (p *Precompile) IsTransaction(method string) bool {
-	switch method {
+func (p *Precompile) IsTransaction(method *abi.Method) bool {
+	switch method.Name {
 	// transactions
 	case CheckActionMethod,
 		NewTemplateMethod,

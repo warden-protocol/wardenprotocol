@@ -9,7 +9,7 @@ import "cosmos_proto/cosmos.proto";
 import "ethermint/feemarket/v1/feemarket.proto";
 import "gogoproto/gogo.proto";
 
-option go_package = "github.com/evmos/evmos/v20/x/feemarket/types";
+option go_package = "github.com/cosmos/evm/x/feemarket/types";
 
 // Msg defines the erc20 Msg service.
 service Msg {

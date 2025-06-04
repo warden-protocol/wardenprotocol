@@ -87,7 +87,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, _ framework.BuildResult) {
 	})
 
 	t.Run("work with actions", func(t *testing.T) {
-		newActionTxText := fmt.Sprintf("warden new-action add-space-owner --space-id %d --new-owner %s --nonce %d", 1, bob.Address(t), 0)
+		newActionTxText := fmt.Sprintf("warden new-action add-space-owner --space-id %d --new-owner %s --nonce %d --gas-prices 10000000000award", 1, bob.Address(t), 0)
 		tx := alice.Tx(t, newActionTxText)
 		checks.SuccessTx(t, tx)
 

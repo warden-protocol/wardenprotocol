@@ -6,7 +6,7 @@ type Config struct {
 	ApiURL  string `mapstructure:"api-url" toml:"api-url"`
 }
 
-// DefaultConfig returns a default configuration for http.
+// DefaultConfig returns a default configuration for Quantkit plugin.
 func DefaultConfig() *Config {
 	return &Config{
 		Enabled: false,
@@ -22,7 +22,7 @@ const DefaultConfigTemplate = `
 [quantkit]
 
 # Is QuantKit plugin enabled
-enabled = "{{ .Quantkit.Enabled }}"
+enabled = {{ .Quantkit.Enabled }}
 
 # API Key used when making Quantkit API requests
 api-key = "{{ .Quantkit.ApiKey }}"

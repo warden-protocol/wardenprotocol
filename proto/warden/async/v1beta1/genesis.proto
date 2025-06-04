@@ -16,6 +16,7 @@ package warden.async.v1beta1;
 
 import "amino/amino.proto";
 import "gogoproto/gogo.proto";
+import "google/protobuf/duration.proto";
 import "warden/async/v1beta1/params.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1";
@@ -28,9 +29,20 @@ message GenesisState {
     (amino.dont_omitempty) = true
   ];
 
+  reserved 2;
+
   // active_plugins lists all the plugins available.
-  repeated string active_plugins = 2 [
+  repeated GenesisPlugin active_plugins = 3 [
     (gogoproto.nullable) = false,
     (amino.dont_omitempty) = true
+  ];
+}
+
+message GenesisPlugin {
+  string name = 1;
+  google.protobuf.Duration timeout = 5 [
+    (gogoproto.nullable) = true,
+    (amino.dont_omitempty) = true,
+    (gogoproto.stdduration) = true
   ];
 }

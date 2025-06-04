@@ -31,6 +31,37 @@ import (
 )
 
 func (k Keeper) BeginBlocker(ctx context.Context) error {
+	params := k.GetParams(ctx)
+
+	if params.TaskPruneTimeout > 0 {
+		// prune old completed tasks
+		iterator, err := k.tasks.results.Iterate(ctx, nil)
+		if err != nil {
+			return err
+		}
+		defer iterator.Close()
+
+		now := sdk.UnwrapSDKContext(ctx).BlockTime()
+
+		var oldTaskIDs []uint64
+		for ; iterator.Valid(); iterator.Next() {
+			v, err := iterator.Value()
+			if err != nil {
+				return err
+			}
+
+			if now.After(v.CreatedAt.Add(params.TaskPruneTimeout)) {
+				oldTaskIDs = append(oldTaskIDs, v.Id)
+			}
+		}
+
+		for _, id := range oldTaskIDs {
+			if err := k.tasks.pruneTask(ctx, id); err != nil {
+				return err
+			}
+		}
+	}
+
 	return nil
 }
 

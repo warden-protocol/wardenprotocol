@@ -86,6 +86,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/echo"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/http"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/pricepred"
+	"github.com/warden-protocol/wardenprotocol/prophet/plugins/venice"
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
@@ -207,7 +208,7 @@ func ProvideCustomRegisterInterfaces() runtime.CustomRegisterInterfaces {
 	return evmencodingcodec.RegisterInterfaces
 }
 
-func registerProphetHanlders(appOpts servertypes.AppOptions) {
+func registerProphetHandlers(appOpts servertypes.AppOptions) {
 	prophet.Register("echo", echo.Plugin{})
 
 	if cast.ToBool(appOpts.Get("pricepred.enabled")) {
@@ -238,6 +239,10 @@ func registerProphetHanlders(appOpts servertypes.AppOptions) {
 		parsedTimeout := time.Duration(timeout) * time.Second
 
 		prophet.Register("http", http.NewPlugin(parsedURLs, parsedTimeout))
+	}
+
+	if cast.ToBool(appOpts.Get("venice.enabled")) {
+		prophet.Register("venice", venice.New(cast.ToString(appOpts.Get("venice.api-key"))))
 	}
 }
 
@@ -296,7 +301,7 @@ func New(
 	wasmOpts []wasmkeeper.Option,
 	baseAppOptions ...func(*baseapp.BaseApp),
 ) (*App, error) {
-	registerProphetHanlders(appOpts)
+	registerProphetHandlers(appOpts)
 
 	prophetP, err := prophet.New()
 	if err != nil {

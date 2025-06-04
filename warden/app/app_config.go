@@ -201,8 +201,6 @@ var (
 		marketmaptypes.ModuleName,
 		precisebanktypes.ModuleName,
 		vestingtypes.ModuleName,
-
-		// ...
 		epochstypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}

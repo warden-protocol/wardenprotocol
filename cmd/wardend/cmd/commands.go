@@ -197,7 +197,10 @@ func newApp(
 	app, err := app.New(
 		logger, db, traceStore, true,
 		appOpts,
+<<<<<<< HEAD
 		config.EVMChainID,
+=======
+>>>>>>> origin/main
 		app.EVMAppOptions,
 		wasmOpts,
 		baseappOptions...,

@@ -29,7 +29,7 @@ import "./interfaces/Http.sol";
 import "./interfaces/IJson.sol";
 
 contract MultiApiTest {
-    uint64 public lastFutureId;
+    uint64 public lastTaskId;
     bytes public responseBody;
     uint256 public statusCode;
     string public currentApi;
@@ -41,7 +41,7 @@ contract MultiApiTest {
         request.method = "GET";
         request.body = "";
         
-        lastFutureId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
+        lastTaskId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
     }
     
     // Try the GitHub API
@@ -51,7 +51,7 @@ contract MultiApiTest {
         request.method = "GET";
         request.body = "";
         
-        lastFutureId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
+        lastTaskId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
     }
     
     // Try the JSONPlaceholder API
@@ -61,7 +61,7 @@ contract MultiApiTest {
         request.method = "GET";
         request.body = "";
         
-        lastFutureId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
+        lastTaskId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
     }
     
     // Try OpenWeatherMap API
@@ -71,18 +71,18 @@ contract MultiApiTest {
         request.method = "GET";
         request.body = "";
         
-        lastFutureId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
+        lastTaskId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
     }
     
     // Check if the response is ready
     function isReady() public view returns (bool) {
-        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastFutureId);
+        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastTaskId);
         return task.taskResponse.result.id != 0;
     }
     
     // Try to process the response without reverting
     function tryProcess() public returns (bool) {
-        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastFutureId);
+        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastTaskId);
         if (task.taskResponse.result.id == 0) {
             return false; // Not ready yet
         }
@@ -99,7 +99,7 @@ contract MultiApiTest {
     
     // A callback function: the precompile will call it when the response is ready
     function cb() external {
-        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastFutureId);
+        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastTaskId);
         if (task.taskResponse.result.id == 0) {
             return; // Not ready yet
         }

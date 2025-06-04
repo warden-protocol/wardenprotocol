@@ -23,7 +23,7 @@ import "./interfaces/Http.sol";
 import "./interfaces/IJson.sol";
 
 contract DataExtraction {
-    uint64 public lastFutureId;
+    uint64 public lastTaskId;
     bytes public responseBody;
     uint256 public statusCode;
     int256 public bitcoinPrice;
@@ -34,12 +34,12 @@ contract DataExtraction {
         request.method = "GET";
         request.body = "";
         
-        lastFutureId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
+        lastTaskId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
     }
     
     // Process the response
     function processResponse() public returns (bool) {
-        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastFutureId);
+        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastTaskId);
         if (task.taskResponse.result.id == 0) {
             return false; // Not ready yet
         }
@@ -56,7 +56,7 @@ contract DataExtraction {
     
     // A callback function: the Warden node calls it automatically
     function cb() external {
-        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastFutureId);
+        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastTaskId);
         if (task.taskResponse.result.id == 0) {
             revert("Not ready yet");
         }

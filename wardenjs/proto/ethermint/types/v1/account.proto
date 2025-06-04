@@ -7,7 +7,7 @@ import "cosmos/auth/v1beta1/auth.proto";
 import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 
-option go_package = "github.com/evmos/evmos/v20/types";
+option go_package = "github.com/cosmos/evm/types";
 
 // EthAccount implements the authtypes.AccountI interface and embeds an
 // authtypes.BaseAccount type. It is compatible with the auth AccountKeeper.

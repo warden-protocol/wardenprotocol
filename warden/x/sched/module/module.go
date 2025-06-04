@@ -16,7 +16,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
-	evmkeeper "github.com/evmos/evmos/v20/x/evm/keeper"
+	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 
 	modulev1 "github.com/warden-protocol/wardenprotocol/api/warden/sched/module"

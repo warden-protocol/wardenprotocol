@@ -24,9 +24,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
-	evmosclient "github.com/evmos/evmos/v20/client"
-	"github.com/evmos/evmos/v20/client/debug"
-	evmosserver "github.com/evmos/evmos/v20/server"
+	evmclient "github.com/cosmos/evm/client"
+	"github.com/cosmos/evm/client/debug"
+	evmserver "github.com/cosmos/evm/server"
+	srvflags "github.com/cosmos/evm/server/flags"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
@@ -50,9 +51,9 @@ func initRootCmd(
 		snapshot.Cmd(newApp),
 	)
 
-	evmosserver.AddCommands(
+	evmserver.AddCommands(
 		rootCmd,
-		evmosserver.NewDefaultStartOptions(newApp, app.DefaultNodeHome),
+		evmserver.NewDefaultStartOptions(newApp, app.DefaultNodeHome),
 		appExport,
 		addModuleInitFlags,
 	)
@@ -72,8 +73,14 @@ func initRootCmd(
 		),
 		queryCommand(),
 		txCommand(),
-		evmosclient.KeyCommands(app.DefaultNodeHome),
+		evmclient.KeyCommands(app.DefaultNodeHome, true),
 	)
+
+	// Add tx flags.
+	_, err := srvflags.AddTxFlags(rootCmd)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func AddTendermintCommandAlias(rootCmd *cobra.Command) {
@@ -189,6 +196,7 @@ func newApp(
 	app, err := app.New(
 		logger, db, traceStore, true,
 		appOpts,
+		app.EVMAppOptions,
 		wasmOpts,
 		baseappOptions...,
 	)
@@ -234,7 +242,7 @@ func appExport(
 	var emptyWasmOpts []wasmkeeper.Option
 
 	if height != -1 {
-		bApp, err = app.New(logger, db, traceStore, false, appOpts, emptyWasmOpts)
+		bApp, err = app.New(logger, db, traceStore, false, appOpts, app.EVMAppOptions, emptyWasmOpts)
 		if err != nil {
 			return servertypes.ExportedApp{}, err
 		}
@@ -243,7 +251,7 @@ func appExport(
 			return servertypes.ExportedApp{}, err
 		}
 	} else {
-		bApp, err = app.New(logger, db, traceStore, true, appOpts, emptyWasmOpts)
+		bApp, err = app.New(logger, db, traceStore, true, appOpts, app.EVMAppOptions, emptyWasmOpts)
 		if err != nil {
 			return servertypes.ExportedApp{}, err
 		}

@@ -29,7 +29,7 @@ type TaskKeeper struct {
 	tasks         repo.SeqCollection[types.Task]
 	taskByCreator collections.KeySet[collections.Pair[sdk.AccAddress, uint64]]
 	results       collections.Map[uint64, types.TaskResult]
-	pendingTasks  collections.KeySet[uint64]
+	pendingTasks  collections.KeySet[collections.Pair[sdk.ConsAddress, uint64]]
 }
 
 func NewTaskKeeper(sb *collections.SchemaBuilder, cdc codec.Codec) *TaskKeeper {
@@ -41,7 +41,7 @@ func NewTaskKeeper(sb *collections.SchemaBuilder, cdc codec.Codec) *TaskKeeper {
 
 	results := collections.NewMap(sb, ResultsPrefix, "task_results", collections.Uint64Key, codec.CollValue[types.TaskResult](cdc))
 
-	pendingTasks := collections.NewKeySet(sb, PendingTasksPrefix, "pending_tasks", collections.Uint64Key)
+	pendingTasks := collections.NewKeySet(sb, PendingTasksPrefix, "pending_tasks", collections.PairKeyCodec(sdk.ConsAddressKey, collections.Uint64Key))
 
 	return &TaskKeeper{
 		tasks:         tasks,
@@ -66,7 +66,7 @@ func (k *TaskKeeper) Append(ctx context.Context, t *types.Task) (uint64, error) 
 		return 0, err
 	}
 
-	if err := k.pendingTasks.Set(ctx, id); err != nil {
+	if err := k.pendingTasks.Set(ctx, collections.Join(t.Solver, id)); err != nil {
 		return 0, err
 	}
 
@@ -81,12 +81,12 @@ func (k *TaskKeeper) Set(ctx context.Context, f types.Task) error {
 	return k.tasks.Set(ctx, f.Id, f)
 }
 
-func (k *TaskKeeper) SetResult(ctx context.Context, result types.TaskResult) error {
+func (k *TaskKeeper) SetResult(ctx context.Context, task types.Task, result types.TaskResult) error {
 	if exists, _ := k.results.Has(ctx, result.Id); exists {
 		return types.ErrTaskAlreadyHasResult
 	}
 
-	if err := k.pendingTasks.Remove(ctx, result.Id); err != nil {
+	if err := k.pendingTasks.Remove(ctx, collections.Join(task.Solver, result.Id)); err != nil {
 		return err
 	}
 
@@ -105,8 +105,9 @@ func (k *TaskKeeper) Tasks() repo.SeqCollection[types.Task] {
 	return k.tasks
 }
 
-func (k *TaskKeeper) PendingTasks(ctx context.Context, limit int) ([]types.Task, error) {
-	it, err := k.pendingTasks.IterateRaw(ctx, nil, nil, collections.OrderAscending)
+func (k *TaskKeeper) PendingTasks(ctx context.Context, solverAddr sdk.ConsAddress, limit int) ([]types.Task, error) {
+	ranger := collections.NewPrefixedPairRange[sdk.ConsAddress, uint64](solverAddr)
+	it, err := k.pendingTasks.Iterate(ctx, ranger)
 	if err != nil {
 		return nil, err
 	}
@@ -115,12 +116,12 @@ func (k *TaskKeeper) PendingTasks(ctx context.Context, limit int) ([]types.Task,
 	tasks := make([]types.Task, 0, limit)
 
 	for ; it.Valid(); it.Next() {
-		id, err := it.Key()
+		key, err := it.Key()
 		if err != nil {
 			return nil, err
 		}
 
-		fut, err := k.tasks.Get(ctx, id)
+		fut, err := k.tasks.Get(ctx, key.K2())
 		if err != nil {
 			return nil, err
 		}
@@ -132,4 +133,31 @@ func (k *TaskKeeper) PendingTasks(ctx context.Context, limit int) ([]types.Task,
 	}
 
 	return tasks, nil
+}
+
+func (k *TaskKeeper) pruneTask(ctx context.Context, id uint64) error {
+	t, err := k.tasks.Get(ctx, id)
+	if err != nil {
+		return err
+	}
+	creator := sdk.MustAccAddressFromBech32(t.Creator)
+	solver := t.Solver
+
+	if err := k.taskByCreator.Remove(ctx, collections.Join(creator, id)); err != nil {
+		return err
+	}
+
+	if err := k.results.Remove(ctx, id); err != nil {
+		return err
+	}
+
+	if err := k.tasks.Remove(ctx, id); err != nil {
+		return err
+	}
+
+	if err := k.pendingTasks.Remove(ctx, collections.Join(solver, id)); err != nil {
+		return err
+	}
+
+	return nil
 }

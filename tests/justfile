@@ -25,7 +25,9 @@ _rm_rf dir:
 snapshot: snapshot-base snapshot-keychain snapshot-many-users
 
 # Define the new precompiles addresses
-warden-precompiles := '["0x0000000000000000000000000000000000000900", "0x0000000000000000000000000000000000000901", "0x0000000000000000000000000000000000000902", "0x0000000000000000000000000000000000000903"]'
+warden-precompiles := '["0x0000000000000000000000000000000000000900", "0x0000000000000000000000000000000000000901", "0x0000000000000000000000000000000000000902", "0x0000000000000000000000000000000000000903", "0x0000000000000000000000000000000000000904", "0x0000000000000000000000000000000000000905"]'
+# Define the list of plugins to enable
+async-plugins := '["echo", "http", "pricepred"]'
 
 # regenerate ./testdata/snapshot-base
 snapshot-base:
@@ -53,7 +55,9 @@ snapshot-base:
   wardend genesis add-genesis-account alice 10000000000000000000000000000000000000award --keyring-backend test --home $WARDEND_HOME
   replace 's/aevmos/award/' $WARDEND_HOME/config/genesis.json
   replace 's/aevmos/award/' $WARDEND_HOME/config/app.toml
-  jq '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+  jq '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+  jq '.app_state.async.active_plugins += {{async-plugins}}' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+  jq '.consensus["params"]["abci"]["vote_extensions_enable_height"] = "2"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
   wardend genesis gentx alice 1000000000000000000000award --keyring-backend test --home $WARDEND_HOME
   wardend genesis collect-gentxs --home $WARDEND_HOME
 
@@ -116,6 +120,8 @@ snapshot-keychain:
   replace 's/aevmos/award/' $WARDEND_HOME/config/genesis.json
   replace 's/aevmos/award/' $WARDEND_HOME/config/app.toml
   jq '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+  jq '.app_state.async.active_plugins += {{async-plugins}}' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+  jq '.consensus["params"]["abci"]["vote_extensions_enable_height"] = "2"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
   wardend genesis gentx val 1000000000000000000000award --keyring-backend test --home $WARDEND_HOME
   wardend genesis collect-gentxs --home $WARDEND_HOME
 
@@ -181,6 +187,8 @@ snapshot-many-users:
   replace 's/aevmos/award/' $WARDEND_HOME/config/genesis.json
   replace 's/aevmos/award/' $WARDEND_HOME/config/app.toml
   jq '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+  jq '.app_state.async.active_plugins += {{async-plugins}}' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+  jq '.consensus["params"]["abci"]["vote_extensions_enable_height"] = "2"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
   wardend genesis gentx alice 1000000000000000000000award --keyring-backend test --home $WARDEND_HOME
   wardend genesis collect-gentxs --home $WARDEND_HOME
 
@@ -215,3 +223,10 @@ contract-caller:
   solc --evm-version paris --bin ./testdata/contracts/caller/Caller.sol -o ./testdata/contracts/caller --overwrite
   solc --evm-version paris --abi ./testdata/contracts/caller/Caller.sol -o ./testdata/contracts/caller --overwrite
   abigen --bin=./testdata/contracts/caller/Caller.bin --abi=./testdata/contracts/caller/Caller.abi --pkg=caller --out=./testdata/contracts/caller/Caller.go
+
+# regenerate json user contract
+contract-json-user:
+  # cp -f ./../precompiles/json/IJson.sol ./testdata/contracts/json-user/IJson.sol
+  solc --evm-version paris --bin precompile-json/=../precompiles/json/ precompile-act/=../precompiles/act/ precompile-common/=../precompiles/common/ ./testdata/contracts/json-user/JsonUser.sol -o ./testdata/contracts/json-user --overwrite --via-ir
+  solc --evm-version paris --abi precompile-json/=../precompiles/json/ precompile-act/=../precompiles/act/ precompile-common/=../precompiles/common/ ./testdata/contracts/json-user/JsonUser.sol -o ./testdata/contracts/json-user --overwrite --via-ir
+  abigen --bin=./testdata/contracts/json-user/JsonUser.bin --abi=./testdata/contracts/json-user/JsonUser.abi --pkg=json_user --out=./testdata/contracts/json-user/JsonUser.go

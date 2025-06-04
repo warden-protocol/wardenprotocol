@@ -11,6 +11,7 @@ import (
 	httpconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/http/config"
 	pricepredconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/pricepred/config"
 	quantkitconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/quantkit/config"
+	veniceconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/venice/config"
 )
 
 // initCometBFTConfig helps to override default CometBFT Config values.
@@ -42,6 +43,7 @@ func initAppConfig() (string, interface{}) {
 		PricePred pricepredconfig.Config `mapstructure:"pricepred"`
 		Http      httpconfig.Config      `mapstructure:"http"`
 		Quantkit  quantkitconfig.Config  `mapstructure:"quantkit"`
+		Venice    veniceconfig.Config    `mapstructure:"venice"`
 	}
 
 	// Optionally allow the chain developer to overwrite the SDK's default
@@ -95,6 +97,7 @@ func initAppConfig() (string, interface{}) {
 
 	pricePredictionConfig := pricepredconfig.DefaultConfig()
 	httpConfig := httpconfig.DefaultConfig()
+	veniceConfig := veniceconfig.DefaultConfig()
 
 	quantkitConfig := quantkitconfig.DefaultConfig()
 
@@ -108,6 +111,7 @@ func initAppConfig() (string, interface{}) {
 		PricePred: *pricePredictionConfig,
 		Http:      *httpConfig,
 		Quantkit:  *quantkitConfig,
+		Venice:    *veniceConfig,
 	}
 
 	customAppTemplate := serverconfig.DefaultConfigTemplate +
@@ -116,7 +120,8 @@ func initAppConfig() (string, interface{}) {
 		evmservercfg.DefaultRosettaConfigTemplate +
 		pricepredconfig.DefaultConfigTemplate +
 		httpconfig.DefaultConfigTemplate +
-		quantkitconfig.DefaultConfigTemplate
+		quantkitconfig.DefaultConfigTemplate +
+		veniceconfig.DefaultConfigTemplate
 
 	// Edit the default template file
 	//

@@ -3,8 +3,8 @@ shulgin := "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5"
 shulgin_mnemonic := "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
 val2 := "warden194j3dx4t7u80765k2puu3082vc39yfqnvrxqu7"
 val2_mnemonic := "door blast other element embark noodle maple agent drastic bunker swarm logic wide deputy exhibit bicycle evil exile air other mesh foot tackle spot"
-warden-precompiles := '["0x0000000000000000000000000000000000000900", "0x0000000000000000000000000000000000000901", "0x0000000000000000000000000000000000000902", "0x0000000000000000000000000000000000000903"]'
-async-plugins := '["echo", "http", "pricepred", "quantkit"]'
+warden-precompiles := '["0x0000000000000000000000000000000000000900", "0x0000000000000000000000000000000000000901", "0x0000000000000000000000000000000000000902", "0x0000000000000000000000000000000000000903", "0x0000000000000000000000000000000000000904", "0x0000000000000000000000000000000000000905"]'
+async-plugins := '["echo", "http", "pricepred", "venice", "quantkit"]'
 
 # run a single-node chain locally, use "bin" to specify the binary name
 start bin="wardend" install="true":
@@ -41,6 +41,7 @@ start bin="wardend" install="true":
     replace 's/aevmos/award/' ~/.warden/config/genesis.json
     replace 's/aevmos/award/' ~/.warden/config/app.toml
     jq '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}' ~/.warden/config/genesis.json > temp.json && mv temp.json ~/.warden/config/genesis.json
+    jq '.app_state.async.active_plugins += {{async-plugins}}' ~/.warden/config/genesis.json > temp.json && mv temp.json ~/.warden/config/genesis.json
     {{bin}} genesis gentx val 1000000000000000000000award
     {{bin}} genesis collect-gentxs
     {{bin}} genesis add-genesis-slinky-markets

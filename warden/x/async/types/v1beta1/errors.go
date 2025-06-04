@@ -26,4 +26,6 @@ var (
 	ErrInvalidTaskInput     = sdkerrors.Register(ModuleName, 1103, "invalid task input")
 	ErrTaskAlreadyHasResult = sdkerrors.Register(ModuleName, 1104, "task already has result")
 	ErrInvalidCallback      = sdkerrors.Register(ModuleName, 1105, "invalid callback")
+	ErrInsufficientFees     = sdkerrors.Register(ModuleName, 1106, "insufficient fees for plugin")
+	ErrNoSolvers            = sdkerrors.Register(ModuleName, 1107, "no solvers")
 )

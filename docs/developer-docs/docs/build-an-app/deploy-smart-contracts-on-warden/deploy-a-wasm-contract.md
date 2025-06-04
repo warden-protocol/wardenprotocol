@@ -181,7 +181,7 @@ wasm-opt -Os -o target/wasm32-unknown-unknown/release/hello_world.wasm \
 To store your contract onchain, run the command below. Specify your key name, also set the chain ID. (You obtained the key name when [setting up your account](../set-up-a-warden-account).)
 
 <Tabs>
-<TabItem value="default" label="Default node settings">
+<TabItem value="default" label="Local node: default settings">
 ```bash
 wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm \
   --from shulgin \
@@ -192,7 +192,7 @@ wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm \
   --chain-id warden_1337-1
 ```
 </TabItem>
-<TabItem value="custom" label="Custom node settings">
+<TabItem value="custom" label="Local node: custom settings">
 ```bash
 wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm \
   --from my-key-name \
@@ -246,7 +246,7 @@ You can instantiate the contract by using the command below.
 Before you proceed, replace `1` with the actual code ID you retrieved in previous step . Specify your key name in the `--from` flag and the chain ID. Also note that you can either define an admin or pass `--no-admin` to make it immutable, like in this example.
 
 <Tabs>
-<TabItem value="default" label="Default node settings">
+<TabItem value="default" label="Local node: default settings">
 ```bash
 wardend tx wasm instantiate 1 '{}' \
   --from shulgin \
@@ -259,7 +259,7 @@ wardend tx wasm instantiate 1 '{}' \
   --chain-id warden_1337-1
 ```
 </TabItem>
-<TabItem value="custom" label="Custom node settings">
+<TabItem value="custom" label="Local node: custom settings">
 ```bash
 wardend tx wasm instantiate 1 '{}' \
   --from my-key-name \
@@ -304,7 +304,7 @@ Note down the contract address.
 Use the command below to exectute your contract. Replace `my-contract-address` with your contract address. Specify your key name in the `--from` flag and the chain ID.
 
 <Tabs>
-<TabItem value="default" label="Default node settings">
+<TabItem value="default" label="Local node: default settings">
 ```bash
 wardend tx wasm execute my-contract-address '{"say_hello":{}}' \
   --from shulgin \
@@ -315,7 +315,7 @@ wardend tx wasm execute my-contract-address '{"say_hello":{}}' \
   --chain-id warden_1337-1
 ```
 </TabItem>
-<TabItem value="custom" label="Custom node settings">
+<TabItem value="custom" label="Local node: custom settings">
 ```bash
 wardend tx wasm execute my-contract-address '{"say_hello":{}}' \
   --from my-key-name \

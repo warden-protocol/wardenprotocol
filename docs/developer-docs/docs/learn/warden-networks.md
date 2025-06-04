@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 8
+sidebar_position: 6
 ---
 
 # Warden networks
@@ -17,7 +17,7 @@ For more detailed information, refer to our validator guides in [Operate a node]
 <table>
   <tr>
     <td>**Binary**</td>
-    <td>[v0.6.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.2)</td>
+    <td>[v0.6.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.3)</td>
   </tr>
   <tr>
     <td>**Endpoints**</td>

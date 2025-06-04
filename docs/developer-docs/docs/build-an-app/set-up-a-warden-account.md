@@ -17,13 +17,13 @@ Some situations may require slightly different or additional steps—for example
 
 ## Set up an account on a local chain
 
-To deploy an EVM contract locally, you need to run a local chain and make sure it's configured properly, as shown in the following steps:
+To deploy an EVM contract locally, you need to run a local chain and make sure it's configured properly.
 
 ### 1. Run a local chain
 
-To learn in detail how to run a local chain, follow this guide: [Run a local chain](/operate-a-node/run-a-local-chain). You can run your chain with custom settings if you configure it manually, but the simplest way is using our `just` script, as shown below:
-
-To run a local chain with manual settings, follow this guide: [Run a local chain: Configure manually](/operate-a-node/run-a-local-chain#option-2-configure-manually)
+:::tip
+The simplest way to run a local chain is using our `just` script, as shown below. Alternatively, you can configure the chain manually to run it with custom settings. To learn more, follow this guide: [Run a local chain](/operate-a-node/run-a-local-chain).
+:::
 
 1. [Install Go](https://go.dev/doc/install) 1.24 or later.
 
@@ -65,12 +65,12 @@ To run a local chain with manual settings, follow this guide: [Run a local chain
 2. Check the local account balance to make sure it has funds:
    
    <Tabs>
-   <TabItem value="default" label="Default node settings">
+   <TabItem value="default" label="shulgin">
    ```bash
    wardend query bank balances shulgin
    ```
    </TabItem>
-   <TabItem value="custom" label="Custom node settings">
+   <TabItem value="custom" label="custom key">
    ```bash
    wardend query bank balances my-key-name
    ```
@@ -82,12 +82,12 @@ To run a local chain with manual settings, follow this guide: [Run a local chain
 To deploy an EVM smart contract, you'll also need the **private key** associated with your account. Run the following command and note down the private key:
 
 <Tabs>
-<TabItem value="default" label="Default node settings">
+<TabItem value="default" label="shulgin">
 ```bash
 wardend keys export shulgin --unarmored-hex --unsafe
 ```
 </TabItem>
-<TabItem value="custom" label="Custom node settings">
+<TabItem value="custom" label="custom key">
 ```bash
 wardend keys export my-key-name --unarmored-hex --unsafe
 ```
@@ -111,7 +111,7 @@ To connect to the [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overvie
 3. Clone the Warden Protocol repository and navigate to the root directory:
 
    ```bash
-   git clone --depth 1 --branch v0.6.2 https://github.com/warden-protocol/wardenprotocol
+   git clone --depth 1 --branch v0.6.3 https://github.com/warden-protocol/wardenprotocol
    cd wardenprotocol
    ```
 

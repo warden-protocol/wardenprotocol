@@ -19,7 +19,7 @@ In this article, you'll find a full list of available methods, allowing you to q
 To learn how to use this precompile, refer to [Interact with `x/warden`](/category/interact-with-xwarden).
 
 :::note Code
-You can find the `x/warden` precomile code on GitHub: [`IWarden.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol)
+You can find the `x/warden` precompile code on GitHub: [`IWarden.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol)
 :::
 
 ## Precompile address
@@ -36,6 +36,16 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `newSpace()`
 - **Description**: Creates a new Space. Emits the [`NewSpace` event](#newspace).
+- **Code**:
+  ```
+  function newSpace(
+      uint64 approveAdminTemplateId,
+      uint64 rejectAdminTemplateId,
+      uint64 approveSignTemplateId,
+      uint64 rejectSignTemplateId,
+      address[] calldata additionalOwners
+  ) external returns (uint64 id);
+  ```
 - **Parameters**:  
   ```sol
   @param approveAdminTemplateId The template id of approve admin action
@@ -54,6 +64,20 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `updateSpace()`
 - **Description**: Updates a Space. Emits the [`UpdateSpace` event](#updatespace).
+- **Code**:
+  ```
+  function updateSpace(
+      uint64 spaceId,
+      uint64 nonce,
+      uint64 approveAdminTemplateId,
+      uint64 rejectAdminTemplateId,
+      uint64 approveSignTemplateId,
+      uint64 rejectSignTemplateId,
+      uint64 actionTimeoutHeight,
+      string calldata expectedApproveExpression,
+      string calldata expectedRejectExpression
+  ) external returns (bool success);
+  ```
 - **Parameters**:  
   ```sol
   @param spaceId The space id
@@ -76,6 +100,17 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `addSpaceOwner()`
 - **Description**: Adds an owner to a Space. Emits the [`AddSpaceOwner` event](#addspaceowner).
+- **Code**:
+  ```
+  function addSpaceOwner(
+      uint64 spaceId,
+      address newOwner,
+      uint64 nonce,
+      uint64 actionTimeoutHeight,
+      string calldata expectedApproveExpression,
+      string calldata expectedRejectExpression
+  ) external returns (bool success);
+  ```
 - **Parameters**:  
   ```sol
   @param spaceId The space id
@@ -90,6 +125,17 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `removeSpaceOwner()`
 - **Description**: Removes an owner from a Space. Emits the [`RemoveSpaceOwner` event](#removespaceowner).
+- **Code**:
+  ```
+  function removeSpaceOwner(
+      uint64 spaceId,
+      address owner,
+      uint64 nonce,
+      uint64 actionTimeoutHeight,
+      string calldata expectedApproveExpression,
+      string calldata expectedRejectExpression
+  ) external returns (bool success);
+  ```
 - **Parameters**:    
   ```sol
   @param spaceId The space id
@@ -106,7 +152,13 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `spaces()`
 - **Description**: Returns a list of all Spaces. See the [`Space` struct](#space).
-- **Parameters** :
+- **Code**:
+  ```
+  function spaces(
+      Types.PageRequest calldata pageRequest
+  ) external view returns(Space[] memory spaces, Types.PageResponse memory pageResponse);
+  ```
+- **Parameters**:
   ```sol
   @param pageRequest The pagination details
   ```
@@ -121,6 +173,14 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `spacesByOwner()`
 - **Description**: Returns a list of Spaces by owner. See the [`Space` struct](#space).
+- **Code**:
+  ```
+  function spacesByOwner(
+      Types.PageRequest calldata pageRequest,
+      address owner
+  ) external view returns(
+      Space[] memory spaces, Types.PageResponse memory pageResponse);
+  ```
 - **Parameters**:  
   ```sol
   @param pageRequest The pagination details
@@ -137,6 +197,12 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `spaceById()`
 - **Description**: Returns a Space by ID. See the [`Space` struct](#space).
+- **Code**:
+  ```
+  function spaceById(
+      uint64 id
+  ) external view returns(Space memory space);
+  ```
 - **Parameters**:  
   ```sol
   @param id The id of the space
@@ -153,6 +219,17 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `updateKey()`
 - **Description**: Updates a key with a given ID. Emits the [`UpdateKey` event](#updatekey).
+- **Code**:
+  ```
+  function updateKey(
+      uint64 keyId,
+      uint64 approveTemplateId,
+      uint64 rejectTemplateId,
+      uint64 actionTimeoutHeight,
+      string calldata expectedApproveExpression,
+      string calldata expectedRejectExpression
+  ) external returns (bool success);
+  ```
 - **Parameters**:  
   ```sol
   @param keyId The key id
@@ -172,6 +249,13 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `allKeys()`
 - **Description**: Returns a list of all keys. See the [`KeyResponse` struct](#keyresponse).
+- **Code**:
+  ```
+  function allKeys(
+      Types.PageRequest calldata pageRequest,
+      int32[] calldata deriveAddresses
+  ) external view returns(KeyResponse[] memory keys, Types.PageResponse memory pageResponse);
+  ```
 - **Parameters**:  
   ```sol
   @param pageRequest The pagination details
@@ -187,6 +271,14 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `keysBySpaceId()`
 - **Description**: Returns a list of keys by Space ID. See the [`KeyResponse` struct](#keyresponse).
+- **Code**:
+  ```
+  function keysBySpaceId(
+      Types.PageRequest calldata pageRequest,
+      uint64 spaceId,
+      int32[] calldata deriveAddresses
+  ) external view returns(KeyResponse[] memory keys, Types.PageResponse memory pageResponse);
+  ```
 - **Parameters**:  
   ```sol
   @param spaceId The id of the space
@@ -203,6 +295,13 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `keyById()`
 - **Description**: Returns a key by ID. See the [`KeyResponse` struct](#keyresponse).
+- **Code**:
+  ```
+  function keyById(
+      uint64 id,
+      int32[] calldata deriveAddresses
+  ) external view returns(KeyResponse memory key);
+  ```
 - **Parameters**:  
   ```sol
   @param id The id of the key
@@ -220,6 +319,16 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `newKeychain()`
 - **Description**: Creates a new Keychain, emits the [`NewKeychain` event](#newkeychain). You can specify [`KeychainFees`](#keychainfees).
+- **Code**:
+  ```
+  function newKeychain(
+      string calldata name,
+      KeychainFees calldata keychainFees,
+      string calldata description,
+      string calldata url,
+      string calldata keybaseId
+  ) external returns (uint64 id);
+  ```
 - **Parameters**:  
   ```sol
   @param name The keychain name
@@ -238,6 +347,17 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `updateKeychain()`
 - **Description**: Updates a Keychain, emits the [`updateKeychain` event](#updatekeychain). You can specify [`KeychainFees`](#keychainfees).
+- **Code**:
+  ```
+  function updateKeychain(
+      uint64 keychainId,
+      string calldata name,
+      KeychainFees calldata keychainFees,
+      string calldata description,
+      string calldata url,
+      string calldata keybaseId
+  ) external returns (bool success);
+  ```
 - **Parameters**:  
   ```sol
   @param keychainId The keychain id
@@ -257,6 +377,13 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `addKeychainAdmin()`
 - **Description**: Adds an admin to a Keychain. Emits the [`AddKeychainAdmin` event](#addkeychainadmin).
+- **Code**:
+  ```
+  function addKeychainAdmin(
+      uint64 keychainId,
+      address newAdmin
+  ) external returns (bool success);
+  ```
 - **Parameters**: 
   ```sol
   @param keychainId The keychain id
@@ -272,6 +399,13 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `removeKeychainAdmin()`
 - **Description**: Removes an admin from a Keychain.  Emits the [`RemoveKeychainAdmin` event](#removekeychainadmin).
+- **Code**:
+  ```
+  function removeKeychainAdmin(
+      uint64 keychainId,
+      address admin
+  ) external returns (bool success);
+  ```
 - **Parameters**:  
   ```sol
   @param keychainId The id of the keychain
@@ -287,6 +421,13 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `addKeychainWriter()`
 - **Description**: Adds a Writer to a Keychain. Emits the [`AddKeychainWriter` event](#addkeychainwriter).
+- **Code**:
+  ```
+  function addKeychainWriter(
+      uint64 keychainId,
+      address newWriter
+  ) external returns (bool success);
+  ```
 - **Parameters**:  
   ```sol
   @param keychainId The keychain id
@@ -302,6 +443,12 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `keychains()`
 - **Description**: Returns a list of all Keychains. See the [`Keychain` struct](#keychain).
+- **Code**:
+  ```
+  function keychains(
+      Types.PageRequest calldata pageRequest
+  ) external view returns(Keychain[] memory keychains, Types.PageResponse memory pageResponse);
+  ```
 - **Parameters**:  
   ```sol
   @param pageRequest The pagination details
@@ -317,6 +464,12 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `keychainById()`
 - **Description**: Returns a Keychain by ID. See the [`Keychain` struct](#keychain).
+- **Code**:
+  ```
+  function keychainById(
+      uint64 id
+  ) external view returns(Keychain memory keychain);
+  ```
 - **Parameters**:    
   ```sol
   @param id The id of the keychain
@@ -333,6 +486,21 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `newKeyRequest()`
 - **Description**: Creates a new key request, emits the [`NewKeyRequest` event](#newkeyrequest). You should specify [`KeyType`](#keytype) and other parameters.
+- **Code**:
+  ```
+  function newKeyRequest(
+      uint64 spaceId,
+      uint64 keychainId,
+      KeyType keyType,
+      uint64 approveTemplateId,
+      uint64 rejectTemplateId,
+      Types.Coin[] calldata maxKeychainFees,
+      uint64 nonce,
+      uint64 actionTimeoutHeight,
+      string calldata expectedApproveExpression,
+      string calldata expectedRejectExpression
+  ) external returns (bool success);
+  ```
 - **Parameters**:
   ```sol
   @param spaceId The space id
@@ -356,6 +524,13 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `fulfilKeyRequest()`
 - **Description**: Fulfills a key request. Emits the [`NewKey` event](#newkey).
+- **Code**:
+  ```
+  function fulfilKeyRequest(
+      uint64 requestId,
+      bytes calldata pubKey
+  ) external returns (bool success);
+  ```
 - **Parameters**:  
   ```sol
   @param requestId The request id
@@ -371,6 +546,13 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `rejectKeyRequest()`
 - **Description**: Rejects a key request. Emits the [`RejectKeyRequest` event](#rejectkeyrequest).
+- **Code**:
+  ```
+  function rejectKeyRequest(
+      uint64 requestId,
+      string calldata rejectReason
+  ) external returns (bool success);
+  ```
 - **Parameters**:
   ```sol
   @param requestId The request id
@@ -386,6 +568,15 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `keyRequests()`
 - **Description**: Returns a list of all key requests. See the [`KeyRequest` struct](#keyrequest).
+- **Code**:
+  ```
+  function keyRequests(
+      Types.PageRequest calldata pageRequest,
+      uint64 keychainId,
+      KeyRequestStatus status,
+      uint64 spaceId
+  ) external view returns(KeyRequest[] memory keyRequests, Types.PageResponse memory pageResponse);
+  ```
 - **Parameters**:
   ```sol
   @param pageRequest The pagination details
@@ -404,6 +595,12 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `keyRequestById()`
 - **Description**: Returns a key request by ID. See the [`KeyRequest` struct](#keyrequest).
+- **Code**:
+  ```
+  function keyRequestById(
+      uint64 id
+  ) external view returns(KeyRequest memory keyRequest);
+  ```
 - **Parameters**:  
   ```sol
   @param id The id of the keyRequest
@@ -420,6 +617,21 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `newSignRequest()`
 - **Description**: Creates a new signature request. Emits the [`NewSignRequest` event](#newsignrequest).
+- **Code**:
+  ```
+  function newSignRequest(
+      uint64 keyId,
+      bytes calldata input,
+      bytes[] calldata analyzers,
+      bytes calldata encryptionKey,
+      Types.Coin[] calldata maxKeychainFees,
+      uint64 nonce,
+      uint64 actionTimeoutHeight,
+      string calldata expectedApproveExpression,
+      string calldata expectedRejectExpression,
+      BroadcastType broadcastType
+  ) external returns (bool success);
+  ```
 - **Parameters**:  
   ```sol
   @param keyId The key id
@@ -442,6 +654,13 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `fulfilSignRequest()`
 - **Description**: Fulfills a signature request. Emits the [`FulfilSignRequest` event](#fulfill-a-signature-request).
+- **Code**:
+  ```
+  function fulfilSignRequest(
+      uint64 requestId,
+      bytes calldata signedData
+  ) external returns (bool success);
+  ```
 - **Parameters**: 
   ```sol
   @param requestId The request id
@@ -457,6 +676,13 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `rejectSignRequest()`
 - **Description**: Rejects a signature request. Emits the [`RejectSignRequest` event](#rejectsignrequest).
+- **Code**:
+  ```
+  function rejectSignRequest(
+      uint64 requestId,
+      string calldata rejectReason
+  ) external returns (bool success);
+  ```
 - **Parameters**:  
   ```sol
   @param requestId The request id
@@ -472,6 +698,15 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `signRequests()`
 - **Description**: Returns a list of all signature requests. See the [`SignRequest` struct](#signrequest).
+- **Code**:
+  ```
+  function signRequests(
+      Types.PageRequest calldata pageRequest,
+      uint64 keychainId,
+      SignRequestStatus status,
+      OptionalBroadcastType optionalBroadcastType
+  ) external view returns(SignRequest[] memory signRequests, Types.PageResponse memory pageResponse);
+  ```
 - **Parameters**:
   ```sol
   @param pageRequest The pagination details
@@ -489,6 +724,12 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 - **Method**: `signRequestById()`
 - **Description**: Returns a signature request by ID.
+- **Code**:
+  ```
+  function signRequestById(
+     uint64 id
+  ) external view returns(SignRequest memory signRequest);
+  ```
 - **Parameters**:
   ```sol
   @param id The id of the sign request
@@ -690,6 +931,18 @@ enum BroadcastType {
 ### `NewSpace`
 
 - **Description**: An event emitted when [a new Space is created](#create-a-new-space).
+- **Code**:
+  ```
+  event NewSpace(
+      uint64 indexed id,
+      address creator,
+      uint64 ownersCount,
+      uint64 approveAdminTemplateId,
+      uint64 rejectAdminTemplateId,
+      uint64 approveSignTemplateId,
+      uint64 rejectSignTemplateId
+  );
+  ```
 - **Parameters**:  
   ```sol
   @param id The space id
@@ -704,6 +957,16 @@ enum BroadcastType {
 ### `UpdateSpace`
 
 - **Description**: An event emitted when [a Space is updated](#update-a-space).
+- **Code**:
+  ```
+  event UpdateSpace(
+      uint64 indexed spaceId,
+      uint64 approveAdminTemplateId,
+      uint64 rejectAdminTemplateId,
+      uint64 approveSignTemplateId,
+      uint64 rejectSignTemplateId
+  );
+  ```
 - **Parameters**: 
   ```sol
   @param spaceId The id of the space being updated
@@ -716,6 +979,13 @@ enum BroadcastType {
 ### `AddSpaceOwner`
 
 - **Description**: An event emitted when [a Space owner is added](#add-a-space-owner).
+- **Code**:
+  ```
+  event AddSpaceOwner(
+    uint64 indexed spaceId,
+    address newOwner
+  );
+  ```
 - **Parameters**:  
   ```sol
   @param spaceId The space id
@@ -725,6 +995,13 @@ enum BroadcastType {
 ### `RemoveSpaceOwner`
 
 - **Description**: An event emitted when [a Space owner is removed](#remove-a-space-owner).
+- **Code**:
+```
+event RemoveSpaceOwner(
+    uint64 indexed spaceId,
+    address removedOwner
+);
+```
 - **Parameters**:  
   ```sol
   @param spaceId The space id
@@ -734,6 +1011,14 @@ enum BroadcastType {
 ### `UpdateKey`
 
 - **Description**: An event emitted when [a key is updated](#update-a-key).
+- **Code**:
+  ```
+  event UpdateKey(
+      uint64 indexed id,
+      uint64 approveTemplateId,
+      uint64 rejectTemplateId
+  );
+  ```
 - **Parameters**:
   ```sol
   @param id The id of the key
@@ -744,6 +1029,13 @@ enum BroadcastType {
 ### `NewKeychain`
 
 - **Description**: An event emitted when [a new Keychain is created](#create-a-new-keychain).
+- **Code**:
+  ```
+  event NewKeychain(
+      uint64 indexed id,
+      address creator
+  );
+  ```
 - **Parameters**: 
   ```sol
   @param id The keychain id
@@ -753,6 +1045,13 @@ enum BroadcastType {
 ### `UpdateKeychain`
 
 - **Description**: An event emitted when [a Keychain is updated](#update-a-keychain). Includes the [`KeychainFees` struct](#keychainfees).
+- **Code**:
+  ```
+  event UpdateKeychain(
+      uint64 indexed id,
+      KeychainFees keychainFees
+  );
+  ```
   - **Parameters**:  
   ```sol
   @param id The keychain id
@@ -762,6 +1061,14 @@ enum BroadcastType {
 ### `AddKeychainAdmin`
 
 - **Description**: An event emitted when [a Keychain admin is added](#add-a-keychain-admin).
+- **Code**:
+  ```
+  event AddKeychainAdmin(
+      address newAdmin,
+      uint64 indexed id,
+      uint64 adminsCount
+  );
+  ```
 - **Parameters**:  
   ```sol
   @param newAdmin The address of the admin
@@ -772,6 +1079,14 @@ enum BroadcastType {
 ### `RemoveKeychainAdmin`
 
 - **Description**: An event emitted when [a Keychain admin is removed](#remove-a-keychain-admin).
+- **Code**:
+  ```
+  event RemoveKeychainAdmin(
+      uint64 indexed keychainId,
+      address admin,
+      uint64 adminsCount
+  );
+  ```
 - **Parameters**: 
   ```sol
   @param keychainId The keychain id
@@ -782,6 +1097,14 @@ enum BroadcastType {
 ### `AddKeychainWriter`
 
 - **Description**: An event emitted when [a Keychain Writer is added](#add-a-keychain-writer).
+- **Code**:
+  ```
+  event AddKeychainWriter(
+      address newWriter,
+      uint64 indexed id,
+      uint64 writersCount
+  );
+  ```
 - **Parameters**:  
   ```sol
   @param newWriter The address of the writer
@@ -792,6 +1115,18 @@ enum BroadcastType {
 ### `NewKeyRequest`
 
 - **Description**: An event emitted when [a new key request is created](#create-a-new-key-request). Includes the [`KeyType` enum](#keytype).
+- **Code**:
+  ```
+  event NewKeyRequest(
+      uint64 indexed id,
+      uint64 spaceId,
+      uint64 keychainId,
+      uint64 approveTemplateId,
+      uint64 rejectTemplateId,
+      KeyType keyType,
+      address creator
+  );
+  ```
 - **Parameters**:
   ```sol
   @param id The id of the created key request
@@ -806,6 +1141,17 @@ enum BroadcastType {
 ### `NewKey`
 
 - **Description**: An event emitted when [a key request is fulfilled](#fulfill-a-key-request). Includes the [`KeyType` enum](#keytype).
+- **Code**:
+  ```
+  event NewKey(
+      uint64 indexed id,
+      KeyType keyType,
+      uint64 spaceId,
+      uint64 keychainId,
+      uint64 approveTemplateId,
+      uint64 rejectTemplateId
+  );
+  ```
 - **Parameters**:
   ```sol
   @param id The key id
@@ -819,6 +1165,12 @@ enum BroadcastType {
 ### `RejectKeyRequest`
 
 - **Description**: An event emitted when [a key request is rejected](#reject-a-key-request).
+- **Code**:
+  ```
+  event RejectKeyRequest(
+      uint64 indexed id
+  );
+  ```
 - **Parameters**: 
   ```sol
   @param id The request id
@@ -827,6 +1179,15 @@ enum BroadcastType {
 ### `NewSignRequest`
 
 - **Description**: An event emitted when [a new signature request is created](#create-a-new-signature-request).
+- **Code**:
+  ```
+  event NewSignRequest(
+      uint64 indexed id,
+      uint64 keyId,
+      address creator,
+      BroadcastType broadcastType
+  );
+  ```
 - **Parameters**: 
   ```sol
   @param id The id of the signature request
@@ -837,6 +1198,12 @@ enum BroadcastType {
 ### `FulfilSignRequest`
 
 - **Description**: An event emitted when [a signature request is fulfilled](#fulfill-a-signature-request).
+- **Code**:
+  ```
+  event FulfilSignRequest(
+      uint64 indexed id
+  );
+  ```
 - **Parameters**:
   ```sol
   @param id The request id
@@ -845,6 +1212,12 @@ enum BroadcastType {
 ### `RejectSignRequest`
 
 - **Description**: An event emitted when [a signature request is rejected](#reject-a-signature-request).
+- **Code**:
+  ```
+  event RejectSignRequest(
+      uint64 indexed id
+  );
+  ```
 - **Parameters**:  
   ```sol
   @param id The request id

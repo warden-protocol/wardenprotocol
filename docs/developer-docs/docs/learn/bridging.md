@@ -1,8 +1,12 @@
 ﻿---
-sidebar_position: 7
+sidebar_position: 5
 ---
 
 # Bridging
+
+:::tip
+This feature is actively being developed and is currently undergoing changes.
+:::
 
 ## Overview
 
@@ -12,7 +16,7 @@ This technology utilizes **crosschain bridges**—smart contracts that receive a
 
 ## Axelar
 
-Thanks to Warden's [x/gmp](/learn/warden-protocol-modules/external-modules#xgmp) module, [Omnichain Applications](/learn/glossary#omnichain-application) support crosschain token transfers and general message passing through **Axelar**.
+Thanks to Warden's [x/gmp](warden-protocol-modules/external-modules#xgmp) module, [Intelligent Applications](glossary#intelligent-application) support crosschain token transfers and general message passing through **Axelar**.
 
 More integrations are coming soon.
 
@@ -20,4 +24,4 @@ More integrations are coming soon.
 
 Currently Axelar provides [65 connected chains](https://axelarscan.io). This number may change over the course of time as more chains are added.
 
-You can perform transactions on Ethereum, other IBC-enabled chains, and any ECDSA- or EDDSA-based chain supported by the [Keychain](/learn/glossary#keychain) you're using—for example, Bitcoin.
+You can perform transactions on Ethereum, other IBC-enabled chains, and any ECDSA- or EDDSA-based chain supported by the [Keychain](glossary#keychain) you're using—for example, Bitcoin.

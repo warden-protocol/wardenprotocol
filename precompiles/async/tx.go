@@ -11,6 +11,7 @@ import (
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/async/keeper"
 	asynctypes "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
+	schedtypes "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1"
 )
 
 const (
@@ -50,38 +51,42 @@ func (p *Precompile) AddTaskMethod(
 }
 
 func newMsgAddTask(args []interface{}, origin common.Address, method *abi.Method) (*asynctypes.MsgAddTask, error) {
-	if len(args) != 3 {
-		return nil, precommon.WrongArgsNumber{Expected: 3, Got: len(args)}
+	if len(args) != 4 {
+		return nil, precommon.WrongArgsNumber{Expected: 4, Got: len(args)}
 	}
 
 	authority := precommon.Bech32StrFromAddress(origin)
 
-	plugin, ok := args[0].(string)
-	if !ok {
-		return nil, fmt.Errorf("expected string for plugin, got %T", args[0])
+	var input addTaskInput
+	if err := method.Inputs.Copy(&input, args); err != nil {
+		return nil, fmt.Errorf("error while unpacking args to addTaskInput struct: %w", err)
 	}
 
-	input, ok := args[1].([]byte)
-	if !ok {
-		return nil, fmt.Errorf("expected []byte for input, got %T", args[1])
-	}
-
-	callbackAddressEth, ok := args[2].(common.Address)
-	if !ok {
-		return nil, fmt.Errorf("expected common.Address for callback address, got %T", args[2])
-	}
-
-	var callbackAddress string
-	if callbackAddressEth.String() == "0x0000000000000000000000000000000000000000" {
-		callbackAddress = ""
-	} else {
-		callbackAddress = precommon.Bech32StrFromAddress(callbackAddressEth)
+	var callbackParams *schedtypes.CallbackParams
+	if input.CallbackParams.AddressValue.String() != "0x0000000000000000000000000000000000000000" {
+		callbackParams = &schedtypes.CallbackParams{
+			Address:  precommon.Bech32StrFromAddress(input.CallbackParams.AddressValue),
+			GasLimit: input.CallbackParams.GasLimit,
+		}
 	}
 
 	return &asynctypes.MsgAddTask{
-		Creator:  authority,
-		Input:    input,
-		Plugin:   plugin,
-		Callback: callbackAddress,
+		Creator:        authority,
+		Input:          input.Input,
+		Plugin:         input.Plugin,
+		MaxFee:         mapCoins(input.MaxFee),
+		CallbackParams: callbackParams,
 	}, nil
+}
+
+type addTaskInput struct {
+	Plugin         string
+	Input          []byte
+	MaxFee         []TypesCoin
+	CallbackParams callbackParams
+}
+
+type callbackParams struct {
+	AddressValue common.Address
+	GasLimit     uint64
 }

@@ -7,9 +7,11 @@ on:
       - main
     paths:
       - "solidity/orders/**"
+      - "precompiles/**"
   pull_request:
     paths:
       - "solidity/orders/**"
+      - "precompiles/**"
 
 jobs:
   test:
@@ -20,11 +22,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: foundry-rs/foundry-toolchain@v1
-      - name: Clear Yarn Cache
-        run: yarn cache clean
+      - uses: pnpm/action-setup@v3
+        name: Install pnpm
+        with:
+          version: 10.11.0
+          run_install: false
       - name: Install dependencies
-        run: yarn install
+        run: pnpm install
       - name: Run lint
-        run: yarn run lint
+        run: pnpm run lint
       - name: Run test
-        run: yarn run test
+        run: pnpm run test

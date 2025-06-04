@@ -19,58 +19,75 @@ import (
 	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
+	schedtypes "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1"
 )
 
 func (k msgServer) AddTask(ctx context.Context, msg *types.MsgAddTask) (*types.MsgAddTaskResponse, error) {
+	var err error
 	if msg.Plugin == "" {
 		return nil, errorsmod.Wrapf(types.ErrInvalidPlugin, "cannot be empty")
 	}
 
-	if _, err := k.GetPlugin(ctx, msg.Plugin); err != nil {
+	plugin, err := k.GetPlugin(ctx, msg.Plugin)
+	if err != nil {
 		return nil, errorsmod.Wrapf(types.ErrInvalidPlugin, "doesn't exist")
 	}
 
 	if !k.HasPluginValidators(ctx, msg.Plugin) {
-		return nil, errorsmod.Wrapf(types.ErrInvalidPlugin, "plugin doesn't have any registered validators providers")
+		return nil, errorsmod.Wrapf(types.ErrNoSolvers, "no validators can handle requests for this plugin")
 	}
 
 	if len(msg.Input) == 0 {
 		return nil, errorsmod.Wrapf(types.ErrInvalidTaskInput, "cannot be empty")
 	}
 
+	if err := plugin.Fee.EnsureSufficientFees(msg.MaxFee); err != nil {
+		return nil, errorsmod.Wrapf(
+			types.ErrInsufficientFees,
+			"insufficient fees for plugin %s, expected: %s, got: %s",
+			msg.Plugin, plugin.Fee, msg.MaxFee)
+	}
+
+	deductedFee, err := k.deductPluginFees(ctx, sdk.MustAccAddressFromBech32(msg.Creator), plugin.Fee)
+	if err != nil {
+		return nil, err
+	}
+
+	var callbackId uint64
+	if msg.CallbackParams != nil {
+		callbackId, err = k.schedKeeper.SetCallback(ctx, &schedtypes.Callback{
+			Address:  msg.CallbackParams.Address,
+			GasLimit: msg.CallbackParams.GasLimit,
+		})
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	solver, err := k.QueueNext(ctx, QueueID(msg.Plugin))
+	if err != nil {
+		return nil, err
+	}
+
 	id, err := k.tasks.Append(ctx, &types.Task{
-		Creator:  msg.Creator,
-		Plugin:   msg.Plugin,
-		Input:    msg.Input,
-		Callback: msg.Callback,
+		Creator:    msg.Creator,
+		Solver:     solver,
+		Plugin:     msg.Plugin,
+		Input:      msg.Input,
+		CallbackId: callbackId,
+		Fee:        deductedFee,
 	})
 	if err != nil {
 		return nil, err
 	}
 
-	if msg.Callback != "" {
-		address, err := precommon.AddressFromBech32Str(msg.Callback)
-		if err != nil {
-			return nil, errorsmod.Wrapf(types.ErrInvalidCallback, "invalid callback address: %s", err)
-		}
-
-		sdkCtx := sdk.UnwrapSDKContext(ctx)
-		evmKeeper := k.getEvmKeeper(0)
-		acc := evmKeeper.GetAccountWithoutBalance(sdkCtx, address)
-
-		if acc == nil || !acc.IsContract() {
-			return nil, errorsmod.Wrapf(types.ErrInvalidCallback, "callback address is not a contract")
-		}
-	}
-
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
-	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventCreateTask{
-		Id:              id,
-		Creator:         msg.Creator,
-		Plugin:          msg.Plugin,
-		CallbackAddress: msg.Callback,
+	if err = sdkCtx.EventManager().EmitTypedEvent(&types.EventCreateTask{
+		Id:         id,
+		Creator:    msg.Creator,
+		Plugin:     msg.Plugin,
+		CallbackId: callbackId,
 	}); err != nil {
 		return nil, err
 	}

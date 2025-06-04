@@ -18,7 +18,7 @@ You can either run a [local chain](/operate-a-node/run-a-local-chain) to test yo
 Learn more:
 
 - For a list of CLIChain commands, see [Implementation: CLIChain](../implementations/clichain).
-- To learn more about key and signature requests, see [Request flow](/learn/request-flow).
+- To learn more about requests, see [Key request flow](/learn/warden-protocol-modules/x-warden#key-request-flow) and [Signature request flow](/learn/warden-protocol-modules/x-warden#signature-request-flow).
 
 ## Prerequisites
 

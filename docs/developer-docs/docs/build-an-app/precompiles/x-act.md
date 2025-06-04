@@ -16,7 +16,7 @@ In this article, you'll find a full list of available methods, allowing you to q
 To learn how to use this precompile, refer to [Interact with `x/act`](/category/interact-with-xact).
 
 :::note Code
-You can find the `x/act` precomile code on GitHub: [`IAct.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/act/IAct.sol)
+You can find the `x/act` precompile code on GitHub: [`IAct.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/act/IAct.sol)
 :::
 
 ## Precompile address
@@ -33,7 +33,14 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 
 - **Method**: `newTemplate()`
 - **Description**: Creates a new Rule (template). Emits the [`CreateTemplate` event](#createtemplate).
-- **Parameters** :
+- **Code**:
+  ```
+  function newTemplate(
+      string calldata name,
+      string calldata definition
+  ) external returns (uint64);
+  ```
+- **Parameters**:
   ```sol
   @param name The template name
   @param definition The template definition
@@ -48,8 +55,16 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 ### Update a Rule
 
 - **Method**: `updateTemplate()`
-- **Description**: Updates a Rule (template). Emits the [`UpdateTemplate` event](#createtemplate).
-- **Parameters** :
+- **Description**: Updates a Rule (template). Emits the [`UpdateTemplate` event](#updatetemplate).
+- **Code**:
+  ```
+  function updateTemplate(
+      uint64 templateId,
+      string calldata name,
+      string calldata definition
+  ) external returns (bool);
+  ```
+- **Parameters**:
   ```sol
   @param templateId The id of the template
   @param name The template name
@@ -65,7 +80,14 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 
 - **Method**: `templates()`
 - **Description**: Returns a list of all Rules (templates). See the [`TemplatesResponse` struct](#templatesresponse).
-- **Parameters** :
+- **Code**:
+  ```
+  function templates(
+      Types.PageRequest calldata pagination,
+      address creator
+  ) external view returns (TemplatesResponse memory response);
+  ```
+- **Parameters**:
   ```sol
   @param pagination The pagination details
   @param creator The template creator
@@ -80,7 +102,13 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 
 - **Method**: `templateById()`
 - **Description**: Returns a Rule (template) by ID. See the [`TemplateByIdResponse` struct](#templatebyidresponse).
-- **Parameters** :
+- **Code**:
+  ```
+  function templateById(
+      uint64 templateId
+  ) external view returns (TemplateByIdResponse memory response);
+  ```
+- **Parameters**:
   ```sol
   @param templateId The id of the template
   ```
@@ -96,7 +124,14 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 
 - **Method**: `voteForAction()`
 - **Description**: Votes for an Action. Emits the [`ActionVoted` event](#actionvoted), returns [`ActionStatus`](#actionstatus).
-- **Parameters** :
+- **Code**:
+  ```
+  function voteForAction(
+      uint64 actionId,
+      VoteType voteType
+  ) external returns (string memory);
+  ```
+- **Parameters**:
   ```sol
   @param actionId The id of the action
   @param voteType The type of the vote
@@ -111,7 +146,13 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 
 - **Method**: `revokeAction()`
 - **Description**: Revokes an Action.
-- **Parameters** :
+- **Code**:
+  ```
+  function revokeAction(
+      uint64 actionId
+  ) external returns (bool);
+  ```
+- **Parameters**:
   ```sol
   @param actionId The id of the action
   ```
@@ -125,7 +166,13 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 
 - **Method**: `actions()`
 - **Description**: Returns a list of all Actions. See the [`ActionsResponse` struct](#actionsresponse).
-- **Parameters** :
+- **Code**:
+  ```
+  function actions(
+      Types.PageRequest calldata pagination
+  ) external view returns (ActionsResponse memory response);
+  ```
+- **Parameters**:
   ```sol
   @param pagination The pagination details
   ```
@@ -139,7 +186,15 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 
 - **Method**: `actionsByAddress()`
 - **Description**: Returns a list of Actions by participant address—[`ActionsByAddressResponse`](#actionsbyaddressresponse). You can filter the output by [`ActionStatus`](#actionstatus).
-- **Parameters** :
+- **Code**:
+  ```
+  function actionsByAddress(
+      Types.PageRequest calldata pagination,
+      address addr,
+      ActionStatus status
+  ) external view returns (ActionsByAddressResponse memory response);
+  ```
+- **Parameters**:
   ```sol
   @param pagination The pagination details
   @param addr The participant address
@@ -155,7 +210,13 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 
 - **Method**: `actionById()`
 - **Description**: Returns an Action by ID. See the [`ActionByIdResponse` struct](#actionbyidresponse).
-- **Parameters** :
+- **Code**:
+  ```
+  function actionById(
+      uint64 actionId
+  ) external view returns (ActionByIdResponse memory response);
+  ```
+- **Parameters**:
   ```sol
   @param actionId The id of the action
   ```
@@ -169,7 +230,13 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 
 - **Method**: `checkAction()`
 - **Description**: Returns the status of an Action with a given ID. See the [`ActionStatus` enum](#actionstatus).
-- **Parameters** :
+- **Code**:
+  ```
+  function checkAction(
+      uint64 actionId
+  ) external returns (string memory);
+  ```
+- **Parameters**:
   ```sol
   @param actionId The action id
   ```
@@ -184,114 +251,131 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 ### `Template`
 
 - **Description**: A struct representing a Rule (template).
-
-```
-struct Template {
-    uint64 id;
-    address creator;
-    string name;
-    string expression;
-}
-```
+- **Code**:
+  ```
+  struct Template {
+      uint64 id;
+      address creator;
+      string name;
+      string expression;
+  }
+  ```
 
 ### `TemplatesResponse`
 
 - **Description**: A response returned when you [query Rules](#query-rules). Includes the [`Template` struct](#template).
-
-```
-struct TemplatesResponse {
-    Types.PageResponse pagination;
-    Template[] templates;
-}
-```
+- **Code**:
+  ```
+  struct TemplatesResponse {
+      Types.PageResponse pagination;
+      Template[] templates;
+  }
+  ```
 
 ### `TemplateByIdResponse`
 
 - **Description**: A response returned when you [query a Rule by ID](#query-a-rule-by-id). Includes the [`Template` struct](#template).
-
-```
-struct TemplateByIdResponse {
-    Template template;
-}
-```
+- **Code**:
+  ```
+  struct TemplateByIdResponse {
+      Template template;
+  }
+  ```
 
 ### `Action`
 
 - **Description**: A struct representing an Action. Includes the [`ActionStatus` enum](#actionstatus).
-
-```
-struct Action {
-    uint64 id;
-    ActionStatus status;
-    Types.AnyType msg;
-    Types.AnyType result;
-    address creator;
-    uint64 timeoutHeight;
-    Types.Timestamp createdAt;
-    Types.Timestamp updatedAt;
-    string approveExpression;
-    string rejectExpression;
-    address[] mentions;
-    ActionVote[] votes;
-}
-```
+- **Code**:
+  ```
+  struct Action {
+      uint64 id;
+      ActionStatus status;
+      Types.AnyType msg;
+      Types.AnyType result;
+      address creator;
+      uint64 timeoutHeight;
+      Types.Timestamp createdAt;
+      Types.Timestamp updatedAt;
+      string approveExpression;
+      string rejectExpression;
+      address[] mentions;
+      ActionVote[] votes;
+  }
+  ```
 
 ### `ActionsResponse`
 
 - **Description**: A response returned when you [query Actions](#query-actions). Includes the [`Action` struct](#action).
-
-```
-struct ActionsResponse {
-    Types.PageResponse pagination;
-    Action[] actions;
-}
-```
+- **Code**:
+  ```
+  struct ActionsResponse {
+      Types.PageResponse pagination;
+      Action[] actions;
+  }
+  ```
 
 ### `ActionsByAddressResponse`
 
 - **Description**: A response returned when you [query an Action by ID](#query-an-action-by-id). Includes the [`Action` struct](#action).
-
-```
-
-struct ActionsByAddressResponse {
-    Types.PageResponse pagination;
-    Action[] actions;
-}
-```
+- **Code**:
+  ```
+  
+  struct ActionsByAddressResponse {
+      Types.PageResponse pagination;
+      Action[] actions;
+  }
+  ```
 
 ### `ActionByIdResponse`
 
 - **Description**: A response returned when you [query Actions by address](#query-actions-by-address). Includes the [`Action` struct](#action).
-
-```
-struct ActionByIdResponse {
-    Action action;
-}
-```
+- **Code**:
+  ```
+  struct ActionByIdResponse {
+      Action action;
+  }
+  ```
 
 ## Enums
 
 ### `ActionStatus`
 
 - **Description**: The status of an Action.
-
-```
-enum ActionStatus { Unspecified, Pending, Completed, Revoked, Timeout }
-```
+- **Code**:
+  ```
+  enum ActionStatus {
+      Unspecified,
+      Pending,
+      Completed,
+      Revoked,
+      Timeout
+  }
+  ```
 
 ### `VoteType`
 
 - **Description**: The vote type.
-
-```
-enum VoteType { None, Approve, Reject }
-```
+- **Code**:
+  ```
+  enum VoteType {
+      None,
+      Approve,
+      Reject
+  }
+  ```
 
 ## Events
 
 ### `CreateTemplate`
 
 - **Description**: An event emitted when [a Rule is created](#create-a-new-rule).
+- **Code**:
+  ```
+  event CreateTemplate(
+      address indexed creator,
+      uint64 templateId
+  );
+  ```
 - **Parameters**:  
   ```sol
   @param name The template name
@@ -301,6 +385,13 @@ enum VoteType { None, Approve, Reject }
 ### `UpdateTemplate`
 
 - **Description**: An event emitted when [a Rule is updated](#update-a-rule).
+- **Code**:
+  ```
+  event UpdateTemplate(
+      address indexed author,
+      uint64 templateId
+  );
+  ```
 - **Parameters**:  
   ```sol
   @param creator The address of the creator
@@ -310,6 +401,13 @@ enum VoteType { None, Approve, Reject }
 ### `CreateAction`
 
 - **Description**: An event emitted when an Action is created.
+- **Code**:
+  ```
+  event CreateAction(
+      address indexed creator,
+      uint64 actionId
+  );
+  ```
 - **Parameters**:  
   ```sol
   @param author The address of the author
@@ -319,6 +417,15 @@ enum VoteType { None, Approve, Reject }
 ### `ActionStateChange`
 
 - **Description**: An event emitted when the status of an Action is changed.
+- **Code**:
+  ```
+  event ActionStateChange(
+      address indexed author,
+      uint64 actionId,
+      ActionStatus previousStatus,
+      ActionStatus newStatus
+  );
+  ```
 - **Parameters**:  
   ```sol
   @param author The address of the author
@@ -329,6 +436,14 @@ enum VoteType { None, Approve, Reject }
 ### `ActionVoted`
 
 - **Description**: An event emitted when [an Action is voted on](#vote-for-an-action). Includes the [`VoteType` enum](#votetype).
+- **Code**:
+  ```
+  event ActionVoted(
+      address indexed participant,
+      uint64 actionId,
+      VoteType voteType
+  );
+  ```
 - **Parameters**:  
   ```sol
   @param participant The address of the participant

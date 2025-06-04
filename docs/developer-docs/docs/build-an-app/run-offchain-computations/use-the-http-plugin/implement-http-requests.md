@@ -11,6 +11,7 @@ This tutorial explains how implement simple **HTTP requests** to **multiple APIs
 - [The CoinGecko API](https://docs.coingecko.com/reference/introduction)
 - [The GitHub API](https://docs.github.com/en/rest?apiVersion=2022-11-28)
 - [The JSONPlaceholder API](https://jsonplaceholder.typicode.com)
+- [The OpenWeatherMap API](https://openweathermap.org/api)
 
 :::tip
 These APIs are just examples. You can make HTTP requests to **any external API**.
@@ -64,7 +65,7 @@ contract MultiApiTest {
         lastTaskId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
     }
     
-    // Try OpenWeatherMap API
+    // Try the OpenWeatherMap API
     function tryOpenWeather() public returns (Http.Request memory request) {
         currentApi = "OpenWeather";
         request.url = "https://api.openweathermap.org/data/2.5/weather?q=London&appid=b6907d289e10d714a6e88b30761fae22";
@@ -247,6 +248,26 @@ Error: server returned a null response when a non-null response was expected
 :::tip
 If you're experiencing troubles querying a particular API with `x/async`, please contact us in [Discord](https://discord.com/invite/wardenprotocol).
 :::
+
+### 3.4. Call the OpenWeatherMap API
+
+Test requests to the [The OpenWeatherMap API](https://openweathermap.org/api):
+
+```bash
+cast send $CONTRACT_ADDRESS "tryOpenWeather()" \
+--private-key $PRIVATE_KEY \
+--rpc-url $RPC_URL
+```
+
+```bash
+cast send $CONTRACT_ADDRESS "tryProcess()"
+--private-key $PRIVATE_KEY \
+--rpc-url $RPC_URL
+```
+
+```bash
+cast call $CONTRACT_ADDRESS "statusCode()(uint256)" --rpc-url $RPC_URL
+```
 
 ## Next steps
 

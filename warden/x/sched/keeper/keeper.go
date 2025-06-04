@@ -14,12 +14,12 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
+	evmconf "github.com/cosmos/evm/server/config"
+	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
+	evmtypes "github.com/cosmos/evm/x/vm/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	evmosconf "github.com/evmos/evmos/v20/server/config"
-	evmkeeper "github.com/evmos/evmos/v20/x/evm/keeper"
-	evmostypes "github.com/evmos/evmos/v20/x/evm/types"
 
 	"github.com/warden-protocol/wardenprotocol/precompiles/callbacks"
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
@@ -224,7 +224,7 @@ func (k Keeper) estimateGas(
 ) (uint64, string, error) {
 	evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
 
-	args, err := json.Marshal(evmostypes.TransactionArgs{
+	args, err := json.Marshal(evmtypes.TransactionArgs{
 		From: &from,
 		To:   contract,
 		Data: (*hexutil.Bytes)(&data),
@@ -233,10 +233,10 @@ func (k Keeper) estimateGas(
 		return 0, "", errorsmod.Wrapf(errortypes.ErrJSONMarshal, "failed to marshal tx args: %s", err.Error())
 	}
 
-	gasRes, err := evmKeeper.EstimateGasInternal(ctx, &evmostypes.EthCallRequest{
+	gasRes, err := evmKeeper.EstimateGasInternal(ctx, &evmtypes.EthCallRequest{
 		Args:   args,
-		GasCap: evmosconf.DefaultGasCap,
-	}, evmostypes.Internal)
+		GasCap: evmconf.DefaultGasCap,
+	}, evmtypes.Internal)
 	if err != nil {
 		return 0, "", err
 	}
@@ -250,7 +250,7 @@ func (k Keeper) callEVM(
 	contract *common.Address,
 	data []byte,
 	gasLimit uint64,
-) (*evmostypes.MsgEthereumTxResponse, error) {
+) (*evmtypes.MsgEthereumTxResponse, error) {
 	fromAcc := k.accountKeeper.GetAccount(ctx, from.Bytes())
 	if fromAcc == nil {
 		fromAcc = k.accountKeeper.NewAccountWithAddress(ctx, from.Bytes())
@@ -275,7 +275,7 @@ func (k Keeper) callEVM(
 
 	evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
-	res, err := evmKeeper.ApplyMessage(sdkCtx, msg, evmostypes.NewNoOpTracer(), true)
+	res, err := evmKeeper.ApplyMessage(sdkCtx, msg, evmtypes.NewNoOpTracer(), true)
 	if err != nil {
 		return nil, err
 	}
@@ -293,8 +293,7 @@ func (k Keeper) callbackFee(ctx context.Context, gas uint64) (feeAmt *big.Int, f
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
 	params := evmKeeper.GetParams(sdkCtx)
-	ethCfg := params.ChainConfig.EthereumConfig(evmKeeper.ChainID())
-	baseFee := evmKeeper.GetBaseFee(sdkCtx, ethCfg)
+	baseFee := evmKeeper.GetBaseFee(sdkCtx)
 	gasInt := new(big.Int).SetUint64(gas)
 	feeAmt = new(big.Int).Mul(baseFee, gasInt)
 	fee = sdk.Coins{{Denom: params.EvmDenom, Amount: sdkmath.NewIntFromBigInt(feeAmt)}}

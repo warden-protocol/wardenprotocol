@@ -7,7 +7,7 @@ import "amino/amino.proto";
 import "ethermint/feemarket/v1/feemarket.proto";
 import "gogoproto/gogo.proto";
 
-option go_package = "github.com/evmos/evmos/v20/x/feemarket/types";
+option go_package = "github.com/cosmos/evm/x/feemarket/types";
 
 // GenesisState defines the feemarket module's genesis state.
 message GenesisState {

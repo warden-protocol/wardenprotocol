@@ -90,7 +90,6 @@ type order struct {
 
 // recommendOrders calls the quantkit API to get order recommendations.
 func (c *quantkitClient) recommendOrders(ctx context.Context, inPayload recommendOrdersPayload) (quantkitRecommendOrderResponse, error) {
-
 	body, err := json.Marshal(inPayload)
 	if err != nil {
 		return quantkitRecommendOrderResponse{}, err

@@ -251,6 +251,7 @@ func registerProphetHandlers(appOpts servertypes.AppOptions) {
 	if cast.ToBool(appOpts.Get("quantkit.enabled")) {
 		prophet.Register("quantkit", quantkit.New(cast.ToString(appOpts.Get("quantkit.api-key")),
 			cast.ToString(appOpts.Get("quantkit.api-url"))))
+	}
 
 	if cast.ToBool(appOpts.Get("venice.enabled")) {
 		prophet.Register("venice", venice.New(cast.ToString(appOpts.Get("venice.api-key"))))

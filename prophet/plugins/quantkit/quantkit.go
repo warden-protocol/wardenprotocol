@@ -44,6 +44,11 @@ func (p Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {
 	return json.Marshal(res)
 }
 
+// Verify verifies the output.
+func (p Plugin) Verify(ctx context.Context, input, output []byte) error {
+	return nil
+}
+
 // quantkitClient is a struct that holds the API params for the http client.
 type quantkitClient struct {
 	c      *http.Client

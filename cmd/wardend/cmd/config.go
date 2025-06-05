@@ -10,6 +10,7 @@ import (
 
 	httpconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/http/config"
 	pricepredconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/pricepred/config"
+	quantkitconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/quantkit/config"
 	veniceconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/venice/config"
 )
 
@@ -41,6 +42,7 @@ func initAppConfig() (string, interface{}) {
 		// Prophet plugins
 		PricePred pricepredconfig.Config `mapstructure:"pricepred"`
 		Http      httpconfig.Config      `mapstructure:"http"`
+		Quantkit  quantkitconfig.Config  `mapstructure:"quantkit"`
 		Venice    veniceconfig.Config    `mapstructure:"venice"`
 	}
 
@@ -78,6 +80,8 @@ func initAppConfig() (string, interface{}) {
 	httpConfig := httpconfig.DefaultConfig()
 	veniceConfig := veniceconfig.DefaultConfig()
 
+	quantkitConfig := quantkitconfig.DefaultConfig()
+
 	customAppConfig := CustomAppConfig{
 		Config:  *srvCfg,
 		Oracle:  oracleConfig,
@@ -87,6 +91,7 @@ func initAppConfig() (string, interface{}) {
 		// Rosetta:   *evmservercfg.DefaultRosettaConfig(),
 		PricePred: *pricePredictionConfig,
 		Http:      *httpConfig,
+		Quantkit:  *quantkitConfig,
 		Venice:    *veniceConfig,
 	}
 
@@ -96,6 +101,7 @@ func initAppConfig() (string, interface{}) {
 		// evmservercfg.DefaultRosettaConfigTemplate +
 		pricepredconfig.DefaultConfigTemplate +
 		httpconfig.DefaultConfigTemplate +
+		quantkitconfig.DefaultConfigTemplate +
 		veniceconfig.DefaultConfigTemplate
 
 	// Edit the default template file

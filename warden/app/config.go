@@ -1,57 +1,17 @@
 package app
 
 import (
-	"fmt"
-	"strings"
-
 	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	evmtypes "github.com/cosmos/evm/x/vm/types"
 )
 
-// EVMOptionsFn defines a function type for setting app options specifically for
-// the app. The function should receive the chainID and return an error if
-// any.
-type EVMOptionsFn func(string) error
-
-// NoOpEVMOptions is a no-op function that can be used when the app does not
-// need any specific configuration.
-func NoOpEVMOptions(_ string) error {
-	return nil
-}
-
 var sealed = false
 
-// ChainsCoinInfo is a map of the chain id and its corresponding EvmCoinInfo
-// that allows initializing the app with different coin info based on the
-// chain id.
-var ChainsCoinInfo = map[string]evmtypes.EvmCoinInfo{
-	ChainID: {
-		Denom:         ChainDenom,
-		ExtendedDenom: ChainDenom,
-		DisplayDenom:  DisplayDenom,
-		Decimals:      evmtypes.EighteenDecimals,
-	},
-}
-
-// EVMAppOptions allows to setup the global configuration
-// for the chain.
-func EVMAppOptions(chainID string) error {
+// setupEVM setups the global configuration for the EVM chain.
+func setupEVM(chainID string, coinInfo evmtypes.EvmCoinInfo) error {
 	if sealed {
-		return nil
-	}
-
-	if chainID == "" {
-		chainID = ChainID
-	}
-
-	id := strings.Split(chainID, "-")[0]
-	coinInfo, found := ChainsCoinInfo[id]
-	if !found {
-		coinInfo, found = ChainsCoinInfo[chainID]
-		if !found {
-			return fmt.Errorf("unknown chain id: %s, %+v", chainID, ChainsCoinInfo)
-		}
+		panic("setupEVM called twice")
 	}
 
 	// set the denom info for the chain
@@ -63,7 +23,6 @@ func EVMAppOptions(chainID string) error {
 
 	err := evmtypes.NewEVMConfigurator().
 		WithChainConfig(ethCfg).
-		// NOTE: we're using the 18 decimals
 		WithEVMCoinInfo(coinInfo).
 		Configure()
 	if err != nil {

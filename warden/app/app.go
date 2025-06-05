@@ -97,10 +97,10 @@ import (
 )
 
 const (
-	Name         = "warden"
-	ChainID      = "warden_1337-1"
-	ChainDenom   = "award"
-	DisplayDenom = "ward"
+	Name          = "warden"
+	ChainDenom    = "award"
+	DenomDecimals = evmtypes.EighteenDecimals
+	DisplayDenom  = "ward"
 )
 
 // DefaultNodeHome default home directories for the application daemon.
@@ -300,7 +300,6 @@ func New(
 	traceStore io.Writer,
 	loadLatest bool,
 	appOpts servertypes.AppOptions,
-	evmAppOptions EVMOptionsFn,
 	wasmOpts []wasmkeeper.Option,
 	baseAppOptions ...func(*baseapp.BaseApp),
 ) (*App, error) {
@@ -468,8 +467,13 @@ func New(
 
 	app.SetTxEncoder(app.txConfig.TxEncoder())
 
-	if err := evmAppOptions(app.ChainID()); err != nil {
-		panic(err)
+	if err := setupEVM(app.ChainID(), evmtypes.EvmCoinInfo{
+		Denom:         ChainDenom,
+		ExtendedDenom: ChainDenom,
+		Decimals:      DenomDecimals,
+		DisplayDenom:  DisplayDenom,
+	}); err != nil {
+		return nil, err
 	}
 
 	app.MarketMapKeeper.SetHooks(app.OracleKeeper.Hooks())

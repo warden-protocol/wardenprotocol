@@ -1,32 +1,17 @@
 package app
 
 import (
-	"fmt"
-
 	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	evmtypes "github.com/cosmos/evm/x/vm/types"
-
-	"github.com/warden-protocol/wardenprotocol/cmd/wardend/config"
 )
-
-// EVMOptionsFn defines a function type for setting app options specifically for
-// the Cosmos EVM app. The function should receive the chainID and return an error if
-// any.
-type EVMOptionsFn func(uint64) error
 
 var sealed = false
 
-// EVMAppOptions allows to setup the global configuration
-// for the Cosmos EVM chain.
-func EVMAppOptions(chainID uint64) error {
+// setupEVM setups the global configuration for the EVM chain.
+func setupEVM(chainID string, coinInfo evmtypes.EvmCoinInfo) error {
 	if sealed {
-		return nil
-	}
-
-	coinInfo, found := config.ChainsCoinInfo[chainID]
-	if !found {
-		return fmt.Errorf("unknown chain id: %d", chainID)
+		panic("setupEVM called twice")
 	}
 
 	// set the denom info for the chain
@@ -37,7 +22,6 @@ func EVMAppOptions(chainID uint64) error {
 	ethCfg := evmtypes.DefaultChainConfig(chainID)
 	err := evmtypes.NewEVMConfigurator().
 		WithChainConfig(ethCfg).
-		// NOTE: we're using the 18 decimals default for the example chain
 		WithEVMCoinInfo(coinInfo).
 		Configure()
 	if err != nil {

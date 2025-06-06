@@ -46,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - (x/async) Improve error message when there are no solvers registered for a plugin
 - (x/async) Add a list of plugins to register onchain to the genesis file
 - (x/async) Initial version of a Venice.ai plugin for LLM completions
+- (wardend) Fixed EVM initialization on chain id different than "warden-1337_1"
 
 ### Consensus Breaking Changes
 
@@ -62,6 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (x/async) Rename futures into tasks, and future handlers into plugins
 * (x/async) Add a simple Plugin registry for tracking Plugins' IDs onchain
 * (x/async) Implement a reward system where task executors and plugin creators can earn fees for their services
+* (x/async) Initial version of the QuantKit plugin
 
 ### Consensus Breaking Changes
 

@@ -85,6 +85,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/echo"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/http"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/pricepred"
+	"github.com/warden-protocol/wardenprotocol/prophet/plugins/quantkit"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/venice"
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
@@ -96,10 +97,10 @@ import (
 )
 
 const (
-	Name         = "warden"
-	ChainID      = "warden_1337-1"
-	ChainDenom   = "award"
-	DisplayDenom = "ward"
+	Name          = "warden"
+	ChainDenom    = "award"
+	DenomDecimals = evmtypes.EighteenDecimals
+	DisplayDenom  = "ward"
 )
 
 // DefaultNodeHome default home directories for the application daemon.
@@ -239,6 +240,11 @@ func registerProphetHandlers(appOpts servertypes.AppOptions) {
 		prophet.Register("http", http.NewPlugin(parsedURLs, parsedTimeout))
 	}
 
+	if cast.ToBool(appOpts.Get("quantkit.enabled")) {
+		prophet.Register("quantkit", quantkit.New(cast.ToString(appOpts.Get("quantkit.api-key")),
+			cast.ToString(appOpts.Get("quantkit.api-url"))))
+	}
+
 	if cast.ToBool(appOpts.Get("venice.enabled")) {
 		prophet.Register("venice", venice.New(cast.ToString(appOpts.Get("venice.api-key"))))
 	}
@@ -294,7 +300,6 @@ func New(
 	traceStore io.Writer,
 	loadLatest bool,
 	appOpts servertypes.AppOptions,
-	evmAppOptions EVMOptionsFn,
 	wasmOpts []wasmkeeper.Option,
 	baseAppOptions ...func(*baseapp.BaseApp),
 ) (*App, error) {
@@ -462,8 +467,13 @@ func New(
 
 	app.SetTxEncoder(app.txConfig.TxEncoder())
 
-	if err := evmAppOptions(app.ChainID()); err != nil {
-		panic(err)
+	if err := setupEVM(app.ChainID(), evmtypes.EvmCoinInfo{
+		Denom:         ChainDenom,
+		ExtendedDenom: ChainDenom,
+		Decimals:      DenomDecimals,
+		DisplayDenom:  DisplayDenom,
+	}); err != nil {
+		return nil, err
 	}
 
 	app.MarketMapKeeper.SetHooks(app.OracleKeeper.Hooks())

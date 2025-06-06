@@ -30,11 +30,11 @@ deploy-contract contract from="shulgin" label="":
 
 # variables for building and releasing
 wasmvm_version := `go list -m -f '{{ .Version }}' github.com/CosmWasm/wasmvm/v2`
-wasmvm_amd64_checksum := '015bdae5e70304f1e487981f90e3956754718fe7bdac4446aab0838fcb8b33e0'
-wasmvm_arm64_checksum := 'aaca92c6a114c34128b9c8e826f49841229d33d914fab0369007591b2d6b782d'
-wasmvm_muslc_amd64_checksum := '58e1f6bfa89ee390cb9abc69a5bc126029a497fe09dd399f38a82d0d86fe95ef'
-wasmvm_muslc_arm64_checksum := '0881c5b463e89e229b06370e9e2961aec0a5c636772d5142c68d351564464a66'
-wasmvm_static_darwin_checksum := '28527dcc9fde23292ed096a22eaf9577d12a8e772fe64c0700170514f976a5f2'
+wasmvm_amd64_checksum := 'a7f6f5a79f41c756f87e4e3de86439a18fec07238c2521ac21ac2e5655751460'
+wasmvm_arm64_checksum := '3a6f1a2448cb88c6a00faf9a2c72262d8b2d6b65a3a1dd3c969e5df42534bb0d'
+wasmvm_muslc_amd64_checksum := '70c989684d2b48ca17bbd55bb694bbb136d75c393c067ef3bdbca31d2b23b578'
+wasmvm_muslc_arm64_checksum := '27fb13821dbc519119f4f98c30a42cb32429b111b0fdc883686c34a41777488f'
+wasmvm_static_darwin_checksum := '43f1341015143c626b634a709872efe848e45ad24444c091496f9c648fd71a67'
 goreleaser_cross_version := 'v1.24.1'
 release := env("RELEASE", "false")
 github_token := env("GITHUB_TOKEN", "")

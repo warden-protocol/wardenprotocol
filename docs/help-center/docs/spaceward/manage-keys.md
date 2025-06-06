@@ -9,7 +9,7 @@ sidebar_position: 6
 This guide explains how to create and manage your **keys** (wallets).
 
 :::note
-In the Warden Protocol keys are associated with **Keychains** – custodians that generate and store keys and sign transactions. Learn more: [Glossary: Keychain](https://docs.wardenprotocol.org/learn/glossary#keychain).
+In Warden Protocol keys are associated with **Keychains** – custodians that generate and store keys and sign transactions. Learn more: [Glossary: Keychain](https://docs.wardenprotocol.org/learn/glossary#keychain).
 :::
 
 ## Request a key
@@ -27,7 +27,7 @@ To obtain a new key, do this:
 
 In the **Keys** section of [SpaceWard](https://spaceward.chiado.wardenprotocol.org), you can click your key and view its addresses, Keychain, and type. You can also edit the key name.
 
-![View key details](../../static/img/view-key-details.png)
+![View key details](../../static/img/spaceward/view-key-details.png)
 
 ## Get your key address
 
@@ -37,8 +37,8 @@ To get your key (wallet) address in a certain network, do the following:
 - Select the asset and network pair.
 - Copy the address.
 
-![Get your key address](../../static/img/get-key-address-1.png)
-![Get your key address](../../static/img/get-key-address-2.png)
+![Get your key address](../../static/img/spaceward/get-key-address-1.png)
+![Get your key address](../../static/img/spaceward/get-key-address-2.png)
 
 ## View Keychains
 
@@ -49,4 +49,4 @@ You can access a list of all available Keychains – custodians that generate an
 
 Here you can also request a key for any Keychain – just click **Create Key**.
 
-![View available Keychains](../../static/img/view-keychains.png)
+![View available Keychains](../../static/img/spaceward/view-keychains.png)

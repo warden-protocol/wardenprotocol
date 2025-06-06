@@ -5,8 +5,10 @@ import { keccak256 } from 'viem';
 import asn1 from 'asn1.js';
 const { define } = asn1;
 
+export { IAwsKmsConfiguration } from './types/configuration.js';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const EcdsaPubKey = define('EcdsaPubKey', function (this: any) {
+const EcdsaPubKey = define('EcdsaPubKey', function(this: any) {
   // https://tools.ietf.org/html/rfc5480#section-2
   this.seq().obj(
     this.key('algo').seq().obj(

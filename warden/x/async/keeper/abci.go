@@ -32,6 +32,7 @@ import (
 
 func (k Keeper) BeginBlocker(ctx context.Context) error {
 	params := k.GetParams(ctx)
+	now := sdk.UnwrapSDKContext(ctx).BlockTime()
 
 	if params.TaskPruneTimeout > 0 {
 		// prune old completed tasks
@@ -40,8 +41,6 @@ func (k Keeper) BeginBlocker(ctx context.Context) error {
 			return err
 		}
 		defer iterator.Close()
-
-		now := sdk.UnwrapSDKContext(ctx).BlockTime()
 
 		var oldTaskIDs []uint64
 		for ; iterator.Valid(); iterator.Next() {
@@ -57,6 +56,32 @@ func (k Keeper) BeginBlocker(ctx context.Context) error {
 
 		for _, id := range oldTaskIDs {
 			if err := k.tasks.pruneTask(ctx, id); err != nil {
+				return err
+			}
+		}
+	}
+
+	if params.MaxTaskTimeout > 0 {
+		pendingTasks, err := k.tasks.AllPendingTasks(ctx)
+		if err != nil {
+			return err
+		}
+
+		var timeoutTasks []types.Task
+		for _, t := range pendingTasks {
+			plugin, err := k.plugins.Get(ctx, t.Plugin)
+			if err != nil {
+				return err
+			}
+
+			timeout := min(plugin.Timeout, params.MaxTaskTimeout)
+			if now.After(t.CreatedAt.Add(timeout)) {
+				timeoutTasks = append(timeoutTasks, t)
+			}
+		}
+
+		for _, t := range timeoutTasks {
+			if err := k.AddTaskResult(ctx, t.Id, t.Solver, nil, "timeout"); err != nil {
 				return err
 			}
 		}

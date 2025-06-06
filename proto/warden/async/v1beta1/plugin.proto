@@ -6,6 +6,7 @@ import "amino/amino.proto";
 import "cosmos/base/v1beta1/coin.proto";
 import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
+import "google/protobuf/duration.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1";
 
@@ -36,9 +37,19 @@ message Plugin {
   string creator = 2 [(cosmos_proto.scalar) = "cosmos.AddressString"];
   // Human-readable description of what this plugin can do.
   string description = 3;
-
   // Fees for creating and executing tasks.
   PluginFee fee = 4 [(gogoproto.nullable) = false];
+  // Timeout for adding a result to tasks of this plugin.
+  // After this timeout elapses, an automated error result will be added on
+  // behalf of the solver.
+  //
+  // The maximum value for this timeout is defined as an x/async module
+  // parameter.
+  google.protobuf.Duration timeout = 5 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true,
+    (gogoproto.stdduration) = true
+  ];
 }
 
 // Fees for creating and executing concrete task.

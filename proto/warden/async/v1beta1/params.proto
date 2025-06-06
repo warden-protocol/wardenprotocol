@@ -32,4 +32,11 @@ message Params {
     (amino.dont_omitempty) = true,
     (gogoproto.stdduration) = true
   ];
+
+  // max_task_timeout is the maximum value for the Plugin.timeout field.
+  google.protobuf.Duration max_task_timeout = 2 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true,
+    (gogoproto.stdduration) = true
+  ];
 }

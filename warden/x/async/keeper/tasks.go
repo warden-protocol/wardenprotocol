@@ -135,6 +135,33 @@ func (k *TaskKeeper) PendingTasks(ctx context.Context, solverAddr sdk.ConsAddres
 	return tasks, nil
 }
 
+// AllPendingTasks returns all the tasks that don't have a result.
+func (k *TaskKeeper) AllPendingTasks(ctx context.Context) ([]types.Task, error) {
+	it, err := k.pendingTasks.Iterate(ctx, nil)
+	if err != nil {
+		return nil, err
+	}
+	defer it.Close()
+
+	var tasks []types.Task
+
+	for ; it.Valid(); it.Next() {
+		key, err := it.Key()
+		if err != nil {
+			return nil, err
+		}
+
+		fut, err := k.tasks.Get(ctx, key.K2())
+		if err != nil {
+			return nil, err
+		}
+
+		tasks = append(tasks, fut)
+	}
+
+	return tasks, nil
+}
+
 func (k *TaskKeeper) pruneTask(ctx context.Context, id uint64) error {
 	t, err := k.tasks.Get(ctx, id)
 	if err != nil {

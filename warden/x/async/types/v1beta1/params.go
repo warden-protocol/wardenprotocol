@@ -30,6 +30,7 @@ func NewParams() Params {
 func DefaultParams() Params {
 	return Params{
 		TaskPruneTimeout: 24 * time.Hour,
+		MaxTaskTimeout:   24 * time.Hour,
 	}
 }
 

@@ -61,6 +61,7 @@ import (
 	evmante "github.com/cosmos/evm/ante"
 	cosmosevmante "github.com/cosmos/evm/ante/evm"
 	evmencodingcodec "github.com/cosmos/evm/encoding/codec"
+	"github.com/cosmos/evm/ethereum/eip712"
 	srvflags "github.com/cosmos/evm/server/flags"
 	cosmosevmtypes "github.com/cosmos/evm/types"
 	cosmosevmutils "github.com/cosmos/evm/utils"
@@ -98,7 +99,6 @@ import (
 
 const (
 	Name         = "warden"
-	ChainID      = "warden_1337-1"
 	ChainDenom   = "award"
 	DisplayDenom = "ward"
 )
@@ -454,6 +454,7 @@ func New(
 	// 	voteExtHandler := NewVoteExtensionHandler()
 	// 	voteExtHandler.SetHandlers(bApp)
 	// }
+	eip712.SetEncodingConfig(app.legacyAmino, app.interfaceRegistry, evmChainID)
 
 	updatedBaseAppOptions := append(
 		[]func(*baseapp.BaseApp){
@@ -722,7 +723,6 @@ func (app *App) setAnteHandler(txConfig client.TxConfig, wasmConfig wasmtypes.No
 			FeegrantKeeper:         app.FeeGrantKeeper,
 			SignModeHandler:        txConfig.SignModeHandler(),
 			SigGasConsumer:         evmante.SigVerificationGasConsumer,
-			// TxFeeChecker:           evmevmante.NewDynamicFeeChecker(app.FeeMarketKeeper),
 		},
 		AccountKeeper:         app.AccountKeeper,
 		BankKeeper:            app.BankKeeper,

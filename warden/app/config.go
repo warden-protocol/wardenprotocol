@@ -11,14 +11,14 @@ import (
 )
 
 // EVMOptionsFn defines a function type for setting app options specifically for
-// the app. The function should receive the chainID and return an error if
+// the Cosmos EVM app. The function should receive the chainID and return an error if
 // any.
 type EVMOptionsFn func(uint64) error
 
 var sealed = false
 
 // EVMAppOptions allows to setup the global configuration
-// for the chain.
+// for the Cosmos EVM chain.
 func EVMAppOptions(chainID uint64) error {
 	if sealed {
 		return nil
@@ -35,7 +35,6 @@ func EVMAppOptions(chainID uint64) error {
 	}
 
 	ethCfg := evmtypes.DefaultChainConfig(chainID)
-
 	err := evmtypes.NewEVMConfigurator().
 		WithChainConfig(ethCfg).
 		// NOTE: we're using the 18 decimals default for the example chain
@@ -46,7 +45,6 @@ func EVMAppOptions(chainID uint64) error {
 	}
 
 	sealed = true
-
 	return nil
 }
 

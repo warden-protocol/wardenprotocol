@@ -8,6 +8,7 @@ import (
 	confixcmd "cosmossdk.io/tools/confix/cmd"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	dbm "github.com/cosmos/cosmos-db"
+	baseapp "github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/pruning"
@@ -194,6 +195,16 @@ func newApp(
 		wasmOpts = append(wasmOpts, wasmkeeper.WithVMCacheMetrics(prometheus.DefaultRegisterer))
 	}
 
+	chainId, err := getChainIDFromOpts(appOpts)
+	if err != nil {
+		panic(err)
+	}
+
+	baseappOptions = append(
+		baseappOptions,
+		baseapp.SetChainID(chainId),
+	)
+
 	app, err := app.New(
 		logger, db, traceStore, true,
 		appOpts,
@@ -241,10 +252,15 @@ func appExport(
 	viperAppOpts.Set(server.FlagInvCheckPeriod, 1)
 	appOpts = viperAppOpts
 
+	chainId, err := getChainIDFromOpts(appOpts)
+	if err != nil {
+		panic(err)
+	}
+
 	var emptyWasmOpts []wasmkeeper.Option
 
 	if height != -1 {
-		bApp, err = app.New(logger, db, traceStore, false, appOpts, config.EVMChainID, app.EVMAppOptions, emptyWasmOpts)
+		bApp, err = app.New(logger, db, traceStore, false, appOpts, config.EVMChainID, app.EVMAppOptions, emptyWasmOpts, baseapp.SetChainID(chainId))
 		if err != nil {
 			return servertypes.ExportedApp{}, err
 		}
@@ -253,7 +269,7 @@ func appExport(
 			return servertypes.ExportedApp{}, err
 		}
 	} else {
-		bApp, err = app.New(logger, db, traceStore, true, appOpts, config.EVMChainID, app.EVMAppOptions, emptyWasmOpts)
+		bApp, err = app.New(logger, db, traceStore, true, appOpts, config.EVMChainID, app.EVMAppOptions, emptyWasmOpts, baseapp.SetChainID(chainId))
 		if err != nil {
 			return servertypes.ExportedApp{}, err
 		}

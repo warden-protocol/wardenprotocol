@@ -27,7 +27,7 @@ func initCometBFTConfig() *cmtcfg.Config {
 
 // initAppConfig helps to override default appConfig template and configs.
 // return "", nil if no custom configuration is required for the application.
-func initAppConfig() (string, interface{}) {
+func initAppConfig(evmChainID uint64) (string, interface{}) {
 	// The following code snippet is just for reference.
 	type CustomAppConfig struct {
 		serverconfig.Config `mapstructure:",squash"`
@@ -69,7 +69,6 @@ func initAppConfig() (string, interface{}) {
 		MetricsEnabled: false,
 	}
 
-	evmConfig := evmservercfg.DefaultEVMConfig()
 	jsonRpcConfig := evmservercfg.DefaultJSONRPCConfig()
 	jsonRpcConfig.Enable = true
 	tlsConfig := evmservercfg.DefaultTLSConfig()
@@ -77,6 +76,9 @@ func initAppConfig() (string, interface{}) {
 	pricePredictionConfig := pricepredconfig.DefaultConfig()
 	httpConfig := httpconfig.DefaultConfig()
 	veniceConfig := veniceconfig.DefaultConfig()
+
+	evmConfig := evmservercfg.DefaultEVMConfig()
+	evmConfig.EVMChainID = evmChainID
 
 	customAppConfig := CustomAppConfig{
 		Config:  *srvCfg,

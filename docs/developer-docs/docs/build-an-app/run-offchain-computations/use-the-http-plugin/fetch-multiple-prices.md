@@ -23,7 +23,7 @@ import "./interfaces/Http.sol";
 import "./interfaces/IJson.sol";
 
 contract MultiCoinPrices {
-    uint64 public lastFutureId;
+    uint64 public lastTaskId;
 
     int256 public bitcoinPrice;
     int256 public tetherPrice;
@@ -37,7 +37,7 @@ contract MultiCoinPrices {
         request.method = "GET";
         request.body = "";
 
-        lastFutureId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
+        lastTaskId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
 
         bitcoinPrice = 0;
         tetherPrice = 0;
@@ -46,7 +46,7 @@ contract MultiCoinPrices {
 
     // A callback function: the Warden node calls it automatically
     function cb() external {
-        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastFutureId);
+        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastTaskId);
         if (task.taskResponse.result.id == 0) {
             revert("Not ready yet");
         }

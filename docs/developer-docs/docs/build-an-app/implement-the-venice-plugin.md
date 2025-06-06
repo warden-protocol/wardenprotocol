@@ -6,7 +6,7 @@ sidebar_position: 6.5
 
 ## Overview
 
-### Venice Plugin
+### The Venice Plugin
 
 [Warden's `x/async` module](https://docs.wardenprotocol.org/learn/warden-protocol-modules/x-async) runs offchain heavyweight computations asynchronously and stores the results onchain.
 
@@ -702,4 +702,3 @@ Now create a request.
    ```
    
    This response will be stored onchain.
-   

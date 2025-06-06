@@ -116,19 +116,11 @@ Before you start, complete the following prerequisites:
 - [Get the Venice AI API key](https://docs.venice.ai/overview/guides/generating-api-key).
 - [Run a local chain](https://docs.wardenprotocol.org/run-a-local-chain).
 
-## Step 1. Clone the repository
+## Step 1. Implement the main logic
 
-Clone the Warden Protocol repository:
-   
-```bash
-git clone https://github.com/warden-protocol/wardenprotocol
-```
+### 1.1. Create `venice.go`
 
-## Step 2. Implement the main logic
-
-### 2.1. Create `venice.go`
-
-In the `plugins` directory, create a `venice` directory with a file `venice.go`.
+In the `wardenprotocol/plugins` directory, create a `venice` directory with a file `venice.go`.
 
 :::note Code
 [`prophet/plugins/venice.go`](https://github.com/warden-protocol/wardenprotocol/tree/main/prophet/plugins/venice/venice.go)
@@ -160,7 +152,7 @@ func (p Plugin) Verify(ctx context.Context, input, output []byte) error {
 }
 ```
 
-### 2.2. Add imports
+### 1.2. Add imports
 
 Add the required imports:
 
@@ -174,7 +166,7 @@ import (
 )
 ```
 
-### 2.3. Add data structures
+### 1.3. Add data structures
 
 1. To abstract away the HTTP request and response, add `Plugin` and `veniceClient` structs:
    
@@ -269,7 +261,7 @@ import (
    }
    ```
 
-### 2.4. Build a request
+### 1.4. Build a request
 
 Finally, add a `completions()` function for building a request.
 
@@ -358,7 +350,7 @@ func (c *veniceClient) completions(ctx context.Context, context string) (complet
 }
 ```
 
-### 2.5. Implement the interface
+### 1.5. Implement the interface
 
 1. Create an `Execute()` function, which should do the following:
 
@@ -406,7 +398,7 @@ func (c *veniceClient) completions(ctx context.Context, context string) (complet
    }
    ```
 
-### 2.6. Initialize the Plugin
+### 1.6. Initialize the Plugin
 
 Then add a constructor for initializing the Venice Plugin. This code should do the following:
 
@@ -426,7 +418,7 @@ func New(apiKey string) Plugin {
 }
 ```
 
-## Step 3. Register the Plugin
+## Step 2. Register the Plugin
 
 We're planning to implement a node command that will register new Plugins onchain. However, on the moment, Plugins can be registered only when the chain is initialized. To register your Plugin, you need to modify the `app.go` file.
 
@@ -474,7 +466,7 @@ We're planning to implement a node command that will register new Plugins onchai
    UPD: It seems that now it's happening here: [`warden/x/async/keeper/genesis.go`](https://github.com/warden-protocol/wardenprotocol/tree/main/warden/x/async/keeper/keeper.go), see the `registerGenesisPlugins()` function.
    :::
 
-## Step 4. Configure the Plugin
+## Step 3. Configure the Plugin
 
 1. In the `plugins` directory, create a new directory `config` with a file `config.go`.
    
@@ -516,7 +508,7 @@ We're planning to implement a node command that will register new Plugins onchai
 
 2. In the `DefaultConfig()` function, set `Enabled` to `true` and specify your API key from [Prerequisites](#prerequisites).
 
-## Step 5. Initialize the config
+## Step 4. Initialize the config
 
 Now initialize the Venice Plugin config in the chain configuration loader, `wardend/cmd/config.go`.
 
@@ -590,7 +582,7 @@ Now initialize the Venice Plugin config in the chain configuration loader, `ward
    }
    ```
   
-## Step 6. Edit the localnet script
+## Step 5. Edit the localnet script
 
 To enable Venice on the localnet, you should also add it to the `localnet.just` file.
 
@@ -602,7 +594,7 @@ To enable Venice on the localnet, you should also add it to the `localnet.just` 
 async-plugins := '["echo", "http", "pricepred", quantkit", "venice"]'
 ```
 
-## Step 7. Verify the registration
+## Step 6. Verify the registration
 
 1. Restart the node and query Plugins again:
 
@@ -641,7 +633,7 @@ async-plugins := '["echo", "http", "pricepred", quantkit", "venice"]'
    api-key = "my-api-key"
    ```
    
-## Step 8. Test the Plugin
+## Step 7. Test the Plugin
 
 Now create a request.
 
@@ -710,3 +702,4 @@ Now create a request.
    ```
    
    This response will be stored onchain.
+   

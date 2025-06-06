@@ -20,7 +20,6 @@ func setupEVM(chainID string, coinInfo evmtypes.EvmCoinInfo) error {
 	}
 
 	ethCfg := evmtypes.DefaultChainConfig(chainID)
-
 	err := evmtypes.NewEVMConfigurator().
 		WithChainConfig(ethCfg).
 		WithEVMCoinInfo(coinInfo).
@@ -30,7 +29,6 @@ func setupEVM(chainID string, coinInfo evmtypes.EvmCoinInfo) error {
 	}
 
 	sealed = true
-
 	return nil
 }
 

@@ -1,10 +1,8 @@
 package app
 
 import (
-	"context"
 	"errors"
 
-	addresscodec "cosmossdk.io/core/address"
 	corestoretypes "cosmossdk.io/core/store"
 	errorsmod "cosmossdk.io/errors"
 	circuitante "cosmossdk.io/x/circuit/ante"
@@ -15,7 +13,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
 	authante "github.com/cosmos/cosmos-sdk/x/auth/ante"
-	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	cosmosante "github.com/cosmos/evm/ante/cosmos"
 	evmante "github.com/cosmos/evm/ante/evm"
 	anteinterfaces "github.com/cosmos/evm/ante/interfaces"
@@ -23,24 +20,6 @@ import (
 	ibcante "github.com/cosmos/ibc-go/v10/modules/core/ante"
 	"github.com/cosmos/ibc-go/v10/modules/core/keeper"
 )
-
-// BankKeeper defines the contract needed for supply related APIs (noalias).
-type BankKeeper interface {
-	IsSendEnabledCoins(ctx context.Context, coins ...sdk.Coin) error
-	SendCoins(ctx context.Context, from, to sdk.AccAddress, amt sdk.Coins) error
-	SendCoinsFromAccountToModule(ctx context.Context, senderAddr sdk.AccAddress, recipientModule string, amt sdk.Coins) error
-}
-
-type AccountKeeper interface {
-	NewAccountWithAddress(ctx context.Context, addr sdk.AccAddress) sdk.AccountI
-	GetModuleAddress(moduleName string) sdk.AccAddress
-	GetAccount(ctx context.Context, addr sdk.AccAddress) sdk.AccountI
-	SetAccount(ctx context.Context, account sdk.AccountI)
-	RemoveAccount(ctx context.Context, account sdk.AccountI)
-	GetParams(ctx context.Context) (params authtypes.Params)
-	GetSequence(ctx context.Context, addr sdk.AccAddress) (uint64, error)
-	AddressCodec() addresscodec.Codec
-}
 
 // HandlerOptions extend the SDK's AnteHandler options by requiring the IBC
 // channel keeper, wasm keeper and evm keepers.
@@ -58,8 +37,8 @@ type HandlerOptions struct {
 	EVMKeeper       anteinterfaces.EVMKeeper
 	TxFeeChecker    authante.TxFeeChecker
 	Cdc             codec.BinaryCodec
-	AccountKeeper   AccountKeeper
-	BankKeeper      BankKeeper
+	AccountKeeper   anteinterfaces.AccountKeeper
+	BankKeeper      anteinterfaces.BankKeeper
 	MaxTxGasWanted  uint64
 }
 

@@ -6,10 +6,13 @@
 ###############################################################################
 
 # The network chain ID
-chain-id = "warden_1337-1"
+chain-id = 1337
 
 # The keyring's backend, where the keys are stored (os|file|kwallet|pass|test|memory)
 keyring-backend = "test"
+
+# Default key name, if set, defines the default key to use for signing transaction when the --from flag is not specified
+keyring-default-keyname = ""
 
 # CLI output format (text|json)
 output = "text"

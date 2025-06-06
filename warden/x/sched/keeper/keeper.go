@@ -7,6 +7,7 @@ import (
 	"math/big"
 
 	"cosmossdk.io/collections"
+	"cosmossdk.io/collections/corecompat"
 	"cosmossdk.io/core/store"
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/log"
@@ -19,7 +20,9 @@ import (
 	evmtypes "github.com/cosmos/evm/x/vm/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
+	ethcore "github.com/ethereum/go-ethereum/core"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
+	"github.com/holiman/uint256"
 
 	"github.com/warden-protocol/wardenprotocol/precompiles/callbacks"
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
@@ -63,7 +66,7 @@ func NewKeeper(
 		panic("invalid authority address: " + authority)
 	}
 
-	sb := collections.NewSchemaBuilder(storeService)
+	sb := collections.NewSchemaBuilder(storeService.(corecompat.KVStoreService))
 
 	callbacks := NewCallbackKeeper(sb, cdc)
 
@@ -259,19 +262,23 @@ func (k Keeper) callEVM(
 
 	nonce := fromAcc.GetSequence()
 
-	msg := ethtypes.NewMessage(
-		from,
-		contract,
-		nonce,
-		big.NewInt(0), // amount
-		gasLimit,      // gasLimit
-		big.NewInt(0), // gasFeeCap
-		big.NewInt(0), // gasTipCap
-		big.NewInt(0), // gasPrice
-		data,
-		ethtypes.AccessList{}, // AccessList
-		false,                 // isFake
-	)
+	msg := ethcore.Message{
+		To:                    contract,
+		From:                  from,
+		Nonce:                 nonce,
+		Value:                 big.NewInt(0),
+		GasLimit:              gasLimit,
+		GasPrice:              big.NewInt(0),
+		GasFeeCap:             big.NewInt(0),
+		GasTipCap:             big.NewInt(0),
+		Data:                  data,
+		AccessList:            ethtypes.AccessList{},
+		BlobGasFeeCap:         big.NewInt(0),
+		BlobHashes:            []common.Hash{},
+		SetCodeAuthorizations: []ethtypes.SetCodeAuthorization{},
+		SkipNonceChecks:       false,
+		SkipFromEOACheck:      false,
+	}
 
 	evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
@@ -289,14 +296,17 @@ func (k Keeper) callEVM(
 	return res, nil
 }
 
-func (k Keeper) callbackFee(ctx context.Context, gas uint64) (feeAmt *big.Int, fee sdk.Coins) {
+func (k Keeper) callbackFee(ctx context.Context, gas uint64) (*uint256.Int, sdk.Coins) {
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
 	params := evmKeeper.GetParams(sdkCtx)
 	baseFee := evmKeeper.GetBaseFee(sdkCtx)
 	gasInt := new(big.Int).SetUint64(gas)
-	feeAmt = new(big.Int).Mul(baseFee, gasInt)
-	fee = sdk.Coins{{Denom: params.EvmDenom, Amount: sdkmath.NewIntFromBigInt(feeAmt)}}
+	feeAmt := new(big.Int).Mul(baseFee, gasInt)
+	fee := sdk.Coins{{Denom: params.EvmDenom, Amount: sdkmath.NewIntFromBigInt(feeAmt)}}
 
-	return feeAmt, fee
+	feeAmtUint256 := new(uint256.Int)
+	feeAmtUint256.SetFromBig(feeAmt)
+
+	return feeAmtUint256, fee
 }

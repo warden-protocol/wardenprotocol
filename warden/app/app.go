@@ -43,6 +43,7 @@ import (
 	consensuskeeper "github.com/cosmos/cosmos-sdk/x/consensus/keeper"
 	crisiskeeper "github.com/cosmos/cosmos-sdk/x/crisis/keeper"
 	distrkeeper "github.com/cosmos/cosmos-sdk/x/distribution/keeper"
+	epochskeeper "github.com/cosmos/cosmos-sdk/x/epochs/keeper"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	"github.com/cosmos/cosmos-sdk/x/gov"
@@ -60,6 +61,7 @@ import (
 	evmante "github.com/cosmos/evm/ante"
 	cosmosevmante "github.com/cosmos/evm/ante/evm"
 	evmencodingcodec "github.com/cosmos/evm/encoding/codec"
+	"github.com/cosmos/evm/ethereum/eip712"
 	srvflags "github.com/cosmos/evm/server/flags"
 	cosmosevmtypes "github.com/cosmos/evm/types"
 	cosmosevmutils "github.com/cosmos/evm/utils"
@@ -140,6 +142,7 @@ type App struct {
 	GroupKeeper           groupkeeper.Keeper
 	ConsensusParamsKeeper consensuskeeper.Keeper
 	CircuitBreakerKeeper  circuitkeeper.Keeper
+	EpochsKeeper          epochskeeper.Keeper
 
 	// IBC
 	IBCKeeper           *ibckeeper.Keeper // IBC Keeper must be a pointer in the app, so we can SetRouter on it correctly
@@ -419,6 +422,7 @@ func New(
 		&app.SchedKeeper,
 		&app.MarketMapKeeper,
 		&app.OracleKeeper,
+		&app.EpochsKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)
@@ -455,6 +459,7 @@ func New(
 	// 	voteExtHandler := NewVoteExtensionHandler()
 	// 	voteExtHandler.SetHandlers(bApp)
 	// }
+	eip712.SetEncodingConfig(app.legacyAmino, app.interfaceRegistry, evmChainID)
 
 	updatedBaseAppOptions := append(
 		[]func(*baseapp.BaseApp){
@@ -728,7 +733,6 @@ func (app *App) setAnteHandler(txConfig client.TxConfig, wasmConfig wasmtypes.No
 			FeegrantKeeper:         app.FeeGrantKeeper,
 			SignModeHandler:        txConfig.SignModeHandler(),
 			SigGasConsumer:         evmante.SigVerificationGasConsumer,
-			// TxFeeChecker:           evmevmante.NewDynamicFeeChecker(app.FeeMarketKeeper),
 		},
 		AccountKeeper:         app.AccountKeeper,
 		BankKeeper:            app.BankKeeper,

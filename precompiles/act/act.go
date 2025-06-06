@@ -10,6 +10,7 @@ import (
 	evmcmn "github.com/cosmos/evm/precompiles/common"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	ethcmn "github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/tracing"
 	"github.com/ethereum/go-ethereum/core/vm"
 
 	"github.com/warden-protocol/wardenprotocol/precompiles/common"
@@ -109,7 +110,7 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 		case UpdateTemplateMethod:
 			bz, err = p.UpdateTemplateMethod(ctx, evm.Origin, stateDB, method, args)
 		case VoteForActionMethod:
-			bz, err = p.VoteForActionMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
+			bz, err = p.VoteForActionMethod(ctx, evm.Origin, contract.Caller(), stateDB, method, args)
 		// queries
 		case ActionsQuery:
 			bz, err = p.ActionsQuery(ctx, contract, method, args)
@@ -129,7 +130,7 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 
 		cost := ctx.GasMeter().GasConsumed() - initialGas
 
-		if !contract.UseGas(cost) {
+		if !contract.UseGas(cost, nil, tracing.GasChangeCallPrecompiledContract) {
 			return nil, vm.ErrOutOfGas
 		}
 

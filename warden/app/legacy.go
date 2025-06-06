@@ -305,6 +305,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		*app.GovKeeper,
 		app.SlashingKeeper,
 		app.EvidenceKeeper,
+		app.AppCodec(),
 		app.WardenKeeper,
 		app.ActKeeper,
 		app.OracleKeeper,

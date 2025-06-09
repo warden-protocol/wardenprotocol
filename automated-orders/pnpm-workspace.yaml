@@ -1,0 +1,7 @@
+packages:
+  - packages/*
+onlyBuiltDependencies:
+  - esbuild
+  - protobufjs
+  - secp256k1
+preferWorkspacePackages: true

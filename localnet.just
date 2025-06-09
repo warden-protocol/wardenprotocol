@@ -86,7 +86,7 @@ start bin="wardend" install="true":
       fi
     }
 
-    (post_start &) && {{bin}} start --x-crisis-skip-assert-invariants
+    (post_start &) && {{bin}} start
 
 start-2 bin="wardend" install="true":
     #!/usr/bin/env bash
@@ -157,7 +157,7 @@ start-2 bin="wardend" install="true":
 
     echo "run \"wardend --home ~/.warden-val2 start\" to start node 2"
     node2_id=$({{bin}} comet show-node-id --home ~/.warden-val2)
-    {{bin}} start --x-crisis-skip-assert-invariants --p2p.persistent_peers $node2_id@127.0.0.1:26696
+    {{bin}} start --p2p.persistent_peers $node2_id@127.0.0.1:26696
 
 
 # deploy a .wasm binary to the chain and return the contract address

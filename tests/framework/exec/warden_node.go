@@ -85,7 +85,7 @@ func (w *WardenNode) Start(t *testing.T, snapshot string) {
 
 	p.Free(t)
 
-	err = w.run(t.Context(), "--log_no_color", "start", "--home", w.Home, "--x-crisis-skip-assert-invariants")
+	err = w.run(t.Context(), "--log_no_color", "start", "--home", w.Home)
 	if errors.Is(t.Context().Err(), context.Canceled) {
 		return
 	}

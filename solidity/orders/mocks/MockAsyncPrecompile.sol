@@ -38,7 +38,8 @@ contract MockAsyncPrecompile is IAsync {
             fee: fee,
             input: input,
             callbackId: 0,
-            solver: solver
+            solver: solver,
+            createdAt: currentTimestamp()
         });
 
         TaskVote[] memory emptyVotes = new TaskVote[](0);
@@ -84,4 +85,9 @@ contract MockAsyncPrecompile is IAsync {
         // solhint-disable-next-line
         revert("Unimplemented");
     }
+
+}
+
+function currentTimestamp() view returns (Types.Timestamp memory response) {
+    response.secs = uint64(block.timestamp);
 }

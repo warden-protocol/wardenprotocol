@@ -19,6 +19,7 @@ import (
 	evmtypes "github.com/cosmos/evm/x/vm/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/common/math"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 
 	"github.com/warden-protocol/wardenprotocol/precompiles/callbacks"
@@ -170,10 +171,26 @@ func (k Keeper) ExecuteCallback(
 
 	// Add gas consumed during estimation to the final gas limit for case when precompile called inside callback
 	res, err := k.callEVM(ctx, moduleAddress, &cbAddress, data, gas+k.getGasConsumed(ctx))
+	// var bloom *big.Int
 	if err == nil {
 		if res.Failed() {
 			return k.callbacks.setFailed(ctx, id, res.VmError)
 		} else {
+			// logs := evmostypes.LogsToEthereum(res.Logs)
+
+			// Compute block bloom filter
+			// evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
+			// sdkCtx := sdk.UnwrapSDKContext(ctx)
+			// logIndex := 0 // should be updated if we have multiple sched callbacks? or get directly from tx (but there is no tx)?
+			// // statedb.NewTxConfig(blockhash,txhash,txindex - store here,logindex - store here)
+			// txIndex := 0
+			// if len(logs) > 0 {
+			// 	bloom = evmKeeper.GetBlockBloomTransient(sdkCtx)
+			// 	bloom.Or(bloom, big.NewInt(0).SetBytes(ethtypes.LogsBloom(logs)))
+			// 	evmKeeper.SetBlockBloomTransient(sdkCtx, bloom)
+			// 	evmKeeper.SetLogSizeTransient(sdkCtx, uint64(logIndex)+uint64(len(logs)))
+			// }
+			// evmKeeper.SetTxIndexTransient(sdkCtx, uint64(txIndex)+1)
 			return k.callbacks.setSucceed(ctx, id, res.Return())
 		}
 	}
@@ -259,26 +276,43 @@ func (k Keeper) callEVM(
 
 	nonce := fromAcc.GetSequence()
 
-	msg := ethtypes.NewMessage(
-		from,
-		contract,
-		nonce,
-		big.NewInt(0), // amount
-		gasLimit,      // gasLimit
-		big.NewInt(0), // gasFeeCap
-		big.NewInt(0), // gasTipCap
-		big.NewInt(0), // gasPrice
-		data,
-		ethtypes.AccessList{}, // AccessList
-		false,                 // isFake
-	)
+	// msg := ethtypes.NewMessage(
+	// 	from,
+	// 	contract,
+	// 	nonce,
+	// 	big.NewInt(0), // amount
+	// 	gasLimit,      // gasLimit
+	// 	big.NewInt(0), // gasFeeCap
+	// 	big.NewInt(0), // gasTipCap
+	// 	big.NewInt(0), // gasPrice
+	// 	data,
+	// 	ethtypes.AccessList{}, // AccessList
+	// 	false,                 // isFake
+	// )
 
-	evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
+	// evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
-	res, err := evmKeeper.ApplyMessage(sdkCtx, msg, evmtypes.NewNoOpTracer(), true)
+	// res, err := evmKeeper.ApplyMessage(sdkCtx, msg, evmtypes.NewNoOpTracer(), true)
+
+	ethTxData := ethtypes.NewTx(&ethtypes.DynamicFeeTx{
+		Nonce: nonce,
+		Data:  data,
+		Gas:   gasLimit,
+		// GasFeeCap  *big.Int // a.k.a. maxFeePerGas
+		Value:      big.NewInt(0),
+		AccessList: ethtypes.AccessList{},
+		To:         contract,
+		V:          nil,
+		R:          nil,
+		S:          nil,
+	})
+	res, err := k.applyTransaction(sdkCtx, ethTxData, from)
+
 	if err != nil {
 		return nil, err
 	}
+
+	fmt.Println("\n", "res.Hash\n", res.Hash, res.Logs, "\n")
 
 	if err := fromAcc.SetSequence(fromAcc.GetSequence() + 1); err != nil {
 		return nil, err
@@ -299,4 +333,84 @@ func (k Keeper) callbackFee(ctx context.Context, gas uint64) (feeAmt *big.Int, f
 	fee = sdk.Coins{{Denom: params.EvmDenom, Amount: sdkmath.NewIntFromBigInt(feeAmt)}}
 
 	return feeAmt, fee
+}
+
+func (k *Keeper) applyTransaction(ctx sdk.Context, tx *ethtypes.Transaction, from common.Address) (*evmtypes.MsgEthereumTxResponse, error) {
+	var bloom *big.Int
+
+	evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
+
+	cfg, err := evmKeeper.EVMConfig(ctx, sdk.ConsAddress(ctx.BlockHeader().ProposerAddress))
+	if err != nil {
+		return nil, errorsmod.Wrap(err, "failed to load evm config")
+	}
+	txConfig := evmKeeper.TxConfig(ctx, tx.Hash())
+
+	gasPrice := tx.GasPrice()
+	if cfg.BaseFee != nil {
+		gasPrice = math.BigMin(gasPrice.Add(tx.GasTipCap(), cfg.BaseFee), tx.GasFeeCap())
+	}
+
+	msg := ethtypes.NewMessage(
+		from,
+		tx.To(),
+		tx.Nonce(),
+		tx.Value(),
+		tx.Gas(),
+		new(big.Int).Set(tx.GasFeeCap()),
+		new(big.Int).Set(tx.GasTipCap()),
+		gasPrice,
+		tx.Data(),
+		tx.AccessList(),
+		false,
+	)
+	// If baseFee provided, set gasPrice to effectiveGasPrice.
+
+	// Create a cache context to revert state. The cache context is only committed when both tx and hooks executed successfully.
+	// Didn't use `Snapshot` because the context stack has exponential complexity on certain operations,
+	// thus restricted to be used only inside `ApplyMessage`.
+	tmpCtx, commit := ctx.CacheContext()
+
+	// pass true to commit the StateDB
+	res, err := evmKeeper.ApplyMessageWithConfig(tmpCtx, msg, nil, true, cfg, txConfig)
+	if err != nil {
+		// when a transaction contains multiple msg, as long as one of the msg fails
+		// all gas will be deducted. so is not msg.Gas()
+		evmKeeper.ResetGasMeterAndConsumeGas(tmpCtx, tmpCtx.GasMeter().Limit())
+		return nil, errorsmod.Wrap(err, "failed to apply ethereum core message")
+	}
+
+	logs := evmtypes.LogsToEthereum(res.Logs)
+
+	// Compute block bloom filter
+	if len(logs) > 0 {
+		bloom = evmKeeper.GetBlockBloomTransient(ctx)
+		bloom.Or(bloom, big.NewInt(0).SetBytes(ethtypes.LogsBloom(logs)))
+	}
+
+	if !res.Failed() {
+		commit()
+	}
+
+	// refund gas in order to match the Ethereum gas consumption instead of the default SDK one.
+	if err = evmKeeper.RefundGas(ctx, msg, msg.Gas()-res.GasUsed, cfg.Params.EvmDenom); err != nil {
+		return nil, errorsmod.Wrapf(err, "failed to refund gas leftover gas to sender %s", msg.From())
+	}
+
+	if len(logs) > 0 {
+		// Update transient block bloom filter
+		evmKeeper.SetBlockBloomTransient(ctx, bloom)
+		evmKeeper.SetLogSizeTransient(ctx, uint64(txConfig.LogIndex)+uint64(len(logs)))
+	}
+
+	evmKeeper.SetTxIndexTransient(ctx, uint64(txConfig.TxIndex)+1)
+
+	totalGasUsed, err := evmKeeper.AddTransientGasUsed(ctx, res.GasUsed)
+	if err != nil {
+		return nil, errorsmod.Wrap(err, "failed to add transient gas used")
+	}
+
+	// reset the gas meter for current cosmos transaction
+	evmKeeper.ResetGasMeterAndConsumeGas(ctx, totalGasUsed)
+	return res, nil
 }

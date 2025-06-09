@@ -124,12 +124,6 @@
       "disabled_type_urls": []
     },
     "consensus": null,
-    "crisis": {
-      "constant_fee": {
-        "denom": "award",
-        "amount": "1000"
-      }
-    },
     "distribution": {
       "params": {
         "community_tax": "0.020000000000000000",

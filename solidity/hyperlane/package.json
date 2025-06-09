@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "license": "ISC",
   "devDependencies": {
-    "forge-std": "github:foundry-rs/forge-std#v1.8.1",
+    "forge-std": "github:foundry-rs/forge-std#v1.9.7",
     "prettier": "^3.0.0",
     "solhint": "^3.6.2"
   },

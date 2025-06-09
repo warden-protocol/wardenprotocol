@@ -2,6 +2,9 @@
 sidebar_position: 6.5
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Implement the Venice Plugin
 
 ## Overview
@@ -18,7 +21,7 @@ Here are it's main components:
 
 Developers can use the existing Plugins or create their own ones.
 
-**The Venice Plugin** enables users to send requests to and receive responses from the [Venice AI](https://venice.ai) using the [Venice AI API](https://venice.ai/venice-api). The following guide explains how to reproduce the steps for implementing the Plugin.
+**The Venice Plugin** enables users to send requests to and receive responses from the [Venice AI](https://venice.ai) using the [Venice AI API](https://venice.ai/venice-api). The following guide explains how to reproduce the steps for implementing the Plugin and test it using [node commands](https://docs.wardenprotocol.org/operate-a-node/node-commands).
 
 ### Architecture
 
@@ -113,14 +116,24 @@ The response will be also in **JSON**:
 Before you start, complete the following prerequisites:
 
 - [Install Go](https://go.dev/doc/install) 1.24 or later.
-- [Get the Venice AI API key](https://docs.venice.ai/overview/guides/generating-api-key).
-- [Run a local chain](https://docs.wardenprotocol.org/run-a-local-chain).
+- [Install Just](https://github.com/casey/just) 1.34.0 or later.
+- [Install jq](https://jqlang.org/download/).
+- [Get a Venice AI API key](https://docs.venice.ai/overview/guides/generating-api-key).
 
-## Step 1. Implement the main logic
+Then clone the Warden Protocol repository:
 
-### 1.1. Create `venice.go`
+```bash
+git clone https://github.com/warden-protocol/wardenprotocol
+```
+:::note
+The Venice Plugin is already included in the repository. This guide uses it as a reference example to walk you through the implementation process.
+:::
 
-In the `wardenprotocol/plugins` directory, create a `venice` directory with a file `venice.go`.
+## Step 1. Implement the Plugin logic
+
+### 1.1. Set up the structure
+
+In the `wardenprotocol/plugins` directory, create a `venice` directory with a `venice.go` file.
 
 :::note Code
 [`prophet/plugins/venice.go`](https://github.com/warden-protocol/wardenprotocol/tree/main/prophet/plugins/venice/venice.go)
@@ -128,35 +141,32 @@ In the `wardenprotocol/plugins` directory, create a `venice` directory with a fi
 
 This file will contain the new Plugin's logic:
 
-- Imports
-- Data structures
-- A function for building a request
-- Functions implementing the Plugin interface
-- A function for initializing the Plugin
-
-```go
+```go title="prophet/plugins/venice/venice.go"
 package venice
 
+// The required imports
 import ("context")
 
-type Plugin struct {
-  venice veniceClient
-}
+// Data structures
+type Plugin struct { venice veniceClient }
 
-func func (p Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {
-  <...>
-}
+// A function for preparing a request
+func (c *veniceClient) completions(...) (completionsResponse, error) {...}
 
-func (p Plugin) Verify(ctx context.Context, input, output []byte) error {
-  <...>
-}
+// Functions implementing the Plugin interface
+func (p Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {...}
+func (p Plugin) Verify(ctx context.Context, input, output []byte) error {...}
+
+// A function for initializing the Plugin
+func New(apiKey string) Plugin {...}
+
 ```
 
-### 1.2. Add imports
+### 1.2. Add the required imports
 
-Add the required imports:
+In the same file, add the required imports:
 
-```go title="prophet/plugins/venice.go"
+```go title="prophet/plugins/venice/venice.go"
 import (
   "bytes"
   "context"
@@ -166,11 +176,17 @@ import (
 )
 ```
 
-### 1.3. Add data structures
+### 1.3. Define data structures
+
+Follow the steps below to create data structures for the Venice Plugin.
+
+:::tip
+The Venice AI API accepts and returns [JSON input and output](#input-and-output). To generate structs representing them, use an online converter—for example, [JSON to Go Struct](https://transform.tools/json-to-go).
+:::
 
 1. To abstract away the HTTP request and response, add `Plugin` and `veniceClient` structs:
    
-   ```go  title="prophet/plugins/venice.go"
+   ```go  title="prophet/plugins/venice/venice.go"
    type Plugin struct {
      venice veniceClient
    }
@@ -183,7 +199,7 @@ import (
 
 2. Then add a `completionsPayload` struct and a helper `message` struct, representing the payload structure:
    
-   ```go  title="prophet/plugins/venice.go"
+   ```go  title="prophet/plugins/venice/venice.go"
    type completionsPayload struct {
      Model               string    `json:"model"`
      Messages            []message `json:"messages"`
@@ -204,7 +220,7 @@ import (
    
 3. Add a `completionsResponse` struct and helper structs, representing the response structure:
 
-   ```go  title="prophet/plugins/venice.go"
+   ```go  title="prophet/plugins/venice/venice.go"
    type completionsResponse struct {
      ID               string           `json:"id"`
      Object           string           `json:"object"`
@@ -246,13 +262,9 @@ import (
    }
    ```
 
-   :::tip
-   To create these structs, you can use an online tool for automatic conversion of JSON data to Go structs: [transform.tools/json-to-go](https://transform.tools/json-to-go)
-   :::
-
-4. Add an `inputPayload` struct. The `Execute()` function will accept the JSON input and check whether it's properly formatted by mapping to this struct.
+4. Add an `inputPayload` struct. The [`Execute()` function](#15-implement-the-interface) will accept the JSON input and map it to this struct to check if the format is correct.
    
-   ```go title="prophet/plugins/venice.go"
+   ```go title="prophet/plugins/venice/venice.go"
    type inputPayload struct {
      Model       string  `json:"model"`
      Temperature float64 `json:"temperature"`
@@ -261,9 +273,9 @@ import (
    }
    ```
 
-### 1.4. Build a request
+### 1.4. Prepare a request
 
-Finally, add a `completions()` function for building a request.
+Add a `completions()` function for preparing a request.
 
 This function should do the following:
 
@@ -272,7 +284,7 @@ This function should do the following:
 - Decode the response into the `completionsResponse` struct
 - Return the response
 
-```go title="prophet/plugins/venice.go"
+```go title="prophet/plugins/venice/venice.go"
 func (c *veniceClient) completions(ctx context.Context, model string, temperature, topP float64, content string) (completionsResponse, error) {
   body, err := json.Marshal(completionsPayload{
     Model: model,
@@ -325,15 +337,15 @@ func (c *veniceClient) completions(ctx context.Context, model string, temperatur
 `MaxCompletionTokens` limits the size of the response (since it's going to be stored onchain). A completion token in Venice AI is a chunk of text generated by the AI.
 :::
 
-For simplicity, you can jsut hardcode a request:
+This code implements a dynamic request, allowing users to specify multiple parameters in the input. Alternatively, for simplicity, you can just hardcode a request where the only user-defined parameter will be the content:
 
-```go title="prophet/plugins/venice.go"
-func (c *veniceClient) completions(ctx context.Context, context string) (completionsResponse, error) {
+```go title="prophet/plugins/venice/venice.go"
+func (c *veniceClient) completions(ctx context.Context, content string) (completionsResponse, error) {
     body, err := json.Marshal(completionsPayload{
       Model: "default",
       Messages: []message{{
         Role: "user",
-        Content: "why is the sky blue?",
+        Content: content,
       }},
       FrequencyPenalty:0,
       PresencePenalty: 0,
@@ -352,11 +364,11 @@ func (c *veniceClient) completions(ctx context.Context, context string) (complet
 
 ### 1.5. Implement the interface
 
-1. Create an `Execute()` function, which should do the following:
+1. Create an `Execute()` function that does the following:
 
-   - Parse the JSON input and map it to the `inputPayload` struct
-   - Call `completions()` to send a request and retrieve a response
-   - Return the response
+   - Parses the JSON input and map it to the `inputPayload` struct
+   - Calls `completions()` to send a request and retrieve a response
+   - Returns the response
 
    You can use this code:
 
@@ -375,21 +387,28 @@ func (c *veniceClient) completions(ctx context.Context, context string) (complet
      return []byte(res.Choices[0].Message.Content), nil
    }
    ```
-   
-   If you hardcoded the payload in the previous step, then call `completions()` like this:
-   
-   ```go
-    res, err := p.venice.completions(ctx, string(input))
-   ```
 
    :::note
    The `Execute()` function returns just the first choice from the response. A choice represents a single response option (completion) returned by the Venice AI in response to a prompt.
 
-   ```
+   ```go
    return []byte(res.Choices[0].Message.Content), nil
    ```
    :::
    
+   If you hardcoded the payload in the previous step, use this:
+   
+   ```go
+   func (p Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {
+   res, err := p.venice2.completions(ctx, string(input))
+   if err != nil {
+     return nil, err
+   }
+
+   return []byte(res.Choices[0].Message.Content), nil
+   }
+   ```
+
 2. Add a `Verify()` function that skips verification:
 
    ```go title="prophet/plugins/venice.go"
@@ -400,7 +419,7 @@ func (c *veniceClient) completions(ctx context.Context, context string) (complet
 
 ### 1.6. Initialize the Plugin
 
-Then add a constructor for initializing the Venice Plugin. This code should do the following:
+Add a constructor for initializing the Venice Plugin. This code should do the following:
 
 - Read the `apiKey` parameter from the validator configuration file, `app.toml`
 - Return a new instance of `Plugin` with a configured HTTP client, `veniceClient` 
@@ -418,9 +437,11 @@ func New(apiKey string) Plugin {
 }
 ```
 
-## Step 2. Register the Plugin
+## Step 2. Integrate the Plugin
 
-We're planning to implement a node command that will register new Plugins onchain. However, on the moment, Plugins can be registered only when the chain is initialized. To register your Plugin, you need to modify the `app.go` file.
+### 2.1. Register the Plugin
+
+We plan to implement a node command for dynamically registering new Plugins onchain. However, currently you can register Plugins only during chain initialization, which requires modifying the `app.go` file.
 
 :::note Code
 [`warden/app/app.go`](https://github.com/warden-protocol/wardenprotocol/tree/main/warden/app/app.go)
@@ -432,7 +453,7 @@ We're planning to implement a node command that will register new Plugins onchai
    "github.com/warden-protocol/wardenprotocol/prophet/plugins/venice"
    ```
    
-2. Add Venice to the `registerProphetHandlers()` function.
+2. Add Venice to the `registerProphetHandlers()` function. It must check the validator's API key when registering the Plugin.
    
    ```go title="warden/app/app.go"
    func registerProphetHandlers(appOpts servertypes.AppOptions) {
@@ -441,40 +462,34 @@ We're planning to implement a node command that will register new Plugins onchai
      }
    }
    ```
+ 
+:::note 
+If you test your code now, the registration won't succeed. To see this in action, initialize a local chain:
    
-   When registering the Plugin, this functions checks the validator's API key: `appOpts.Get("venice.api-key")`.
+```bash
+just localnet
+```
+   
+Wait until blocks start producing and then query the available Plugins:
+   
+```bash
+wardend query async plugins
+```
 
-3. You can test it locally.
+The node will return a list of Plugins, but Venice won't be included yet. To complete the integration, you need to implement additional changes, which are covered in the steps below. 
+:::
 
-   Initialize a local chain by running this:
-   
-   ```bash
-   just localnet
-   ```
-   
-   Then query the available Plugins on the network:
-   
-   ```bash
-   wardend query async plugins
-   ```
-   
-   The node will return a list of available plugins, but Venice won't be included. To make sure Venice is registered onchain, we need to add its configuration file and make other changes.
+### 2.2. Create a config file
 
-   :::note
-   When the chain is initialized, Cosmos SDK calls the `InitGenesis()` function of the `x/async` module to loop over the Plugins registered onchain, and then the `just` script adds them to the genesis file. See [`genesis.go`](https://github.com/warden-protocol/wardenprotocol/tree/main/warden/x/async/module/genesis.go).
+Now you need to create a configuration file defining the default settings of the Venice Plugin.
 
-   UPD: It seems that now it's happening here: [`warden/x/async/keeper/genesis.go`](https://github.com/warden-protocol/wardenprotocol/tree/main/warden/x/async/keeper/keeper.go), see the `registerGenesisPlugins()` function.
-   :::
+:::note Code
+[`prophet/plugins/venice/config/config.go`](https://github.com/warden-protocol/wardenprotocol/tree/main/prophet/plugins/venice/config/config.go)
+:::
 
-## Step 3. Configure the Plugin
+1. Under `venice`, create a `config` directory and add a `config.go` file with the following code:
 
-1. In the `plugins` directory, create a new directory `config` with a file `config.go`.
-   
-   :::note Code
-   [`prophet/plugins/config/config.go`](https://github.com/warden-protocol/wardenprotocol/tree/main/prophet/plugins/config/config.go)
-   :::
-   
-   ```go title="prophet/plugins/config/config.go"
+   ```go title="prophet/plugins/venice/config/config.go"
    package config
    
    type Config struct {
@@ -491,7 +506,7 @@ We're planning to implement a node command that will register new Plugins onchai
      }
    }
    // highlight-end
-
+   
    const DefaultConfigTemplate = `
    ###############################################################################
    ###                      Venice configuration                               ###
@@ -508,18 +523,21 @@ We're planning to implement a node command that will register new Plugins onchai
 
 2. In the `DefaultConfig()` function, set `Enabled` to `true` and specify your API key from [Prerequisites](#prerequisites).
 
-## Step 4. Initialize the config
+   :::tip
+   This code defines the default Venice settings, which are applied to the validator configuration file, `app.toml`, during chain initialization. You can modify the validator config at any time without reinitializing the chain. For example, in `config.go`, you can leave the `ApiKey` parameter blank and specify it later in `app.toml`.
+   ::: 
 
-Now initialize the Venice Plugin config in the chain configuration loader, `wardend/cmd/config.go`.
+### 2.3. Initialize the config
+
+Plugin configs are initilized in the chain configuration loader. See the steps below.
 
 :::note Code
 [`cmd/wardend/cmd/config.go`](https://github.com/warden-protocol/wardenprotocol/tree/main/cmd/wardend/cmd/config.go)
 :::
 
-
 1. Import the Venice config (see the last line in the code sample):
    
-   ```go title="prophet/plugins/config/config.go"
+   ```go title="wardend/cmd/config.go"
    import (
      "time"
    
@@ -538,7 +556,7 @@ Now initialize the Venice Plugin config in the chain configuration loader, `ward
 
 2. Add Venice to the `initAppConfig()` function:
    
-   ```go title="prophet/plugins/config/config.go"
+   ```go title="wardend/cmd/config.go"
    func initAppConfig() (string, interface{}) {
      // The following code snippet is just for reference.
      type CustomAppConfig struct {
@@ -567,6 +585,7 @@ Now initialize the Venice Plugin config in the chain configuration loader, `ward
        PricePred: *pricePredictionConfig,
        Http:      *httpConfig,
        Quantkit:  *quantkitConfig,
+       // highlight-next-line
        Venice:    *veniceConfig,
      }
    
@@ -582,9 +601,9 @@ Now initialize the Venice Plugin config in the chain configuration loader, `ward
    }
    ```
   
-## Step 5. Edit the localnet script
+### 2.4. Edit the localnet script
 
-To enable Venice on the localnet, you should also add it to the `localnet.just` file.
+To enable Venice on the localnet, you add it to the `localnet.just` file.
 
 :::note Code
 [`localnet.just`](https://github.com/warden-protocol/wardenprotocol/localnet.just)
@@ -594,15 +613,35 @@ To enable Venice on the localnet, you should also add it to the `localnet.just` 
 async-plugins := '["echo", "http", "pricepred", quantkit", "venice"]'
 ```
 
-## Step 6. Verify the registration
+:::note
+When you initialize a local chain, the `just` script adds a list of active Plugins to the genesis file, and the Cosmos SDK calls the [`registerGenesisPlugins()` function](https://github.com/warden-protocol/wardenprotocol/tree/main/warden/x/async/keeper/keeper.go) of `x/async` to loop over those Plugins from the genesis state and register them onchain.
+:::
 
-1. Restart the node and query Plugins again:
+## Step 3. Test the Plugin
+
+### 3.1. Run a local chain
+
+To test Venice locally, navigate to `wardenprotocol` and initialize a local chain from scratch:
+
+```bash
+just localnet
+```
+
+:::tip
+If the node is already running, first stop it using **CTRL + C**. The script will override the existing node home directory (`.wardend`).
+:::
+
+### 3.2. Verify registration
+
+Wait until blocks start producing and verify the Plugin registration, as shown below.
+
+1. Query Plugins by running this node command in a separate terminal window:
 
    ```bash
    wardend query async plugins
    ```
    
-   The Venice Plugin will be returned:
+   The response will include the Venice Plugin:
    
    ```bash
    - creator: warden1949xxdxj72ah8swpqmx27k67s0z6g7470a0ktk
@@ -612,13 +651,32 @@ async-plugins := '["echo", "http", "pricepred", quantkit", "venice"]'
      id: venice
    ```
 
-2. You can query the validators running the Plugin:
+2. Query validators running the Plugin:
    
    ```bash
    wardend query async plugin-validators --name venice
    ```
+  
+   The node will return output similiar to this:
+ 
+   ```bash
+   - priority: "-1125"
+   validator: r/uyM9AcPLCWFt9xbkiDxp7qQWU=
+   queue_total_weight: "1000"
+   queue_weights:
+   - validator: r/uyM9AcPLCWFt9xbkiDxp7qQWU=
+     weight: "1000"
+   ```
    
-3. You can also check the `app.toml` file in `$HOME/.warden/config`. If the Plugin is disabled, enable it and restart the chain.
+   :::tip
+   The following output means that Venice is either disabled or not registered properly:
+
+   ```bash
+   rpc error: code = NotFound desc = rpc error: code = NotFound desc = queue not found: key not found
+   ```
+   :::
+   
+3. You can also check the validator configuration file. See `app.toml` in `$HOME/.warden/config`:
    
    ```bash
    ###############################################################################
@@ -632,34 +690,47 @@ async-plugins := '["echo", "http", "pricepred", quantkit", "venice"]'
    # API Key used when making Venice API requests
    api-key = "my-api-key"
    ```
+   :::tip
+   If Venice is disabled or the API key is missing, you can fix this without initializing the chain from scratch. Simply stop the node, edit `app.toml`, and run `wardend start` to restart the node.
+   :::
    
-## Step 7. Test the Plugin
+### 3.3. Send a request
 
-Now create a request.
+To send a request to the Venice Plugin, follow the instructions below.
 
-1. First, encode the input:
-   
-   ```bash
-   echo -n 'what color is the sky?' | base64
-   ```
-   
-   This will output the following:
-   
-   ```bash
-   d2hhdCBjb2xvciBpcyB0aGUgc2t5Pw==
-   ```
-   
-   Alternatively, you can use a more advanced request:
-  
+If you used the simplified version of the code in [Step 1.4](#14-prepare-a-request), apply the example commands labeled **Hardcoded request**. Otherwise, use the examples under **Dynamic request**.
+
+1. First, Base64 encode the input:
+
+   <Tabs>
+   <TabItem value="dynamic" label="Dynamic request">
    ```bash
    echo -n '{"model":"default", "temperature": 0.0, "top_p": 0.9, "message":"why is the sky black? limit your response to 100 tokens"}' | base64
    ```
+   </TabItem>
+   <TabItem value="hardcoded" label="Hardcoded request">
+   ```bash
+   echo -n 'what color is the sky?' | base64
+   ``` 
+   </TabItem>
+   </Tabs>   
   
-2. Now create a new Task for the Venice Plugin using the encoded input:
-   
+2. Then create a new Task for the Venice Plugin using the encoded input and other parameters:
+
+   <Tabs>
+   <TabItem value="dynamic" label="Dynamic request">
+   ```bash
+   wardend tx async add-task --from shulgin --input "eyJtb2RlbCI6ImRlZmF1bHQiLCAidGVtcGVyYXR1cmUiOiAwLjAsICJ0b3BfcCI6IDAuOSwgIm1l
+   c3NhZ2UiOiJ3aHkgaXMgdGhlIHNreSBibGFjaz8gbGltaXQgeW91ciByZXNwb25zZSB0byAxMDAg
+   dG9rZW5zIn0=" --plugin "venice" -y
+   ```
+   </TabItem>
+   <TabItem value="hardcoded" label="Hardcoded request">
    ```bash
    wardend tx async add-task --from shulgin --input "d2hhdCBjb2xvciBpcyB0aGUgc2t5Pw==" --plugin "venice" -y
-   ```
+   ``` 
+   </TabItem>
+   </Tabs>   
    
    This will return the following:
    
@@ -676,29 +747,96 @@ Now create a request.
    raw_log: ""
    timestamp: ""
    tx: null
+   # highlight-next-line
    txhash: 0F1246CD6ECE07B766E1311654F2BF39C01C1B1E6288FF032FEE32B6F6712743
    ```
 
-3. Use the returned `txhash` to check whether the transactions was successful:
+3. To check whether the transaction was successful, query it by the returned `txhash`:
    
    ```bash
    wardend query wait-tx 0F1246CD6ECE07B766E1311654F2BF39C01C1B1E6288FF032FEE32B6F6712743
    ```
    
-4. Now query tasks:
+   The output will include references to the [`MsgAddTask()` method](https://docs.wardenprotocol.org/learn/warden-protocol-modules/x-async#msgaddtask) and the `EventCreateTask` event, indicating that a new Task was created and registered onchain.
+
+4. Now query Tasks:
    
    ```bash
    wardend query async tasks
    ```
 
-5. Copy the output from the `output` field and decode it:
-   
+   This command will return your Task data, including its result (output):
+
+   <Tabs>
+   <TabItem value="dynamic" label="Dynamic request">
+   ```bash
+   tasks:
+   - result:
+       created_at: "2025-06-09T14:37:43.45016319Z"
+       id: "1"
+       # highlight-next-line
+       output: "VGhlIHNreSBpcyBub3QgYWx3YXlzIGJsYWNrLiBEdXJpbmcgdGhlIGRheSwgaXQgYXBwZWFycyBibHVlIGR1ZSB0byBhIHBoZW5vbWVub24gY2FsbGVkIFJheWxlaWdoIHNjYXR0ZXJpbmcsIHdoZXJlIHN1bmxpZ2h0IGludGVyYWN0cyB3aXRoIHRoZSBFYXJ0aCdzIGF0bW9zcGhlcmUuIEF0IG5pZ2h0LCB0aGUgc2t5IGNhbiBhcHBlYXIgYmxhY2sgYmVjYXVzZSB0aGUgc3VuIGlzIG5vIGxvbmdlciB2aXNpYmxlIGFuZCB0aGVyZSBpcyBubyBzY2F0dGVyZWQgbGlnaHQu"
+     task:
+       creator: warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
+       fee:
+         executor_reward: []
+         plugin_creator_reward: []
+       id: "1"
+       input: eyJtb2RlbCI6ImRlZmF1bHQiLCAidGVtcGVyYXR1cmUiOiAwLjAsICJ0b3BfcCI6IDAuOSwgIm1lc3NhZ2UiOiJ3aHkgaXMgdGhlIHNreSBibGFjaz8gbGltaXQgeW91ciByZXNwb25zZSB0byAxMDAgdG9rZW5zIn0=
+       plugin: venice
+       solver: T4ZRwThzLzAZbWM5pYOgynl3CjY=
+     votes:
+     - task_id: "1"
+       vote: VOTE_TYPE_VERIFIED
+       voter: T4ZRwThzLzAZbWM5pYOgynl3CjY=
+   ```
+   </TabItem>
+   <TabItem value="hardcoded" label="Hardcoded request">
+   ```bash
+   tasks:
+   - result:
+       created_at: "2025-06-09T14:37:43.45016319Z"
+       id: "1"
+       # highlight-next-line
+       output: "VGhlIGNvbG9yIG9mIHRoZSBza3kgaXMgYmx1ZS4="
+     task:
+       creator: warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
+       fee:
+         executor_reward: []
+         plugin_creator_reward: []
+       id: "1"
+       input: eyJtb2RlbCI6ImRlZmF1bHQiLCAidGVtcGVyYXR1cmUiOiAwLjAsICJ0b3BfcCI6IDAuOSwgIm1lc3NhZ2UiOiJ3aHkgaXMgdGhlIHNreSBibGFjaz8gbGltaXQgeW91ciByZXNwb25zZSB0byAxMDAgdG9rZW5zIn0=
+       plugin: venice
+       solver: T4ZRwThzLzAZbWM5pYOgynl3CjY=
+     votes:
+     - task_id: "1"
+       vote: VOTE_TYPE_VERIFIED
+       voter: T4ZRwThzLzAZbWM5pYOgynl3CjY=
+   ```
+   </TabItem>
+   </Tabs> 
+
+   :::tip
+   If the `output field` is missing, wait a few seconds for the Task to complete and run the query again. The Task data may also include an error if the input was invalid.
+   :::
+
+5. Copy the result from the `output` field and decode it:
+
+   <Tabs>
+   <TabItem value="dynamic" label="Dynamic request">
+   ```bash
+   echo 'VGhlIHNreSBpcyBub3QgYWx3YXlzIGJsYWNrLiBEdXJpbmcgdGhlIGRheSwgaXQgYXBwZWFycyBibHVlIGR1ZSB0byBhIHBoZW5vbWVub24gY2FsbGVkIFJheWxlaWdoIHNjYXR0ZXJpbmcsIHdoZXJlIHN1bmxpZ2h0IGludGVyYWN0cyB3aXRoIHRoZSBFYXJ0aCdzIGF0bW9zcGhlcmUuIEF0IG5pZ2h0LCB0aGUgc2t5IGNhbiBhcHBlYXIgYmxhY2sgYmVjYXVzZSB0aGUgc3VuIGlzIG5vIGxvbmdlciB2aXNpYmxlIGFuZCB0aGVyZSBpcyBubyBzY2F0dGVyZWQgbGlnaHQu' | base64 -d
+   ```
+   ```bash
+   The sky is not always black. During the day, it appears blue due to a phenomenon called Rayleigh scattering, where sunlight interacts with the Earth's atmosphere. At night, the sky can appear black because the sun is no longer visible and there is no scattered light.
+   ```
+   </TabItem>
+   <TabItem value="hardcoded" label="Hardcoded request">
    ```bash
    echo 'VGhlIGNvbG9yIG9mIHRoZSBza3kgaXMgYmx1ZS4=' | base64 -d
-   ```
-   
+   ```   
    ```bash
    The color of the sky is blue.
    ```
-   
-   This response will be stored onchain.
+   </TabItem>
+   </Tabs>

@@ -217,6 +217,23 @@
                   "internalType": "bytes",
                   "name": "solver",
                   "type": "bytes"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint64",
+                      "name": "secs",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "nanos",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct Types.Timestamp",
+                  "name": "createdAt",
+                  "type": "tuple"
                 }
               ],
               "internalType": "struct Task[]",
@@ -328,6 +345,11 @@
                   "internalType": "struct PluginFee",
                   "name": "fee",
                   "type": "tuple"
+                },
+                {
+                  "internalType": "int64",
+                  "name": "timeout",
+                  "type": "int64"
                 }
               ],
               "internalType": "struct Plugin[]",
@@ -429,6 +451,23 @@
                       "internalType": "bytes",
                       "name": "solver",
                       "type": "bytes"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint64",
+                          "name": "secs",
+                          "type": "uint64"
+                        },
+                        {
+                          "internalType": "uint64",
+                          "name": "nanos",
+                          "type": "uint64"
+                        }
+                      ],
+                      "internalType": "struct Types.Timestamp",
+                      "name": "createdAt",
+                      "type": "tuple"
                     }
                   ],
                   "internalType": "struct Task",
@@ -628,6 +667,23 @@
                       "internalType": "bytes",
                       "name": "solver",
                       "type": "bytes"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint64",
+                          "name": "secs",
+                          "type": "uint64"
+                        },
+                        {
+                          "internalType": "uint64",
+                          "name": "nanos",
+                          "type": "uint64"
+                        }
+                      ],
+                      "internalType": "struct Types.Timestamp",
+                      "name": "createdAt",
+                      "type": "tuple"
                     }
                   ],
                   "internalType": "struct Task",

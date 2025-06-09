@@ -22,7 +22,18 @@ start bin="wardend" install="true":
       fi
     }
 
-    rm -rf ~/.warden
+    function json() {
+      jq "$1" "$2" > "$2".tmp
+      mv "$2".tmp "$2"
+    }
+
+    WARDEN_HOME="$HOME/.warden"
+    GENESIS="$WARDEN_HOME/config/genesis.json"
+    function edit_genesis() {
+      json "$1" "$GENESIS"
+    }
+
+    rm -rf $WARDEN_HOME
     {{bin}} config set client chain-id {{chain_id}}
     {{bin}} config set client keyring-backend test
     {{bin}} init localnet --chain-id {{chain_id}} --default-denom award > /dev/null
@@ -30,7 +41,7 @@ start bin="wardend" install="true":
     {{bin}} config set app api.enable true
     {{bin}} config set app api.enabled-unsafe-cors true
     {{bin}} config set config consensus.timeout_commit 1s -s
-    replace 's/cors_allowed_origins = \[\]/cors_allowed_origins = ["*"]/' ~/.warden/config/config.toml
+    replace 's/cors_allowed_origins = \[\]/cors_allowed_origins = ["*"]/' "$WARDEN_HOME/config/config.toml"
     {{bin}} keys add val > /dev/null
     echo -n '{{shulgin_mnemonic}}' | {{bin}} keys add shulgin --recover > /dev/null
     {{bin}} genesis add-genesis-account val 10000000000000000000000000award
@@ -47,10 +58,10 @@ start bin="wardend" install="true":
     {{bin}} genesis gentx val 1000000000000000000000award
     {{bin}} genesis collect-gentxs
     {{bin}} genesis add-genesis-slinky-markets
-    GENESIS="$HOME/.warden/config/genesis.json"
-    jq '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}' "$GENESIS" > "$GENESIS".tmp && mv "$GENESIS".tmp "$GENESIS"
-    jq '.consensus["params"]["abci"]["vote_extensions_enable_height"] = "2"' "$GENESIS" > "$GENESIS".tmp && mv "$GENESIS".tmp "$GENESIS"
-    jq '.app_state["evm"]["params"]["evm_denom"]="award"' "$GENESIS" > $GENESIS.tmp && mv "$GENESIS".tmp "$GENESIS"
+
+    edit_genesis '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}'
+    edit_genesis '.consensus["params"]["abci"]["vote_extensions_enable_height"] = "2"'
+    edit_genesis '.app_state["evm"]["params"]["evm_denom"]="award"'
 
     post_start () {
       sleep 3

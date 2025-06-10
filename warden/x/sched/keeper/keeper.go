@@ -2,15 +2,18 @@ package keeper
 
 import (
 	"context"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"math/big"
+	"strconv"
 
 	"cosmossdk.io/collections"
 	"cosmossdk.io/core/store"
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/log"
 	sdkmath "cosmossdk.io/math"
+	cmttypes "github.com/cometbft/cometbft/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
@@ -222,6 +225,7 @@ func (k Keeper) tryDeductTxCost(
 		return types.ErrInsufficientFunds
 	}
 
+	fmt.Println("\nfeeAmt", feeAmt, "cbBalance", cbBalance, "fee", fee, "\n")
 	if err := evmKeeper.DeductTxCostsFromUserBalance(sdkCtx, fee, cbAddress); err != nil {
 		if err2 := k.callbacks.setFailed(ctx, cbId, err.Error()); err2 != nil {
 			return err2
@@ -257,7 +261,7 @@ func (k Keeper) estimateGas(
 	if err != nil {
 		return 0, "", err
 	}
-
+	fmt.Println("\ngasRes", gasRes, "\n")
 	return gasRes.Gas, gasRes.GetVmError(), nil
 }
 
@@ -330,13 +334,16 @@ func (k Keeper) callbackFee(ctx context.Context, gas uint64) (feeAmt *big.Int, f
 	baseFee := evmKeeper.GetBaseFee(sdkCtx)
 	gasInt := new(big.Int).SetUint64(gas)
 	feeAmt = new(big.Int).Mul(baseFee, gasInt)
+	fmt.Println("\nfeeAmt", feeAmt, "gas", gas, "baseFee", baseFee, "\n")
 	fee = sdk.Coins{{Denom: params.EvmDenom, Amount: sdkmath.NewIntFromBigInt(feeAmt)}}
 
 	return feeAmt, fee
 }
 
 func (k *Keeper) applyTransaction(ctx sdk.Context, tx *ethtypes.Transaction, from common.Address) (*evmtypes.MsgEthereumTxResponse, error) {
-	var bloom *big.Int
+	var (
+		bloom *big.Int
+	)
 
 	evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
 
@@ -364,7 +371,6 @@ func (k *Keeper) applyTransaction(ctx sdk.Context, tx *ethtypes.Transaction, fro
 		tx.AccessList(),
 		false,
 	)
-	// If baseFee provided, set gasPrice to effectiveGasPrice.
 
 	// Create a cache context to revert state. The cache context is only committed when both tx and hooks executed successfully.
 	// Didn't use `Snapshot` because the context stack has exponential complexity on certain operations,
@@ -389,11 +395,25 @@ func (k *Keeper) applyTransaction(ctx sdk.Context, tx *ethtypes.Transaction, fro
 	}
 
 	if !res.Failed() {
+
+		cumulativeGasUsed := res.GasUsed
+		if ctx.BlockGasMeter() != nil {
+			limit := ctx.BlockGasMeter().Limit()
+			cumulativeGasUsed += ctx.BlockGasMeter().GasConsumed()
+			if cumulativeGasUsed > limit {
+				cumulativeGasUsed = limit
+			}
+		}
+
 		commit()
+
+		// ctx.EventManager().EmitEvents(tmpCtx.EventManager().Events()) // todo: can remove?
 	}
 
+	evmDenom := evmtypes.GetEVMCoinDenom()
+
 	// refund gas in order to match the Ethereum gas consumption instead of the default SDK one.
-	if err = evmKeeper.RefundGas(ctx, msg, msg.Gas()-res.GasUsed, cfg.Params.EvmDenom); err != nil {
+	if err = evmKeeper.RefundGas(ctx, msg, msg.Gas()-res.GasUsed, evmDenom); err != nil {
 		return nil, errorsmod.Wrapf(err, "failed to refund gas leftover gas to sender %s", msg.From())
 	}
 
@@ -412,5 +432,67 @@ func (k *Keeper) applyTransaction(ctx sdk.Context, tx *ethtypes.Transaction, fro
 
 	// reset the gas meter for current cosmos transaction
 	evmKeeper.ResetGasMeterAndConsumeGas(ctx, totalGasUsed)
+
+	if err := k.emitEvmLogs(ctx, tx, res, from); err != nil {
+		return nil, err
+	}
+
 	return res, nil
+}
+
+func (k *Keeper) emitEvmLogs(ctx sdk.Context, tx *ethtypes.Transaction, response *evmtypes.MsgEthereumTxResponse, from common.Address) error {
+	evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
+
+	attrs := []sdk.Attribute{
+		sdk.NewAttribute(sdk.AttributeKeyAmount, tx.Value().String()),
+		// add event for ethereum transaction hash format
+		sdk.NewAttribute(evmtypes.AttributeKeyEthereumTxHash, response.Hash),
+		// add event for index of valid ethereum tx
+		sdk.NewAttribute(evmtypes.AttributeKeyTxIndex, strconv.FormatUint(evmKeeper.GetTxIndexTransient(ctx), 10)),
+		// add event for eth tx gas used, we can't get it from cosmos tx result when it contains multiple eth tx msgs.
+		sdk.NewAttribute(evmtypes.AttributeKeyTxGasUsed, strconv.FormatUint(response.GasUsed, 10)),
+	}
+
+	if len(ctx.TxBytes()) > 0 {
+		// add event for tendermint transaction hash format
+		hash := cmttypes.Tx(ctx.TxBytes()).Hash()
+		attrs = append(attrs, sdk.NewAttribute(evmtypes.AttributeKeyTxHash, hex.EncodeToString(hash)))
+	}
+
+	if to := tx.To(); to != nil {
+		attrs = append(attrs, sdk.NewAttribute(evmtypes.AttributeKeyRecipient, to.Hex()))
+	}
+
+	if response.Failed() {
+		attrs = append(attrs, sdk.NewAttribute(evmtypes.AttributeKeyEthereumTxFailed, response.VmError))
+	}
+
+	txLogAttrs := make([]sdk.Attribute, len(response.Logs))
+	for i, log := range response.Logs {
+		value, err := json.Marshal(log)
+		if err != nil {
+			return errorsmod.Wrap(err, "failed to encode log")
+		}
+		txLogAttrs[i] = sdk.NewAttribute(evmtypes.AttributeKeyTxLog, string(value))
+	}
+
+	// emit events
+	ctx.EventManager().EmitEvents(sdk.Events{
+		sdk.NewEvent(
+			evmtypes.EventTypeEthereumTx,
+			attrs...,
+		),
+		sdk.NewEvent(
+			evmtypes.EventTypeTxLog,
+			txLogAttrs...,
+		),
+		sdk.NewEvent(
+			sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, evmtypes.AttributeValueCategory),
+			sdk.NewAttribute(sdk.AttributeKeySender, from.Hex()),
+			sdk.NewAttribute(evmtypes.AttributeKeyTxType, fmt.Sprintf("%d", tx.Type())),
+		),
+	})
+
+	return nil
 }

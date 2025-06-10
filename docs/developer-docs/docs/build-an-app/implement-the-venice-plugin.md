@@ -398,7 +398,7 @@ func (c *veniceClient) completions(ctx context.Context, content string) (complet
    
    If you hardcoded the payload in the previous step, use this:
    
-   ```go
+   ```go title="prophet/plugins/venice.go"
    func (p Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {
    res, err := p.venice2.completions(ctx, string(input))
    if err != nil {

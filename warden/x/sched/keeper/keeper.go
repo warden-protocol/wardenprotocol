@@ -174,28 +174,15 @@ func (k Keeper) ExecuteCallback(
 
 	// Add gas consumed during estimation to the final gas limit for case when precompile called inside callback
 	res, err := k.callEVM(ctx, moduleAddress, &cbAddress, data, gas+k.getGasConsumed(ctx))
-	// var bloom *big.Int
+
 	if err == nil {
 		if res.Failed() {
 			return k.callbacks.setFailed(ctx, id, res.VmError)
 		} else {
-			// logs := evmostypes.LogsToEthereum(res.Logs)
-
-			// Compute block bloom filter
-			// evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
-			// sdkCtx := sdk.UnwrapSDKContext(ctx)
-			// logIndex := 0 // should be updated if we have multiple sched callbacks? or get directly from tx (but there is no tx)?
-			// // statedb.NewTxConfig(blockhash,txhash,txindex - store here,logindex - store here)
-			// txIndex := 0
-			// if len(logs) > 0 {
-			// 	bloom = evmKeeper.GetBlockBloomTransient(sdkCtx)
-			// 	bloom.Or(bloom, big.NewInt(0).SetBytes(ethtypes.LogsBloom(logs)))
-			// 	evmKeeper.SetBlockBloomTransient(sdkCtx, bloom)
-			// 	evmKeeper.SetLogSizeTransient(sdkCtx, uint64(logIndex)+uint64(len(logs)))
-			// }
-			// evmKeeper.SetTxIndexTransient(sdkCtx, uint64(txIndex)+1)
 			return k.callbacks.setSucceed(ctx, id, res.Return())
 		}
+	} else {
+		k.callbacks.setFailed(ctx, id, err.Error())
 	}
 
 	return err
@@ -283,20 +270,6 @@ func (k Keeper) callEVM(
 	}
 
 	nonce := fromAcc.GetSequence()
-
-	// msg := ethtypes.NewMessage(
-	// 	from,
-	// 	contract,
-	// 	nonce,
-	// 	big.NewInt(0), // amount
-	// 	gasLimit,      // gasLimit
-	// 	big.NewInt(0), // gasFeeCap
-	// 	big.NewInt(0), // gasTipCap
-	// 	big.NewInt(0), // gasPrice
-	// 	data,
-	// 	ethtypes.AccessList{}, // AccessList
-	// 	false,                 // isFake
-	// )
 
 	// evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
@@ -490,8 +463,7 @@ func (k *Keeper) emitEvmLogs(ctx sdk.Context, tx *ethtypes.Transaction, response
 			evmtypes.EventTypeTxLog,
 			txLogAttrs...,
 		),
-		// 988990228228668947660
-		// 986989790852843863824
+
 		sdk.NewEvent(
 			sdk.EventTypeMessage,
 			sdk.NewAttribute(sdk.AttributeKeyModule, evmtypes.AttributeValueCategory),

@@ -4,7 +4,6 @@ shulgin_mnemonic := "exclude try nephew main caught favorite tone degree lottery
 val2 := "warden194j3dx4t7u80765k2puu3082vc39yfqnvrxqu7"
 val2_mnemonic := "door blast other element embark noodle maple agent drastic bunker swarm logic wide deputy exhibit bicycle evil exile air other mesh foot tackle spot"
 warden-precompiles := '["0x0000000000000000000000000000000000000100","0x0000000000000000000000000000000000000400","0x0000000000000000000000000000000000000800","0x0000000000000000000000000000000000000801","0x0000000000000000000000000000000000000802","0x0000000000000000000000000000000000000803","0x0000000000000000000000000000000000000804","0x0000000000000000000000000000000000000805","0x0000000000000000000000000000000000000900", "0x0000000000000000000000000000000000000901", "0x0000000000000000000000000000000000000902", "0x0000000000000000000000000000000000000903", "0x0000000000000000000000000000000000000904", "0x0000000000000000000000000000000000000905"]'
-async-plugins := '["echo", "http", "pricepred", "venice", "quantkit"]'
 
 # run a single-node chain locally, use "bin" to specify the binary name
 start bin="wardend" install="true":
@@ -39,6 +38,12 @@ start bin="wardend" install="true":
     {{bin}} genesis add-genesis-space {{shulgin}}
     {{bin}} genesis add-genesis-keychain {{shulgin}} "WardenKMS" "{\"key_req\":[],\"sig_req\":[]}"
 
+    {{bin}} genesis add-genesis-plugin echo
+    {{bin}} genesis add-genesis-plugin http
+    {{bin}} genesis add-genesis-plugin pricepred
+    {{bin}} genesis add-genesis-plugin venice
+    {{bin}} genesis add-genesis-plugin quantkit
+
     {{bin}} genesis gentx val 1000000000000000000000award
     {{bin}} genesis collect-gentxs
     {{bin}} genesis add-genesis-slinky-markets
@@ -46,7 +51,6 @@ start bin="wardend" install="true":
     jq '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}' "$GENESIS" > "$GENESIS".tmp && mv "$GENESIS".tmp "$GENESIS"
     jq '.consensus["params"]["abci"]["vote_extensions_enable_height"] = "2"' "$GENESIS" > "$GENESIS".tmp && mv "$GENESIS".tmp "$GENESIS"
     jq '.app_state["evm"]["params"]["evm_denom"]="award"' "$GENESIS" > $GENESIS.tmp && mv "$GENESIS".tmp "$GENESIS"
-    jq '.app_state.async.active_plugins += {{async-plugins}}' ~/.warden/config/genesis.json > temp.json && mv temp.json ~/.warden/config/genesis.json
 
     post_start () {
       sleep 3
@@ -82,7 +86,7 @@ start bin="wardend" install="true":
       fi
     }
 
-    (post_start &) && {{bin}} start --x-crisis-skip-assert-invariants
+    (post_start &) && {{bin}} start
 
 start-2 bin="wardend" install="true":
     #!/usr/bin/env bash
@@ -153,7 +157,7 @@ start-2 bin="wardend" install="true":
 
     echo "run \"wardend --home ~/.warden-val2 start\" to start node 2"
     node2_id=$({{bin}} comet show-node-id --home ~/.warden-val2)
-    {{bin}} start --x-crisis-skip-assert-invariants --p2p.persistent_peers $node2_id@127.0.0.1:26696
+    {{bin}} start --p2p.persistent_peers $node2_id@127.0.0.1:26696
 
 
 # deploy a .wasm binary to the chain and return the contract address

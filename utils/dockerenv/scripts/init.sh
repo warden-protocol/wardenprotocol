@@ -124,7 +124,8 @@ jq '.app_state.warden.keychains += $WARDEND_KEYCHAINS' $CONFIG_FOLDER/genesis.js
 jq '.app_state.async.active_plugins += $ASYNC_PLUGINS' $CONFIG_FOLDER/genesis.json > tmp/genesis.json && mv tmp/genesis.json $CONFIG_FOLDER/genesis.json
 jq '.consensus[\"params\"][\"abci\"][\"vote_extensions_enable_height\"] = \"2\"' $CONFIG_FOLDER/genesis.json > tmp/genesis.json && mv tmp/genesis.json $CONFIG_FOLDER/genesis.json
 jq '.app_state[\"feemarket\"][\"params\"][\"base_fee_change_denominator\"]=\"1\"' $CONFIG_FOLDER/genesis.json > tmp/genesis.json && mv tmp/genesis.json $CONFIG_FOLDER/genesis.json
-jq '.app_state[\"feemarket\"][\"params\"][\"elasticity_multiplier\"]=\"1\"' $CONFIG_FOLDER/genesis.json > tmp/genesis.json && mv tmp/genesis.json $CONFIG_FOLDER/genesis.json"""
+jq '.app_state[\"feemarket\"][\"params\"][\"elasticity_multiplier\"]=\"1\"' $CONFIG_FOLDER/genesis.json > tmp/genesis.json && mv tmp/genesis.json $CONFIG_FOLDER/genesis.json
+jq '.app_state[\"evm\"][\"params\"][\"evm_denom\"]=\"award\"' $CONFIG_FOLDER/genesis.json > tmp/genesis.json && mv tmp/genesis.json $CONFIG_FOLDER/genesis.json"""
 
 echo "$GENESIS_PARAMS" | while read -r param; do
   echo -e "${GREEN}Changing genesis param: ${NC} $param"

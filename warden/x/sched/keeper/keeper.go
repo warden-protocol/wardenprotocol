@@ -214,6 +214,10 @@ func (k Keeper) tryDeductTxCost(
 
 	fmt.Println("\nfeeAmt", feeAmt, "cbBalance", cbBalance, "fee", fee, "\n")
 	if err := fee.Validate(); err != nil {
+		if err2 := k.callbacks.setFailed(ctx, cbId, err.Error()); err2 != nil {
+			return err2
+		}
+
 		return err
 	}
 

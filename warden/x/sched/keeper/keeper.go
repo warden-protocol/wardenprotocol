@@ -226,6 +226,10 @@ func (k Keeper) tryDeductTxCost(
 	}
 
 	fmt.Println("\nfeeAmt", feeAmt, "cbBalance", cbBalance, "fee", fee, "\n")
+	if err := fee.Validate(); err != nil {
+		return err
+	}
+
 	if err := evmKeeper.DeductTxCostsFromUserBalance(sdkCtx, fee, cbAddress); err != nil {
 		if err2 := k.callbacks.setFailed(ctx, cbId, err.Error()); err2 != nil {
 			return err2
@@ -261,7 +265,7 @@ func (k Keeper) estimateGas(
 	if err != nil {
 		return 0, "", err
 	}
-	fmt.Println("\ngasRes", gasRes, "\n")
+	// fmt.Println("\ngasRes", gasRes, "\n")
 	return gasRes.Gas, gasRes.GetVmError(), nil
 }
 
@@ -486,6 +490,8 @@ func (k *Keeper) emitEvmLogs(ctx sdk.Context, tx *ethtypes.Transaction, response
 			evmtypes.EventTypeTxLog,
 			txLogAttrs...,
 		),
+		// 988990228228668947660
+		// 986989790852843863824
 		sdk.NewEvent(
 			sdk.EventTypeMessage,
 			sdk.NewAttribute(sdk.AttributeKeyModule, evmtypes.AttributeValueCategory),

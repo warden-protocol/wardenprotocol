@@ -57,6 +57,11 @@ hyperlane:
 	@echo -e "$(GREEN)Deploying hyperlane $(NC)"
 	bash scripts/hyperlane.sh
 
+.PHONY: hyperlane-docker
+hyperlane-docker: 
+	@echo -e "$(GREEN)Creating Hyperlane docker image $(NC)"
+	@docker build -t hyperlane:latest -f docker/Dockerfile.hyperlane .
+
 .PHONY: contract
 contract: 
 	@echo -e "$(GREEN)Deploying Callback contract $(NC)"

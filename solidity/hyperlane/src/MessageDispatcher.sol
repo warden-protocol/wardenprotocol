@@ -22,7 +22,7 @@ contract MessageDispatcher is
         require(isAuthorized(msg.sender), "MessageDispatcher: unauthorized");
 
         uint256 _value;
-        (id, _value) = abi.decode(data[:4], (bytes32,uint256));
+        (id, _value) = abi.decode(data[4:], (bytes32,uint256));
 
         require(_isLatestDispatched(id), "MessageDispatcher: message not dispatching");
 

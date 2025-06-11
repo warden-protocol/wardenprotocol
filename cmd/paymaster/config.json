@@ -1,25 +1,19 @@
 {
-    "event_signature": "",
-    "reconnect_interval": "5s",
+    "event_signature": "event MessageDispatched(bytes32 indexed messageId,address indexed from,uint256 indexed toChainId,address to,bytes data)",
+    "reconnect_interval": 5,
     "max_retries": 3,
     "source_chains": [
         {
-            "name": "ethereum-mainnet",
-            "rpc_url": "https://mainnet.infura.io/v3/YOUR-PROJECT-ID",
-            "contract_address": "0x1234567890123456789012345678901234567890",
-            "from_block": 18000000
-        },
-        {
-            "name": "polygon-mainnet",
-            "rpc_url": "https://polygon-rpc.com",
-            "contract_address": "0x1234567890123456789012345678901234567890",
-            "from_block": 45000000
+            "name": "anvilnode1",
+            "rpc_url": "ws://localhost:8546",
+            "contract_address": "0xed497673A12059a87971A89e9F33d1070B3DAADF",
+            "from_block": 1
         }
     ],
     "warden_chain": {
         "name": "warden",
-        "rpc_url": "http://localhost:26657",
-        "ism_address": "0x1234567890123456789012345678901234567890",
-        "private_key": "your-private-key-here"
+        "rpc_url": "http://localhost:8545",
+        "ism_address": "0x298950de5075C575267C4570b028c69A9DF17841",
+        "private_key": "F8B19B3BF55451B76E838E1BAE544EFF50FA552048DAD981BE83401B4CC57BF4"
     }
 } 

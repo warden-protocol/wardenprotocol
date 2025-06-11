@@ -8,7 +8,7 @@ type Config struct {
 // DefaultConfig returns a default configuration for veniceimg.
 func DefaultConfig() *Config {
 	return &Config{
-		Enabled: true,
+		Enabled: false,
 		ApiKey:  "",
 	}
 }

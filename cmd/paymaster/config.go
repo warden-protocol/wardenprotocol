@@ -24,7 +24,7 @@ type Config struct {
 type SourceChainConfig struct {
 	Name            string `json:"name" env:"CHAIN_NAME"`
 	RPCURL          string `json:"rpc_url" env:"CHAIN_RPC_URL"`
-	ContractAddress string `json:"contract_address" env:"CHAIN_CONTRACT_ADDRESS"`
+	ContractAddress string `json:"dispatcher_address" env:"CHAIN_CONTRACT_ADDRESS"`
 	FromBlock       uint64 `json:"from_block" env:"CHAIN_FROM_BLOCK"`
 }
 
@@ -32,7 +32,7 @@ type SourceChainConfig struct {
 type WardenChainConfig struct {
 	Name       string `json:"name" env:"WARDEN_NAME"`
 	RPCURL     string `json:"rpc_url" env:"WARDEN_RPC_URL"`
-	IsmAddress string `json:"ism_address" env:"WARDEN_ISM_ADDRESS"`
+	IsmAddress string `json:"executor_address" env:"WARDEN_ISM_ADDRESS"`
 	PrivateKey string `json:"private_key" env:"WARDEN_PRIVATE_KEY"`
 }
 

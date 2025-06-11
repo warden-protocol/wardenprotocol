@@ -20,19 +20,19 @@ contract Destination is ISpecifiesInterchainSecurityModule {
     bytes public output;
     IMailbox public mailbox;
     IInterchainSecurityModule public ism;
-    // uint32 origin;
-    // bytes32 sender;
-    // bytes payload;
+    uint32 public origin;
+    bytes32 public sender;
+    bytes public payload;
 
     constructor(address _mailbox, address _ism) {
         mailbox = IMailbox(_mailbox);
         ism = IInterchainSecurityModule(_ism);
     }
 
-    function run(bytes calldata payload) external {
+    function Run(bytes calldata input) external {
         Types.Coin[] memory maxFee;
         lastTaskId = 
-            IASYNC_CONTRACT.addTask("echo", payload, maxFee, CallbackParams(address(this), 100000000));
+            IASYNC_CONTRACT.addTask("echo", input, maxFee, CallbackParams(address(this), 100000000));
 
         TaskByIdResponse memory taskResponse = IASYNC_CONTRACT.taskById(lastTaskId);
         lastCbId = taskResponse.taskResponse.task.callbackId;
@@ -51,19 +51,22 @@ contract Destination is ISpecifiesInterchainSecurityModule {
         output = task.taskResponse.result.output;
         // }
 
-        bytes32 _sender = (0x25678c9AAC4D86fC411A6A40bCB7D81B3A18240d).addressToBytes32();
-        uint256 fee = mailbox.quoteDispatch(31337, _sender, output);
-        mailbox.dispatch{value: fee}(31337, _sender, output);
+        // bytes32 _sender = sender.addressToBytes32();
+        uint256 fee = mailbox.quoteDispatch(origin, sender, output);
+        mailbox.dispatch{value: fee}(origin, sender, output);
 
         return o;
     }
 
     function handle(
-        uint32,
-        bytes32,
-        bytes calldata payload
+        uint32 _origin,
+        bytes32 _sender,
+        bytes calldata _payload
     ) external payable {
-        this.run(payload);
+        origin = _origin;
+        sender = _sender;
+        payload = _payload;
+        this.Run(_payload);
     }
 
     function interchainSecurityModule()
@@ -73,5 +76,5 @@ contract Destination is ISpecifiesInterchainSecurityModule {
             return ism;
         }
 
-        receive() external payable {}
+    receive() external payable {}
 }

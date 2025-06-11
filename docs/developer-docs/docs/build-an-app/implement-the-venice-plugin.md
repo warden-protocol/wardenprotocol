@@ -400,7 +400,7 @@ func (c *veniceClient) completions(ctx context.Context, content string) (complet
    
    ```go title="prophet/plugins/venice.go"
    func (p Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {
-   res, err := p.venice2.completions(ctx, string(input))
+   res, err := p.venice.completions(ctx, string(input))
    if err != nil {
      return nil, err
    }

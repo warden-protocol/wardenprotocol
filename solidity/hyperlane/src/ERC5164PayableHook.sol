@@ -14,6 +14,7 @@ import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import { MessageDispatcher } from "./MessageDispatcher.sol";
 
+
 /**
  * @title ERC5164PayableHook
  * @notice Modified version of Hyperlane's ERC5164Hook implementation:  
@@ -126,14 +127,18 @@ contract ERC5164PayableHook is OwnableUpgradeable, AbstractMessageIdAuthHook {
 
     function _quoteDispatch(
         bytes calldata metadata,
-        bytes calldata
+        bytes calldata messageBody
     ) internal view override returns (uint256) {
-        return _gasLimit(metadata) * tx.gasprice;
+        uint256 gasLimit = _gasLimit(metadata); 
+        uint256 quote = gasLimit * tx.gasprice;
+        uint256 destValueAsSource = destinationValueInLocalTokens(metadata.msgValue(0), messageBody.destination());
+        return quote > destValueAsSource ? quote : destValueAsSource;
     }
 
     function _gasLimit(bytes calldata metadata) internal pure returns(uint256) {
         uint256 selfOverhead = 100000;
-        return metadata.gasLimit(DEFAULT_GAS_USAGE) + selfOverhead;
+        uint256 gasLimit = metadata.gasLimit(DEFAULT_GAS_USAGE);
+        return gasLimit + selfOverhead;
     }
 
     function _sendMessageId(
@@ -143,22 +148,15 @@ contract ERC5164PayableHook is OwnableUpgradeable, AbstractMessageIdAuthHook {
         bytes32 _messageId = message.id();
         uint32 _destinationDomain = message.destination();
 
-        uint256 toPay = _quoteDispatch(metadata, message);
+        uint256 quote = _quoteDispatch(metadata, message);
 
-        require(msg.value >= toPay, "ERC5164PayableHook: not enough to pay");
+        require(msg.value >= quote, "ERC5164PayableHook: not enough to pay");
 
-        (
-            uint128 _tokenExchangeRate,
-            uint128 _gasPrice
-        ) = getExchangeRateAndGasPrice(_destinationDomain);
-
-        // Convert to the local native token.
-        uint256 destValueAsSource = 
-            (metadata.msgValue(0) * _tokenExchangeRate) /
-            TOKEN_EXCHANGE_RATE_SCALE;
+        uint256 destValueAsSource = destinationValueInLocalTokens(metadata.msgValue(0), _destinationDomain);
 
         require(msg.value >= destValueAsSource, "ERC5164PayableHook: not enough to pay on destination");
-
+        require(destValueAsSource >= quote, "ERC5164PayableHook: not enough metadata.msgValue to pay");
+        require(destValueAsSource != 0, "ERC5164PayableHook: metadata.msgValue can't be zero");
         (bool success, ) = beneficiary.call{value:destValueAsSource}("");
         require(
             success,
@@ -182,6 +180,17 @@ contract ERC5164PayableHook is OwnableUpgradeable, AbstractMessageIdAuthHook {
             _gasLimit(metadata),
             destValueAsSource
         );
+    }
+
+    function destinationValueInLocalTokens(uint256 destinationValue, uint32 _destinationDomain) public view returns (uint256 destValueAsSource) {
+        (
+            uint128 _tokenExchangeRate,
+            uint128 _gasPrice
+        ) = getExchangeRateAndGasPrice(_destinationDomain);
+        
+        destValueAsSource = 
+            (destinationValue * _tokenExchangeRate) /
+            TOKEN_EXCHANGE_RATE_SCALE;
     }
 
     function _setBeneficiary(address _beneficiary) internal {

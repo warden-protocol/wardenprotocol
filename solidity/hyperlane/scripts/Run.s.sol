@@ -13,7 +13,7 @@ contract SendMessageScript is Script {
         vm.startBroadcast();
         
 
-        bytes memory payload = hex"123456";
+        bytes memory payload = hex"111111122222222222222222222222";
 
         // Mailbox on Anvil
         IMailbox mailbox = IMailbox(
@@ -22,10 +22,10 @@ contract SendMessageScript is Script {
 
         uint32 destination = 12345;
         // recipient would be the destination contract address, needs to have handle() function
-        bytes32 recipient = bytes32(uint256(uint160(0x556556F69046701C48CD07eFa533448ec8FC4829)));
+        bytes32 recipient = bytes32(uint256(uint160(0xD11B11d43B36693bB0226fCab55E3c66980e71dF)));
 
         IPostDispatchHook hook = 
-            IPostDispatchHook(0x7A0Bba2e754Ed39073C8a04F6E333CcD01a0fBa9); //Aggregation with ERC5164PayableHook address
+            IPostDispatchHook(0xa5012c86E891e21384FCE20e828B7f9eB58f20d8); //Aggregation with ERC5164PayableHook address
         // construct hook metadata:
         uint256 _msgValue = 20 ether; // WARD
         uint256 _gasLimit = 50_000; // 50_000 is default

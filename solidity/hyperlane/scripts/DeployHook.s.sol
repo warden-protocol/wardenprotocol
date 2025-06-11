@@ -14,29 +14,30 @@ import { ERC5164PayableHook } from "../src/ERC5164PayableHook.sol";
 contract SendMessageScript is Script {
     using TypeCasts for address;
 
+    uint32 public destinationDomain = 1337; // warden chain id
+
+    // Mailbox on Anvil
+    IMailbox public mailbox = IMailbox(
+        0x9959e8C9Cc02cA2f727B0b9E14bacbb270c03eF6 // source mailbox address
+    );
+    
+    StaticAggregationHookFactory public factory = StaticAggregationHookFactory(
+        0x0f25Ef0425E15b0d843Ed542CC4fA7F4636727BD // source factory address
+    );
+
+    InterchainGasPaymaster public igp = InterchainGasPaymaster(0x69982FD5372A86D66614A55f97Dd71Ac30135968); // IGP hook
+    address public destinationIsm = 0x4043B5bd20Cb3a98DC0ECD3a73769fE0580f0232; // address of destination ERC5164Ism
+
+    address public erc5164Owner = 0x6Ea8aC1673402989e7B653aE4e83b54173719C30;
+    address public erc5164Beneficiary = 0x6Ea8aC1673402989e7B653aE4e83b54173719C30;
+    
     function run() external {
         // Start broadcasting to the network
         vm.startBroadcast();
         
-        uint32 destinationDomain = 1337; // warden chain id
-
-        // Mailbox on Anvil
-        IMailbox mailbox = IMailbox(
-            0x9959e8C9Cc02cA2f727B0b9E14bacbb270c03eF6 // source mailbox address
-        );
-        
-        StaticAggregationHookFactory factory = StaticAggregationHookFactory(
-            0x0f25Ef0425E15b0d843Ed542CC4fA7F4636727BD // source factory address
-        );
-
-        InterchainGasPaymaster igp = InterchainGasPaymaster(0x69982FD5372A86D66614A55f97Dd71Ac30135968); // IGP hook
-        address destinationIsm = 0x4043B5bd20Cb3a98DC0ECD3a73769fE0580f0232; // address of destination ERC5164Ism
-
-        address erc5164Owner = 0x6Ea8aC1673402989e7B653aE4e83b54173719C30;
-        address erc5164Beneficiary = 0x6Ea8aC1673402989e7B653aE4e83b54173719C30;
 
         address[] memory hooks = new address[](2);
-        hooks[0] = address(igp); // IGP hook
+        hooks[0] = address(mailbox.defaultHook()); // IGP hook
         
         ERC5164PayableHook erc5164PayableHook = new ERC5164PayableHook(
             address(mailbox),

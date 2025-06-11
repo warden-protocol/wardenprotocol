@@ -5,23 +5,23 @@ type Config struct {
 	ApiKey  string `mapstructure:"api-key" toml:"api-key"`
 }
 
-// DefaultConfig returns a default configuration for venice.
+// DefaultConfig returns a default configuration for veniceimg.
 func DefaultConfig() *Config {
 	return &Config{
-		Enabled: false,
+		Enabled: true,
 		ApiKey:  "",
 	}
 }
 
 const DefaultConfigTemplate = `
 ###############################################################################
-###                      Venice configuration                               ###
+###                       VeniceImg  configuration                          ###
 ###############################################################################
-[venice]
+[veniceimg]
 
-# Is Venice plugin enabled
-enabled = "{{ .Venice.Enabled }}"
+# Is VeniceImg plugin enabled
+enabled = "{{ .Veniceimg.Enabled }}"
 
-# API Key used when making Venice API requests
-api-key = "{{ .Venice.ApiKey }}"
+# API Key used when making VeniceImg API requests
+api-key = "{{ .Veniceimg.ApiKey }}"
 `

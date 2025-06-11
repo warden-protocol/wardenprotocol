@@ -1,4 +1,4 @@
-package venice
+package veniceimg
 
 import (
 	"bytes"

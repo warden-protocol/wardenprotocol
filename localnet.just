@@ -42,6 +42,7 @@ start bin="wardend" install="true":
     {{bin}} genesis add-genesis-plugin http
     {{bin}} genesis add-genesis-plugin pricepred
     {{bin}} genesis add-genesis-plugin venice
+    {{bin}} genesis add-genesis-plugin veniceimg
     {{bin}} genesis add-genesis-plugin quantkit
 
     {{bin}} genesis gentx val 1000000000000000000000award

@@ -544,8 +544,7 @@ Plugin configs are initilized in the chain configuration loader. See the steps b
      cmtcfg "github.com/cometbft/cometbft/config"
      serverconfig "github.com/cosmos/cosmos-sdk/server/config"
      evmservercfg "github.com/cosmos/evm/server/config"
-     oracleconfig "github.com/skip-mev/slinky/oracle/config"
-   
+     oracleconfig "github.com/skip-mev/slinky/oracle/config"   
      httpconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/http/config"
      pricepredconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/pricepred/config"
      quantkitconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/quantkit/config"
@@ -606,11 +605,16 @@ Plugin configs are initilized in the chain configuration loader. See the steps b
 To enable Venice on the localnet, you add it to the `localnet.just` file.
 
 :::note Code
-[`localnet.just`](https://github.com/warden-protocol/wardenprotocol/localnet.just)
+[`localnet.just`](https://github.com/warden-protocol/wardenprotocol/tree/main/localnet.just)
 :::
 
 ```bash
-async-plugins := '["echo", "http", "pricepred", quantkit", "venice"]'
+{{bin}} genesis add-genesis-plugin echo
+{{bin}} genesis add-genesis-plugin http
+{{bin}} genesis add-genesis-plugin pricepred
+{{bin}} genesis add-genesis-plugin quantkit
+# highlight-next-line
+{{bin}} genesis add-genesis-plugin venice
 ```
 
 :::note

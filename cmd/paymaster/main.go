@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/signal"
 	"strings"
+
 	"sync"
 	"syscall"
 	"time"
@@ -140,6 +141,7 @@ func subscribeAndListen(ctx context.Context, client *ethclient.Client, chain Sou
 	eventHash := crypto.Keccak256Hash([]byte(eventSignature))
 
 	query := ethereum.FilterQuery{
+		// todo: index fromBlock batched by 100 blocks
 		FromBlock: big.NewInt(int64(chain.FromBlock)),
 		Addresses: []common.Address{contractAddress},
 		Topics:    [][]common.Hash{{eventHash}},
@@ -194,11 +196,13 @@ func processMessagesDispatched(ctx context.Context, eventsCh <-chan *abigen.Mess
 	chainId, err := client.ChainID(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to get chain id: %w", err)
-
 	}
-	bind.NewKeyedTransactorWithChainID(privateKey, chainId)
+	txOps, err := bind.NewKeyedTransactorWithChainID(privateKey, chainId)
+	if err != nil {
+		return fmt.Errorf("failed to create signer: %w", err)
+	}
 
-	ismTransactor, err := abigen.NewMessageExecutorTransactor(common.HexToAddress(config.WardenChain.IsmAddress), client)
+	executorTransactor, err := abigen.NewMessageExecutorTransactor(common.HexToAddress(config.WardenChain.IsmAddress), client)
 	if err != nil {
 		return fmt.Errorf("error creating ism client: %w", err)
 
@@ -213,7 +217,7 @@ func processMessagesDispatched(ctx context.Context, eventsCh <-chan *abigen.Mess
 	for {
 		select {
 		case event := <-eventsCh:
-			if err := processMessageDispatched(ctx, client, ismTransactor, parsedABI, event, crypto.PubkeyToAddress(privateKey.PublicKey)); err != nil {
+			if err := processMessageDispatched(ctx, client, executorTransactor, parsedABI, event, txOps); err != nil {
 				log.Printf("error processing event: %v", err)
 				return fmt.Errorf("failed to process event: %w", err)
 
@@ -224,33 +228,26 @@ func processMessagesDispatched(ctx context.Context, eventsCh <-chan *abigen.Mess
 	}
 }
 
-func processMessageDispatched(ctx context.Context, client *ethclient.Client, messageExecutorTransactor *abigen.MessageExecutorTransactor, parsedIsmABI abi.ABI, parsedMsgDispatched *abigen.MessageDispatcherMessageDispatched, from common.Address) error {
+func processMessageDispatched(ctx context.Context, client *ethclient.Client, messageExecutorTransactor *abigen.MessageExecutorTransactor, parsedIsmABI abi.ABI, parsedMsgDispatched *abigen.MessageDispatcherMessageDispatched, txOps *bind.TransactOpts) error {
 	// methodID := parsedMsgDispatched.Data[:4]
 	args := parsedMsgDispatched.Data[4:]
 	functionName := "preVerifyMessage" // we check that payload was encoded as ism call accorging to hyperlance ERC5164 implementation
-	// method, ok := parsedIsmABI.Methods[functionName]
-	// if !ok {
-	// 	return fmt.Errorf("function %s not found in ABI", functionName)
-	// }
 
-	// if hex.EncodeToString(method.ID) != hex.EncodeToString(methodID) {
-	// 	return fmt.Errorf("function selector does not match")
-	// }
-
-	unpackedArgs, err := parsedIsmABI.Unpack(functionName, args)
+	unpackedArgs, err := UnpackMethodInputIntoInterface(parsedIsmABI, functionName, args)
 	if err != nil {
 		return fmt.Errorf("error unpacking arguments: %w", err)
 	}
-
+	fmt.Println("\nunpackedArgs", unpackedArgs)
 	msgId := unpackedArgs[0].([32]byte)
 	msgValue := unpackedArgs[1].(*big.Int)
+	fmt.Printf("msgId:    %x\n", msgId)
+	fmt.Printf("msgValue: %v\n", msgValue)
 
-	tx, err := messageExecutorTransactor.Execute(&bind.TransactOpts{
-		From:  from,
-		Value: msgValue,
-	}, msgId, msgValue)
+	txOps.Value = msgValue
+	tx, err := messageExecutorTransactor.Execute(txOps, msgId, msgValue)
 
 	if err != nil {
+		fmt.Println(err)
 		return fmt.Errorf("failed to send tx: %w", err)
 	}
 
@@ -259,9 +256,22 @@ func processMessageDispatched(ctx context.Context, client *ethclient.Client, mes
 		return fmt.Errorf("error waiting tx mining: %w", err)
 	}
 
+	log.Printf("tx.hash: %x", receipt.TxHash)
+
 	if receipt.Status != 1 {
 		return fmt.Errorf("tx failed: %+v", receipt)
 	}
 
 	return nil
+}
+
+func UnpackMethodInputIntoInterface(abi abi.ABI, name string, data []byte) ([]interface{}, error) {
+	method := abi.Methods[name]
+	args := method.Inputs
+
+	unpacked, err := args.Unpack(data)
+	if err != nil {
+		return nil, err
+	}
+	return unpacked, nil
 }

@@ -3,8 +3,8 @@ package veniceimg
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"net/http"
 )

@@ -62,10 +62,10 @@ type veniceimgClient struct {
 
 type generatePayload struct {
 	CfgScale      int    `json:"cfg_scale"`
-	Format		  string `json:"format"`
+	Format        string `json:"format"`
 	Height        int    `json:"height"`
 	HideWatermark bool   `json:"hide_watermark"`
-	Model		  string `json:"model"`
+	Model         string `json:"model"`
 	Prompt        string `json:"prompt"`
 	Steps         int    `json:"steps"`
 	StylePreset   string `json:"style_preset"`

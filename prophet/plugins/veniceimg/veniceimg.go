@@ -26,7 +26,7 @@ func New(apiKey string) Plugin {
 
 type inputPayload struct {
 	CfgScale    int    `json:"cfg_scale"`
-	Model		string `json:"model"`
+	Model       string `json:"model"`
 	Prompt      string `json:"prompt"`
 	Steps       int    `json:"steps"`
 	StylePreset string `json:"style_preset"`

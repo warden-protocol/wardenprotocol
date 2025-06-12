@@ -12,6 +12,7 @@ This script will deploy these services
 | faucet    | 8081                     |
 | spaceward | 8082                     |
 | kms       | internal                 |
+| anvil     | 8546                     |
 
 ## Usage
 
@@ -40,6 +41,33 @@ Will initialize and deploy the network
 
 ```
 make all
+```
+
+### Hyperlane
+
+You can spin up Hyperlane with this Makefile easily.
+It creates anvilnode and hyperlane relayer, deployes all contracts.
+
+```shell
+make hyperlane
+```
+
+### Async contracts
+
+To test out async with it's plugins with Hyperlane, follow the instructions:
+
+1. Deploy the contract
+
+```
+make contract
+```
+
+2. Call the contract
+   Calling the contract requires the contract id's that were created in the previous step
+
+```shell
+bash scripts/callContrach.sh <origin contract id> <destination contract id> <plugin> <input>
+
 ```
 
 ## Defaults

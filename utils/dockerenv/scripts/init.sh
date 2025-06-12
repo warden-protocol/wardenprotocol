@@ -7,9 +7,9 @@ NUM_VALS=${2:-"3"}
 TOKEN=${3:-"award"}
 WARDEN_IMAGE="ghcr.io/warden-protocol/wardenprotocol/wardend"
 WARDEN_VERSION="latest"
-FAUCET_VERSION="71e9ca4"
-KMS_VERSION="f1bcb1b"
-SPACEWARD_VERSION="ecbbba5"
+FAUCET_VERSION="faa3f578"
+KMS_VERSION="6e5af4ec"
+# SPACEWARD_VERSION="ecbbba5"
 WARDEND_HOME="/data/.warden"
 WARDEND_HOME_ROOT="/root/.warden"
 CONFIG_FOLDER=/root/.warden/config
@@ -17,6 +17,8 @@ ADDRESSES=""
 NODE_IDS=""
 COSMOVISOR="${4:-"false"}"
 COSMOVISOR_VERSION=v1.7.0
+DEFAULT_GAS_PRICE="1award"
+VENICE_API_KEY=""
 COSMOVISOR_URL="https://github.com/cosmos/cosmos-sdk/releases/download/cosmovisor/${COSMOVISOR_VERSION}/cosmovisor-${COSMOVISOR_VERSION}-linux-amd64.tar.gz"
 KMS_FAUCET_MNEMONIC="exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
 KMS_KEYRING_MNENONIC="liberty lucky weapon argue blast borrow matrix fabric topple auto tomato age simple obvious mushroom hire edge vault federal climb step element divorce problem"
@@ -156,7 +158,7 @@ for (( i=1; i < $NUM_VALS; i++ )); do
 done
 
 # Clean up temp containers and set file permissions and configure
-echo -e "${GREEN}Cleaning up temp containers and setting file permissions ${NC}"
+echo -e "${GREEN}Setting up persistent peers, cosmovisor and configurations ${NC}"
 for (( i=0; i < $NUM_VALS; i++ )); do
   docker exec val-$i /bin/bash -c "sed -i 's/persistent_peers = \"\"/persistent_peers = \"$NODE_IDS\"/' $CONFIG_FOLDER/config.toml" > /dev/null 2>&1
   if [[ "$COSMOVISOR" == "true" ]]; then
@@ -168,6 +170,9 @@ for (( i=0; i < $NUM_VALS; i++ )); do
         "curl -s -Lo /tmp/cosmovisor.tar.gz \"$COSMOVISOR_URL\" && tar -xzf /tmp/cosmovisor.tar.gz -C /tmp && mv /tmp/cosmovisor $WARDEND_HOME_ROOT/cosmovisor/bin/cosmovisor && cp /usr/bin/wardend $WARDEND_HOME_ROOT/cosmovisor/genesis/bin/wardend" || {
         echo 'Failed to download or extract cosmovisor'; exit 1; }
   fi
+  docker exec "val-$i" /bin/bash -c "wardend config set app minimum-gas-prices \"$DEFAULT_GAS_PRICE\"" > /dev/null 2>&1
+  docker exec "val-$i" /bin/bash -c "wardend config set app venice.enabled \"true\"" > /dev/null 2>&1
+  docker exec "val-$i" /bin/bash -c "wardend config set app venice.api-key \"${VENICE_API_KEY}\"" > /dev/null 2>&1
   docker exec "val-$i" /bin/bash -c "chown -R 1000:1000 $WARDEND_HOME_ROOT" > /dev/null 2>&1
   docker kill "val-$i" > /dev/null 2>&1
 done
@@ -228,24 +233,24 @@ VALIDATOR_STRING+="""
       KEYRING_PASSWORD: TODO
       HTTP_ADDR: ":9999"
 
-  spaceward:
-    image: ghcr.io/warden-protocol/wardenprotocol/spaceward:$SPACEWARD_VERSION
-    user: root
-    ports:
-      - "8082:8080"
-    environment:
-      FAUCET_URL: http://127.0.0.1:8081
-      WARDEN_RPC_URL: http://127.0.0.1:26657
-      WARDEN_REST_URL: http://127.0.0.1:1317
-      ADDRESS_PREFIX: warden
-      WARDEN_CHAIN_NAME: Warden Protocol (local)
-      WARDEN_COSMOSKIT_CHAIN_NAME: wardenprotocollocal
-      WARDEN_CHAIN_ID: $CHAIN_NAME
-      WARDEN_CHAIN_ID_NUM: "121"
-      WARDEN_STORYBLOK_TOKEN: LTh76K2yz5nU6jUThhFG3Qtt
-      WARDEN_SNAP_ORIGIN: npm:@wardenprotocol/snap
-      WARDEN_EVM_URL: http://127.0.0.1:8545
-      WARDEN_EVM_CHAIN_ID: "$CHAIN_EVM_ID"
+  # spaceward:
+  #   image: ghcr.io/warden-protocol/wardenprotocol/spaceward:$SPACEWARD_VERSION
+  #   user: root
+  #   ports:
+  #     - "8082:8080"
+  #   environment:
+  #     FAUCET_URL: http://127.0.0.1:8081
+  #     WARDEN_RPC_URL: http://127.0.0.1:26657
+  #     WARDEN_REST_URL: http://127.0.0.1:1317
+  #     ADDRESS_PREFIX: warden
+  #     WARDEN_CHAIN_NAME: Warden Protocol (local)
+  #     WARDEN_COSMOSKIT_CHAIN_NAME: wardenprotocollocal
+  #     WARDEN_CHAIN_ID: $CHAIN_NAME
+  #     WARDEN_CHAIN_ID_NUM: "121"
+  #     WARDEN_STORYBLOK_TOKEN: LTh76K2yz5nU6jUThhFG3Qtt
+  #     WARDEN_SNAP_ORIGIN: npm:@wardenprotocol/snap
+  #     WARDEN_EVM_URL: http://127.0.0.1:8545
+  #     WARDEN_EVM_CHAIN_ID: "$CHAIN_EVM_ID"
 volumes:"""
 for (( i=0; i < $NUM_VALS; i++ )); do
   VALIDATOR_STRING+="""

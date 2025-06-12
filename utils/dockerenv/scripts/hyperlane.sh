@@ -16,13 +16,17 @@ ANVIL_RPC_PORT=8546
 WARDEN_CHAIN_ID=12345
 WARDEN_RPC_PORT=8545
 ANVIL_BALANCE=${ANVIL_BALANCE:-0x8AC7230489E80000}
+ORACLE_WARDEN_GAS_PRICE=1399995380
+ORACLE_WARDEN_TOKEN_EXCHANGE_RATE=500000
+ORACLE_ANVIL_GAS_PRICE=1000000007
+ORACLE_ANVIL_TOKEN_EXCHANGE_RATE=200000000000000
 
-# Private keys for Hyperlane (replace placeholders with actual hex keys, no 0x):
+# Private keys for Hyperlane 
 RELAYER_KEY="041024D968145CBB2732FDEB8DAE7B7D63291A8AE2FC80FCBA2C74F82AE82842"
 OWNER_KEY="F8B19B3BF55451B76E838E1BAE544EFF50FA552048DAD981BE83401B4CC57BF4"
 BENEFICIARY_KEY="BF4CFEFA1B97008597054C0599189EDEFEFC2193147ADB4EB52D195800C9E06D"
 
-# Addresses in key:value format (replace placeholders):
+# Addresses in key:value format 
 declare -A ADDRESSES=(
   ["relayer"]="0xB558efbA945A17c4dCF28bd460ba5853c641Ee29"
   ["owner"]="0xF7bFA2bc2C4c18eB68CAeDad58e5cAAB2A77c7F7"
@@ -43,6 +47,7 @@ error_exit() {
   exit 1
 }
 
+# Funding function
 fund_address() {
   for key in "${!ADDRESSES[@]}"; do
     address="${ADDRESSES[$key]}"
@@ -66,7 +71,7 @@ fund_address() {
   done
 }
 
-# Step 1: Start Anvil node
+# Start Anvil node
 echo -e "${BLUE}=== Starting Anvil node in Docker (chainId=${ANVIL_CHAIN_ID}, RPC port=${ANVIL_RPC_PORT}) ===${RESET}"
 if docker ps -aq -f name="$ANVIL_CONTAINER_NAME" >/dev/null; then
   echo -e "${YELLOW}Removing existing container: $ANVIL_CONTAINER_NAME${RESET}"
@@ -109,11 +114,11 @@ requiredHook:
     anvilnode1: 10
   oracleConfig:
     wardenprotocoltestnet:
-      gasPrice: '1000000'
-      tokenExchangeRate: '1'
+      gasPrice: "$ORACLE_WARDEN_GAS_PRICE"
+      tokenExchangeRate: "$ORACLE_WARDEN_TOKEN_EXCHANGE_RATE"
     anvilnode1:
-      gasPrice: '1000000'
-      tokenExchangeRate: '1'
+      gasPrice: $ORACLE_ANVIL_GAS_PRICE
+      tokenExchangeRate: $ORACLE_ANVIL_TOKEN_EXCHANGE_RATE
 EOF
 
 # Prepare chain metadata
@@ -164,7 +169,7 @@ if [ ! -f "$CHAINS_DIR_HOST/wardenprotocoltestnet.yaml" ]; then
 fi
 echo -e "${GREEN}Chain metadata written: ${CHAINS_DIR_HOST}/wardenprotocoltestnet.yaml${RESET}"
 
-# Step 3: Initialize Hyperlane, deploy core, and generate agent-config.json
+# Initialize Hyperlane, deploy core, and generate agent-config.json
 echo -e "${BLUE}=== Initializing Hyperlane Relayer ===${RESET}"
 [ -f "$CONFIGS_DIR_HOST/$CORE_CONFIG_HOST" ] || error_exit "core-config.yaml not found at $CORE_CONFIG_HOST"
 
@@ -192,6 +197,10 @@ docker run --rm \
     echo -e \"${GREEN}Agent configuration (agent-config.json) generated.${RESET}\"
   " || error_exit "Hyperlane CLI operations failed"
 
+# Get the IGP addresses
+ANVIL_IGP_ADDRESS=$(jq -r '.chains.anvilnode1.interchainGasPaymaster' "$AGENT_CONFIG_HOST")
+WARDEN_IGP_ADDRESS=$(jq -r '.chains.wardenprotocoltestnet.interchainGasPaymaster' "$AGENT_CONFIG_HOST")
+
 echo -e "${GREEN}Hyperlane initialization and agent configuration complete.${RESET}"
 
 # Start Hyperlane relayer
@@ -211,7 +220,9 @@ if ! docker run -d \
   --db /hyperlane_db \
   --relayChains wardenprotocoltestnet,anvilnode1 \
   --allowLocalCheckpointSyncers true \
-  --defaultSigner.key 0x${RELAYER_KEY} ; then
+  --defaultSigner.key 0x${RELAYER_KEY} \
+  --chains.anvilnode1.interchainGasPaymaster $ANVIL_IGP_ADDRESS \
+  --chains.wardenprotocoltestnet.interchainGasPaymaster $WARDEN_IGP_ADDRESS; then
   error_exit "Failed to start Hyperlane relayer container"
 fi
 

@@ -49,6 +49,7 @@ contract Origin {
         destinationMsg = _message;
     }
 }
+
 contract Destination {
     IMailbox public mailbox;
     bytes32 public destinationSender;
@@ -65,18 +66,25 @@ contract Destination {
     
     function Run(bytes calldata payload) public {
         Types.Coin[] memory maxFee;
-        // CallbackParams memory cp;
+        (string memory plugin, string memory payloadStr) = abi.decode(payload, (string,string));
+
+        // Use the decoded fields
         lastTaskId = 
-            IASYNC_CONTRACT.addTask("echo", payload, maxFee, CallbackParams(address(this), 100000000));
+            IASYNC_CONTRACT.addTask(
+            plugin, 
+            bytes(payloadStr), 
+            maxFee, 
+            CallbackParams(address(this), 100000000)
+        );
 
         TaskByIdResponse memory taskResponse = IASYNC_CONTRACT.taskById(lastTaskId);
         lastCbId = taskResponse.taskResponse.task.callbackId;
     }
 
     function cb(uint64 id, bytes calldata o) external returns(bytes memory)  {
-        // if(msg.sender != ISCHED_CONTRACT.getAddress()) {
-        //     revert Unauthorized();
-        // }
+        if(msg.sender != ISCHED_CONTRACT.getAddress()) {
+            revert Unauthorized();
+        }
 
         if(id == lastCbId) {
             TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastTaskId);

@@ -28,13 +28,13 @@ Developers can use the existing Plugins or create their own ones.
 The key architecture elements of the Venice Plugin include the following:
 
 - **The core logic and config**  
-  Plugins are stored in the [`prophet` directory](https://github.com/warden-protocol/wardenprotocol/tree/main/prophet). There you can find the `venice` directory with the the core logic and config of the Venice Plugin: [`venice.go`](https://github.com/warden-protocol/wardenprotocol/tree/main/prophet/plugins/venice/venice.go), [`config.go`](https://github.com/warden-protocol/wardenprotocol/blob/main/prophet/plugins/venice/config/config.go).
+  Plugins are stored in the [`prophet` directory](https://github.com/warden-protocol/wardenprotocol/tree/main/prophet). There you can find the `venice` directory with the the core logic and config of the Venice Plugin: [`venice.go`](https://github.com/warden-protocol/wardenprotocol/blob/main/prophet/plugins/venice/venice.go), [`config.go`](https://github.com/warden-protocol/wardenprotocol/blob/main/prophet/plugins/venice/config/config.go).
 
 - **Plugin registration**  
-  The main entry point for modules and Plugins is this file: [`app.go`](https://github.com/warden-protocol/wardenprotocol/tree/main/warden/app/app.go). It contains a link to the Venice plugin and the `registerProphetHandlers()` function, which registers Plugins, reads their settings from validator nodes, and references the generic Plugin interface.
+  The main entry point for modules and Plugins is this file: [`app.go`](https://github.com/warden-protocol/wardenprotocol/blob/main/warden/app/app.go). It contains a link to the Venice plugin and the `registerProphetHandlers()` function, which registers Plugins, reads their settings from validator nodes, and references the generic Plugin interface.
 
 - **The Plugin interface**  
-  The generic Plugin interface is defined in [`plugins.go`](https://github.com/warden-protocol/wardenprotocol/tree/main/prophet/plugins.go): see `Execute()` and `Verify()` under `type Plugin interface {}`. In [`venice/venice.go`](https://github.com/warden-protocol/wardenprotocol/tree/main/prophet/plugins/venice/venice.go), there are two methods, `Execute()` and `Verify()`, implementing the Venice interface. They accept the input and return the output.
+  The generic Plugin interface is defined in [`plugins.go`](https://github.com/warden-protocol/wardenprotocol/blob/main/prophet/plugins.go): see `Execute()` and `Verify()` under `type Plugin interface {}`. In [`venice/venice.go`](https://github.com/warden-protocol/wardenprotocol/blob/main/prophet/plugins/venice/venice.go), there are two methods, `Execute()` and `Verify()`, implementing the Venice interface. They accept the input and return the output.
 
 - **Validator configs**  
   Every validator stores a node configuration file, `app.toml`. If you [run a local chain](https://docs.wardenprotocol.org/run-a-local-chain), you can find it in  the Warden's binary directory: `$HOME/.warden/config`. In this file, validators specify which Plugins are enabled on their node and tweak Plugin-specific options. The Venice Plugin requires a Venice AI API key.
@@ -136,7 +136,7 @@ The Venice Plugin is already included in the repository. This guide uses it as a
 In the `wardenprotocol/plugins` directory, create a `venice` directory with a `venice.go` file.
 
 :::note Code
-[`prophet/plugins/venice.go`](https://github.com/warden-protocol/wardenprotocol/tree/main/prophet/plugins/venice/venice.go)
+[`prophet/plugins/venice.go`](https://github.com/warden-protocol/wardenprotocol/blob/main/prophet/plugins/venice/venice.go)
 :::
 
 This file will contain the new Plugin's logic:
@@ -444,7 +444,7 @@ func New(apiKey string) Plugin {
 We plan to implement a node command for dynamically registering new Plugins onchain. However, currently you can register Plugins only during chain initialization, which requires modifying the `app.go` file.
 
 :::note Code
-[`warden/app/app.go`](https://github.com/warden-protocol/wardenprotocol/tree/main/warden/app/app.go)
+[`warden/app/app.go`](https://github.com/warden-protocol/wardenprotocol/blob/main/warden/app/app.go)
 :::
 
 1. Add a link to the Venice Plugin directory:
@@ -484,7 +484,7 @@ The node will return a list of Plugins, but Venice won't be included yet. To com
 Now you need to create a configuration file defining the default settings of the Venice Plugin.
 
 :::note Code
-[`prophet/plugins/venice/config/config.go`](https://github.com/warden-protocol/wardenprotocol/tree/main/prophet/plugins/venice/config/config.go)
+[`prophet/plugins/venice/config/config.go`](https://github.com/warden-protocol/wardenprotocol/blob/main/prophet/plugins/venice/config/config.go)
 :::
 
 1. Under `venice`, create a `config` directory and add a `config.go` file with the following code:
@@ -532,7 +532,7 @@ Now you need to create a configuration file defining the default settings of the
 Plugin configs are initilized in the chain configuration loader. See the steps below.
 
 :::note Code
-[`cmd/wardend/cmd/config.go`](https://github.com/warden-protocol/wardenprotocol/tree/main/cmd/wardend/cmd/config.go)
+[`cmd/wardend/cmd/config.go`](https://github.com/warden-protocol/wardenprotocol/blob/main/cmd/wardend/cmd/config.go)
 :::
 
 1. Import the Venice config (see the last line in the code sample):
@@ -605,7 +605,7 @@ Plugin configs are initilized in the chain configuration loader. See the steps b
 To enable Venice on the localnet, you add it to the `localnet.just` file.
 
 :::note Code
-[`localnet.just`](https://github.com/warden-protocol/wardenprotocol/tree/main/localnet.just)
+[`localnet.just`](https://github.com/warden-protocol/wardenprotocol/blob/main/localnet.just)
 :::
 
 ```bash
@@ -618,7 +618,7 @@ To enable Venice on the localnet, you add it to the `localnet.just` file.
 ```
 
 :::note
-When you initialize a local chain, the `just` script adds a list of active Plugins to the genesis file, and the Cosmos SDK calls the [`registerGenesisPlugins()` function](https://github.com/warden-protocol/wardenprotocol/tree/main/warden/x/async/keeper/keeper.go) of `x/async` to loop over those Plugins from the genesis state and register them onchain.
+When you initialize a local chain, the `just` script adds a list of active Plugins to the genesis file, and the Cosmos SDK calls the [`registerGenesisPlugins()` function](https://github.com/warden-protocol/wardenprotocol/blob/main/warden/x/async/keeper/keeper.go) of `x/async` to loop over those Plugins from the genesis state and register them onchain.
 :::
 
 ## Step 3. Test the Plugin

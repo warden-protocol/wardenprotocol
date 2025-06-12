@@ -88,13 +88,13 @@ type generateResponse struct {
 func (c *veniceimgClient) generate(ctx context.Context, cfgScale int, model string, prompt string, steps int, stylePreset string) (generateResponse, error) {
 	body, err := json.Marshal(generatePayload{
 		CfgScale:      cfgScale,
-        Format:        "webp",
-        Height:        480,
-        HideWatermark: true,
-        Model:         model,
-        Prompt:        prompt,
-        Steps:         steps,
-        StylePreset:   stylePreset,
+		Format:        "webp",
+		Height:        480,
+		HideWatermark: true,
+		Model:         model,
+		Prompt:        prompt,
+		Steps:         steps,
+		StylePreset:   stylePreset,
 	})
 	if err != nil {
 		return generateResponse{}, err

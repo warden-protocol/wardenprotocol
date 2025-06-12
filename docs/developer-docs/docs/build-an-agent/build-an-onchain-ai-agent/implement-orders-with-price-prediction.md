@@ -266,8 +266,8 @@ To create this logic, add `AdvancedOrderFactory` to the `src/factories` director
 
 ## 3. Deploy an Order
 
-:::tip
-You can learn in detail about Order parameters in [Demo: Create an Order](demo-create-an-order).
+:::important
+For the most up-to-date deployment instructions and a working example, refer to [Demo: Create an Order](demo-create-an-order).
 :::
 
 To deploy an Order, take these steps:

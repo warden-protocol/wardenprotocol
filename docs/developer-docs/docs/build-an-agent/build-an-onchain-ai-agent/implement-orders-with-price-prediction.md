@@ -40,7 +40,7 @@ Before you start implementing automated Orders with price prediction, take these
 In our example, the core logic of Orders resides in the `AdvancedOrder` contract.
 
 :::note Code
-[`src/orders/AdvancedOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/orders/AdvancedOrder.sol)
+[`src/orders/AdvancedOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/solidity/orders/src/orders/AdvancedOrder.sol)
 :::
 
 This contract uses the [Async, Slinky, and Warden precompiles](build-the-infrastructure#4-create-mock-precompiles) to fetch predicted and oracle prices, compare them, and execute trades. Once the comparison condition is met, the Order will construct a swap transaction, send it for signing, and record the transaction the [registry](build-the-infrastructure#3-implement-the-registry).
@@ -158,7 +158,7 @@ To create this logic, add `AdvancedOrder` to the `src/orders` directory and take
 In our example, the creation of Orders is implemented in the `AdvancedOrderFactory` contract.
 
 :::note Code
-[`src/factories/AdvancedOrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/factories/AdvancedOrderFactory.sol)
+[`src/factories/AdvancedOrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/solidity/orders/src/factories/AdvancedOrderFactory.sol)
 :::
 
 `AdvancedOrderFactory`, when triggered by [`OrderFactory`](build-the-infrastructure#6-implement-order-creation), deploys Orders (instances of [`AdvancedOrder`](#1-implement-orders)) and registers them in the [registry](build-the-infrastructure#3-implement-the-registry). Orders are deployed with the `CREATE3` opcode to provide front-running protection, salt-based deployment security, and deterministic address computation. The latter is crucial for Orders with price prediction since they may need to reference each other.

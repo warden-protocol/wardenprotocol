@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## Overview
 
-The [`IWarden` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol) allows calling the [`x/warden` module](/learn/warden-protocol-modules/x-warden) from EVM smart contracts.
+The [`IWarden` precompile](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/precompiles/warden/IWarden.sol) allows calling the [`x/warden` module](/learn/warden-protocol-modules/x-warden) from EVM smart contracts.
 
 This article explains how to use `x/warden` to manage [keys](/learn/warden-protocol-modules/x-warden#key). You'll learn how to call the corresponding functions of the precompile and interact with them after deploying your contract.
 

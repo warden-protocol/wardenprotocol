@@ -33,7 +33,7 @@ You'll learn how to build two types of Orders:
 ## Full code
 
 :::note Code
-You can find the full code of the example on GitHub: [`orders`](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders)
+You can find the full code of the example on GitHub: [`orders`](https://github.com/warden-protocol/wardenprotocol/tree/v0.6.3/solidity/orders)
 :::
 
 ## Architecture

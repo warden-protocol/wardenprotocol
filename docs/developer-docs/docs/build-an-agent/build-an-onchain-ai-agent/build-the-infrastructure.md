@@ -21,7 +21,7 @@ First, you need to create contracts defining data structures and interfaces for 
 1. Create a library `Types` with the core data structures.
 
    :::note Code
-   [`src/types/Types.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/types/Types.sol)
+   [`src/types/Types.sol`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/solidity/orders/src/types/Types.sol)
    :::
 
    Include data structures for [signature requests](/learn/glossary#signature-request), different Order types, and oracle/prediction price pairs. In the enum `PriceCondition`, implement the following price conditions:
@@ -38,13 +38,13 @@ First, you need to create contracts defining data structures and interfaces for 
 2. Create a library `TypesV0` with the common execution data.
 
    :::note Code
-   [`src/types/TypesV0.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/types/TypesV0.sol)
+   [`src/types/TypesV0.sol`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/solidity/orders/src/types/TypesV0.sol)
    :::
 
 3. Add the `IExecutionV0` file with the execution data structure and an interface for executing Orders.
 
    :::note Code
-   [`src/types/IExecutionV0.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/types/IExecutionV0.sol)
+   [`src/types/IExecutionV0.sol`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/solidity/orders/src/types/IExecutionV0.sol)
    :::
 
    Include an `execute()` function for executing Orders, `isExecuted()` for checking the execution status, and others.
@@ -56,19 +56,19 @@ In the `src/lib` directory, create helper and utility libraries for Orders:
 1. To support EIP-1559 transactions, create a `Strings.sol` library implementing string operations.
    
    :::note Code
-   [`src/lib/Strings.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/lib/Strings.sol)
+   [`src/lib/Strings.sol`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/solidity/orders/src/lib/Strings.sol)
    :::
 
 2. Create an `RLPEncode.sol` library implementing RLP encoding for EIP-1559 transactions.
    
    :::note Code
-   [`src/lib/RLPEncode.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/lib/RLPEncode.sol)
+   [`src/lib/RLPEncode.sol`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/solidity/orders/src/lib/RLPEncode.sol)
    :::
 
 3. Create a helper contract `Create2.sol`.
 
    :::note Code
-   [`src/lib/Create2.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/lib/Create2.sol)
+   [`src/lib/Create2.sol`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/solidity/orders/src/lib/Create2.sol)
    :::
 
    The [main deployment script](#7-create-deployment-scripts) will use this contract for deploying the Order infrastructure with the `CREATE2` opcode.
@@ -78,7 +78,7 @@ In the `src/lib` directory, create helper and utility libraries for Orders:
 In the `src` directory, add a `Registry.sol` file implementing a registry for tracking transactions.
 
 :::note Code
-[`src/Registry.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Registry.sol)
+[`src/Registry.sol`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/solidity/orders/src/Registry.sol)
 :::
 
 Include the `register()` and `addTransaction()` functions for registering Orders and storing transaction data.
@@ -87,25 +87,25 @@ Include the `register()` and `addTransaction()` functions for registering Orders
 
 Mock precompiles are essential for end-to-end testing of the onchain Agent. In the `mocks` directory, build three contracts mocking Warden precompiles:
 
-- Create a Slinky precompile mocking [`x/oracle`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/slinky/ISlinky.sol). Its goal is providing [oracle price feeds](/learn/glossary#oracle-service).
+- Create a Slinky precompile mocking [`x/oracle`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/precompiles/slinky/ISlinky.sol). Its goal is providing [oracle price feeds](/learn/glossary#oracle-service).
 
   :::note Code
-  [`mocks/MockSlinkyPrecompile.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks/MockSlinkyPrecompile.sol)
+  [`mocks/MockSlinkyPrecompile.sol`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/solidity/orders/mocks/MockSlinkyPrecompile.sol)
   :::
 
 - Create a Warden precompile mocking [`x/warden`](/build-an-app/precompiles/x-warden). Its goal is managing [keys](/learn/glossary#key) and [signature requests](/learn/glossary#signature-request).
 
   :::note Code
-  [`mocks/MockWardenPrecompile.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks/MockWardenPrecompile.sol)
+  [`mocks/MockWardenPrecompile.sol`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/solidity/orders/mocks/MockWardenPrecompile.sol)
   :::
 
 - Create an Async precompile mocking [`x/async`](/build-an-app/precompiles/x-async). Its goal is executing [Tasks](/learn/warden-protocol-modules/x-async#task) using [AVR Plugins](/learn/warden-protocol-modules/x-async#avr-plugin). Note that this precompile is required only for [automated Orders with price prediction](implement-orders-with-price-prediction).
 
   :::note Code
-  [`mocks/MockAsyncPrecompile.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks/MockAsyncPrecompile.sol)
+  [`mocks/MockAsyncPrecompile.sol`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/solidity/orders/mocks/MockAsyncPrecompile.sol)
   :::
 
-You can test mock precompiles in the [`test` directory](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders/test):
+You can test mock precompiles in the [`test` directory](https://github.com/warden-protocol/wardenprotocol/tree/v0.6.3/solidity/orders/test):
 
 1. Create a helper contract for testing the precompiles:
    
@@ -233,7 +233,7 @@ You can test mock precompiles in the [`test` directory](https://github.com/warde
 In the `src/orders` directory, create an abstract contract `AbstractOrderV0.sol` for signing transactions. It'll be called by all types of Orders.
 
 :::note Code
-[`src/orders/AbstractOrderV0.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/orders/AbstractOrderV0.sol)
+[`src/orders/AbstractOrderV0.sol`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/solidity/orders/src/orders/AbstractOrderV0.sol)
 :::
 
 Your code should include a function `createSignRequest()` that creates [signature requests](/learn/glossary#signature-request) for [Keychains](/learn/glossary#keychain). Use the [`newSignRequest()` function](/build-an-app/precompiles/x-warden#create-a-new-signature-request) of the [Warden precompile](#4-create-mock-precompiles).
@@ -243,7 +243,7 @@ Your code should include a function `createSignRequest()` that creates [signatur
 In the `src/factories` directory, create an `OrderFactory` contract for managing the creation and tracking of Orders.
 
 :::note Code
-[`src/factories/OrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/factories/OrderFactory.sol)
+[`src/factories/OrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/solidity/orders/src/factories/OrderFactory.sol)
 :::
 
 Include the `createOrder()` and `computeOrderAddress()` functions for triggering Order deployment and computing the deterministic address of an Order.
@@ -257,7 +257,7 @@ Finally, implement deployment scripts in the `script` directory:
 1. Implement the main script for deploying the Order infrastructure.
 
    :::note Code
-   [`script/Deploy.s.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/script/Deploy.s.sol)
+   [`script/Deploy.s.sol`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/solidity/orders/script/Deploy.s.sol)
    :::
 
    It should handle the following tasks:
@@ -269,7 +269,7 @@ Finally, implement deployment scripts in the `script` directory:
 2. Implement a script for creating Orders.
 
    :::note Code
-   [`script/CreateOrder.s.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/script/CreateOrder.s.sol)
+   [`script/CreateOrder.s.sol`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/solidity/orders/script/CreateOrder.s.sol)
    :::
 
    It should handle the following tasks:

@@ -20,7 +20,7 @@ To learn how to use this precompile, refer to the following guides:
 - [Use the HTTP Plugin](../run-offchain-computations/use-the-http-plugin/introduction)
 
 :::note Code
-You can find the `JSON` precompile code on GitHub: [`IJson.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/json/IJson.sol)
+You can find the `JSON` precompile code on GitHub: [`IJson.sol`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/precompiles/json/IJson.sol)
 :::
 
 ## Precompile address

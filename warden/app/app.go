@@ -86,6 +86,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/pricepred"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/quantkit"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/venice"
+	"github.com/warden-protocol/wardenprotocol/prophet/plugins/veniceimg"
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
@@ -245,6 +246,10 @@ func registerProphetHandlers(appOpts servertypes.AppOptions) {
 
 	if cast.ToBool(appOpts.Get("venice.enabled")) {
 		prophet.Register("venice", venice.New(cast.ToString(appOpts.Get("venice.api-key"))))
+	}
+
+	if cast.ToBool(appOpts.Get("veniceimg.enabled")) {
+		prophet.Register("veniceimg", veniceimg.New(cast.ToString(appOpts.Get("veniceimg.api-key"))))
 	}
 }
 

@@ -13,6 +13,12 @@
 
 package v1beta1
 
+import (
+	"encoding/json"
+
+	"github.com/cosmos/cosmos-sdk/codec"
+)
+
 // this line is used by starport scaffolding # genesis/types/import
 
 // DefaultIndex is the default global index.
@@ -31,4 +37,16 @@ func DefaultGenesis() *GenesisState {
 func (gs GenesisState) Validate() error {
 	// this line is used by starport scaffolding # genesis/types/validate
 	return gs.Params.Validate()
+}
+
+// GetGenesisStateFromAppState returns GenesisState given raw application
+// genesis state.
+func GetGenesisStateFromAppState(cdc codec.JSONCodec, appState map[string]json.RawMessage) *GenesisState {
+	var genesisState GenesisState
+
+	if appState[ModuleName] != nil {
+		cdc.MustUnmarshalJSON(appState[ModuleName], &genesisState)
+	}
+
+	return &genesisState
 }

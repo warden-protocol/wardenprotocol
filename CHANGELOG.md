@@ -53,6 +53,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - (x/async) Move to a push-based fair selection algorithm, instead of validators competing for solving pending Tasks
 - (x/async) Task can return errors instead of outputs, one of "output" or "error" fields will be set
 - (x/async) Add PruneTaskTimeout param. After a task is completed (i.e. has a result) it will be permanently deleted from the appdb after this timeout elapses.
+- (x/async) Add Plugin's timeout param. This is the maximum time a solver has for submitting the result before the Task is marked as errored automatically.
+- (x/crisis) Remove deprecated x/crisis module. See https://github.com/cosmos/cosmos-sdk/pull/23722. Will be removed in Cosmos SDK v0.54.
 
 ### Bug Fixes
 

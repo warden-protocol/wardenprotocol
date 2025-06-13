@@ -70,6 +70,9 @@ func (k msgServer) AddTask(ctx context.Context, msg *types.MsgAddTask) (*types.M
 		return nil, err
 	}
 
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	now := sdkCtx.BlockTime()
+
 	id, err := k.tasks.Append(ctx, &types.Task{
 		Creator:    msg.Creator,
 		Solver:     solver,
@@ -77,12 +80,12 @@ func (k msgServer) AddTask(ctx context.Context, msg *types.MsgAddTask) (*types.M
 		Input:      msg.Input,
 		CallbackId: callbackId,
 		Fee:        deductedFee,
+		CreatedAt:  now,
 	})
 	if err != nil {
 		return nil, err
 	}
 
-	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	if err = sdkCtx.EventManager().EmitTypedEvent(&types.EventCreateTask{
 		Id:         id,
 		Creator:    msg.Creator,

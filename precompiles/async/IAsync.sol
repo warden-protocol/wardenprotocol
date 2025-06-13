@@ -24,6 +24,7 @@ struct Plugin {
     address creator;
     string description;
     PluginFee fee;
+    int64 timeout;
 }
 
 struct PluginsResponse {
@@ -39,6 +40,7 @@ struct Task {
     DeductedFee fee;
     uint64 callbackId;
     bytes solver;
+    Types.Timestamp createdAt;
 }
 
 enum TaskVoteType {

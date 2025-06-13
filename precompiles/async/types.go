@@ -2,6 +2,7 @@ package async
 
 import (
 	"fmt"
+	"time"
 
 	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -107,6 +108,7 @@ func mapPlugin(plugin types.Plugin) (Plugin, error) {
 		Fee: PluginFee{
 			Fee: mapSdkCoins(plugin.Fee.Fee),
 		},
+		Timeout: int64(plugin.Timeout),
 	}, nil
 }
 
@@ -159,6 +161,7 @@ func mapTask(task types.Task) (Task, error) {
 			ExecutorReward:      mapSdkCoins(task.Fee.ExecutorReward),
 		},
 		CallbackId: task.CallbackId,
+		CreatedAt:  mapTimestamp(task.CreatedAt),
 	}, nil
 }
 
@@ -228,5 +231,12 @@ func mapPageResponse(value *query.PageResponse) TypesPageResponse {
 	return TypesPageResponse{
 		NextKey: value.NextKey,
 		Total:   value.Total,
+	}
+}
+
+func mapTimestamp(value time.Time) TypesTimestamp {
+	return TypesTimestamp{
+		Secs:  uint64(value.Unix()),
+		Nanos: uint64(value.Nanosecond()),
 	}
 }

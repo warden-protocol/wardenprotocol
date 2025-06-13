@@ -271,4 +271,4 @@ cast call $CONTRACT_ADDRESS "statusCode()(uint256)" --rpc-url $RPC_URL
 
 ## Next steps
 
-When you made a request to the CoinGecko API, you received a JSON response. To learn how to extract data from such responses using the JSON precompile, follow the next guide: [Extract data](extract-data).
+All API requests return JSON data. To learn how to extract data from such responses using the JSON precompile, follow the next guide: [Extract data](extract-data).

@@ -21,6 +21,11 @@ ORACLE_WARDEN_TOKEN_EXCHANGE_RATE=500000
 ORACLE_ANVIL_GAS_PRICE=1000000007
 ORACLE_ANVIL_TOKEN_EXCHANGE_RATE=200000000000000
 
+# Images
+HYPERLANE_IMAGE="ghcr.io/warden-protocol/infra/hyperlane:11639d3"
+FOUNDRY_IMAGE="ghcr.io/foundry-rs/foundry:v1.2.2"
+ABACUS_IMAGE="gcr.io/abacus-labs-dev/hyperlane-agent:agents-v1.4.0"
+
 # Private keys for Hyperlane 
 RELAYER_KEY="041024D968145CBB2732FDEB8DAE7B7D63291A8AE2FC80FCBA2C74F82AE82842"
 OWNER_KEY="F8B19B3BF55451B76E838E1BAE544EFF50FA552048DAD981BE83401B4CC57BF4"
@@ -81,7 +86,7 @@ fi
 if ! docker run -d \
   --name "$ANVIL_CONTAINER_NAME" \
   -p "$ANVIL_RPC_PORT":"$ANVIL_RPC_PORT" \
-  ghcr.io/foundry-rs/foundry:v1.2.2 \
+  $FOUNDRY_IMAGE \
   "anvil --chain-id \"$ANVIL_CHAIN_ID\" --port $ANVIL_RPC_PORT --block-time 1 --host 0.0.0.0"; then
   error_exit "Failed to start Anvil container"
 fi
@@ -180,7 +185,7 @@ docker run --rm \
   -v "$CHAINS_DIR_HOST/anvilnode1.yaml":"/root/.hyperlane/chains/anvilnode1/metadata.yaml" \
   -v "$CHAINS_DIR_HOST/wardenprotocoltestnet.yaml":"/root/.hyperlane/chains/wardenprotocoltestnet/metadata.yaml" \
   -w /app \
-  hyperlane:latest \
+  $HYPERLANE_IMAGE \
   bash -c "
     set -euo pipefail
 
@@ -215,7 +220,7 @@ if ! docker run -d \
   -e CONFIG_FILES=/config/agent-config.json \
   --mount type=bind,source="$(pwd)"/configs/agent-config.json,target=/config/agent-config.json,readonly \
   --mount type=bind,source="$(pwd)"/hyperlane_db,target=/hyperlane_db \
-  gcr.io/abacus-labs-dev/hyperlane-agent:agents-v1.4.0 \
+  $ABACUS_IMAGE \
   ./relayer  \
   --db /hyperlane_db \
   --relayChains wardenprotocoltestnet,anvilnode1 \

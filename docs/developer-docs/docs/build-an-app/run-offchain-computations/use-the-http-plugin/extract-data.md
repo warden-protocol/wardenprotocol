@@ -12,7 +12,7 @@ This tutorial will guide you through extracting the Bitcoin price from the [Coin
 
 ## 1. Create a contract
 
-Create a new file `DataExtraction.sol`:
+Create a `DataExtraction.sol` file:
 
 ```solidity title="warden-http-examples/src/DataExtraction.sol"
 // SPDX-License-Identifier: UNLICENSED

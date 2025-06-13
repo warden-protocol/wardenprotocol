@@ -62,11 +62,13 @@ To test out async with it's plugins with Hyperlane, follow the instructions:
 make contract
 ```
 
-2. Call the contract
-   Calling the contract requires the contract id's that were created in the previous step
+1. Call the contract
+   Calling the contract requires the contract id's
+   that were created in the previous step
 
 ```shell
-bash scripts/callContrach.sh <origin contract id> <destination contract id> <plugin> <input>
+bash scripts/callContrach.sh <origin contract id>
+<destination contract id> <plugin> <input>
 
 ```
 

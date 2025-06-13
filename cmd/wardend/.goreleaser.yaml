@@ -24,7 +24,8 @@ builds:
               echo "checksum mismatch!" >&2
               exit 1
             fi
-            cp -R /usr/x86_64-linux-gnu/lib/* /usr/lib/x86_64-linux-gnu/
+            cp /usr/x86_64-linux-gnu/lib/libm-2.31.a /usr/lib/x86_64-linux-gnu/libm-2.31.a
+            cp /usr/x86_64-linux-gnu/lib/libmvec.a /usr/lib/x86_64-linux-gnu/libmvec.a
           '
     goos:
       - linux
@@ -44,7 +45,7 @@ builds:
       - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,muslc,osusergo
       - -w -s
       - -linkmode=external
-      - -extldflags '-Wl,-z,muldefs -static -lm -ldl'
+      - -extldflags '-static -Wl,-z,muldefs -lm -lmvec -ldl'
     tags:
       - netgo
       - ledger

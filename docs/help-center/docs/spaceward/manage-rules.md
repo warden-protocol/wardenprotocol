@@ -29,7 +29,7 @@ To create a Rule, do this:
 5. If needed, add approvers and specify other details by [editing your Rule](#edit-a-rule).
 6. To start applying a new Rule, toggle its slider. Only one Rule can be active at a time.
 
-![Enable a Rule](../../static/img/enable-rule.png)
+![Enable a Rule](../../static/img/spaceward/enable-rule.png)
 
 ## Edit a Rule
 
@@ -44,9 +44,9 @@ You can edit your Rule at any moment:
     - To add a whitelist address, click the plus button and select **Add whitelist address**. Only transactions to these addresses will be approved.
 5. Click **Save**.
 
-![Edit a Rule 1](../../static/img/edit-rule-1.png)
+![Edit a Rule 1](../../static/img/spaceward/edit-rule-1.png)
 
-![Edit a Rule 2](../../static/img/edit-rule-2.png)
+![Edit a Rule 2](../../static/img/spaceward/edit-rule-2.png)
 
 ## Advanced Rules
 
@@ -59,7 +59,7 @@ To configure an advanced Rule, take these steps:
 3. Click the pencil symbol on your Rule. Click **Edit in Advanced mode**.
 4. Enter a custom expression for your Rule.
 
-![Edit an advanced Rule](../../static/img/edit-rule-advanced.png)
+![Edit an advanced Rule](../../static/img/spaceward/edit-rule-advanced.png)
 
 ### Operators
 

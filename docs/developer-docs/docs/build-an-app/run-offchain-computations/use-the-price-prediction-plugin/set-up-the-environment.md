@@ -39,7 +39,7 @@ Create an interface for interacting with the [`x/async` precompile](../../precom
    mkdir -p src/interfaces
    ```
 
-2. In the new directory, create a file `IAsync.sol`:
+2. In the new directory, create an `IAsync.sol` file:
 
    ```solidity title="warden-pricepredictions/src/interfaces/IAsync.sol"
    // SPDX-License-Identifier: LGPL-3.0-only
@@ -134,7 +134,7 @@ Create a library `Types.sol`, which is referenced in the [interface file](#2-cre
    mkdir -p src/common
    ```
 
-2. In the new directory, create a file `Types.sol`:
+2. In the new directory, create a `Types.sol` file:
 
    ```solidity title="warden-pricepredictions/src/interfaces/Types.sol"
    // SPDX-License-Identifier: LGPL-3.0-only

@@ -75,7 +75,7 @@ In the `src/lib` directory, create helper and utility libraries for Orders:
 
 ## 3. Implement the registry
 
-In the `src` directory, add a file `Registry.sol` implementing a registry for tracking transactions.
+In the `src` directory, add a `Registry.sol` file implementing a registry for tracking transactions.
 
 :::note Code
 [`src/Registry.sol`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/solidity/orders/src/Registry.sol)

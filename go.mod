@@ -43,7 +43,7 @@ require (
 	cosmossdk.io/x/upgrade v0.1.4
 	github.com/CosmWasm/wasmd v0.55.1
 	github.com/Jeffail/gabs/v2 v2.7.0
-	github.com/btcsuite/btcd/btcec/v2 v2.3.4
+	github.com/btcsuite/btcd/btcec/v2 v2.3.5
 	github.com/bufbuild/buf v1.54.0
 	github.com/caarlos0/env/v10 v10.0.0
 	github.com/cometbft/cometbft v0.38.17

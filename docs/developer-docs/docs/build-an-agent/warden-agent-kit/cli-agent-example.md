@@ -14,7 +14,7 @@ Our example implements a **CLI Agent** that is able to do the following:
 - Interact with Warden Protocol using the supported [Agent Actions](agent-actions).
 
 :::note Code
-The example code is available on GitHub: [`cli-agent`](https://github.com/warden-protocol/agent-kit/blob/main/examples/typescript/cli-agent/README.md)
+The example code is available on GitHub: [`cli-agent`](https://github.com/warden-protocol/agent-kit/blob/v0.6.3/examples/typescript/cli-agent/README.md)
 :::
 
 ## Prerequisites

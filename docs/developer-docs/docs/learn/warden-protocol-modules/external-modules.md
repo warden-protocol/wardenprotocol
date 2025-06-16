@@ -54,7 +54,7 @@ Learn more:
 
 The `x/oracle` module is a Cosmos SDK module by **Skip Protocol** that enables storing prices onchain in **Skip:Connect** (an oracle service).
 
-To use `x/oracle`, call the [`x/oracle` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/slinky/ISlinky.sol) in your contract. To get started and find usage examples, see these guides:
+To use `x/oracle`, call the [`x/oracle` precompile](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/precompiles/slinky/ISlinky.sol) in your contract. To get started and find usage examples, see these guides:
 
 - [Get started with precompiles](/build-an-app/interact-with-warden-modules/get-started-with-precompiles)
 - [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction)

@@ -15,6 +15,7 @@ To use this plugin, you need to:
 The plugin is configured using the `New` function:
 
 ```go
+import "github.com/warden-protocol/wardenprotocol/prophet/plugins/quantkit"
 plugin := quantkit.New("YOUR_API_KEY", "WARDEN_QUANTKIT_ENDPOINT")
 ```
 
@@ -69,14 +70,14 @@ Here is the current list of strategies:
 ]
 ```
 
-*   `state`: Represents the current portfolio state.
-    *   `assets`: An array of assets in the portfolio.
-        *   `amount`: The amount of the asset held.
-        *   `coin_id`: The ID of the asset (e.g., "BTC", "ETH").
-*   `begin`: The start date for the recommendation period (YYYY-MM-DD).
-*   `end`: The end date for the recommendation period (YYYY-MM-DD).
-*   `horizon`: The time horizon for the recommendations (e.g., "7d", "30d").
-*   `strategy_name`: The name of the strategy to use for generating recommendations.
+* `state` represents the current portfolio state.
+  * `assets` contains an array of assets in the portfolio.
+    * `amount` is the amount of the asset held.
+    * `coin_id` is the ID of the asset (e.g., "BTC", "ETH").
+* `begin` is the start date for the recommendation period (YYYY-MM-DD).
+* `end` is the end date for the recommendation period (YYYY-MM-DD).
+* `horizon` is the time horizon for the recommendations (e.g., "7d", "30d").
+* `strategy_name` is the name of the strategy to use for generating recommendations.
 
 ## Output
 
@@ -94,7 +95,8 @@ The plugin returns a base64-encoded JSON payload with the following format:
 }
 ```
 
-* `orders`: An array of order recommendations.
-* `src`: The source asset to sell.
-* `dst`: The destination asset to buy.
-* `amount`: The amount of the source asset to sell.
+
+* `orders` contains an array of order recommendations.
+* `src`: is the source asset to sell.
+* `dst`: is the destination asset to buy.
+* `amount`: is the amount of the source asset to sell.

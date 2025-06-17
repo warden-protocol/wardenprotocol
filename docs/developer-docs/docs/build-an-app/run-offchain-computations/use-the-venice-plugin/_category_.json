@@ -1,0 +1,11 @@
+{
+  "position": 3,
+  "label": "Use the Venice Plugin",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Use the Venice Plugin"
+  },
+  "customProps": {}
+}

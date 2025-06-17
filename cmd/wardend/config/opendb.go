@@ -17,7 +17,7 @@ import (
 //
 // NOTE: this is included in builds without rocksdb.
 // When building the binary with rocksdb, the code in 'rocksdb.go' will be included
-// instead of this
+// instead of this.
 func OpenDB(_ types.AppOptions, home string, backendType dbm.BackendType) (dbm.DB, error) {
 	dataDir := filepath.Join(home, "data")
 	return dbm.NewDB("application", backendType, dataDir)

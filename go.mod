@@ -12,7 +12,7 @@ replace (
 	// evm integration
 	github.com/cosmos/cosmos-sdk => github.com/warden-protocol/cosmos-sdk v0.50.13-warden-evm
 
-	github.com/cosmos/evm v0.2.0 => github.com/warden-protocol/evm v0.2.0
+	github.com/cosmos/evm v0.2.0 => github.com/warden-protocol/evm v0.2.0-warden
 	github.com/dgrijalva/jwt-go => github.com/dgrijalva/jwt-go/v4 v4.0.0-preview1
 	// evm + types for slinky
 	github.com/ethereum/go-ethereum => github.com/warden-protocol/go-ethereum v1.10.26-evmos-rc4-patched-warden

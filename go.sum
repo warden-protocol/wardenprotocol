@@ -1398,8 +1398,8 @@ github.com/warden-protocol/connect v1.2.2 h1:00nfcbnCI0bhHdg3KrDCLx10RyO0mLCkJYf
 github.com/warden-protocol/connect v1.2.2/go.mod h1:ZiS2VuO4pC90hfsvpLr8TvcQds6xDaczB3EKdFbm2pM=
 github.com/warden-protocol/cosmos-sdk v0.50.13-warden-evm h1:P7yv625kGl8onbQ7MZISdyPp3l6yTB4i7VH6ArHzCZI=
 github.com/warden-protocol/cosmos-sdk v0.50.13-warden-evm/go.mod h1:hrWEFMU1eoXqLJeE6VVESpJDQH67FS1nnMrQIjO2daw=
-github.com/warden-protocol/evm v0.2.0 h1:F0jidZ5BiqQNDc3vzKaXvqcFE3v3PS/GiT/XYhxDrv0=
-github.com/warden-protocol/evm v0.2.0/go.mod h1:/4D24vd1xRnUVaXzfNryxTo5Gn1c/phJG5FvpH9OvLQ=
+github.com/warden-protocol/evm v0.2.0-warden h1:LF56GIXFVVIHWgG9k5/MX7c8PQTM3Do1DGg0WS8EJRo=
+github.com/warden-protocol/evm v0.2.0-warden/go.mod h1:/4D24vd1xRnUVaXzfNryxTo5Gn1c/phJG5FvpH9OvLQ=
 github.com/warden-protocol/go-ethereum v1.10.26-evmos-rc4-patched-warden h1:nPFzh6G2D8vqDsbGkg7HO3+7AktpofLFio4j8n141jg=
 github.com/warden-protocol/go-ethereum v1.10.26-evmos-rc4-patched-warden/go.mod h1:/6CsT5Ceen2WPLI/oCA3xMcZ5sWMF/D46SjM/ayY0Oo=
 github.com/willf/bitset v1.1.3/go.mod h1:RjeCKbqT1RxIR/KWY6phxZiaY1IyutSBfGjNPySAYV4=

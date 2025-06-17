@@ -461,9 +461,6 @@ func New(
 	// 	voteExtHandler := NewVoteExtensionHandler()
 	// 	voteExtHandler.SetHandlers(bApp)
 	// }
-	evmChainID := cast.ToUint64(app.ChainID())
-
-	eip712.SetEncodingConfig(app.legacyAmino, app.interfaceRegistry, evmChainID)
 
 	updatedBaseAppOptions := append(
 		[]func(*baseapp.BaseApp){
@@ -473,6 +470,9 @@ func New(
 		}, baseAppOptions...)
 
 	app.App = appBuilder.Build(db, traceStore, updatedBaseAppOptions...)
+
+	evmChainID := cast.ToUint64(app.ChainID())
+	eip712.SetEncodingConfig(app.legacyAmino, app.interfaceRegistry, evmChainID)
 
 	app.SetTxEncoder(app.txConfig.TxEncoder())
 

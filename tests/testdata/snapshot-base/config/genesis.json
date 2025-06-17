@@ -1,8 +1,8 @@
 {
   "app_name": "wardend",
-  "app_version": "v0.6.3-73-g8a87600eb-dirty",
-  "genesis_time": "2025-06-09T11:02:07.707083Z",
-  "chain_id": "warden_1337-1",
+  "app_version": "v0.6.3-132-g2b2b9772d-dirty",
+  "genesis_time": "2025-06-17T07:43:21.001817733Z",
+  "chain_id": "1337",
   "initial_height": 1,
   "app_hash": null,
   "app_state": {
@@ -52,7 +52,7 @@
       "accounts": [
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "warden14c6z3tu6j3qvv9m433ur3w8s4mh5fms008ywkd",
+          "address": "warden1tag67fumqr0zumxrkwp4e2kwzyfpcaul9tu354",
           "pub_key": null,
           "account_number": "0",
           "sequence": "0"
@@ -69,7 +69,7 @@
       },
       "balances": [
         {
-          "address": "warden14c6z3tu6j3qvv9m433ur3w8s4mh5fms008ywkd",
+          "address": "warden1tag67fumqr0zumxrkwp4e2kwzyfpcaul9tu354",
           "coins": [
             {
               "denom": "award",
@@ -225,10 +225,10 @@
                 },
                 "min_self_delegation": "1",
                 "delegator_address": "",
-                "validator_address": "wardenvaloper14c6z3tu6j3qvv9m433ur3w8s4mh5fms07uxteu",
+                "validator_address": "wardenvaloper1tag67fumqr0zumxrkwp4e2kwzyfpcaul5s75my",
                 "pubkey": {
                   "@type": "/cosmos.crypto.ed25519.PubKey",
-                  "key": "alaq7ojBdFtSBiSf3r0ydJuCWqhiGoALWGKV7ZiJm9U="
+                  "key": "OXpMwGE51H/ete/oVSU5gNC8b/lGJinr5uxRUXBmzwM="
                 },
                 "value": {
                   "denom": "award",
@@ -236,7 +236,7 @@
                 }
               }
             ],
-            "memo": "12154db309a7bcdbd1a262e50c2e56d5da1fcde5@192.168.1.150:26656",
+            "memo": "d9aa8dfaa99a94568ca911b30ed8f696ea85b363@172.19.18.7:26656",
             "timeout_height": "0",
             "unordered": false,
             "timeout_timestamp": null,
@@ -248,7 +248,7 @@
               {
                 "public_key": {
                   "@type": "/cosmos.evm.crypto.v1.ethsecp256k1.PubKey",
-                  "key": "Agm/8rab7Uq28MCv8gEvHiBEEbF7BcSalK3WcmoaP3Q7"
+                  "key": "Ak1bXOg20olGq5Lm6Zxn4z9G7B5aI1AnDJcIp9MOjxGZ"
                 },
                 "mode_info": {
                   "single": {
@@ -267,7 +267,7 @@
             "tip": null
           },
           "signatures": [
-            "2s3LK1L8BBDso2LjpqOixwMWVFk7RyE8lvNJtqaNG/5OeKFUTTev9UGnVO3Bj9oQAlaDw+gJ58ly5u9zovovuwA="
+            "km51wuljsGjtTzkGEyPUz3EcVkQOYUN6BIzo4OQ1ofs3fNr4aiHFZS6hSGiKhJ/Wn2QaxPE+Cy9c+dbTQrszbAA="
           ]
         }
       ]

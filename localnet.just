@@ -42,19 +42,14 @@ start bin="wardend" install="true":
     {{bin}} config set app api.enabled-unsafe-cors true
     {{bin}} config set config consensus.timeout_commit 1s -s
     replace 's/cors_allowed_origins = \[\]/cors_allowed_origins = ["*"]/' "$WARDEN_HOME/config/config.toml"
+    # change chain-id in app.toml
+    sed -i '/\[evm\]/a\\nevm-chain-id = "{{chain_id}}"' "$WARDEN_HOME/config/app.toml"
     {{bin}} keys add val > /dev/null
     echo -n '{{shulgin_mnemonic}}' | {{bin}} keys add shulgin --recover > /dev/null
     {{bin}} genesis add-genesis-account val 10000000000000000000000000award
     {{bin}} genesis add-genesis-account shulgin 10000000000000000000000000award
     {{bin}} genesis add-genesis-space {{shulgin}}
     {{bin}} genesis add-genesis-keychain {{shulgin}} "WardenKMS" "{\"key_req\":[],\"sig_req\":[]}"
-
-    {{bin}} genesis add-genesis-plugin echo
-    {{bin}} genesis add-genesis-plugin http
-    {{bin}} genesis add-genesis-plugin pricepred
-    {{bin}} genesis add-genesis-plugin venice
-    {{bin}} genesis add-genesis-plugin veniceimg
-    {{bin}} genesis add-genesis-plugin quantkit
 
     {{bin}} genesis add-genesis-plugin echo
     {{bin}} genesis add-genesis-plugin http

@@ -85,7 +85,7 @@ snapshot-base:
   replace 's/tcp\:\/\/127\.0\.0\.1\:26657/tcp\:\/\/127.0.0.1:{{{{ .CometPortRPC }}/' $WARDEND_HOME/config/config.toml
 
   # change chain-id in app.toml
-  sed -i '/[evm]/a evm-chain-id = "{{chain_id}}"' $WARDEND_HOME/config/app.toml
+  sed -i '/\[evm\]/a\\nevm-chain-id = "{{chain_id}}"' $WARDEND_HOME/config/app.toml
 
   # rename *.toml in *.toml.tmpl
   mv $WARDEND_HOME/config/app.toml    $WARDEND_HOME/config/app.toml.tmpl
@@ -154,7 +154,7 @@ snapshot-keychain:
   replace 's/tcp\:\/\/127\.0\.0\.1\:26657/tcp\:\/\/127.0.0.1:{{{{ .CometPortRPC }}/' $WARDEND_HOME/config/config.toml
 
   # change chain-id in app.toml
-  sed -i '/[evm]/a evm-chain-id = "{{chain_id}}"' $WARDEND_HOME/config/app.toml
+  sed -i '/\[evm\]/a\\nevm-chain-id = "{{chain_id}}"' $WARDEND_HOME/config/app.toml
 
   # rename *.toml in *.toml.tmpl
   mv $WARDEND_HOME/config/app.toml    $WARDEND_HOME/config/app.toml.tmpl
@@ -226,7 +226,7 @@ snapshot-many-users:
   replace 's/tcp\:\/\/127\.0\.0\.1\:26657/tcp\:\/\/127.0.0.1:{{{{ .CometPortRPC }}/' $WARDEND_HOME/config/config.toml
 
   # change chain-id in app.toml
-  sed -i '/[evm]/a evm-chain-id = "{{chain_id}}"' $WARDEND_HOME/config/app.toml
+  sed -i '/\[evm\]/a\\nevm-chain-id = "{{chain_id}}"' $WARDEND_HOME/config/app.toml
 
   # rename *.toml in *.toml.tmpl
   mv $WARDEND_HOME/config/app.toml    $WARDEND_HOME/config/app.toml.tmpl

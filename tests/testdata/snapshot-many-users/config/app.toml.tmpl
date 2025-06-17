@@ -275,6 +275,8 @@ interval = "0s"
 
 [evm]
 
+evm-chain-id = "1337"
+
 # Tracer defines the 'vm.Tracer' type that the EVM will use when the node is run in
 # debug mode. To enable tracing use the '--evm.tracer' flag when starting your node.
 # Valid types are: json|struct|access_list|markdown
@@ -413,4 +415,15 @@ api-url = ""
 enabled = "false"
 
 # API Key used when making Venice API requests
+api-key = ""
+
+###############################################################################
+###                       VeniceImg  configuration                          ###
+###############################################################################
+[veniceimg]
+
+# Is VeniceImg plugin enabled
+enabled = "false"
+
+# API Key used when making VeniceImg API requests
 api-key = ""

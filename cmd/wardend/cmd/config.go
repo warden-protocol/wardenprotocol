@@ -87,8 +87,6 @@ func initAppConfig(evmChainID uint64) (string, interface{}) {
 	evmConfig := evmservercfg.DefaultEVMConfig()
 	evmConfig.EVMChainID = evmChainID
 
-	quantkitConfig := quantkitconfig.DefaultConfig()
-
 	customAppConfig := CustomAppConfig{
 		Config:  *srvCfg,
 		Oracle:  oracleConfig,

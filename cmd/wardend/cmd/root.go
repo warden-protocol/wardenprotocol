@@ -22,12 +22,9 @@ import (
 	txmodule "github.com/cosmos/cosmos-sdk/x/auth/tx/config"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 	evmkeyring "github.com/cosmos/evm/crypto/keyring"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
-	cast "github.com/spf13/cast"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 
-	wardencmdconfig "github.com/warden-protocol/wardenprotocol/cmd/wardend/config"
 	"github.com/warden-protocol/wardenprotocol/warden/app"
 )
 
@@ -97,12 +94,7 @@ func NewRootCmd() *cobra.Command {
 				return err
 			}
 
-			chainId := wardencmdconfig.EVMChainID
-			if clientCtx.ChainID != "" {
-				chainId = cast.ToUint64(clientCtx.ChainID)
-			}
-
-			customAppTemplate, customAppConfig := initAppConfig(chainId)
+			customAppTemplate, customAppConfig := initAppConfig()
 			customCMTConfig := initCometBFTConfig()
 
 			return server.InterceptConfigsPreRunHandler(cmd, customAppTemplate, customAppConfig, customCMTConfig)
@@ -127,17 +119,6 @@ func NewRootCmd() *cobra.Command {
 
 	if err := autoCliOpts.EnhanceRootCommand(rootCmd); err != nil {
 		panic(err)
-	}
-
-	if clientCtx.ChainID != "" {
-		if err := app.SetupEVM(cast.ToUint64(clientCtx.ChainID), evmtypes.EvmCoinInfo{
-			Denom:         app.ChainDenom,
-			ExtendedDenom: app.ChainDenom,
-			Decimals:      app.DenomDecimals,
-			DisplayDenom:  app.DisplayDenom,
-		}); err != nil {
-			panic(err)
-		}
 	}
 
 	return rootCmd

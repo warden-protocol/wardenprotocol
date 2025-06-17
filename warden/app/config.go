@@ -1,34 +1,56 @@
 package app
 
 import (
+	"errors"
+	"fmt"
+	"strconv"
+	"strings"
+
 	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/evm/ethereum/eip712"
 	evmtypes "github.com/cosmos/evm/x/vm/types"
 )
 
 var sealed = false
 
-// SetupEVM setups the global configuration for the EVM chain.
-func SetupEVM(chainID uint64, coinInfo evmtypes.EvmCoinInfo) error {
+var coinInfo = evmtypes.EvmCoinInfo{
+	Denom:         "award",
+	ExtendedDenom: "award",
+	DisplayDenom:  "WARD",
+	Decimals:      evmtypes.EighteenDecimals,
+}
+
+func (app *App) setupEVM() error {
 	if sealed {
-		return nil
+		return errors.New("setupEVM called twice")
 	}
+
+	chainID := app.ChainID()
+	from := strings.LastIndexByte(chainID, '_')
+	to := strings.LastIndexByte(chainID, '-')
+	evmChainID, err := strconv.ParseUint(chainID[from+1:to], 10, 64)
+	if err != nil {
+		return fmt.Errorf("can't parse evm chain id from %s: %w", chainID, err)
+	}
+
+	eip712.SetEncodingConfig(app.legacyAmino, app.interfaceRegistry, evmChainID)
 
 	// set the denom info for the chain
 	if err := setBaseDenom(coinInfo); err != nil {
 		return err
 	}
 
-	ethCfg := evmtypes.DefaultChainConfig(chainID)
-	err := evmtypes.NewEVMConfigurator().
+	ethCfg := evmtypes.DefaultChainConfig(evmChainID)
+	if err := evmtypes.NewEVMConfigurator().
 		WithChainConfig(ethCfg).
 		WithEVMCoinInfo(coinInfo).
-		Configure()
-	if err != nil {
+		Configure(); err != nil {
 		return err
 	}
 
 	sealed = true
+
 	return nil
 }
 

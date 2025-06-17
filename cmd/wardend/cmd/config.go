@@ -29,7 +29,7 @@ func initCometBFTConfig() *cmtcfg.Config {
 
 // initAppConfig helps to override default appConfig template and configs.
 // return "", nil if no custom configuration is required for the application.
-func initAppConfig(evmChainID uint64) (string, interface{}) {
+func initAppConfig() (string, interface{}) {
 	// The following code snippet is just for reference.
 	type CustomAppConfig struct {
 		serverconfig.Config `mapstructure:",squash"`
@@ -85,7 +85,7 @@ func initAppConfig(evmChainID uint64) (string, interface{}) {
 	quantkitConfig := quantkitconfig.DefaultConfig()
 
 	evmConfig := evmservercfg.DefaultEVMConfig()
-	evmConfig.EVMChainID = evmChainID
+	evmConfig.EVMChainID = 1337 // we typically use warden_1337-1 as our default chain id
 
 	customAppConfig := CustomAppConfig{
 		Config:  *srvCfg,

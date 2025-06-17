@@ -60,7 +60,6 @@ import (
 	evmante "github.com/cosmos/evm/ante"
 	cosmosevmante "github.com/cosmos/evm/ante/evm"
 	evmencodingcodec "github.com/cosmos/evm/encoding/codec"
-	"github.com/cosmos/evm/ethereum/eip712"
 	srvflags "github.com/cosmos/evm/server/flags"
 	cosmosevmtypes "github.com/cosmos/evm/types"
 	cosmosevmutils "github.com/cosmos/evm/utils"
@@ -99,10 +98,7 @@ import (
 )
 
 const (
-	Name          = "warden"
-	ChainDenom    = "award"
-	DenomDecimals = evmtypes.EighteenDecimals
-	DisplayDenom  = "ward"
+	Name = "warden"
 )
 
 // DefaultNodeHome default home directories for the application daemon.
@@ -471,18 +467,10 @@ func New(
 
 	app.App = appBuilder.Build(db, traceStore, updatedBaseAppOptions...)
 
-	evmChainID := cast.ToUint64(app.ChainID())
-	eip712.SetEncodingConfig(app.legacyAmino, app.interfaceRegistry, evmChainID)
-
 	app.SetTxEncoder(app.txConfig.TxEncoder())
 
-	if err := SetupEVM(evmChainID, evmtypes.EvmCoinInfo{
-		Denom:         ChainDenom,
-		ExtendedDenom: ChainDenom,
-		Decimals:      DenomDecimals,
-		DisplayDenom:  DisplayDenom,
-	}); err != nil {
-		return nil, err
+	if err := app.setupEVM(); err != nil {
+		panic(err)
 	}
 
 	app.MarketMapKeeper.SetHooks(app.OracleKeeper.Hooks())

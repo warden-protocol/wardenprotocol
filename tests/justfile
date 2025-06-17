@@ -26,7 +26,11 @@ snapshot: snapshot-base snapshot-keychain snapshot-many-users
 
 # Define the new precompiles addresses
 warden-precompiles := '["0x0000000000000000000000000000000000000100","0x0000000000000000000000000000000000000400","0x0000000000000000000000000000000000000800","0x0000000000000000000000000000000000000801","0x0000000000000000000000000000000000000802","0x0000000000000000000000000000000000000803","0x0000000000000000000000000000000000000804","0x0000000000000000000000000000000000000805","0x0000000000000000000000000000000000000900", "0x0000000000000000000000000000000000000901", "0x0000000000000000000000000000000000000902", "0x0000000000000000000000000000000000000903", "0x0000000000000000000000000000000000000904", "0x0000000000000000000000000000000000000905"]'
-chain_id := "1337"
+
+# Define the list of plugins to enable
+async-plugins := '["echo", "http", "pricepred"]'
+chain_id := "warden_1337-1"
+evm_chain_id := "1337"
 
 # regenerate ./testdata/snapshot-base
 snapshot-base:
@@ -79,12 +83,10 @@ snapshot-base:
   replace 's/localhost\:9090/localhost:{{{{ .GRPCPort }}/' $WARDEND_HOME/config/app.toml
   replace 's/127\.0\.0\.1\:8545/127.0.0.1:{{{{ .JSONRPCPort }}/' $WARDEND_HOME/config/app.toml
   replace 's/127\.0\.0\.1\:8546/127.0.0.1:{{{{ .JSONRPCWSPort }}/' $WARDEND_HOME/config/app.toml
+  replace 's/\[evm\]/\[evm\]\nevm-chain-id = "{{evm_chain_id}}"/' $WARDEND_HOME/config/app.toml
 
   replace 's/tcp\:\/\/0\.0\.0\.0\:26656/tcp\:\/\/127.0.0.1:{{{{ .CometP2PRPC }}/' $WARDEND_HOME/config/config.toml
   replace 's/tcp\:\/\/127\.0\.0\.1\:26657/tcp\:\/\/127.0.0.1:{{{{ .CometPortRPC }}/' $WARDEND_HOME/config/config.toml
-
-  # change chain-id in app.toml
-  sed -i '/\[evm\]/a\\nevm-chain-id = "{{chain_id}}"' $WARDEND_HOME/config/app.toml
 
   # rename *.toml in *.toml.tmpl
   mv $WARDEND_HOME/config/app.toml    $WARDEND_HOME/config/app.toml.tmpl
@@ -148,12 +150,10 @@ snapshot-keychain:
   replace 's/localhost\:9090/localhost:{{{{ .GRPCPort }}/' $WARDEND_HOME/config/app.toml
   replace 's/127\.0\.0\.1\:8545/127.0.0.1:{{{{ .JSONRPCPort }}/' $WARDEND_HOME/config/app.toml
   replace 's/127\.0\.0\.1\:8546/127.0.0.1:{{{{ .JSONRPCWSPort }}/' $WARDEND_HOME/config/app.toml
+  replace 's/\[evm\]/\[evm\]\nevm-chain-id = "{{evm_chain_id}}"/' $WARDEND_HOME/config/app.toml
 
   replace 's/tcp\:\/\/0\.0\.0\.0\:26656/tcp\:\/\/127.0.0.1:{{{{ .CometP2PRPC }}/' $WARDEND_HOME/config/config.toml
   replace 's/tcp\:\/\/127\.0\.0\.1\:26657/tcp\:\/\/127.0.0.1:{{{{ .CometPortRPC }}/' $WARDEND_HOME/config/config.toml
-
-  # change chain-id in app.toml
-  sed -i '/\[evm\]/a\\nevm-chain-id = "{{chain_id}}"' $WARDEND_HOME/config/app.toml
 
   # rename *.toml in *.toml.tmpl
   mv $WARDEND_HOME/config/app.toml    $WARDEND_HOME/config/app.toml.tmpl
@@ -220,12 +220,10 @@ snapshot-many-users:
   replace 's/localhost\:9090/localhost:{{{{ .GRPCPort }}/' $WARDEND_HOME/config/app.toml
   replace 's/127\.0\.0\.1\:8545/127.0.0.1:{{{{ .JSONRPCPort }}/' $WARDEND_HOME/config/app.toml
   replace 's/127\.0\.0\.1\:8546/127.0.0.1:{{{{ .JSONRPCWSPort }}/' $WARDEND_HOME/config/app.toml
+  replace 's/\[evm\]/\[evm\]\nevm-chain-id = "{{evm_chain_id}}"/' $WARDEND_HOME/config/app.toml
 
   replace 's/tcp\:\/\/0\.0\.0\.0\:26656/tcp\:\/\/127.0.0.1:{{{{ .CometP2PRPC }}/' $WARDEND_HOME/config/config.toml
   replace 's/tcp\:\/\/127\.0\.0\.1\:26657/tcp\:\/\/127.0.0.1:{{{{ .CometPortRPC }}/' $WARDEND_HOME/config/config.toml
-
-  # change chain-id in app.toml
-  sed -i '/\[evm\]/a\\nevm-chain-id = "{{chain_id}}"' $WARDEND_HOME/config/app.toml
 
   # rename *.toml in *.toml.tmpl
   mv $WARDEND_HOME/config/app.toml    $WARDEND_HOME/config/app.toml.tmpl

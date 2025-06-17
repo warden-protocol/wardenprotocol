@@ -6,7 +6,7 @@ CHAIN_NAME=${1:-"devnet_12345-1"}
 NUM_VALS=${2:-"3"}
 TOKEN=${3:-"award"}
 WARDEN_IMAGE="ghcr.io/warden-protocol/wardenprotocol/wardend"
-WARDEN_VERSION="latest"
+WARDEN_VERSION="f60d4c78"
 FAUCET_VERSION="faa3f578"
 KMS_VERSION="6e5af4ec"
 # SPACEWARD_VERSION="ecbbba5"
@@ -38,13 +38,13 @@ ENVIRONMENT="""WARDEND_MINIMUM_GAS_PRICES: "0award"
       WARDEND_JSON_RPC_ENABLE: true
       WARDEND_KEYRING_BACKEND: test
       WARDEND_HOME: /data/.warden"""
-ASYNC_PLUGINS='["echo", "http", "pricepred", "venice", "quantkit"]'
+ASYNC_PLUGINS="echo http pricepred venice quantkit"
 if [[ "$COSMOVISOR" == "true" ]]; then
   ENTRYPOINT='entrypoint: ["/data/.warden/cosmovisor/bin/cosmovisor","run","start"]'
   ENVIRONMENT="$ENVIRONMENT
       $COSMOVISOR_ENV"
 else
-  ENTRYPOINT='entrypoint: ["/usr/bin/wardend","start","--x-crisis-skip-assert-invariants"]'
+  ENTRYPOINT='entrypoint: ["/usr/bin/wardend","start"]'
 fi
 echo $ENVIRONMENT
 CHAIN_EVM_ID=$(echo "$CHAIN_NAME" | sed -n 's/.*_\([0-9]*\)-.*/\1/p')
@@ -123,11 +123,16 @@ jq '.app_state[\"gov\"][\"params\"][\"max_deposit_period\"] = \"30s\"' $CONFIG_F
 jq '.app_state[\"gov\"][\"params\"][\"expedited_voting_period\"] = \"30s\"' $CONFIG_FOLDER/genesis.json > tmp/genesis.json && mv tmp/genesis.json $CONFIG_FOLDER/genesis.json
 jq '.app_state.evm.params.active_static_precompiles += $WARDEND_PRECOMPILES' $CONFIG_FOLDER/genesis.json > tmp/genesis.json && mv tmp/genesis.json $CONFIG_FOLDER/genesis.json
 jq '.app_state.warden.keychains += $WARDEND_KEYCHAINS' $CONFIG_FOLDER/genesis.json > tmp/genesis.json && mv tmp/genesis.json $CONFIG_FOLDER/genesis.json
-jq '.app_state.async.active_plugins += $ASYNC_PLUGINS' $CONFIG_FOLDER/genesis.json > tmp/genesis.json && mv tmp/genesis.json $CONFIG_FOLDER/genesis.json
 jq '.consensus[\"params\"][\"abci\"][\"vote_extensions_enable_height\"] = \"2\"' $CONFIG_FOLDER/genesis.json > tmp/genesis.json && mv tmp/genesis.json $CONFIG_FOLDER/genesis.json
 jq '.app_state[\"feemarket\"][\"params\"][\"base_fee_change_denominator\"]=\"1000\"' $CONFIG_FOLDER/genesis.json > tmp/genesis.json && mv tmp/genesis.json $CONFIG_FOLDER/genesis.json
 jq '.app_state[\"feemarket\"][\"params\"][\"elasticity_multiplier\"]=\"1000\"' $CONFIG_FOLDER/genesis.json > tmp/genesis.json && mv tmp/genesis.json $CONFIG_FOLDER/genesis.json
 jq '.app_state[\"evm\"][\"params\"][\"evm_denom\"]=\"award\"' $CONFIG_FOLDER/genesis.json > tmp/genesis.json && mv tmp/genesis.json $CONFIG_FOLDER/genesis.json"""
+
+# Add asyn plungins to genesis
+for plugin in $ASYNC_PLUGINS; do
+  echo -e "${GREEN}Adding async plugin: ${NC} $plugin"
+  docker exec val-0 /bin/bash -c "wardend genesis add-genesis-plugin $plugin" > /dev/null 2>&1
+done
 
 echo "$GENESIS_PARAMS" | while read -r param; do
   echo -e "${GREEN}Changing genesis param: ${NC} $param"

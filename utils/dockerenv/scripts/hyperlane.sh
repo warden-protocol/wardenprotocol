@@ -22,7 +22,7 @@ ORACLE_ANVIL_GAS_PRICE=1000000007
 ORACLE_ANVIL_TOKEN_EXCHANGE_RATE=200000000000000
 
 # Images
-HYPERLANE_IMAGE="ghcr.io/warden-protocol/infra/hyperlane:11639d3"
+HYPERLANE_IMAGE="ghcr.io/warden-protocol/utils/hyperlane:bfc88ab"
 FOUNDRY_IMAGE="ghcr.io/foundry-rs/foundry:v1.2.2"
 ABACUS_IMAGE="gcr.io/abacus-labs-dev/hyperlane-agent:agents-v1.4.0"
 

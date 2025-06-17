@@ -459,6 +459,8 @@ func New(
 	// 	voteExtHandler := NewVoteExtensionHandler()
 	// 	voteExtHandler.SetHandlers(bApp)
 	// }
+	evmChainID := cast.ToUint64(app.ChainID())
+
 	eip712.SetEncodingConfig(app.legacyAmino, app.interfaceRegistry, evmChainID)
 
 	updatedBaseAppOptions := append(
@@ -472,7 +474,7 @@ func New(
 
 	app.SetTxEncoder(app.txConfig.TxEncoder())
 
-	if err := setupEVM(app.ChainID(), evmtypes.EvmCoinInfo{
+	if err := SetupEVM(evmChainID, evmtypes.EvmCoinInfo{
 		Denom:         ChainDenom,
 		ExtendedDenom: ChainDenom,
 		Decimals:      DenomDecimals,

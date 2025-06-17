@@ -8,8 +8,8 @@ import (
 
 var sealed = false
 
-// setupEVM setups the global configuration for the EVM chain.
-func setupEVM(chainID string, coinInfo evmtypes.EvmCoinInfo) error {
+// SetupEVM setups the global configuration for the EVM chain.
+func SetupEVM(chainID uint64, coinInfo evmtypes.EvmCoinInfo) error {
 	if sealed {
 		panic("setupEVM called twice")
 	}

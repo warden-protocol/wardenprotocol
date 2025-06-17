@@ -19,6 +19,33 @@ Before you start, complete the following prerequisites:
 
 - Make sure the chain is running. You can start it by running `wardend start` in a separate terminal window.
 
+## Enable Venice AI
+
+To use Venice AI in your Warden chain, you need to:
+
+1. **Obtain API Keys**:
+   - Reach out to the Warden team on [Discord](https://discord.gg/wardenprotocol) to request Venice AI API keys
+   - The team will provide you with the necessary API keys for accessing Venice AI services
+
+2. **Configure app.toml**:
+   - Locate your `app.toml` file in the Warden chain configuration directory
+   - Add the following configuration under the `[venice]` section:
+
+   ```toml
+   [venice]
+   enabled = true
+   api_key = "your-api-key-here"
+   ```
+
+   Replace `your-api-key-here` with the API key provided by the Warden team.
+
+3. **Restart the Chain**:
+   - After updating the configuration, restart your Warden chain for the changes to take effect:
+
+```bash
+wardend start
+```
+
 ## 1. Create a Foundry project
 
 Create a new directory and initialize a new Foundry project:

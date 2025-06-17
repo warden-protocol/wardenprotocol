@@ -1,0 +1,19 @@
+{
+    "event_signature": "MessageDispatched(bytes32,address,uint256,address,bytes)",
+    "reconnect_interval": 5,
+    "max_retries": 3,
+    "source_chains": [
+        {
+            "name": "anvilnode1",
+            "rpc_url": "ws://localhost:8546",
+            "dispatcher_address": "0xaA6C2a1Da765ae10E630f1c7dc86De1013FAb6D8",
+            "from_block": 1
+        }
+    ],
+    "warden_chain": {
+        "name": "wardenprotocol",
+        "rpc_url": "http://localhost:8545",
+        "executor_address": "0x2a2293508Bd57be939255A438e22C3820F617e20",
+        "private_key": "F8B19B3BF55451B76E838E1BAE544EFF50FA552048DAD981BE83401B4CC57BF4"
+    }
+} 

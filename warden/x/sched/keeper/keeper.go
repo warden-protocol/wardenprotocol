@@ -7,7 +7,6 @@ import (
 	"math/big"
 
 	"cosmossdk.io/collections"
-	"cosmossdk.io/collections/corecompat"
 	"cosmossdk.io/core/store"
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/log"
@@ -66,7 +65,7 @@ func NewKeeper(
 		panic("invalid authority address: " + authority)
 	}
 
-	sb := collections.NewSchemaBuilder(storeService.(corecompat.KVStoreService))
+	sb := collections.NewSchemaBuilder(storeService)
 
 	callbacks := NewCallbackKeeper(sb, cdc)
 

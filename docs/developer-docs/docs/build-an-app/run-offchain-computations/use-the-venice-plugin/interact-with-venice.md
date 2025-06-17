@@ -139,3 +139,43 @@ Chains of code entwined
 Secure and transparent dance
 Trust in digital
 ```
+
+## Contract Interaction Functions
+
+### 1. Check Task Completion
+
+```bash
+cast call $CONTRACT_ADDRESS "isTaskCompleted(uint64)" $TASK_ID --rpc-url $RPC_URL
+```
+
+**Expected output:**
+
+```bash
+true
+```
+
+### 2. Get Task Response
+
+```bash
+cast call $CONTRACT_ADDRESS "getTaskResponse(uint64)" $TASK_ID --rpc-url $RPC_URL
+```
+
+**Expected output:**
+
+```bash
+Chains of code entwined
+Secure and transparent dance
+Trust in digital
+```
+
+### 3. Get Task User
+
+```bash
+cast call $CONTRACT_ADDRESS "getTaskUser(uint64)" $TASK_ID --rpc-url $RPC_URL
+```
+
+**Expected output:**
+
+```bash
+0xYOUR_ADDRESS
+```

@@ -11,7 +11,7 @@ var sealed = false
 // SetupEVM setups the global configuration for the EVM chain.
 func SetupEVM(chainID uint64, coinInfo evmtypes.EvmCoinInfo) error {
 	if sealed {
-		panic("setupEVM called twice")
+		return nil
 	}
 
 	// set the denom info for the chain

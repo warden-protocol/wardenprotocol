@@ -1,5 +1,5 @@
 app_name := "warden"
-chain_id := "warden_1337-1"
+chain_id := "1337"
 tag := `git describe --tags --always`
 commit := `git rev-parse HEAD`
 dirty := `git diff --quiet || echo "-dirty"`

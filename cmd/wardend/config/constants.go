@@ -10,8 +10,8 @@ const (
 
 	CosmosChainID = 262144 // TODO AT: find correct chain ID for WARDEN Cosmos chain
 
-	// TestChainID1 is test chain IDs for IBC E2E test
+	// TestChainID1 is test chain IDs for IBC E2E test.
 	TestChainID1 = 9005
-	// TestChainID2 is test chain IDs for IBC E2E test
+	// TestChainID2 is test chain IDs for IBC E2E test.
 	TestChainID2 = 9006
 )

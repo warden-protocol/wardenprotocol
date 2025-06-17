@@ -2,10 +2,7 @@ package cmd
 
 import (
 	"errors"
-	"fmt"
 	"io"
-	"os"
-	"path/filepath"
 
 	"cosmossdk.io/log"
 	confixcmd "cosmossdk.io/tools/confix/cmd"
@@ -259,29 +256,4 @@ func appExport(
 	}
 
 	return bApp.ExportAppStateAndValidators(forZeroHeight, jailAllowedAddrs, modulesToExport)
-}
-
-func getChainIdFromOpts(appOpts servertypes.AppOptions) (string, error) {
-	homeDir := cast.ToString(appOpts.Get(flags.FlagHome))
-	chainID := cast.ToString(appOpts.Get(flags.FlagChainID))
-	if chainID == "" {
-		// fallback to genesis chain-id
-		genesisPathCfg, _ := appOpts.Get("genesis_file").(string)
-		if genesisPathCfg == "" {
-			genesisPathCfg = filepath.Join("config", "genesis.json")
-		}
-
-		reader, err := os.Open(filepath.Join(homeDir, genesisPathCfg))
-		if err != nil {
-			panic(err)
-		}
-		defer reader.Close()
-
-		chainID, err = genutiltypes.ParseChainIDFromGenesis(reader)
-		if err != nil {
-			panic(fmt.Errorf("failed to parse chain-id from genesis file: %w", err))
-		}
-	}
-
-	return chainID, nil
 }

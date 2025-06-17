@@ -16,7 +16,6 @@ import (
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	"github.com/cosmos/cosmos-sdk/server"
-	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	"github.com/cosmos/cosmos-sdk/x/auth/tx"
@@ -97,7 +96,12 @@ func NewRootCmd() *cobra.Command {
 				return err
 			}
 
-			customAppTemplate, customAppConfig := initAppConfig(wardencmdconfig.EVMChainID)
+			chainId := wardencmdconfig.EVMChainID
+			if clientCtx.ChainID != "" {
+				chainId = cast.ToUint64(clientCtx.ChainID)
+			}
+
+			customAppTemplate, customAppConfig := initAppConfig(chainId)
 			customCMTConfig := initCometBFTConfig()
 
 			return server.InterceptConfigsPreRunHandler(cmd, customAppTemplate, customAppConfig, customCMTConfig)
@@ -123,17 +127,6 @@ func NewRootCmd() *cobra.Command {
 	if err := autoCliOpts.EnhanceRootCommand(rootCmd); err != nil {
 		panic(err)
 	}
-
-	// if clientCtx.ChainID != "" {
-	// 	if err := app.SetupEVM(cast.ToUint64(clientCtx.ChainID), evmtypes.EvmCoinInfo{
-	// 		Denom:         app.ChainDenom,
-	// 		ExtendedDenom: app.ChainDenom,
-	// 		Decimals:      app.DenomDecimals,
-	// 		DisplayDenom:  app.DisplayDenom,
-	// 	}); err != nil {
-	// 		panic(err)
-	// 	}
-	// }
 
 	return rootCmd
 }
@@ -186,22 +179,4 @@ func ProvideKeyring(clientCtx client.Context, addressCodec address.Codec) (clien
 	}
 
 	return keyring.NewAutoCLIKeyring(kb)
-}
-
-// getChainIDFromOpts returns the chain Id from app Opts
-// It first tries to get from the chainId flag, if not available
-// it will load from home
-func getChainIDFromOpts(appOpts servertypes.AppOptions) (chainID string, err error) {
-	// Get the chain Id from appOpts
-	chainID = cast.ToString(appOpts.Get(flags.FlagChainID))
-	if chainID == "" {
-		// If not available load from home
-		homeDir := cast.ToString(appOpts.Get(flags.FlagHome))
-		chainID, err = wardencmdconfig.GetChainIDFromHome(homeDir)
-		if err != nil {
-			return "", err
-		}
-	}
-
-	return
 }

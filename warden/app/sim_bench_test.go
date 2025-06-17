@@ -14,7 +14,6 @@ import (
 	simcli "github.com/cosmos/cosmos-sdk/x/simulation/client/cli"
 	"github.com/stretchr/testify/require"
 
-	wardenconfig "github.com/warden-protocol/wardenprotocol/cmd/wardend/config"
 	"github.com/warden-protocol/wardenprotocol/warden/app"
 )
 
@@ -43,7 +42,7 @@ func BenchmarkFullAppSimulation(b *testing.B) {
 	appOptions[flags.FlagHome] = app.DefaultNodeHome
 	appOptions[server.FlagInvCheckPeriod] = simcli.FlagPeriodValue
 
-	bApp, err := app.New(logger, db, nil, true, appOptions, wardenconfig.TestChainID1, app.EVMAppOptions, nil, interBlockCacheOpt())
+	bApp, err := app.New(logger, db, nil, true, appOptions, nil, interBlockCacheOpt())
 	require.NoError(b, err)
 	require.Equal(b, app.Name, bApp.Name())
 
@@ -100,7 +99,7 @@ func BenchmarkInvariants(b *testing.B) {
 	appOptions[flags.FlagHome] = app.DefaultNodeHome
 	appOptions[server.FlagInvCheckPeriod] = simcli.FlagPeriodValue
 
-	bApp, err := app.New(logger, db, nil, true, appOptions, wardenconfig.TestChainID1, app.EVMAppOptions, nil, interBlockCacheOpt())
+	bApp, err := app.New(logger, db, nil, true, appOptions, nil, interBlockCacheOpt())
 	require.NoError(b, err)
 	require.Equal(b, app.Name, bApp.Name())
 

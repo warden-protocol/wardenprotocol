@@ -179,3 +179,50 @@ cast call $CONTRACT_ADDRESS "getTaskUser(uint64)" $TASK_ID --rpc-url $RPC_URL
 ```bash
 0xYOUR_ADDRESS
 ```
+
+## Troubleshooting
+
+### 1. "execution reverted" on deployment
+
+```bash
+# Check account balance
+cast balance YOUR_ADDRESS --rpc-url $RPC_URL
+```
+
+Expected output:
+
+```bash
+1000000000000000000
+```
+
+### 2. "402 Payment Required" in task results
+
+- Check Venice AI API
+
+### 3. Task not completing
+
+```bash
+# Check Venice plugin status
+wardend q async plugins
+```
+
+**Expected output:**
+
+```bash
+- creator: warden1949xxdxj72ah8swpqmx27k67s0z6g7470a0ktk
+  fee:
+    fee: []
+    plugin_creator_reward_in_percent: "0.000000000000000000"
+  id: venice
+  timeout: 24h0m0s
+```
+
+### 4. "server returned null response" error
+
+- Transaction usually succeeds despite error
+
+- Check latest task ID to confirm:
+
+```bash
+cast call $CONTRACT_ADDRESS "latestTaskId()" --rpc-url $RPC_URL
+```

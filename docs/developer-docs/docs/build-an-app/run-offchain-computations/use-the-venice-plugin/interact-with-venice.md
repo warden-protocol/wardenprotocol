@@ -84,3 +84,58 @@ echo "VGhlIGNhcGl0YWwgb2YgRnJhbmNlIGlzIFBhcmlzLg==" | base64 -d
 ```bash
 The capital of France is Paris.
 ```
+
+## Advance Testing
+
+### 1. Test with a custom parameters
+
+```bash
+cast send $CONTRACT_ADDRESS \
+  "askVeniceWithParams(string,string,uint256,uint256,uint256)" \
+  "Write a haiku about blockchain" \
+  "default" \
+  800 \
+  950 \
+  50 \
+  --rpc-url $RPC_URL \
+  --private-key $PRIVATE_KEY \
+  --gas-limit 5000000 --gas-price 0
+```
+
+**Expected output:**
+
+```bash
+Transaction hash: 0xabcd...efgh
+```
+
+### 2. Monitor Response
+
+```bash
+TASK_ID=$(cast call $CONTRACT_ADDRESS "latestTaskId()" --rpc-url $RPC_URL)
+wardend q async task-by-id --id $TASK_ID
+```
+
+**Expected output:**
+
+```bash
+task:
+  id: "2"
+  status: "COMPLETED"
+  plugin: "venice"
+  input: "{\"model\":\"default\",\"temperature\":0.8,\"top_p\":0.95,\"max_completion_tokens\":50,\"message\":\"Write a haiku about blockchain\"}"
+  output: "Q2hhaW5zIG9mIGNvZGUgZW50d2luZWQKU2VjdXJlIGFuZCB0cmFuc3BhcmVudCBkYW5jZQpUcnVzdCBpbiBkaWdpdGFs"
+```
+
+### 3. Decode Creative Response
+
+```bash
+echo "Q2hhaW5zIG9mIGNvZGUgZW50d2luZWQKU2VjdXJlIGFuZCB0cmFuc3BhcmVudCBkYW5jZQpUcnVzdCBpbiBkaWdpdGFs" | base64 -d
+```
+
+**Expected output:**
+
+```bash
+Chains of code entwined
+Secure and transparent dance
+Trust in digital
+```

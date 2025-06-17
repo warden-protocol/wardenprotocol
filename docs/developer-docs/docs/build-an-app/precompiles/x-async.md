@@ -18,7 +18,7 @@ To learn how to use this precompile, refer to the following guides:
 - [Run offchain computations with x/async AVR Plugins](../run-offchain-computations/introduction)
 
 :::note Code
-You can find the `x/async` precompile code on GitHub: [`IAsync.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/async/IAsync.sol)
+You can find the `x/async` precompile code on GitHub: [`IAsync.sol`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/precompiles/async/IAsync.sol)
 :::
 
 ## Precompile address

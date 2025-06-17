@@ -35,7 +35,7 @@ Before you start implementing automated Orders, take these steps:
 In our example, the core logic of Orders resides in the `BasicOrder` contract.
 
 :::note Code
-[`src/orders/BasicOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/orders/BasicOrder.sol)
+[`src/orders/BasicOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/solidity/orders/src/orders/BasicOrder.sol)
 :::
 
 This contract implements the logic for price monitoring and trade execution using the [Slinky and Warden precompiles](build-the-infrastructure#4-create-mock-precompiles). Once the price threshold is met, the Order will construct a swap transaction, send it for signing, and record the transaction the [registry](build-the-infrastructure#3-implement-the-registry).
@@ -118,7 +118,7 @@ To create this logic, add `BasicOrder` to the `src/orders` directory and take th
 In our example, the creation of Orders is implemented in the `BasicOrderFactory` contract.
 
 :::note Code
-[`src/factories/BasicOrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/factories/BasicOrderFactory.sol)
+[`src/factories/BasicOrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/solidity/orders/src/factories/BasicOrderFactory.sol)
 :::
 
 `BasicOrderFactory`, when triggered by [`OrderFactory`](build-the-infrastructure#6-implement-order-creation), deploys Orders (instances of [`BasicOrder`](#1-implement-orders)) and registers them in the [registry](build-the-infrastructure#3-implement-the-registry). Orders are deployed with the `CREATE3` opcode to provide front-running protection, salt-based deployment security, and deterministic address computation.

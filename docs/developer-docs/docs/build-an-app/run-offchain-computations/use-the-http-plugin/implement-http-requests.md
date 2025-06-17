@@ -11,6 +11,7 @@ This tutorial explains how implement simple **HTTP requests** to **multiple APIs
 - [The CoinGecko API](https://docs.coingecko.com/reference/introduction)
 - [The GitHub API](https://docs.github.com/en/rest?apiVersion=2022-11-28)
 - [The JSONPlaceholder API](https://jsonplaceholder.typicode.com)
+- [The OpenWeatherMap API](https://openweathermap.org/api)
 
 :::tip
 These APIs are just examples. You can make HTTP requests to **any external API**.
@@ -29,7 +30,7 @@ import "./interfaces/Http.sol";
 import "./interfaces/IJson.sol";
 
 contract MultiApiTest {
-    uint64 public lastFutureId;
+    uint64 public lastTaskId;
     bytes public responseBody;
     uint256 public statusCode;
     string public currentApi;
@@ -41,7 +42,7 @@ contract MultiApiTest {
         request.method = "GET";
         request.body = "";
         
-        lastFutureId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
+        lastTaskId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
     }
     
     // Try the GitHub API
@@ -51,7 +52,7 @@ contract MultiApiTest {
         request.method = "GET";
         request.body = "";
         
-        lastFutureId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
+        lastTaskId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
     }
     
     // Try the JSONPlaceholder API
@@ -61,28 +62,28 @@ contract MultiApiTest {
         request.method = "GET";
         request.body = "";
         
-        lastFutureId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
+        lastTaskId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
     }
     
-    // Try OpenWeatherMap API
+    // Try the OpenWeatherMap API
     function tryOpenWeather() public returns (Http.Request memory request) {
         currentApi = "OpenWeather";
         request.url = "https://api.openweathermap.org/data/2.5/weather?q=London&appid=b6907d289e10d714a6e88b30761fae22";
         request.method = "GET";
         request.body = "";
         
-        lastFutureId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
+        lastTaskId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
     }
     
     // Check if the response is ready
     function isReady() public view returns (bool) {
-        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastFutureId);
+        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastTaskId);
         return task.taskResponse.result.id != 0;
     }
     
     // Try to process the response without reverting
     function tryProcess() public returns (bool) {
-        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastFutureId);
+        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastTaskId);
         if (task.taskResponse.result.id == 0) {
             return false; // Not ready yet
         }
@@ -99,7 +100,7 @@ contract MultiApiTest {
     
     // A callback function: the precompile will call it when the response is ready
     function cb() external {
-        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastFutureId);
+        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastTaskId);
         if (task.taskResponse.result.id == 0) {
             return; // Not ready yet
         }
@@ -248,6 +249,26 @@ Error: server returned a null response when a non-null response was expected
 If you're experiencing troubles querying a particular API with `x/async`, please contact us in [Discord](https://discord.com/invite/wardenprotocol).
 :::
 
+### 3.4. Call the OpenWeatherMap API
+
+Test requests to the [The OpenWeatherMap API](https://openweathermap.org/api):
+
+```bash
+cast send $CONTRACT_ADDRESS "tryOpenWeather()" \
+--private-key $PRIVATE_KEY \
+--rpc-url $RPC_URL
+```
+
+```bash
+cast send $CONTRACT_ADDRESS "tryProcess()"
+--private-key $PRIVATE_KEY \
+--rpc-url $RPC_URL
+```
+
+```bash
+cast call $CONTRACT_ADDRESS "statusCode()(uint256)" --rpc-url $RPC_URL
+```
+
 ## Next steps
 
-When you made a request to the CoinGecko API, you received a JSON response. To learn how to extract data from such responses using the JSON precompile, follow the next guide: [Extract data](extract-data).
+All API requests return JSON data. To learn how to extract data from such responses using the JSON precompile, follow the next guide: [Extract data](extract-data).

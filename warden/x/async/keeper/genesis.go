@@ -14,6 +14,8 @@
 package keeper
 
 import (
+	"fmt"
+
 	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
@@ -32,18 +34,32 @@ func (k *Keeper) ExportState(ctx sdk.Context, genState *types.GenesisState) erro
 	return nil
 }
 
-func (k *Keeper) registerGenesisPlugins(ctx sdk.Context, activePlugins []string) error {
+func (k *Keeper) registerGenesisPlugins(ctx sdk.Context, activePlugins []types.GenesisPlugin) error {
 	zeroFees := types.PluginFee{
 		Fee:                          sdk.NewCoins(),
 		PluginCreatorRewardInPercent: math.LegacyZeroDec(),
 	}
 
+	maxTaskTimeout := k.GetParams(ctx).MaxTaskTimeout
+
 	for _, p := range activePlugins {
+		timeout := maxTaskTimeout
+		if p.Timeout != nil {
+			timeout = *p.Timeout
+		}
+		if timeout == 0 {
+			return fmt.Errorf("timeout must be greater than zero, for plugin: %s", p.Name)
+		}
+		if timeout > maxTaskTimeout {
+			return fmt.Errorf("maximum timeout allowed for plugins: %s, got %s for %s", maxTaskTimeout, timeout, p.Name)
+		}
+
 		if err := k.AddPlugin(ctx, types.Plugin{
-			Id:          p,
+			Id:          p.Name,
 			Creator:     k.asyncModuleAddress.String(),
 			Description: "",
 			Fee:         zeroFees,
+			Timeout:     timeout,
 		}); err != nil {
 			return err
 		}

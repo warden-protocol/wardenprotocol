@@ -12,6 +12,7 @@ import (
 	pricepredconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/pricepred/config"
 	quantkitconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/quantkit/config"
 	veniceconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/venice/config"
+	veniceimgconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/veniceimg/config"
 )
 
 // initCometBFTConfig helps to override default CometBFT Config values.
@@ -44,6 +45,7 @@ func initAppConfig(evmChainID uint64) (string, interface{}) {
 		Http      httpconfig.Config      `mapstructure:"http"`
 		Quantkit  quantkitconfig.Config  `mapstructure:"quantkit"`
 		Venice    veniceconfig.Config    `mapstructure:"venice"`
+		Veniceimg veniceimgconfig.Config `mapstructure:"veniceimg"`
 	}
 
 	// Optionally allow the chain developer to overwrite the SDK's default
@@ -78,6 +80,9 @@ func initAppConfig(evmChainID uint64) (string, interface{}) {
 	pricePredictionConfig := pricepredconfig.DefaultConfig()
 	httpConfig := httpconfig.DefaultConfig()
 	veniceConfig := veniceconfig.DefaultConfig()
+	veniceimgConfig := veniceimgconfig.DefaultConfig()
+
+	quantkitConfig := quantkitconfig.DefaultConfig()
 
 	evmConfig := evmservercfg.DefaultEVMConfig()
 	evmConfig.EVMChainID = evmChainID
@@ -95,6 +100,7 @@ func initAppConfig(evmChainID uint64) (string, interface{}) {
 		Http:      *httpConfig,
 		Quantkit:  *quantkitConfig,
 		Venice:    *veniceConfig,
+		Veniceimg: *veniceimgConfig,
 	}
 
 	customAppTemplate := serverconfig.DefaultConfigTemplate +
@@ -104,7 +110,8 @@ func initAppConfig(evmChainID uint64) (string, interface{}) {
 		pricepredconfig.DefaultConfigTemplate +
 		httpconfig.DefaultConfigTemplate +
 		quantkitconfig.DefaultConfigTemplate +
-		veniceconfig.DefaultConfigTemplate
+		veniceconfig.DefaultConfigTemplate +
+		veniceimgconfig.DefaultConfigTemplate
 
 	// Edit the default template file
 	//

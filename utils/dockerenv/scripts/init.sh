@@ -6,7 +6,7 @@ CHAIN_NAME=${1:-"devnet_12345-1"}
 NUM_VALS=${2:-"3"}
 TOKEN=${3:-"award"}
 WARDEN_IMAGE="ghcr.io/warden-protocol/wardenprotocol/wardend"
-WARDEN_VERSION="f60d4c78"
+WARDEN_VERSION="089403ef"
 FAUCET_VERSION="faa3f578"
 KMS_VERSION="6e5af4ec"
 # SPACEWARD_VERSION="ecbbba5"
@@ -178,6 +178,13 @@ for (( i=0; i < $NUM_VALS; i++ )); do
   docker exec "val-$i" /bin/bash -c "wardend config set app minimum-gas-prices \"$DEFAULT_GAS_PRICE\"" > /dev/null 2>&1
   docker exec "val-$i" /bin/bash -c "wardend config set app venice.enabled \"true\"" > /dev/null 2>&1
   docker exec "val-$i" /bin/bash -c "wardend config set app venice.api-key \"${VENICE_API_KEY}\"" > /dev/null 2>&1
+  docker exec "val-$i" /bin/bash -c "wardend config set config consensus.timeout_propose 10ms -s" > /dev/null 2>&1
+  docker exec "val-$i" /bin/bash -c "wardend config set config consensus.timeout_propose_delta 5m -s" > /dev/null 2>&1
+  docker exec "val-$i" /bin/bash -c "wardend config set config consensus.timeout_prevote 10ms -s" > /dev/null 2>&1
+  docker exec "val-$i" /bin/bash -c "wardend config set config consensus.timeout_prevote_delta 5ms -s" > /dev/null 2>&1
+  docker exec "val-$i" /bin/bash -c "wardend config set config consensus.timeout_precommit 10ms -s" > /dev/null 2>&1
+  docker exec "val-$i" /bin/bash -c "wardend config set config consensus.timeout_precommit_delta 5ms -s" > /dev/null 2>&1
+  docker exec "val-$i" /bin/bash -c "wardend config set config consensus.timeout_commit 10ms -s" > /dev/null 2>&1
   docker exec "val-$i" /bin/bash -c "chown -R 1000:1000 $WARDEND_HOME_ROOT" > /dev/null 2>&1
   docker kill "val-$i" > /dev/null 2>&1
 done

@@ -81,7 +81,7 @@ func BenchmarkSimulation(b *testing.B) {
 
 	appOptions := make(simtestutil.AppOptionsMap, 0)
 	appOptions[flags.FlagHome] = app.DefaultNodeHome
-	appOptions[server.FlagInvCheckPeriod] = true
+	appOptions[server.FlagInvCheckPeriod] = uint(0)
 
 	bApp, err := app.New(logger, db, nil, true, appOptions, nil, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
 	require.NoError(b, err)
@@ -128,7 +128,7 @@ func TestAppImportExport(t *testing.T) {
 
 	appOptions := make(simtestutil.AppOptionsMap, 0)
 	appOptions[flags.FlagHome] = app.DefaultNodeHome
-	appOptions[server.FlagInvCheckPeriod] = false
+	appOptions[server.FlagInvCheckPeriod] = uint(0)
 
 	bApp, err := app.New(logger, db, nil, true, appOptions, nil, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
 	require.NoError(t, err)
@@ -251,7 +251,7 @@ func TestAppSimulationAfterImport(t *testing.T) {
 
 	appOptions := make(simtestutil.AppOptionsMap, 0)
 	appOptions[flags.FlagHome] = app.DefaultNodeHome
-	appOptions[server.FlagInvCheckPeriod] = false
+	appOptions[server.FlagInvCheckPeriod] = uint(0)
 
 	bApp, err := app.New(logger, db, nil, true, appOptions, nil, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
 	require.NoError(t, err)
@@ -353,7 +353,7 @@ func TestAppStateDeterminism(t *testing.T) {
 	}
 
 	appOptions.SetDefault(flags.FlagHome, app.DefaultNodeHome)
-	appOptions.SetDefault(server.FlagInvCheckPeriod, false)
+	appOptions.SetDefault(server.FlagInvCheckPeriod, uint(0))
 
 	if simcli.FlagVerboseValue {
 		appOptions.SetDefault(flags.FlagLogLevel, "debug")

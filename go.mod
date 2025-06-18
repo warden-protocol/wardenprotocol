@@ -10,6 +10,7 @@ replace (
 	github.com/cockroachdb/pebble => github.com/cockroachdb/pebble v0.0.0-20230928194634-aa077af62593
 	// evm integration
 	github.com/cosmos/cosmos-sdk => github.com/warden-protocol/cosmos-sdk v0.53.2-warden-evm
+	github.com/cosmos/evm v1.0.0-rc0 => github.com/warden-protocol/evm v1.0.0-rc0-warden
 	github.com/dgrijalva/jwt-go => github.com/dgrijalva/jwt-go/v4 v4.0.0-preview1
 
 	// use Cosmos geth fork

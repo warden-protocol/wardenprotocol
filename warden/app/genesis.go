@@ -7,8 +7,6 @@ import (
 	erc20types "github.com/cosmos/evm/x/erc20/types"
 	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
 	evmtypes "github.com/cosmos/evm/x/vm/types"
-
-	"github.com/warden-protocol/wardenprotocol/cmd/wardend/config"
 )
 
 // GenesisState of the blockchain is represented here as a map of raw json
@@ -45,7 +43,7 @@ func NewErc20GenesisState() *erc20types.GenesisState {
 // NOTE: for the example chain implementation we are also adding a default minter.
 func NewMintGenesisState() *minttypes.GenesisState {
 	mintGenState := minttypes.DefaultGenesisState()
-	mintGenState.Params.MintDenom = config.BaseDenom
+	mintGenState.Params.MintDenom = coinInfo.Denom
 
 	return mintGenState
 }

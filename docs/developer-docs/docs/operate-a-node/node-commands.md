@@ -16,6 +16,8 @@ These commands allow you to do the following:
 - Edit the genesis file
 - and much more
 
+To learn more on key management and chain setup with node commands, see: [Set up a Warden account](/build-an-app/set-up-a-warden-account#useful-node-commands).
+
 ## Prerequisites
 
 To interact with the node, you need to install the [Warden binary](https://github.com/warden-protocol/wardenprotocol/releases), `wardend`.

@@ -24,16 +24,14 @@ Learn more:
 
 If you wish to operate a Keychain locally, complete the following prerequisites:
 
-- [Set up an account on a local chain](/build-an-app/set-up-a-warden-account#set-up-an-account-on-a-local-chain). Note down your **key name**.
-- Make sure there is a Space associated with your key, a Keychain and a Keychain Writer:
-  - If you used manual chain configuration, make sure you [created a Space](/operate-a-node/run-a-local-chain#5-add-more-settings) and note down the **Space ID**. Then [create a Keychain](create-a-keychain). Note down your **Keychain ID** and **Keychain Writer name**.
-  - If you ran the node with default settings, you can use the default Keychain, Writer, and Space, as shown in this guide. See the genesis file: `$HOME/.warden/config/genesis.json`.
+1. [Set up an account on a local chain](/build-an-app/set-up-a-warden-account#set-up-an-account-on-a-local-chain). Your default **key name** is `shulgin`.
+2. [Create a Keychain](create-a-keychain) or skip this step to use use the default one.
 
-To operate a Keychain on Chiado, complete these prerequisites:
+To operate a Keychain on a testnet, complete these prerequisites:
 
-- [Set up an account on Chiado](/build-an-app/set-up-a-warden-account#set-up-an-account-on-chiado). Note down your **key name**.
-- [Create a Space](/build-an-app/set-up-a-warden-account#create-a-space) with your key. [List Spaces](/build-an-app/set-up-a-warden-account#list-spaces) and note down the **Space ID** associated with your address.
-- [Create a Keychain](create-a-keychain). Note down your **Keychain ID** and **Keychain Writer name**.
+1. [Set up an account on Chiado](/build-an-app/set-up-a-warden-account#set-up-an-account-on-chiado). Note down your **key name**.
+2. [Create a Keychain](create-a-keychain). Note down your **Keychain ID** and **Keychain Writer name**.
+3. [Create a Space](/build-an-app/set-up-a-warden-account#create-a-space) with your key. [List Spaces](/build-an-app/set-up-a-warden-account#list-spaces) and note down the **Space ID** associated with your address.
 
 ## 1. Install CLIChain
 
@@ -45,25 +43,16 @@ go install ./cmd/clichain
 
 ## 2. Set environment variables
 
-The next steps require that you set your node and Keychain settings as environment variables. If you ran the node with our `just` script, you can use the predefined settings. Otherwise, use custom values.
+The next steps require that you set your node and Keychain settings as environment variables.
 
    <Tabs>
-   <TabItem value="local-default" label="Local node: default settings">
+   <TabItem value="local" label="Local node">
    ```bash
    export CHAIN_ID=warden_1337-1 
    export KEY_NAME=shulgin
    export SPACE_ID=1
    export KEYCHAIN_ID=1
    export KEYCHAIN_WRITER_NAME=shulgin
-   ```
-   </TabItem>
-   <TabItem value="local-custom" label="Local node: custom settings">
-   ```bash
-   export CHAIN_ID=chain_123-1 
-   export KEY_NAME=my-key-name
-   export SPACE_ID=1
-   export KEYCHAIN_ID=1
-   export KEYCHAIN_WRITER_NAME=my-keychain-writer-name
    ```
    </TabItem>
    <TabItem value="chiado" label="Chiado">
@@ -78,17 +67,18 @@ The next steps require that you set your node and Keychain settings as environme
    </TabItem>
    </Tabs>
 
-- `CHAIN_ID`: The chain ID you used when running a node.  
+- `CHAIN_ID`: The chain ID.  
   Returned by `wardend status` in the `network` field.
-- `KEY_NAME`: Your local account name, or key name.  
+- `KEY_NAME`: Your key name.  
   Returned by `wardend keys list`.
-- `SPACE_ID`: Your Space ID.  
+- `SPACE_ID`: The Space ID associated with your key.  
   Returned by `wardend query warden spaces`.
 - `KEYCHAIN_ID`: Your Keychain ID obtained when [registering a Keychain](create-a-keychain#1-register-a-keychain).  
   Returned by `wardend query warden keychains` in the `id` field.
 - `KEYCHAIN_WRITER_NAME`: Your Keychain Writer name specified when [adding a Keychain Writer](create-a-keychain#2-add-a-keychain-writer).  
   Returned by `wardend keys list`.
-- `RPC_URL`: The RPC URL for interacting with Chiado.
+- `RPC_URL`: The RPC URL for interacting with a testnet.
+
 
 ## 3. Fulfill a key request
 

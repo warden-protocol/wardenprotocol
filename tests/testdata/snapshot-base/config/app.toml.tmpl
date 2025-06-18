@@ -274,6 +274,7 @@ interval = "0s"
 ###############################################################################
 
 [evm]
+evm-chain-id = "1337"
 
 # Tracer defines the 'vm.Tracer' type that the EVM will use when the node is run in
 # debug mode. To enable tracing use the '--evm.tracer' flag when starting your node.
@@ -282,6 +283,9 @@ tracer = ""
 
 # MaxTxGasWanted defines the gas wanted for each eth tx returned in ante handler in check tx mode.
 max-tx-gas-wanted = 0
+
+# EnablePreimageRecording enables tracking of SHA3 preimages in the VM
+cache-preimage = false
 
 ###############################################################################
 ###                           JSON RPC Configuration                        ###
@@ -410,4 +414,15 @@ api-url = ""
 enabled = "false"
 
 # API Key used when making Venice API requests
+api-key = ""
+
+###############################################################################
+###                       VeniceImg  configuration                          ###
+###############################################################################
+[veniceimg]
+
+# Is VeniceImg plugin enabled
+enabled = "false"
+
+# API Key used when making VeniceImg API requests
 api-key = ""

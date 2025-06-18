@@ -32,7 +32,6 @@ var (
 	_ module.AppModuleBasic      = (*AppModule)(nil)
 	_ module.AppModuleSimulation = (*AppModule)(nil)
 	_ module.HasGenesis          = (*AppModule)(nil)
-	_ module.HasInvariants       = (*AppModule)(nil)
 	_ module.HasConsensusVersion = (*AppModule)(nil)
 
 	_ appmodule.AppModule       = (*AppModule)(nil)
@@ -123,10 +122,6 @@ func (am AppModule) RegisterServices(cfg module.Configurator) {
 	v1beta3.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
 	v1beta3.RegisterQueryServer(cfg.QueryServer(), am.keeper)
 }
-
-// RegisterInvariants registers the invariants of the module. If an invariant deviates from its predicted value, the InvariantRegistry triggers appropriate logic (most often the chain will be halted)
-
-func (am AppModule) RegisterInvariants(_ sdk.InvariantRegistry) {}
 
 // GetTxCmd returns the root tx command for the module.
 func (am AppModule) GetTxCmd() *cobra.Command {

@@ -5,6 +5,7 @@ import (
 	"maps"
 
 	evidencekeeper "cosmossdk.io/x/evidence/keeper"
+	"github.com/cosmos/cosmos-sdk/codec"
 	distributionkeeper "github.com/cosmos/cosmos-sdk/x/distribution/keeper"
 	govkeeper "github.com/cosmos/cosmos-sdk/x/gov/keeper"
 	slashingkeeper "github.com/cosmos/cosmos-sdk/x/slashing/keeper"
@@ -50,6 +51,7 @@ func NewAvailableStaticPrecompiles(
 	govKeeper govkeeper.Keeper,
 	slashingKeeper slashingkeeper.Keeper,
 	evidenceKeeper evidencekeeper.Keeper,
+	codec codec.Codec,
 	wardenKeeper wardenkeeper.Keeper,
 	actKeeper actkeeper.Keeper,
 	oracleKeeper *oraclekeeper.Keeper,
@@ -96,7 +98,7 @@ func NewAvailableStaticPrecompiles(
 		panic(fmt.Errorf("failed to instantiate bank precompile: %w", err))
 	}
 
-	govPrecompile, err := govprecompile.NewPrecompile(govKeeper)
+	govPrecompile, err := govprecompile.NewPrecompile(govKeeper, codec)
 	if err != nil {
 		panic(fmt.Errorf("failed to instantiate gov precompile: %w", err))
 	}

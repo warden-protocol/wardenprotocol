@@ -42,6 +42,7 @@ import (
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 	consensuskeeper "github.com/cosmos/cosmos-sdk/x/consensus/keeper"
 	distrkeeper "github.com/cosmos/cosmos-sdk/x/distribution/keeper"
+	epochskeeper "github.com/cosmos/cosmos-sdk/x/epochs/keeper"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	"github.com/cosmos/cosmos-sdk/x/gov"
@@ -97,10 +98,7 @@ import (
 )
 
 const (
-	Name          = "warden"
-	ChainDenom    = "award"
-	DenomDecimals = evmtypes.EighteenDecimals
-	DisplayDenom  = "ward"
+	Name = "warden"
 )
 
 // DefaultNodeHome default home directories for the application daemon.
@@ -124,14 +122,15 @@ type App struct {
 	prophet *prophet.P
 
 	// keepers
-	AccountKeeper         authkeeper.AccountKeeper
-	BankKeeper            bankkeeper.Keeper
-	StakingKeeper         *stakingkeeper.Keeper
-	SlashingKeeper        slashingkeeper.Keeper
-	MintKeeper            mintkeeper.Keeper
-	DistrKeeper           distrkeeper.Keeper
-	GovKeeper             *govkeeper.Keeper
-	UpgradeKeeper         *upgradekeeper.Keeper
+	AccountKeeper  authkeeper.AccountKeeper
+	BankKeeper     bankkeeper.Keeper
+	StakingKeeper  *stakingkeeper.Keeper
+	SlashingKeeper slashingkeeper.Keeper
+	MintKeeper     mintkeeper.Keeper
+	DistrKeeper    distrkeeper.Keeper
+	GovKeeper      *govkeeper.Keeper
+	UpgradeKeeper  *upgradekeeper.Keeper
+	//nolint:staticcheck
 	ParamsKeeper          paramskeeper.Keeper
 	AuthzKeeper           authzkeeper.Keeper
 	EvidenceKeeper        evidencekeeper.Keeper
@@ -139,6 +138,7 @@ type App struct {
 	GroupKeeper           groupkeeper.Keeper
 	ConsensusParamsKeeper consensuskeeper.Keeper
 	CircuitBreakerKeeper  circuitkeeper.Keeper
+	EpochsKeeper          epochskeeper.Keeper
 
 	// IBC
 	IBCKeeper           *ibckeeper.Keeper // IBC Keeper must be a pointer in the app, so we can SetRouter on it correctly
@@ -421,6 +421,7 @@ func New(
 		&app.SchedKeeper,
 		&app.MarketMapKeeper,
 		&app.OracleKeeper,
+		&app.EpochsKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)
@@ -469,13 +470,8 @@ func New(
 
 	app.SetTxEncoder(app.txConfig.TxEncoder())
 
-	if err := setupEVM(app.ChainID(), evmtypes.EvmCoinInfo{
-		Denom:         ChainDenom,
-		ExtendedDenom: ChainDenom,
-		Decimals:      DenomDecimals,
-		DisplayDenom:  DisplayDenom,
-	}); err != nil {
-		return nil, err
+	if err := app.setupEVM(); err != nil {
+		panic(err)
 	}
 
 	app.MarketMapKeeper.SetHooks(app.OracleKeeper.Hooks())
@@ -602,19 +598,6 @@ func (app *App) GetTransientKey(storeKey string) *storetypes.TransientStoreKey {
 	return key
 }
 
-// kvStoreKeys returns all the kv store keys registered inside App.
-func (app *App) kvStoreKeys() map[string]*storetypes.KVStoreKey {
-	keys := make(map[string]*storetypes.KVStoreKey)
-
-	for _, k := range app.GetStoreKeys() {
-		if kv, ok := k.(*storetypes.KVStoreKey); ok {
-			keys[kv.Name()] = kv
-		}
-	}
-
-	return keys
-}
-
 // GetSubspace returns a param subspace for a given module name.
 func (app *App) GetSubspace(moduleName string) paramstypes.Subspace {
 	subspace, _ := app.ParamsKeeper.GetSubspace(moduleName)
@@ -728,7 +711,6 @@ func (app *App) setAnteHandler(txConfig client.TxConfig, wasmConfig wasmtypes.No
 			FeegrantKeeper:         app.FeeGrantKeeper,
 			SignModeHandler:        txConfig.SignModeHandler(),
 			SigGasConsumer:         evmante.SigVerificationGasConsumer,
-			// TxFeeChecker:           evmevmante.NewDynamicFeeChecker(app.FeeMarketKeeper),
 		},
 		AccountKeeper:         app.AccountKeeper,
 		BankKeeper:            app.BankKeeper,
@@ -753,4 +735,17 @@ func (app *App) setAnteHandler(txConfig client.TxConfig, wasmConfig wasmtypes.No
 
 	// Set the AnteHandler for the app
 	app.SetAnteHandler(anteHandler)
+}
+
+// kvStoreKeys returns all the kv store keys registered inside App.
+func (app *App) kvStoreKeys() map[string]*storetypes.KVStoreKey {
+	keys := make(map[string]*storetypes.KVStoreKey)
+
+	for _, k := range app.GetStoreKeys() {
+		if kv, ok := k.(*storetypes.KVStoreKey); ok {
+			keys[kv.Name()] = kv
+		}
+	}
+
+	return keys
 }

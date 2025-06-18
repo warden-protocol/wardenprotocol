@@ -11,6 +11,7 @@ import (
 	circuitmodulev1 "cosmossdk.io/api/cosmos/circuit/module/v1"
 	consensusmodulev1 "cosmossdk.io/api/cosmos/consensus/module/v1"
 	distrmodulev1 "cosmossdk.io/api/cosmos/distribution/module/v1"
+	epochsmodulev1 "cosmossdk.io/api/cosmos/epochs/module/v1"
 	evidencemodulev1 "cosmossdk.io/api/cosmos/evidence/module/v1"
 	feegrantmodulev1 "cosmossdk.io/api/cosmos/feegrant/module/v1"
 	genutilmodulev1 "cosmossdk.io/api/cosmos/genutil/module/v1"
@@ -49,6 +50,8 @@ import (
 	consensustypes "github.com/cosmos/cosmos-sdk/x/consensus/types"
 	_ "github.com/cosmos/cosmos-sdk/x/distribution" // import for side-effects
 	distrtypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
+	_ "github.com/cosmos/cosmos-sdk/x/epochs" // import for side-effects
+	epochstypes "github.com/cosmos/cosmos-sdk/x/epochs/types"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	"github.com/cosmos/cosmos-sdk/x/group"
@@ -157,6 +160,7 @@ var (
 		// market map genesis must be called AFTER all consuming modules (i.e. x/oracle, etc.)
 		marketmaptypes.ModuleName,
 
+		epochstypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
 
@@ -193,6 +197,7 @@ var (
 		marketmaptypes.ModuleName,
 		precisebanktypes.ModuleName,
 		vestingtypes.ModuleName,
+		epochstypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
 
@@ -229,6 +234,7 @@ var (
 
 	preBlockers = []string{
 		upgradetypes.ModuleName,
+		authtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/preBlockers
 	}
 
@@ -407,6 +413,10 @@ func moduleConfig() depinject.Config {
 					Config: appconfig.WrapAny(&marketmapmodulev1.Module{
 						Authority: authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 					}),
+				},
+				{
+					Name:   epochstypes.ModuleName,
+					Config: appconfig.WrapAny(&epochsmodulev1.Module{}),
 				},
 				// this line is used by starport scaffolding # stargate/app/moduleConfig
 			},

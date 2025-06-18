@@ -22,8 +22,9 @@ import (
 	evmtypes "github.com/cosmos/evm/x/vm/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/common/math"
+	ethcore "github.com/ethereum/go-ethereum/core"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
+	"github.com/holiman/uint256"
 
 	"github.com/warden-protocol/wardenprotocol/precompiles/callbacks"
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
@@ -301,16 +302,19 @@ func (k Keeper) callEVM(
 	return res, nil
 }
 
-func (k Keeper) callbackFee(ctx context.Context, gas uint64) (feeAmt *big.Int, fee sdk.Coins) {
+func (k Keeper) callbackFee(ctx context.Context, gas uint64) (*uint256.Int, sdk.Coins) {
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
 	params := evmKeeper.GetParams(sdkCtx)
 	baseFee := evmKeeper.GetBaseFee(sdkCtx)
 	gasInt := new(big.Int).SetUint64(gas)
-	feeAmt = new(big.Int).Mul(baseFee, gasInt)
-	fee = sdk.Coins{{Denom: params.EvmDenom, Amount: sdkmath.NewIntFromBigInt(feeAmt)}}
+	feeAmt := new(big.Int).Mul(baseFee, gasInt)
+	fee := sdk.Coins{{Denom: params.EvmDenom, Amount: sdkmath.NewIntFromBigInt(feeAmt)}}
 
-	return feeAmt, fee
+	feeAmtUint256 := new(uint256.Int)
+	feeAmtUint256.SetFromBig(feeAmt)
+
+	return feeAmtUint256, fee
 }
 
 func (k *Keeper) applyTransaction(ctx sdk.Context, tx *ethtypes.Transaction, from common.Address) (*evmtypes.MsgEthereumTxResponse, error) {
@@ -335,21 +339,29 @@ func (k *Keeper) applyTransaction(ctx sdk.Context, tx *ethtypes.Transaction, fro
 
 	gasPrice := tx.GasPrice()
 	if cfg.BaseFee != nil {
-		gasPrice = math.BigMin(gasPrice.Add(tipCap, cfg.BaseFee), feeCap)
+		gasPrice = gasPrice.Add(tipCap, cfg.BaseFee)
+		if feeCap.Cmp(gasPrice) < 0 {
+			gasPrice = feeCap
+		}
 	}
-	msg := ethtypes.NewMessage(
-		from,
-		tx.To(),
-		tx.Nonce(),
-		tx.Value(),
-		tx.Gas(),
-		feeCap,
-		tipCap,
-		gasPrice,
-		tx.Data(),
-		tx.AccessList(),
-		false,
-	)
+
+	msg := ethcore.Message{
+		To:                    tx.To(),
+		From:                  from,
+		Nonce:                 tx.Nonce(),
+		Value:                 tx.Value(),
+		GasLimit:              tx.Gas(),
+		GasPrice:              gasPrice,
+		GasFeeCap:             feeCap,
+		GasTipCap:             tipCap,
+		Data:                  tx.Data(),
+		AccessList:            tx.AccessList(),
+		BlobGasFeeCap:         big.NewInt(0),
+		BlobHashes:            []common.Hash{},
+		SetCodeAuthorizations: []ethtypes.SetCodeAuthorization{},
+		SkipNonceChecks:       false,
+		SkipFromEOACheck:      false,
+	}
 
 	// Create a cache context to revert state. The cache context is only committed when both tx and hooks executed successfully.
 	// Didn't use `Snapshot` because the context stack has exponential complexity on certain operations,
@@ -370,7 +382,7 @@ func (k *Keeper) applyTransaction(ctx sdk.Context, tx *ethtypes.Transaction, fro
 	// Compute block bloom filter
 	if len(logs) > 0 {
 		bloom = evmKeeper.GetBlockBloomTransient(ctx)
-		bloom.Or(bloom, big.NewInt(0).SetBytes(ethtypes.LogsBloom(logs)))
+		bloom.Or(bloom, big.NewInt(0).SetBytes(ethtypes.CreateBloom(&ethtypes.Receipt{Logs: logs}).Bytes()))
 	}
 
 	if !res.Failed() {
@@ -379,9 +391,13 @@ func (k *Keeper) applyTransaction(ctx sdk.Context, tx *ethtypes.Transaction, fro
 
 	evmDenom := evmtypes.GetEVMCoinDenom()
 
+	remainingGas := uint64(0)
+	if msg.GasLimit > res.GasUsed {
+		remainingGas = msg.GasLimit - res.GasUsed
+	}
 	// refund gas in order to match the Ethereum gas consumption instead of the default SDK one.
-	if err = evmKeeper.RefundGas(ctx, msg, msg.Gas()-res.GasUsed, evmDenom); err != nil {
-		return nil, errorsmod.Wrapf(err, "failed to refund gas leftover gas to sender %s", msg.From())
+	if err = evmKeeper.RefundGas(ctx, msg, remainingGas, evmDenom); err != nil {
+		return nil, errorsmod.Wrapf(err, "failed to refund gas leftover gas to sender %s", msg.From)
 	}
 
 	if len(logs) > 0 {

@@ -127,7 +127,7 @@ type Config struct {
 
 You can find more details about the Keychain SDK in our GitHub repository:
 
-- [The Keychain SDK](https://github.com/warden-protocol/wardenprotocol/tree/main/keychain-sdk)
+- [The Keychain SDK](https://github.com/warden-protocol/wardenprotocol/tree/v0.6.3/keychain-sdk)
 
 To learn about the available types and functions, check the reference page:
 

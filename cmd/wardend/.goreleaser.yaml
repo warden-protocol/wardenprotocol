@@ -24,6 +24,10 @@ builds:
               echo "checksum mismatch!" >&2
               exit 1
             fi
+            apt-get update
+            apt-get install -y musl-dev gcc musl-tools libc6-dev-amd64-cross
+            cp /usr/x86_64-linux-gnu/lib/libm-2.31.a /usr/lib/x86_64-linux-gnu/libm-2.31.a
+            cp /usr/x86_64-linux-gnu/lib/libmvec.a /usr/lib/x86_64-linux-gnu/libmvec.a
           '
     goos:
       - linux
@@ -42,7 +46,7 @@ builds:
       - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,muslc,osusergo
       - -w -s
       - -linkmode=external
-      - -extldflags '-L/usr/lib -lwasmvm_muslc.x86_64 -Wl,-z,muldefs -static -lm'
+      - -extldflags '-static -Wl,-z,muldefs -lm -lmvec -ldl'
     tags:
       - netgo
       - ledger
@@ -80,7 +84,7 @@ builds:
       - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,muslc,osusergo
       - -w -s
       - -linkmode=external
-      - -extldflags '-L/usr/lib -lwasmvm_muslc.aarch64 -Wl,-z,muldefs -static -lm'
+      - -extldflags '-Wl,-z,muldefs -static -lm -ldl'
     tags:
       - netgo
       - ledger

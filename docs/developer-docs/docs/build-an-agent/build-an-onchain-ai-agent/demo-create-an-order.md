@@ -129,7 +129,7 @@ transaction data: 0x7ff36ab50000000000000000000000000000000000000000000000000000
 
 ## 3. Edit the Order script
 
-Configure the Order parameters in the [`createAdvancedOrder.sh` script](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/createAdvancedOrder.sh), which is located in the `solidity` directory:
+Configure the Order parameters in the [`createAdvancedOrder.sh` script](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/solidity/createAdvancedOrder.sh), which is located in the `solidity` directory:
 
 - Check and configure the variables listed in [Required adjustments](#required-adjustments).
 - In most cases, you can leave other variables untouched. See [Optional adjustments](#optional-adjustments).
@@ -155,7 +155,7 @@ For running the script, make the following adjustments:
 
    This salt will be used to calculate the address of the Order contract and must be unique for each new Order. You can randomly generate a new string or edit the default value.
 
-4. In `factory_address`, paste the up-to-date [`orderFactory` address](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/broadcast/Deploy.s.sol/10010/latest.json).
+4. In `factory_address`, paste the up-to-date [`orderFactory` address](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/solidity/orders/broadcast/Deploy.s.sol/10010/latest.json).
 
 5. In `private`, paste your private key from [Prerequisites](#prerequisites). If the key doesn't have `0x` at the beginning, add it.
 

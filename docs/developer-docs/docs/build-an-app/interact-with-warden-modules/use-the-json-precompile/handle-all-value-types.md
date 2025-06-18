@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Overview
 
-The [`IJson` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/json/IJson.sol) allows manipulating JSON data from EVM smart contracts.
+The [`IJson` precompile](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/precompiles/json/IJson.sol) allows manipulating JSON data from EVM smart contracts.
 
 This article covers methods that allow handling all value types. You'll learn how to call these methods and interact with them after deploying your contract.
 

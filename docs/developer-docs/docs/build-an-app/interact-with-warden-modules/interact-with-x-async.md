@@ -6,7 +6,7 @@ sidebar_position: 5
 
 ## Overview
 
-The [`IAsync` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/async/IAsync.sol) allows calling the [`x/async` module](/learn/warden-protocol-modules/x-async) from EVM smart contracts.
+The [`IAsync` precompile](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/precompiles/async/IAsync.sol) allows calling the [`x/async` module](/learn/warden-protocol-modules/x-async) from EVM smart contracts.
 
 This article explains how to use `x/async` to manage [Tasks](/learn/warden-protocol-modules/x-async#task). You'll learn how to call the corresponding functions of the precompile and interact with them after deploying your contract. You can also use the [example contract](#example-contract), which implements a complete interface for interacting with the module. 
 

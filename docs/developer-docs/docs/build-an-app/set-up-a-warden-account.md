@@ -42,7 +42,7 @@ To deploy a smart contract locally, you need to run a local chain and make sure 
 
    You'll see blocks being produced and height incrementing.
    
-:::
+:::tip
 You can check your node's initial settings in the genesis file: `$HOME/.warden/config/genesis.json`. Here you'll find two validator addresses, a [Keychain](/learn/glossary#keychain), a [Space](/learn/glossary#space), and other settings (see `accounts`, `keychains`, `spaces`, etc.).
 :::
 

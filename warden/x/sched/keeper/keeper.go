@@ -318,9 +318,7 @@ func (k Keeper) callbackFee(ctx context.Context, gas uint64) (*uint256.Int, sdk.
 }
 
 func (k *Keeper) applyTransaction(ctx sdk.Context, tx *ethtypes.Transaction, from common.Address) (*evmtypes.MsgEthereumTxResponse, error) {
-	var (
-		bloom *big.Int
-	)
+	var bloom *big.Int
 
 	evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
 

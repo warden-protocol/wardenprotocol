@@ -1,4 +1,4 @@
-﻿---
+---
 sidebar_position: 6.5
 ---
 
@@ -36,9 +36,9 @@ The key architecture elements of the Venice Plugin include the following:
 - **The Plugin interface**  
   The generic Plugin interface is defined in [`plugins.go`](https://github.com/warden-protocol/wardenprotocol/blob/main/prophet/plugins.go): see `Execute()` and `Verify()` under `type Plugin interface {}`. In [`venice/venice.go`](https://github.com/warden-protocol/wardenprotocol/blob/main/prophet/plugins/venice/venice.go), there are two methods, `Execute()` and `Verify()`, implementing the Venice interface. They accept the input and return the output.
 
-- **Validator configs**  
-  Every validator stores a node configuration file, `app.toml`. If you [run a local chain](https://docs.wardenprotocol.org/run-a-local-chain), you can find it in  the Warden's binary directory: `$HOME/.warden/config`. In this file, validators specify which Plugins are enabled on their node and tweak Plugin-specific options. The Venice Plugin requires a Venice AI API key.
-
+- **Validator configuration**  
+  Every validator stores a configuration file, `app.toml`. After [running a local chain](https://docs.wardenprotocol.org/run-a-local-chain), you'll find this file in the Warden node home directory: `$HOME/.warden/config`. Validators use `app.toml` to enable Plugins on their node and configure Plugin-specific options. For example, the Venice Plugin requires a Venice AI API key.
+  
 ### Input and output
 
 The input format varies by Plugin. As for the Venice Plugin, it accepts a **JSON input**.

@@ -14,6 +14,7 @@ Before you start, complete the following prerequisites:
 
 - [Install Go](https://go.dev/doc/install) 1.24 or later.
 - [Install Just](https://github.com/casey/just) 1.34.0 or later.
+- [Install jq](https://jqlang.org/download/).
 
 :::tip
 You can install `just` by using `brew`:
@@ -53,7 +54,7 @@ You'll see blocks being produced and the height incrementing.
 
 2. To check the binary version, run this:
 
-   ```
+   ```bash
    wardend version
    ```
 
@@ -62,27 +63,37 @@ You'll see blocks being produced and the height incrementing.
    - `config/genesis.json`: The genesis file. Here you'll find two validator addresses, a [Keychain](/learn/glossary#keychain), a [Space](/learn/glossary#space), and other initial node settings (see `accounts`, `keychains`, `spaces`, etc.).
    - `config/app.toml`: The application configuration file. Here you can adjust validator settings and other parameters.
 
+
+:::tip
+The local chain will have the following default settings:
+- The default key (genesis account) name: `shulgin`
+- The chain ID: `warden_1337-1`
+:::
+
 ## Step 4. Stop and restart
 
 To stop the node, press **Ctrl + C**.
 
-To restart from block 0, run this command:
-   
-```
+To restart from block 0, run this command: 
+
+```bash
 wardend start
 ```
 
-Alternatively, you can run the `just localnet` script again. This will reset the node home directory and start the chain from scratch.
+Alternatively you can do this:
 
-To delete all local chain data but keep `config.toml`, `app.toml`, and keys, run this:
-
-```
-wardend comet unsafe-reset-all
-```
+- Reset the node home directory and start the chain from scratch.    
+  ```bash
+  just localnet
+  ```
+- Delete all local chain data but keep `config.toml`, `app.toml`, and keys.
+  ```bash
+  wardend comet unsafe-reset-all
+  wardend start
+  ```
 
 ## Next steps
 
-- To interact with the chain, use [node commands](node-commands). See also [commands for managing your account](/build-an-app/set-up-a-warden-account#useful-node-commands).
-- Now you can [deploy a smart contract](/category/deploy-smart-contracts-on-warden) on the local chain.
-- You can also create and test a Keychain locally. Start with this guide: [Create a Keychain](/build-a-keychain/operate-a-keychain/create-a-keychain).
+- Use [node commands](node-commands) to interact with the chain and [manage your account](/build-an-app/set-up-a-warden-account#useful-node-commands).
+- Now you can [deploy a smart contract](/category/deploy-smart-contracts-on-warden) or [create a Keychain](/build-a-keychain/operate-a-keychain/create-a-keychain) locally.
 - To join our testnet, see [Join Chiado](chiado-testnet/join-chiado).

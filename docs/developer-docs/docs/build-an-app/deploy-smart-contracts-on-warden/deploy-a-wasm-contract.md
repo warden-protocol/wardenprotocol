@@ -181,7 +181,7 @@ wasm-opt -Os -o target/wasm32-unknown-unknown/release/hello_world.wasm \
 To store your contract onchain, run the command below. Specify your key name, also set the chain ID. (You obtained the key name when [setting up your account](../set-up-a-warden-account).)
 
 <Tabs>
-<TabItem value="default" label="Local node: default settings">
+<TabItem value="local" label="Local node">
 ```bash
 wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm \
   --from shulgin \
@@ -190,17 +190,6 @@ wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm \
   --gas-prices 100000000000award \
   -y \
   --chain-id warden_1337-1
-```
-</TabItem>
-<TabItem value="custom" label="Local node: custom settings">
-```bash
-wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm \
-  --from my-key-name \
-  --gas auto \
-  --gas-adjustment 1.3 \
-  --gas-prices 100000000000award \
-  -y \
-  --chain-id chain_123-1
 ```
 </TabItem>
 <TabItem value="chiado" label="Chiado">
@@ -224,7 +213,7 @@ The transaction should be successful without any errors.
 Get the code ID that identifies your Wasm code:
 
 <Tabs>
-<TabItem value="local" label="Local chain">
+<TabItem value="local" label="Local node">
 ```bash
 wardend query wasm list-code
 ```
@@ -246,7 +235,7 @@ You can instantiate the contract by using the command below.
 Before you proceed, replace `1` with the actual code ID you retrieved in previous step . Specify your key name in the `--from` flag and the chain ID. Also note that you can either define an admin or pass `--no-admin` to make it immutable, like in this example.
 
 <Tabs>
-<TabItem value="default" label="Local node: default settings">
+<TabItem value="local" label="Local node">
 ```bash
 wardend tx wasm instantiate 1 '{}' \
   --from shulgin \
@@ -257,19 +246,6 @@ wardend tx wasm instantiate 1 '{}' \
   --no-admin \
   -y \
   --chain-id warden_1337-1
-```
-</TabItem>
-<TabItem value="custom" label="Local node: custom settings">
-```bash
-wardend tx wasm instantiate 1 '{}' \
-  --from my-key-name \
-  --label "Hello World" \
-  --gas auto \
-  --gas-adjustment 1.3 \
-  --gas-prices 100000000000award \
-  --no-admin \
-  -y \
-  --chain-id chain_123-1
 ```
 </TabItem>
 <TabItem value="chiado" label="Chiado">
@@ -304,7 +280,7 @@ Note down the contract address.
 Use the command below to exectute your contract. Replace `my-contract-address` with your contract address. Specify your key name in the `--from` flag and the chain ID.
 
 <Tabs>
-<TabItem value="default" label="Local node: default settings">
+<TabItem value="local" label="Local node">
 ```bash
 wardend tx wasm execute my-contract-address '{"say_hello":{}}' \
   --from shulgin \
@@ -313,17 +289,6 @@ wardend tx wasm execute my-contract-address '{"say_hello":{}}' \
   --gas-prices 100000000000award \
   -y \
   --chain-id warden_1337-1
-```
-</TabItem>
-<TabItem value="custom" label="Local node: custom settings">
-```bash
-wardend tx wasm execute my-contract-address '{"say_hello":{}}' \
-  --from my-key-name \
-  --gas auto \
-  --gas-adjustment 1.3 \
-  --gas-prices 100000000000award \
-  -y \
-  --chain-id chain_123-1
 ```
 </TabItem>
 <TabItem value="chiado" label="Chiado">

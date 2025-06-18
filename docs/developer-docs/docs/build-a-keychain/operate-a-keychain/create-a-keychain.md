@@ -14,7 +14,7 @@ To become a **Keychain operator**, you need to create and configure a Keychain e
 You can either run a [local chain](/operate-a-node/run-a-local-chain) to test your configuration or interact with [Chiado testnet](/operate-a-node/chiado-testnet/join-chiado). In the provided code snippets, you'll find tabs with different versions of node commands.
 
 :::tip
-You can skip this guide and test a preconfigured Keychain. Just run a local node using our [`just` script](/operate-a-node/run-a-local-chain#option-1-run-a-just-script) and [start fulfilling requests](fulfill-requests-from-cli).
+You can skip this guide and test a preconfigured Keychain. Just [run a local chain](/operate-a-node/run-a-local-chain) and [start fulfilling requests](fulfill-requests-from-cli).
 :::
 
 ## Prerequisites
@@ -22,7 +22,6 @@ You can skip this guide and test a preconfigured Keychain. Just run a local node
 Before you start, complete the following prerequisites:
 
 - [Set up a Warden account](/build-an-app/set-up-a-warden-account) on a local chain or a testnet. Note down your **key name**.
-
 - If you're deploying on a local chain, make sure it's running. You can start your chain by running `wardend start` in a separate terminal window.
 
 
@@ -33,20 +32,12 @@ The following steps show how to register a new Keychain entity onchain.
 1. Run this command to create a new Keychain:
 
    <Tabs>
-   <TabItem value="local-default" label="Local node: default settings">
+   <TabItem value="local" label="Local node">
    ```bash
    wardend tx warden new-keychain \
      --from shulgin \
      --name 'my-keychain-name' \
      --chain-id warden_1337-1
-   ```
-   </TabItem>
-   <TabItem value="local-custom" label="Local node: custom settings">
-   ```bash
-   wardend tx warden new-keychain \
-     --from my-key-name \
-     --name 'my-keychain-name' \
-     --chain-id chain_123-1
    ```
    </TabItem>
    <TabItem value="chiado" label="Chiado">
@@ -80,7 +71,7 @@ The following steps show how to register a new Keychain entity onchain.
 3. Every Keychain is created with a **Keychain ID** that identifies it in key and signature requests and collects fees from users. You'll need this ID to operate your Keychain. Run the following command and check the `id` field in the output:
 
    <Tabs>
-   <TabItem value="local-default" label="Local node">
+   <TabItem value="local" label="Local node">
    ```bash
    wardend query warden keychains
    ```
@@ -92,24 +83,29 @@ The following steps show how to register a new Keychain entity onchain.
    </TabItem>
    </Tabs>
 
+   The default local chain configuration already includes a Keychain. If you create a new one, it'll appear second in the list:
+
    ```bash
    keychains:
    - admins:
-     - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
-     creator: warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
-     description: my-keychain-description
+     - warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
+     creator: warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
      fees:
-       key_req:
-      - amount: "100"
-        denom: award
-    sig_req:
-      - amount: "1"
-        denom: award
-     # highlight-next-line
+       key_req: []
+       sig_req: []
      id: "1"
+     name: WardenKMS
+     writers:
+     - warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
+   - admins:
+     - warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
+     creator: warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
+     fees:
+       key_req: []
+       sig_req: []
+     #highlight-next-line
+     id: "2"
      name: my-keychain-name
-   pagination:
-     total: "1"
    ```
 
 ## 2. Add a Keychain Writer
@@ -138,10 +134,10 @@ To add a Keychain Writer, take these steps:
    ```
    :::
 
-3. Now you need to fund the account. If you're running a local chain, execute the command below. After `send`, specify your key name. Also set the Keychain Writer name and the chain ID.
+3. Now you need to fund the account.
 
-    <Tabs>
-    <TabItem value="local-default" label="Local node: default settings">
+    If you're running a local chain, execute the command below. After `send`, specify your key name. Also set the Keychain Writer name and the chain ID.
+
     ```bash
     wardend tx bank send \
       shulgin \
@@ -149,17 +145,6 @@ To add a Keychain Writer, take these steps:
       1000000000000000000award \
       --chain-id warden_1337-1
     ```
-    </TabItem>
-    <TabItem value="local-custom" label="Local node: custom settings">
-    ```bash
-    wardend tx bank send \
-      my-key-name \
-      $(wardend keys show --address my-keychain-writer-name) \
-      1000000000000000000award \
-      --chain-id chain_123-1
-    ```
-    </TabItem>
-    </Tabs>
 
     If you're interacting with Chiado, fund your key using [Chiado faucet](https://faucet.chiado.wardenprotocol.org) and the public address returned in the previous step.
 
@@ -185,22 +170,13 @@ To add a Keychain Writer, take these steps:
 5. Finally, add the Writer account to your Keychain. In the `--from` flag, specify your key name. Also set the Keychain ID from [Step 1.3](#1-register-a-keychain), your Keychain writer name, and the chain ID:
    
    <Tabs>
-   <TabItem value="local-default" label="Local node: default settings">
+   <TabItem value="local" label="Local node">
    ```bash
    wardend tx warden add-keychain-writer \
      --from shulgin \
-     --keychain-id 1 \
+     --keychain-id 2 \
      --writer $(wardend keys show --address my-keychain-writer-name) \
      --chain-id warden_1337-1
-   ```
-   </TabItem>
-   <TabItem value="local-custom" label="Local node: custom settings">
-   ```bash
-   wardend tx warden add-keychain-writer \
-     --from my-key-name \
-     --keychain-id 1 \
-     --writer $(wardend keys show --address my-keychain-writer-name) \
-     --chain-id chain_123-1
    ```
    </TabItem>
    <TabItem value="chiado" label="Chiado">
@@ -234,26 +210,18 @@ To add a Keychain Writer, take these steps:
    In the output, find your Keychain and check the `writers` list:
 
    ```bash
-   keychains:
    - admins:
-     - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
-     creator: warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
-     description: my-keychain-description
+     - warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
+     creator: warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
      fees:
-       key_req:
-      - amount: "100"
-        denom: award
-    sig_req:
-      - amount: "1"
-        denom: award
-     id: "1"
+       key_req: []
+       sig_req: []
+     id: "2"
      name: my-keychain-name
-     # highlight-start
+     #highlight-start
      writers:
-       - warden18my6wqsrf5ek85znp8x202wwyg8rw4fqhy54k2
-     # highlight-end
-   pagination:
-     total: "1"
+     - warden1z2lhmctew69z3j6z26ss2c2j3gqmfu2v9kd47k
+     #highlight-end
    ```
 
 ## Next steps

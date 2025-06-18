@@ -41,7 +41,7 @@ require (
 	cosmossdk.io/x/feegrant v0.2.0
 	cosmossdk.io/x/tx v0.14.0
 	cosmossdk.io/x/upgrade v0.2.0
-	github.com/CosmWasm/wasmd v0.60.0
+	github.com/CosmWasm/wasmd v0.60.1
 	github.com/Jeffail/gabs/v2 v2.7.0
 	github.com/btcsuite/btcd/btcec/v2 v2.3.5
 	github.com/bufbuild/buf v1.54.0

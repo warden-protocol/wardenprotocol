@@ -11,6 +11,8 @@ replace (
 
 	// evm integration
 	github.com/cosmos/cosmos-sdk => github.com/warden-protocol/cosmos-sdk v0.50.13-warden-evm
+
+	github.com/cosmos/evm v0.2.0 => github.com/warden-protocol/evm v0.2.0-warden
 	github.com/dgrijalva/jwt-go => github.com/dgrijalva/jwt-go/v4 v4.0.0-preview1
 	// evm + types for slinky
 	github.com/ethereum/go-ethereum => github.com/warden-protocol/go-ethereum v1.10.26-evmos-rc4-patched-warden
@@ -41,13 +43,13 @@ require (
 	cosmossdk.io/x/feegrant v0.1.1
 	cosmossdk.io/x/tx v0.13.7
 	cosmossdk.io/x/upgrade v0.1.4
-	github.com/CosmWasm/wasmd v0.55.0
+	github.com/CosmWasm/wasmd v0.55.1
 	github.com/Jeffail/gabs/v2 v2.7.0
-	github.com/btcsuite/btcd/btcec/v2 v2.3.4
+	github.com/btcsuite/btcd/btcec/v2 v2.3.5
 	github.com/bufbuild/buf v1.54.0
 	github.com/caarlos0/env/v10 v10.0.0
 	github.com/cometbft/cometbft v0.38.17
-	github.com/cosmos/cosmos-db v1.1.2
+	github.com/cosmos/cosmos-db v1.1.3
 	github.com/cosmos/cosmos-proto v1.0.0-beta.5
 	github.com/cosmos/cosmos-sdk v0.50.13
 	github.com/cosmos/evm v0.2.0

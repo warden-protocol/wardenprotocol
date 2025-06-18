@@ -259,13 +259,13 @@ Learn more: [Signature request flow](#signature-request-flow)
 
 ## Events
 
-See the [Protobuf definitions on GitHub](https://github.com/warden-protocol/wardenprotocol/blob/main/proto/warden/warden/v1beta3/events.proto).
+See the [Protobuf definitions on GitHub](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/proto/warden/warden/v1beta3/events.proto).
 
 ## Analyzers
 
 **Analyzers** are CosmWasm smart contracts that implement the interface described below.
 
-See a [sample Analyzer on GitHub](https://github.com/warden-protocol/wardenprotocol/tree/main/contracts/contracts/basic-analyzer/src).
+See a [sample Analyzer on GitHub](https://github.com/warden-protocol/wardenprotocol/tree/v0.6.3/contracts/contracts/basic-analyzer/src).
 
 ### Input
 

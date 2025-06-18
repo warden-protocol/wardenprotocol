@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Overview
 
-The [`IWarden` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol) allows calling the [`x/warden` module](/learn/warden-protocol-modules/x-warden) from EVM smart contracts.
+The [`IWarden` precompile](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/precompiles/warden/IWarden.sol) allows calling the [`x/warden` module](/learn/warden-protocol-modules/x-warden) from EVM smart contracts.
 
 This article explains how to use `x/warden` to manage [Spaces](/learn/warden-protocol-modules/x-warden#space). You'll learn how to call the corresponding functions of the precompile and interact with them after deploying your contract.
 

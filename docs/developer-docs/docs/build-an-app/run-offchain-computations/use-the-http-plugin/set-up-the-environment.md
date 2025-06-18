@@ -39,7 +39,7 @@ Create interfaces for interacting with the [`x/async` precompile](../../precompi
    mkdir -p src/interfaces
    ```
 
-2. In the new directory, create a file `IAsync.sol`:
+2. In the new directory, create an `IAsync.sol` file:
 
    ```solidity title="warden-http-examples/src/interfaces/IAsync.sol"
    // SPDX-License-Identifier: UNLICENSED
@@ -72,7 +72,7 @@ Create interfaces for interacting with the [`x/async` precompile](../../precompi
    To learn more about the interface for interacting with `x/async`, see [Interact with `x/async`](../../interact-with-warden-modules/interact-with-x-async).
    :::
    
-3. Create a file `IJson.sol`:
+3. Create an `IJson.sol` file:
 
    ```solidity title="warden-http-examples/src/interfaces/IJson.sol"
    // SPDX-License-Identifier: UNLICENSED
@@ -92,7 +92,7 @@ Create interfaces for interacting with the [`x/async` precompile](../../precompi
    }
    ```
 
-4. Create a file `Http.sol`:
+4. Create an `Http.sol` file:
 
    ```solidity title="warden-http-examples/src/interfaces/Http.sol"
    // SPDX-License-Identifier: UNLICENSED

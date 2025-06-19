@@ -12,6 +12,9 @@ replace (
 	github.com/cosmos/cosmos-sdk => github.com/warden-protocol/cosmos-sdk v0.53.2-warden-evm
 	github.com/cosmos/evm => github.com/mn13/evm v1.0.0-rc2
 	github.com/cosmos/evm/evmd => github.com/mn13/evm/evmd v1.0.0-rc2
+
+	// replace ibc-go
+	github.com/cosmos/ibc-go/v10 => github.com/cosmos/ibc-go/v10 v10.0.0-beta.0.0.20250528142215-7d579b91ac6b
 	github.com/dgrijalva/jwt-go => github.com/dgrijalva/jwt-go/v4 v4.0.0-preview1
 
 	// use Cosmos geth fork
@@ -55,7 +58,7 @@ require (
 	github.com/cosmos/evm v1.0.0-rc2
 	github.com/cosmos/go-bip39 v1.0.0
 	github.com/cosmos/gogoproto v1.7.0
-	github.com/cosmos/ibc-go/v10 v10.2.0
+	github.com/cosmos/ibc-go/v10 v10.0.0
 	github.com/ethereum/go-ethereum v1.15.11
 	github.com/golang/protobuf v1.5.4
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0

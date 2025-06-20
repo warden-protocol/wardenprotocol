@@ -46,7 +46,7 @@ To start using `x/gmp`, follow this guide:
 
 Learn more:
 
-- [Cosmos GMP documentation](https://docs.axelar.dev/dev/cosmos-gmp)
+- [Cosmos GMP documentation](https://docs.axelar.dev/dev/general-message-passing/cosmos-gmp/overview/)
 - [Axelar GMP SDK on GitHub](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity)
 - [Warden docs: Bridging](../bridging)
 

@@ -8,7 +8,7 @@ installing each one of these components.
 ## Prerequisites
 
 - [Go](https://golang.org/dl/) 1.22 or later
-- [just](https://just.systems/man/en/chapter_4.html)
+- [just](https://just.systems/man/en/packages.html)
 - Clone the repository:
 
 ```bash

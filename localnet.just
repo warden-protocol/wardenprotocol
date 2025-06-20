@@ -43,7 +43,6 @@ start bin="wardend" install="true":
     {{bin}} config set app api.enabled-unsafe-cors true
     {{bin}} config set config consensus.timeout_commit 1s -s
     replace 's/cors_allowed_origins = \[\]/cors_allowed_origins = ["*"]/' "$WARDEN_HOME/config/config.toml"
-    replace 's/\[evm\]/\[evm\]\nevm-chain-id = "{{evm_chain_id}}"/' "$WARDEN_HOME/config/app.toml"
     {{bin}} keys add val > /dev/null
     echo -n '{{shulgin_mnemonic}}' | {{bin}} keys add shulgin --recover > /dev/null
     {{bin}} genesis add-genesis-account val 10000000000000000000000000award
@@ -100,7 +99,7 @@ start bin="wardend" install="true":
       fi
     }
 
-    (post_start &) && {{bin}} start
+    (post_start &) && {{bin}} start --evm.evm-chain-id {{evm_chain_id}}
 
 # deploy a .wasm binary to the chain and return the contract address
 deploy-contract contract from="shulgin" label="":

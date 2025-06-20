@@ -17,29 +17,24 @@ Some situations may require slightly different or additional steps—for example
 
 ## Set up an account on a local chain
 
-To deploy an EVM contract locally, you need to run a local chain and make sure it's configured properly.
+To deploy a smart contract locally, you need to run a local chain and make sure it's properly configured.
 
 ### 1. Run a local chain
 
-:::tip
-The simplest way to run a local chain is using our `just` script, as shown below. Alternatively, you can configure the chain manually to run it with custom settings. To learn more, follow this guide: [Run a local chain](/operate-a-node/run-a-local-chain).
-:::
+1. Meet the prerequisites:
 
-1. [Install Go](https://go.dev/doc/install) 1.24 or later.
+   - [Install Go](https://go.dev/doc/install) 1.24 or later.
+   - [Install just](https://github.com/casey/just) 1.34.0 or later: `brew install just`.
+   - [Install jq](https://jqlang.org/download/).
 
-2. [Install just](https://github.com/casey/just) 1.34.0 or later:
-
-   ```
-   brew install just
-   ```
-
-3. Clone the Warden Protocol repository and navigate to the root directory:
+2. Clone the Warden Protocol repository and navigate to the root directory:
    
    ```bash
    git clone https://github.com/warden-protocol/wardenprotocol
    cd wardenprotocol
    ```
 
+<<<<<<< HEAD
    If you need to test the latest testnet release locally, run this instead:
    
    ```bash
@@ -48,6 +43,9 @@ The simplest way to run a local chain is using our `just` script, as shown below
    ```
 
 4. Execute the `just` script:
+=======
+3. Execute the `just` script:
+>>>>>>> origin/main
       
    ```bash
    just localnet
@@ -55,9 +53,13 @@ The simplest way to run a local chain is using our `just` script, as shown below
 
    You'll see blocks being produced and height incrementing.
    
-   :::note
-   You can check the settings of your node in the genesis file: `$HOME/.warden/config/genesis.json`. There you'll find two validator addresses, a [Keychain](/learn/glossary#keychain), a [Space](/learn/glossary#space), and other settings. See `accounts`, `keychains`, `spaces`, etc.
-   :::
+:::tip
+You can check your node's initial settings in the genesis file: `$HOME/.warden/config/genesis.json`. Here you'll find two validator addresses, a [Keychain](/learn/glossary#keychain), a [Space](/learn/glossary#space), and other settings (see `accounts`, `keychains`, `spaces`, etc.).
+:::
+
+:::note
+Learn more: [Run a local chain](/operate-a-node/run-a-local-chain).
+:::
 
 ### 2. Check your key
 
@@ -67,7 +69,7 @@ The simplest way to run a local chain is using our `just` script, as shown below
    wardend keys list
    ```
 
-   If you used our `just` script to run the node with default settings, the local account name is `shulgin`. However, you can [create](#create-a-key) and [fund](#fund-a-key) additional keys if needed.
+   The default key name is `shulgin`. However, you can [create](#create-a-key) and [fund](#fund-a-key) additional keys if needed.
 
 2. Check the local account balance to make sure it has funds:
    
@@ -107,28 +109,29 @@ wardend keys export my-key-name --unarmored-hex --unsafe
 
 To connect to the [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview), take the following steps:
 
-1. [Install Go](https://go.dev/doc/install) 1.24 or later.
+1. Meet the prerequisites:
 
-2. [Install just](https://github.com/casey/just) 1.34.0 or later:
+   - [Install Go](https://go.dev/doc/install) 1.24 or later.
+   - [Install just](https://github.com/casey/just) 1.34.0 or later: `brew install just`.
 
-   ```
-   brew install just
-   ```
-
-3. Clone the Warden Protocol repository and navigate to the root directory:
+2. Clone the Warden Protocol repository and navigate to the root directory:
 
    ```bash
    git clone --depth 1 --branch v0.6.3 https://github.com/warden-protocol/wardenprotocol
    cd wardenprotocol
    ```
 
-4. Build the binary and initialize the chain's home directory:
+3. Build the binary and initialize the chain's home directory:
   
    ```bash
    just wardend build
    just wardend install
    wardend init my-chain-moniker
    ```
+
+:::note
+Learn more: [Join Chiado](/operate-a-node/chiado-testnet/join-chiado).
+:::   
 
 ### 2. Create and fund a key
 
@@ -164,39 +167,25 @@ wardend keys export my-key-name --unarmored-hex --unsafe
 
 ## Useful node commands
 
-This subsection lists some useful [node commands](/operate-a-node/node-commands) typically required to manage your account when deploying a smart contract on Warden.
+This subsection lists some useful [node commands](/operate-a-node/node-commands) typically required to manage your account when deploying a smart contract on Warden. Note that some commands vary depending on the chain.
 
-### Note: Chain-specific settings
-
-Some example node commands vary depending on the chain and initial setup:
-
-Transactions on the [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview) require specifying the following:
-- The chain ID: `--chain-id chiado_10010-1`
-- The RPC address: `--node https://rpc.chiado.wardenprotocol.org:443`
-
-If you [run a local chain using our script](/operate-a-node/run-a-local-chain#option-1-run-a-just-script), the chain will have the default settings:
+The local chain has the following default settings:
 - The default key name (the genesis account): `shulgin`
 - The chain ID: `warden_1337-1`
 
-If you [configure a local chain manually](/operate-a-node/run-a-local-chain#option-2-configure-manually), the chain will have custom settings:
-- A custom key name: `my-key-name` in example commands
-- A a custom chain ID formatted as `chain_123-1`
+Transactions on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview) require these flags:
+- The RPC address: `--node https://rpc.chiado.wardenprotocol.org:443`
+- The chain ID: `--chain-id chiado_10010-1`
 
 ### Get your chain ID
 
-In some of the commands, you need to specify your chain ID. The actual value depends on the configuration you used when running your node.
-
-To check your chain ID, run this:
+In some of the commands, you need to specify your chain ID.  To check it, run this:
 
 ```bash
 wardend status
 ```
 
 See the `network` field in the output.
-
-:::tip
-If you used our `just` script to run the node with default settings, the chain ID is `warden_1337-1`.
-:::
 
 ### Create a key
 
@@ -232,16 +221,12 @@ To manage your key, you need to know it's **name**. If you don't remember the na
 wardend keys list
 ```
 
-:::tip
-If you used our `just` script to run the local node with default settings, the local account name is `shulgin`. But you can always [create additional keys](#create-a-key).
-:::
-
 ### Get the private key
 
 To get the **private key** associated with your account, run the following command. Specify your [key name](#get-the-key-name).
 
 <Tabs>
-<TabItem value="local-default" label="shulgin">
+<TabItem value="default" label="shulgin">
 ```bash
 wardend keys export shulgin --unarmored-hex --unsafe
 ```
@@ -258,7 +243,7 @@ wardend keys export my-key-name --unarmored-hex --unsafe
 You can always check your **public address** by running the following command. Specify your [key name](#get-the-key-name).
 
 <Tabs>
-<TabItem value="local-default" label="shulgin">
+<TabItem value="default" label="shulgin">
 ```bash
 wardend keys show shulgin --address
 ```
@@ -274,8 +259,6 @@ wardend keys show my-key-name --address
 
 Setting up a local chain involves creating a genesis account with some funds. However, after that you may need to [create a new key](#create-a-key) and transfer assets from the genesis account to the new one. Run the command below, specifying both [keys' names](#get-the-key-name):
 
-<Tabs>
-<TabItem value="local-default" label="Local node: default settings">
 ```bash
 wardend tx bank send \
   shulgin \
@@ -283,17 +266,6 @@ wardend tx bank send \
   1000000000000000000award \
   --chain-id warden_1337-1
 ```
-</TabItem>
-<TabItem value="custom" label="Local node: custom settings">
-```bash
-wardend tx bank send \
-  my-key-name \
-  $(wardend keys show --address my-new-key-name) \
-  1000000000000000000award \
-  --chain-id chain_123-1
-```
-</TabItem>
-</Tabs>
 
 To fund your key on Chiado, just use your [public address](#get-the-public-address) with [Chiado faucet](https://faucet.chiado.wardenprotocol.org/). 
 
@@ -306,7 +278,7 @@ Keys are [created](#create-a-key) locally, but if you [fund your key](#fund-a-ke
 After [funding your key](#fund-a-key), you can check your balance by running the following command. Specify your [key name](#get-the-key-name).
 
 <Tabs>
-<TabItem value="local-default" label="Local node: default key">
+<TabItem value="local-default" label="Local node: shulgin">
 ```bash
 wardend query bank balances shulgin
 ```
@@ -328,18 +300,18 @@ wardend query bank balances my-key-name --node https://rpc.chiado.wardenprotocol
 To create a Space, run the following command. Specify your [key name](#get-the-key-name) and the chain ID:
    
 <Tabs>
-<TabItem value="local-default" label="Local node: default settings">
+<TabItem value="local-default" label="Local node: default key">
 ```bash
 wardend tx warden new-space \
   --from shulgin \
   --chain-id warden_1337-1
 ```
 </TabItem>
-<TabItem value="local-custom" label="Local node: custom settings">
+<TabItem value="local-custom" label="Local node: custom key">
 ```bash
 wardend tx warden new-space \
   --from my-key-name \
-  --chain-id chain_123-1
+  --chain-id warden_1337-1
 ```
 </TabItem>
 <TabItem value="chiado" label="Chiado">
@@ -362,7 +334,7 @@ A Space is a hub allowing its owner to manage multiple cryptographic keys that i
 To get the 5 most recently created Spaces, run the following:
 
 <Tabs>
-<TabItem value="local-default" label="Local node">
+<TabItem value="local" label="Local node">
 ```bash
 wardend query warden spaces \
   --page-limit 5 \

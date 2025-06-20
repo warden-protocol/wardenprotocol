@@ -1,4 +1,5 @@
 chain_id := "warden_1337-1"
+evm_chain_id := "1337"
 shulgin := "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5"
 shulgin_mnemonic := "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
 val2 := "warden194j3dx4t7u80765k2puu3082vc39yfqnvrxqu7"
@@ -42,6 +43,7 @@ start bin="wardend" install="true":
     {{bin}} config set app api.enabled-unsafe-cors true
     {{bin}} config set config consensus.timeout_commit 1s -s
     replace 's/cors_allowed_origins = \[\]/cors_allowed_origins = ["*"]/' "$WARDEN_HOME/config/config.toml"
+    replace 's/\[evm\]/\[evm\]\nevm-chain-id = "{{evm_chain_id}}"/' "$WARDEN_HOME/config/app.toml"
     {{bin}} keys add val > /dev/null
     echo -n '{{shulgin_mnemonic}}' | {{bin}} keys add shulgin --recover > /dev/null
     {{bin}} genesis add-genesis-account val 10000000000000000000000000award
@@ -56,7 +58,7 @@ start bin="wardend" install="true":
     {{bin}} genesis add-genesis-plugin veniceimg
     {{bin}} genesis add-genesis-plugin quantkit
 
-    {{bin}} genesis gentx val 1000000000000000000000award
+    {{bin}} genesis gentx val 1000000000000000000000award --chain-id {{chain_id}}
     {{bin}} genesis collect-gentxs
     {{bin}} genesis add-genesis-slinky-markets
 

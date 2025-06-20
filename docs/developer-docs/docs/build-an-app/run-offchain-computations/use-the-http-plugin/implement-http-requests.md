@@ -6,7 +6,7 @@ sidebar_position: 3
 
 ## Overview
 
-This tutorial explains how implement simple **HTTP requests** to **multiple APIs**:
+This tutorial explains how to implement simple **HTTP requests** to **multiple APIs**:
 
 - [The CoinGecko API](https://docs.coingecko.com/reference/introduction)
 - [The GitHub API](https://docs.github.com/en/rest?apiVersion=2022-11-28)

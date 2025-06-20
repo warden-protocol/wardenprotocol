@@ -50,7 +50,7 @@ To reference the `IAsync` precompile in your code, use the following precompile 
   @param callback The address of callback contract
   ```
   :::note Notes
-  - The following Plugin types are currently available: `pricepred`, `http`. To learn more, see [`x/async`: AVR Plugins](/learn/warden-protocol-modules/x-async#avr-plugins). 
+  - The following Plugin types are currently available: `pricepred`, `http`, `venice`. To learn more, see [`x/async`: AVR Plugins](/learn/warden-protocol-modules/x-async#avr-plugins). 
   - The `callback` parameter is optional. The callback contract must have a `cb()` function, allowing it to be invoked once the Task is ready.
   :::
 - **Output**:  

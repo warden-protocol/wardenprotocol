@@ -23,9 +23,7 @@ type Test_AsyncPrecompile struct {
 }
 
 func (c *Test_AsyncPrecompile) Setup(t *testing.T, f *framework.F) {
-	c.w = f.GetWardenNode()
-	go c.w.Start(t, "./testdata/snapshot-many-users")
-	c.w.WaitRunning(t)
+	c.w = f.StartNodeFromSnapshot(t, framework.SnapshotPrecompiles)
 }
 
 // TODO(backsapc): Implement positive test cases with async sidecar integration.

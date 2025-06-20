@@ -14,8 +14,8 @@ import (
 )
 
 type TestCase interface {
-	Setup(t *testing.T, build framework.BuildResult)
-	Run(t *testing.T, build framework.BuildResult)
+	Setup(t *testing.T, f *framework.F)
+	Run(t *testing.T, f *framework.F)
 }
 
 var list []TestCase

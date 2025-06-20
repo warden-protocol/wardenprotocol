@@ -19,14 +19,13 @@ type Test_AddRemoveOwner struct {
 	w *exec.WardenNode
 }
 
-func (c *Test_AddRemoveOwner) Setup(t *testing.T, build framework.BuildResult) {
-	c.w = exec.NewWardenNode(t, build.Wardend)
-
+func (c *Test_AddRemoveOwner) Setup(t *testing.T, f *framework.F) {
+	c.w = f.GetWardenNode()
 	go c.w.Start(t, "./testdata/snapshot-base")
 	c.w.WaitRunning(t)
 }
 
-func (c *Test_AddRemoveOwner) Run(t *testing.T, build framework.BuildResult) {
+func (c *Test_AddRemoveOwner) Run(t *testing.T, f *framework.F) {
 	alice := exec.NewWardend(c.w, "alice")
 	res := alice.Tx(t, "warden new-space")
 	checks.SuccessTx(t, res)

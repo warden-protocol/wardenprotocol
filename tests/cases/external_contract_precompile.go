@@ -26,14 +26,13 @@ type Test_ExternalContractPrecompile struct {
 	w *exec.WardenNode
 }
 
-func (c *Test_ExternalContractPrecompile) Setup(t *testing.T, build framework.BuildResult) {
-	c.w = exec.NewWardenNode(t, build.Wardend)
-
+func (c *Test_ExternalContractPrecompile) Setup(t *testing.T, f *framework.F) {
+	c.w = f.GetWardenNode()
 	go c.w.Start(t, "./testdata/snapshot-many-users")
 	c.w.WaitRunning(t)
 }
 
-func (c *Test_ExternalContractPrecompile) Run(t *testing.T, build framework.BuildResult) {
+func (c *Test_ExternalContractPrecompile) Run(t *testing.T, f *framework.F) {
 	alice := exec.NewWardend(c.w, "alice")
 	bob := exec.NewWardend(c.w, "bob")
 

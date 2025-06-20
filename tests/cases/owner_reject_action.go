@@ -21,14 +21,13 @@ type Test_OwnerRejectAction struct {
 	w *exec.WardenNode
 }
 
-func (c *Test_OwnerRejectAction) Setup(t *testing.T, build framework.BuildResult) {
-	c.w = exec.NewWardenNode(t, build.Wardend)
-
+func (c *Test_OwnerRejectAction) Setup(t *testing.T, f *framework.F) {
+	c.w = f.GetWardenNode()
 	go c.w.Start(t, "./testdata/snapshot-many-users")
 	c.w.WaitRunning(t)
 }
 
-func (c *Test_OwnerRejectAction) Run(t *testing.T, _ framework.BuildResult) {
+func (c *Test_OwnerRejectAction) Run(t *testing.T, _ *framework.F) {
 	client := TestGRPCClient(*c.w.GRPCClient(t))
 
 	alice := exec.NewWardend(c.w, "alice")

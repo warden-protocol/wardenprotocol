@@ -359,14 +359,14 @@ func TestAppStateDeterminism(t *testing.T) {
 		appOptions.SetDefault(flags.FlagLogLevel, "debug")
 	}
 
-	for i := range numSeeds {
+	for i := 0; i < numSeeds; i++ {
 		if config.Seed == simcli.DefaultSeedValue {
 			config.Seed = rand.Int63()
 		}
 
 		t.Log("config.Seed: ", config.Seed)
 
-		for j := range numTimesToRunPerSeed {
+		for j := 0; j < numTimesToRunPerSeed; j++ {
 			var logger log.Logger
 			if simcli.FlagVerboseValue {
 				logger = log.NewTestLogger(t)

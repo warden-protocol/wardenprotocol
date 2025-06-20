@@ -10,8 +10,7 @@ replace (
 	github.com/cockroachdb/pebble => github.com/cockroachdb/pebble v0.0.0-20230928194634-aa077af62593
 	// evm integration
 	github.com/cosmos/cosmos-sdk => github.com/warden-protocol/cosmos-sdk v0.53.2-warden-evm
-	github.com/cosmos/evm => github.com/mn13/evm v1.0.0-rc2
-	github.com/cosmos/evm/evmd => github.com/mn13/evm/evmd v1.0.0-rc2
+	github.com/cosmos/evm/evmd => github.com/cosmos/evm/evmd v0.0.0-20250613235838-578b3468a80b
 
 	// replace ibc-go
 	github.com/cosmos/ibc-go/v10 => github.com/cosmos/ibc-go/v10 v10.0.0-beta.0.0.20250528142215-7d579b91ac6b

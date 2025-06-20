@@ -24,9 +24,7 @@ type Test_KeychainWriters struct {
 }
 
 func (c *Test_KeychainWriters) Setup(t *testing.T, f *framework.F) {
-	c.w = f.GetWardenNode()
-	go c.w.Start(t, "./testdata/snapshot-keychain")
-	c.w.WaitRunning(t)
+	c.w = f.StartNodeFromSnapshot(t, framework.SnapshotKeychain)
 }
 
 func (c *Test_KeychainWriters) Run(t *testing.T, f *framework.F) {

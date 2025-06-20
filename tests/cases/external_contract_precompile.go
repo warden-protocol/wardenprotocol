@@ -27,9 +27,7 @@ type Test_ExternalContractPrecompile struct {
 }
 
 func (c *Test_ExternalContractPrecompile) Setup(t *testing.T, f *framework.F) {
-	c.w = f.GetWardenNode()
-	go c.w.Start(t, "./testdata/snapshot-many-users")
-	c.w.WaitRunning(t)
+	c.w = f.StartNodeFromSnapshot(t, framework.SnapshotPrecompiles)
 }
 
 func (c *Test_ExternalContractPrecompile) Run(t *testing.T, f *framework.F) {

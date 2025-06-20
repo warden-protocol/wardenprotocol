@@ -20,9 +20,7 @@ type Test_AddRemoveOwner struct {
 }
 
 func (c *Test_AddRemoveOwner) Setup(t *testing.T, f *framework.F) {
-	c.w = f.GetWardenNode()
-	go c.w.Start(t, "./testdata/snapshot-base")
-	c.w.WaitRunning(t)
+	c.w = f.StartNodeFromSnapshot(t, framework.SnapshotBase)
 }
 
 func (c *Test_AddRemoveOwner) Run(t *testing.T, f *framework.F) {

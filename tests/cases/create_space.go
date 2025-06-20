@@ -22,9 +22,7 @@ type Test_CreateSpace struct {
 }
 
 func (c *Test_CreateSpace) Setup(t *testing.T, f *framework.F) {
-	c.w = f.GetWardenNode()
-	go c.w.Start(t, "./testdata/snapshot-base")
-	c.w.WaitRunning(t)
+	c.w = f.StartNodeFromSnapshot(t, framework.SnapshotBase)
 }
 
 func (c *Test_CreateSpace) Run(t *testing.T, f *framework.F) {

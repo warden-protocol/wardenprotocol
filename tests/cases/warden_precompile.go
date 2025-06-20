@@ -25,10 +25,7 @@ type Test_WardenPrecompile struct {
 }
 
 func (c *Test_WardenPrecompile) Setup(t *testing.T, f *framework.F) {
-	c.w = f.GetWardenNode()
-	go c.w.Start(t, "./testdata/snapshot-many-users")
-	c.w.WaitRunning(t)
-
+	c.w = f.StartNodeFromSnapshot(t, framework.SnapshotPrecompiles)
 	c.w.PrintLogsAtTheEnd(t, []string{"TEST_DEBUG"})
 }
 

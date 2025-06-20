@@ -24,9 +24,7 @@ type Test_JsonPrecompile struct {
 }
 
 func (c *Test_JsonPrecompile) Setup(t *testing.T, f *framework.F) {
-	c.w = f.GetWardenNode()
-	go c.w.Start(t, "./testdata/snapshot-many-users")
-	c.w.WaitRunning(t)
+	c.w = f.StartNodeFromSnapshot(t, framework.SnapshotPrecompiles)
 }
 
 func (c *Test_JsonPrecompile) Run(t *testing.T, _ *framework.F) {

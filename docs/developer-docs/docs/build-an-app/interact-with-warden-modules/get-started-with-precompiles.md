@@ -22,7 +22,7 @@ Before you start, complete the following prerequisites:
 - [Install Foundry](https://book.getfoundry.sh/getting-started/installation) by running this command:
 
    ```bash
-   curl -L https://foundry.paradigm.xyz | bash \ 
+   curl -L https://foundry.paradigm.xyz | bash
    foundryup
    ```
 - [Set up a Warden account](../set-up-a-warden-account) on a local chain or a testnet. Note down your **private key**.

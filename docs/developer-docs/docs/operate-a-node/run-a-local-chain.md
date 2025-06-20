@@ -44,6 +44,13 @@ git clone https://github.com/warden-protocol/wardenprotocol
 cd wardenprotocol
 ```
 
+If you wish to test the latest testnet release locally, run this instead:
+
+```bash
+git clone --depth 1 --branch v0.6.3 https://github.com/warden-protocol/wardenprotocol
+cd wardenprotocol
+```
+
 ### 2. Execute the script
 
 Then execute the `just` script:

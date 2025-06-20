@@ -114,9 +114,3 @@ contract MultiCoinPrices {
    ```
 
    In the output, you'll see the price of each cryptocurrency displayed with 2 decimal places of precision.
-
-## Next steps
-
-Learn how to use other Plugins:
-
-- [Use the price prediction Plugin](../use-the-price-prediction-plugin/introduction)

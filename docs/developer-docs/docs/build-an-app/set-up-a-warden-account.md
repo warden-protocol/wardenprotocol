@@ -40,6 +40,13 @@ The simplest way to run a local chain is using our `just` script, as shown below
    cd wardenprotocol
    ```
 
+   If you need to test the latest testnet release locally, run this instead:
+   
+   ```bash
+   git clone --depth 1 --branch v0.6.3 https://github.com/warden-protocol/wardenprotocol
+   cd wardenprotocol
+   ```
+
 4. Execute the `just` script:
       
    ```bash

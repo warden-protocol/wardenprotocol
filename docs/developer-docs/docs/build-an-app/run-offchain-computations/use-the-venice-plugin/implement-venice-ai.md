@@ -2,16 +2,22 @@
 sidebar_position: 3
 ---
 
-# Implement Venice AI
+# Implement inference requests
 
 ## Overview
 
-`VenicePlugin.sol` is a smart contract that serves as an interface to Warden Protocol's Venice AI plugin, allowing users to submit AI queries (prompts) asynchronously with customizable parameters like model, temperature, and token limits.
-The contract handles the entire AI request lifecycle - from creating tasks and storing them with unique IDs, to receiving AI responses via a callback function and providing getter methods to retrieve completed responses.
+This tutorial explains how to implement **inference requests** to the **Venice AI API**. To learn more about the API, see the [Venice AI API documentation](https://docs.venice.ai/api-reference/endpoint/chat/completions).
 
-## 1. Create the contract
+You'll create a smart contract that will serve as an interface to the Venice AI Plugin, allowing users to submit AI inference requests (prompts) asynchronously with customizable parameters: the model, temperature, and token limits. This contract will handle the entire AI request lifecycle, including the following:
 
-Create a new file called `VenicePlugin.sol`
+- Creating tasks
+- Storing them with unique IDs
+- Receiving AI responses using a callback function
+- Providing getter methods to retrieve completed responses
+
+## 1. Create a contract
+
+Create a new file called `VenicePlugin.sol`:
 
 ```solidity title="warden-venice-example/src/VenicePlugin.sol"
 
@@ -32,7 +38,7 @@ contract VenicePlugin {
     // Interface to the async precompile
     IAsync private async;
 
-    // Struct to hold Venice request parameters
+    // A struct to hold Venice request parameters
     struct VeniceRequest {
         string model;
         uint256 temperature; // Stored as integer (multiply by 1000 for decimal precision)
@@ -41,7 +47,7 @@ contract VenicePlugin {
         string message;
     }
 
-    // Storage for multiple questions and responses
+    // A storage for multiple questions and responses
     mapping(uint64 => address) public taskToUser;
     mapping(uint64 => string) public taskToPrompt;
     mapping(uint64 => string) public taskToResponse;
@@ -59,16 +65,16 @@ contract VenicePlugin {
 
     /**
      * @dev Ask Venice AI a question with default parameters
-     * @param prompt The question to ask Venice
-     * @return taskId The ID of the created async task
+     * @param prompt The question to ask
+     * @return taskId The ID of the created x/async Task
      */
     
     function askVenice(string memory prompt) external returns (uint64 taskId) {
         VeniceRequest memory request = VeniceRequest({
             model: "default",
-            temperature: 0,      // 0.0
+            temperature: 0,     // 0.0
             topP: 900,          // 0.9
-            maxTokens: 1000,    // Max completion tokens (required!)
+            maxTokens: 1000,    // Max completion tokens (required)
             message: prompt
         });
         
@@ -77,12 +83,12 @@ contract VenicePlugin {
 
     /**
      * @dev Ask Venice AI a question with custom parameters
-     * @param prompt The question to ask Venice
+     * @param prompt The question to ask
      * @param model The AI model to use
-     * @param temperature Temperature parameter (multiply by 1000, e.g., 500 = 0.5)
-     * @param topP Top-p parameter (multiply by 1000, e.g., 900 = 0.9)
+     * @param temperature The temperature (multiply by 1000: for example, 500 = 0.5)
+     * @param topP The top_p parameter (multiply by 1000: for example, 900 = 0.9)
      * @param maxTokens Maximum completion tokens
-     * @return taskId The ID of the created async task
+     * @return taskId The ID of the created x/async Task
      */
 
     function askVeniceWithParams(
@@ -104,18 +110,18 @@ contract VenicePlugin {
     }
 
     /**
-     * @dev Internal function to create a Venice task
-     * @param request The Venice request parameters
+     * @dev An internal function for creating a Venice Task
+     * @param request Venice request parameters
      * @param prompt The original prompt for tracking
-     * @return taskId The ID of the created async task
+     * @return taskId The ID of the created x/async Task
      */
 
     function _createVeniceTask(VeniceRequest memory request, string memory prompt) internal returns (uint64 taskId) {
-        // Create JSON for Venice plugin with proper format
+        // Create a properly formatted JSON request for the Venice Plugin
         string memory json = _createVeniceJSON(request);
         bytes memory input = bytes(json);
 
-        // Create fee array with uward tokens (required for Venice)
+        // Create a fee array with uward tokens
         Types.Coin[] memory maxFee = new Types.Coin[](1);
         maxFee[0] = Types.Coin({
             denom: "uward",
@@ -128,7 +134,7 @@ contract VenicePlugin {
             gasLimit: 200000
         });
 
-        // Create async task with callback to this contract
+        // Create an x/async Task with a callback to this contract
         taskId = async.addTask("venice", input, maxFee, callbackParams);
 
         // Track the request
@@ -141,7 +147,7 @@ contract VenicePlugin {
     }
 
     /**
-     * @dev Callback function called by the async precompile when task is completed
+     * @dev A callback function called by the x/async precompile when a  Task is completed
      * @param id The task ID
      * @param output The task output data
      */
@@ -171,7 +177,7 @@ contract VenicePlugin {
     }
 
     /**
-     * @dev Get the latest response (for convenience)
+     * @dev Get the latest AI response
      * @return response The latest AI response
      */
 
@@ -181,9 +187,9 @@ contract VenicePlugin {
     }
 
     /**
-     * @dev Check if a task is completed
-     * @param taskId The task ID
-     * @return completed True if the task is completed
+     * @dev Check if a Task is completed
+     * @param taskId The Task ID
+     * @return completed True if the Task is completed
      */
 
     function isTaskCompleted(uint64 taskId) external view returns (bool completed) {
@@ -191,8 +197,8 @@ contract VenicePlugin {
     }
 
     /**
-     * @dev Get the user who created a task
-     * @param taskId The task ID
+     * @dev Get the user who created a Task
+     * @param taskId The Task ID
      * @return user The user address
      */
 
@@ -201,7 +207,7 @@ contract VenicePlugin {
     }
 
     /**
-     * @dev Get the original prompt for a task
+     * @dev Get the original prompt for a Task
      * @param taskId The task ID
      * @return prompt The original prompt
      */
@@ -211,8 +217,8 @@ contract VenicePlugin {
     }
 
     /**
-     * @dev Get the async precompile address
-     * @return precompileAddress The address of the async precompile
+     * @dev Get the x/async precompile address
+     * @return precompileAddress The x/async precompile address
      */
 
     function getAsyncPrecompileAddress() external pure returns (address precompileAddress) {
@@ -220,18 +226,18 @@ contract VenicePlugin {
     }
 
     /**
-     * @dev Create JSON string for Venice plugin with proper format
+     * @dev Create a properly formatted JSON request for the Venice Plugin
      * @param request The Venice request parameters
      * @return json The JSON string
      */
 
     function _createVeniceJSON(VeniceRequest memory request) internal pure returns (string memory json) {
-        // Convert temperature and topP back to decimal representation
+        // Convert temperature and topP back to the decimal representation
         string memory tempStr = _uint256ToDecimalString(request.temperature, 3);
         string memory topPStr = _uint256ToDecimalString(request.topP, 3);
         string memory maxTokensStr = _uint256ToString(request.maxTokens);
         
-        // Construct JSON with max_completion_tokens (required!)
+        // Construct a JSON string with max_completion_tokens (required)
         json = string(abi.encodePacked(
             '{"model":"', request.model, '",',
             '"temperature":', tempStr, ',',
@@ -242,7 +248,7 @@ contract VenicePlugin {
     }
 
     /**
-     * @dev Convert uint256 to decimal string representation
+     * @dev Convert uint256 to decimal string
      * @param value The value to convert
      * @param decimals The number of decimal places
      * @return str The decimal string
@@ -257,13 +263,13 @@ contract VenicePlugin {
         uint256 wholePart = value / divisor;
         uint256 fractionalPart = value % divisor;
         
-        // Convert whole part to string
+        // Convert the whole part to string
         string memory wholeStr = _uint256ToString(wholePart);
         
-        // Convert fractional part to string with leading zeros
+        // Convert the fractional part to string with leading zeros
         string memory fractionalStr = _uint256ToString(fractionalPart);
         
-        // Pad fractional part with leading zeros if necessary
+        // Pad the fractional part with leading zeros if necessary
         while (bytes(fractionalStr).length < decimals) {
             fractionalStr = string(abi.encodePacked("0", fractionalStr));
         }
@@ -274,7 +280,7 @@ contract VenicePlugin {
     /**
      * @dev Convert uint256 to string
      * @param value The value to convert
-     * @return str The string representation
+     * @return str The string
      */
 
     function _uint256ToString(uint256 value) internal pure returns (string memory str) {
@@ -305,21 +311,21 @@ contract VenicePlugin {
 
 ## 2. Deploy
 
-1.Deploy VenicePlugin contract:
+1. Deploy the contract:
 
-```bash
-forge create src/VenicePlugin.sol:VenicePlugin \
---rpc-url $RPC_URL \
---private-key $PRIVATE_KEY \
---broadcast
-```
+   ```bash
+   forge create src/VenicePlugin.sol:VenicePlugin \
+   --rpc-url $RPC_URL \
+   --private-key $PRIVATE_KEY \
+   --broadcast
+   ```
 
-2.Note down the value returned as `Deployed to` and set it as an environment variable:
+2. Note down the value returned as `Deployed to` and set it as an environment variable:
 
-```bash
-export CONTRACT_ADDRESS = <my-contract-address>
-```
+   ```bash
+   export CONTRACT_ADDRESS=my-contract-address
+   ```
 
 ## Next steps
 
-In the next part of the tutorial you will learn how to interact with your `venice ai` contract. Follow the next guide: [Interact with Venice AI](interact-with-venice).
+Now you can interact with your contract, as shown here: [Interact with Venice AI](interact-with-venice).

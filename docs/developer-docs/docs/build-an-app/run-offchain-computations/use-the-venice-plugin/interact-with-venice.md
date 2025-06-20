@@ -2,211 +2,253 @@
 sidebar_position: 4
 ---
 
-# Interact Venice AI Contract
+# Interact with the contract
 
-In the previous guide you learned how to deploy `venice ai` smart contract. In this guide we will interact with it.
+## Overview
 
-## Simple Testing
+This tutorial will guide you through interacting with Venice AI through your smart contract.
 
-### 1. Test with a simple question
+You'll call different functions of the contract to create either basic requests or requests with custom parameters and monitor Tasks.
 
-```bash
-cast send $CONTRACT_ADDRESS \
-"askVenice(string)" \
-"What is the capital of France?" \
---rpc-url $RPC_URL \
---private-key $PRIVATE_KEY \
---gas-limit 5000000 --gas-price 0
-```
+## Create a basic request 
 
-**Expected output:**
+1. To create a basic request without parameters, call the `askVenice()` function of your contract:
 
-```bash
-Transaction hash: 0xabcd...efgh
-```
+   ```bash
+   cast send $CONTRACT_ADDRESS \
+   "askVenice(string)" \
+   "What is the capital of France?" \
+   --rpc-url $RPC_URL \
+   --private-key $PRIVATE_KEY \
+   --gas-limit 5000000 --gas-price 0
+   ```
 
-### 2. Get Task ID
+   **Expected output**
 
-```bash
-TASK_ID=$(cast call $CONTRACT_ADDRESS "latestTaskId()" --rpc-url $RPC_URL)
-echo "Latest Task ID: $TASK_ID"
-```
+   ```bash
+   Transaction hash: 0xabcd...efgh
+   ```
 
-**Expected output:**
+2. Then get the Task ID to monitor the response:
 
-```bash
-Latest Task ID: 1
-```
+   ```bash
+   TASK_ID=$(cast call $CONTRACT_ADDRESS "latestTaskId()" --rpc-url $RPC_URL)
+   echo "Latest Task ID: $TASK_ID"
+   ```
 
-### 3. Check Task Status
+   **Expected output**
 
-```bash
-wardend q async task-by-id --id $TASK_ID
-```
+   ```bash
+   Latest Task ID: 1
+   ```
 
-**Expected output:**
+3. Now check the Task status:
+   
+   ```bash
+   wardend q async task-by-id --id $TASK_ID
+   ```
+   
+   **Expected output**
+   
+   ```bash
+   task:
+     id: "1"
+     status: "PENDING"
+     plugin: "venice"
+     input: "{\"model\":\"default\",\"temperature\":0.0,\"top_p\":0.9,\"max_completion_tokens\":1000,\"message\":\"What is the capital of France?\"}"
+   ```
 
-```bash
-task:
-  id: "1"
-  status: "PENDING"
-  plugin: "venice"
-  input: "{\"model\":\"default\",\"temperature\":0.0,\"top_p\":0.9,\"max_completion_tokens\":1000,\"message\":\"What is the capital of France?\"}"
-  output: ""
-```
+4. Wait a few seconds for the Task completion and check the response:
 
-### 4. Wait for Completion and Check Response
+   ```bash
+   wardend q async task-by-id --id $TASK_ID
+   ```
 
-```bash
-# Wait a few seconds, then check again
-wardend q async task-by-id --id $TASK_ID
-```
+   **Expected output**
 
-**Expected output:**
+   ```bash
+   task:
+     id: "1"
+     status: "COMPLETED"
+     plugin: "venice"
+     input: "{\"model\":\"default\",\"temperature\":0.0,\"top_p\":0.9,\"max_completion_tokens\":1000,\"message\":\"What is the capital of France?\"}"
+     output: "VGhlIGNhcGl0YWwgb2YgRnJhbmNlIGlzIFBhcmlzLg=="
+   ```
 
-```bash
-task:
-  id: "1"
-  status: "COMPLETED"
-  plugin: "venice"
-  input: "{\"model\":\"default\",\"temperature\":0.0,\"top_p\":0.9,\"max_completion_tokens\":1000,\"message\":\"What is the capital of France?\"}"
-  output: "VGhlIGNhcGl0YWwgb2YgRnJhbmNlIGlzIFBhcmlzLg=="
-```
+5. Finally, decode the response:
+   
+   ```bash
+   echo "VGhlIGNhcGl0YWwgb2YgRnJhbmNlIGlzIFBhcmlzLg==" | base64 -d
+   ```
+   
+   **Expected output**
+   
+   ```bash
+   The capital of France is Paris.
+   ```
 
-### 5. Decode Response
+## Create a request with parameters
 
-```bash
-echo "VGhlIGNhcGl0YWwgb2YgRnJhbmNlIGlzIFBhcmlzLg==" | base64 -d
-```
+1. To create a request with custom parameters, call the `askVeniceWithParams()` function of your contract. You can find more details about the required parameters in the [contract code](implement-venice-ai#1-create-a-contract).
+   
+   ```bash
+   cast send $CONTRACT_ADDRESS \
+     "askVeniceWithParams(string,string,uint256,uint256,uint256)" \
+     "Write a haiku about blockchain" \
+     "default" \
+     800 \
+     950 \
+     50 \
+     --rpc-url $RPC_URL \
+     --private-key $PRIVATE_KEY \
+     --gas-limit 5000000 --gas-price 0
+   ```
 
-**Expected output:**
+   **Expected output**
+   
+   ```bash
+   Transaction hash: 0xabcd...efgh
+   ```
 
-```bash
-The capital of France is Paris.
-```
+2. Then get the Task ID to monitor the response:
+   
+   ```bash
+   TASK_ID=$(cast call $CONTRACT_ADDRESS "latestTaskId()" --rpc-url $RPC_URL)
+   wardend q async task-by-id --id $TASK_ID
+   ```
 
-## Advance Testing
+   **Expected output**
 
-### 1. Test with a custom parameters
+   ```bash
+   Latest Task ID: 1
+   ```
 
-```bash
-cast send $CONTRACT_ADDRESS \
-  "askVeniceWithParams(string,string,uint256,uint256,uint256)" \
-  "Write a haiku about blockchain" \
-  "default" \
-  800 \
-  950 \
-  50 \
-  --rpc-url $RPC_URL \
-  --private-key $PRIVATE_KEY \
-  --gas-limit 5000000 --gas-price 0
-```
+3. Now check the Task status:
+   
+   ```bash
+   wardend q async task-by-id --id $TASK_ID
+   ```
+   
+   **Expected output**
+   
+   ```bash
+   task:
+     id: "1"
+     status: "PENDING"
+     plugin: "venice"
+     input: "{\"model\":\"default\",\"temperature\":0.0,\"top_p\":0.9,\"max_completion_tokens\":1000,\"message\":\"What is the capital of France?\"}"
+   ```
 
-**Expected output:**
+4. Wait a few seconds for the Task completion and check the response:
 
-```bash
-Transaction hash: 0xabcd...efgh
-```
+   ```bash
+   wardend q async task-by-id --id $TASK_ID
+   ```
+   
+   **Expected output**
+   
+   ```bash
+   task:
+     id: "2"
+     status: "COMPLETED"
+     plugin: "venice"
+     input: "{\"model\":\"default\",\"temperature\":0.8,\"top_p\":0.95,\"max_completion_tokens\":50,\"message\":\"Write a haiku about blockchain\"}"
+     output: "Q2hhaW5zIG9mIGNvZGUgZW50d2luZWQKU2VjdXJlIGFuZCB0cmFuc3BhcmVudCBkYW5jZQpUcnVzdCBpbiBkaWdpdGFs"
+   ```
 
-### 2. Monitor Response
+3. Finally, decode the response:
 
-```bash
-TASK_ID=$(cast call $CONTRACT_ADDRESS "latestTaskId()" --rpc-url $RPC_URL)
-wardend q async task-by-id --id $TASK_ID
-```
+   ```bash
+   echo "Q2hhaW5zIG9mIGNvZGUgZW50d2luZWQKU2VjdXJlIGFuZCB0cmFuc3BhcmVudCBkYW5jZQpUcnVzdCBpbiBkaWdpdGFs" | base64 -d
+   ```
 
-**Expected output:**
+   **Expected output**
+   
+   ```bash
+   Chains of code entwined
+   Secure and transparent dance
+   Trust in digital
+   ```
 
-```bash
-task:
-  id: "2"
-  status: "COMPLETED"
-  plugin: "venice"
-  input: "{\"model\":\"default\",\"temperature\":0.8,\"top_p\":0.95,\"max_completion_tokens\":50,\"message\":\"Write a haiku about blockchain\"}"
-  output: "Q2hhaW5zIG9mIGNvZGUgZW50d2luZWQKU2VjdXJlIGFuZCB0cmFuc3BhcmVudCBkYW5jZQpUcnVzdCBpbiBkaWdpdGFs"
-```
+## Commands for Task monitoring
 
-### 3. Decode Creative Response
+Below you'll find additional commands for Task monitoring:
 
-```bash
-echo "Q2hhaW5zIG9mIGNvZGUgZW50d2luZWQKU2VjdXJlIGFuZCB0cmFuc3BhcmVudCBkYW5jZQpUcnVzdCBpbiBkaWdpdGFs" | base64 -d
-```
+### Check the Task completion
 
-**Expected output:**
+To check the Task completion, call `isTaskCompleted()`:
 
-```bash
-Chains of code entwined
-Secure and transparent dance
-Trust in digital
-```
+   ```bash
+   cast call $CONTRACT_ADDRESS "isTaskCompleted(uint64)" $TASK_ID --rpc-url $RPC_URL
+      ```
+      
+   **Expected output**
+   
+   ```bash
+   true
+   ```
 
-## Contract Interaction Functions
+### Get the Task response
 
-### 1. Check Task Completion
+To get the Task response, call `getTaskResponse()`:
+   
+   ```bash
+   cast call $CONTRACT_ADDRESS "getTaskResponse(uint64)" $TASK_ID --rpc-url $RPC_URL
+   ```
+   
+   **Expected output**
+   
+   ```bash
+   Chains of code entwined
+   Secure and transparent dance
+   Trust in digital
+   ```
+ 
+### Get the creator address
 
-```bash
-cast call $CONTRACT_ADDRESS "isTaskCompleted(uint64)" $TASK_ID --rpc-url $RPC_URL
-```
-
-**Expected output:**
-
-```bash
-true
-```
-
-### 2. Get Task Response
-
-```bash
-cast call $CONTRACT_ADDRESS "getTaskResponse(uint64)" $TASK_ID --rpc-url $RPC_URL
-```
-
-**Expected output:**
-
-```bash
-Chains of code entwined
-Secure and transparent dance
-Trust in digital
-```
-
-### 3. Get Task User
-
-```bash
-cast call $CONTRACT_ADDRESS "getTaskUser(uint64)" $TASK_ID --rpc-url $RPC_URL
-```
-
-**Expected output:**
-
-```bash
-0xYOUR_ADDRESS
-```
-
+To get the address of the Task creator, call `getTaskUser()`:
+   
+   ```bash
+   cast call $CONTRACT_ADDRESS "getTaskUser(uint64)" $TASK_ID --rpc-url $RPC_URL
+   ```
+   
+   **Expected output**
+   
+   ```bash
+   0xYOUR_ADDRESS
+   ```
+   
 ## Troubleshooting
 
-### 1. "execution reverted" on deployment
+Below you'll find some of the common deployment issues and solutions for them.
+
+### Execution reverted
+
+If you see the `execution reverted` error during deployment, check your account balance:
 
 ```bash
-# Check account balance
 cast balance YOUR_ADDRESS --rpc-url $RPC_URL
 ```
-
-Expected output:
+   
+**Expected output**
 
 ```bash
 1000000000000000000
 ```
 
-### 2. "402 Payment Required" in task results
+### Payment required
 
-- Check Venice AI API
+If you see the `402 Payment Required` error in the Task result, check the Venice AI API.
 
-### 3. Task not completing
+### Task not completing
 
+If your Task isn't completing, check the Venice Plugin status:
+   
 ```bash
-# Check Venice plugin status
 wardend q async plugins
 ```
-
-**Expected output:**
+   
+**Expected output**
 
 ```bash
 - creator: warden1949xxdxj72ah8swpqmx27k67s0z6g7470a0ktk
@@ -216,13 +258,17 @@ wardend q async plugins
   id: venice
   timeout: 24h0m0s
 ```
+   
+### Null response
 
-### 4. "server returned null response" error
-
-- Transaction usually succeeds despite error
-
-- Check latest task ID to confirm:
-
+You may see the `server returned null response` error, but transactions usually succeeds despite this. Check latest Task ID to confirm:
+   
 ```bash
 cast call $CONTRACT_ADDRESS "latestTaskId()" --rpc-url $RPC_URL
+```
+
+**Expected output**
+
+```bash
+Latest Task ID: 1
 ```

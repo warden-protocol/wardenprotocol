@@ -50,9 +50,7 @@ An **AVR Plugin**, or **Asynchronous Verifiable Resource**, is code that determi
 
 When requesting a Task, a user references a Plugin by ID. Then the Plugin is executed by a [Prophet](#prophet).
 
-Developers can create their own Plugins or use the existing ones. Currently, we support two Plugin types, which allow executing **price predictions** and **HTTP requests**.
-
-You can learn more in the [AVR Plugins](#avr-plugins) section of this article.
+Developers can create their own Plugins or use the existing ones. You can learn more in the [AVR Plugins](#avr-plugins) section of this article.
 
 ### Prophet
 
@@ -104,6 +102,12 @@ The `http` Plugin allows making **HTTP requests** to any external service. For e
 You can find a usage example in the following guide: [Use the HTTP Plugin](/build-an-app/run-offchain-computations/use-the-http-plugin/introduction).
 
 Note that responses from HTTP requests are returned as JSON data. To extract specific values from these responses, you can use the [JSON precompile](/build-an-app/precompiles/json).
+
+### `venice`
+
+The `venice` Plugin allows making AI inference requests through the [Venice AI](https://venice.ai) API. Please note that this Plugin is currently available only locally.
+
+You can find a usage example in the following guide: [Use the Venice Plugin](/build-an-app/run-offchain-computations/use-the-venice-plugin/introduction).
 
 ## Prophets
 

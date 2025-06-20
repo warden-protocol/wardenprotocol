@@ -682,7 +682,7 @@ Wait until blocks start producing and verify the Plugin registration, as shown b
    
 3. You can also check the validator configuration file. See `app.toml` in `$HOME/.warden/config`:
    
-   ```bash
+   ```toml
    ###############################################################################
    ###                      Venice configuration                               ###
    ###############################################################################

@@ -23,14 +23,13 @@ type Test_KeychainWriters struct {
 	w *exec.WardenNode
 }
 
-func (c *Test_KeychainWriters) Setup(t *testing.T, build framework.BuildResult) {
-	c.w = exec.NewWardenNode(t, build.Wardend)
-
+func (c *Test_KeychainWriters) Setup(t *testing.T, f *framework.F) {
+	c.w = f.GetWardenNode()
 	go c.w.Start(t, "./testdata/snapshot-keychain")
 	c.w.WaitRunning(t)
 }
 
-func (c *Test_KeychainWriters) Run(t *testing.T, build framework.BuildResult) {
+func (c *Test_KeychainWriters) Run(t *testing.T, f *framework.F) {
 	bob := exec.NewWardend(c.w, "bob")
 	writer := exec.NewWardend(c.w, "writer")
 	client := TestGRPCClient(*c.w.GRPCClient(t))

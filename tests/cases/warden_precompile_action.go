@@ -23,15 +23,14 @@ type Test_WardenPrecompileAction struct {
 	w *exec.WardenNode
 }
 
-func (c *Test_WardenPrecompileAction) Setup(t *testing.T, build framework.BuildResult) {
-	c.w = exec.NewWardenNode(t, build.Wardend)
-
+func (c *Test_WardenPrecompileAction) Setup(t *testing.T, f *framework.F) {
+	c.w = f.GetWardenNode()
 	go c.w.Start(t, "./testdata/snapshot-many-users")
 	c.w.WaitRunning(t)
 	c.w.PrintLogsAtTheEnd(t, []string{"TEST_DEBUG"})
 }
 
-func (c *Test_WardenPrecompileAction) Run(t *testing.T, build framework.BuildResult) {
+func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
 	alice := exec.NewWardend(c.w, "alice")
 	bob := exec.NewWardend(c.w, "bob")
 

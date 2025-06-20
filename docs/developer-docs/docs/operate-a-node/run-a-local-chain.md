@@ -33,6 +33,13 @@ git clone https://github.com/warden-protocol/wardenprotocol
 cd wardenprotocol
 ```
 
+If you wish to test the latest testnet release locally, run this instead:
+
+```bash
+git clone --depth 1 --branch v0.6.3 https://github.com/warden-protocol/wardenprotocol
+cd wardenprotocol
+```
+
 ## Step 2. Execute the script
 
 Then execute the `just` script:
@@ -87,6 +94,7 @@ Alternatively you can do this:
   just localnet
   ```
 - Delete all local chain data but keep `config.toml`, `app.toml`, and keys.
+
   ```bash
   wardend comet unsafe-reset-all
   wardend start

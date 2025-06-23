@@ -32,15 +32,15 @@ func TestIntegration(t *testing.T) {
 		return
 	}
 
-	build := framework.Build(t)
+	f := framework.New(t)
 	startTime := time.Now()
 
 	for _, c := range casesToRun {
 		t.Run(getName(c), func(t *testing.T) {
 			fmt.Println("setup test:", getName(c))
-			c.Setup(t, build)
+			c.Setup(t, f)
 			fmt.Println("run test:", getName(c))
-			c.Run(t, build)
+			c.Run(t, f)
 		})
 	}
 

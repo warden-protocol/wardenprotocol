@@ -19,14 +19,11 @@ type Test_JsonPrecompileUser struct {
 	w *exec.WardenNode
 }
 
-func (c *Test_JsonPrecompileUser) Setup(t *testing.T, build framework.BuildResult) {
-	c.w = exec.NewWardenNode(t, build.Wardend)
-
-	go c.w.Start(t, "./testdata/snapshot-many-users")
-	c.w.WaitRunning(t)
+func (c *Test_JsonPrecompileUser) Setup(t *testing.T, f *framework.F) {
+	c.w = f.StartNodeFromSnapshot(t, framework.SnapshotPrecompiles)
 }
 
-func (c *Test_JsonPrecompileUser) Run(t *testing.T, build framework.BuildResult) {
+func (c *Test_JsonPrecompileUser) Run(t *testing.T, f *framework.F) {
 	alice := exec.NewWardend(c.w, "alice")
 
 	evmClient := c.w.EthClient(t)

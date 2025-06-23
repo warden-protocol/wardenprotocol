@@ -274,7 +274,6 @@ interval = "0s"
 ###############################################################################
 
 [evm]
-evm-chain-id = "1337"
 
 # Tracer defines the 'vm.Tracer' type that the EVM will use when the node is run in
 # debug mode. To enable tracing use the '--evm.tracer' flag when starting your node.
@@ -286,6 +285,9 @@ max-tx-gas-wanted = 0
 
 # EnablePreimageRecording enables tracking of SHA3 preimages in the VM
 cache-preimage = false
+
+# EVMChainID is the EIP-155 compatible replay protection chain ID. This is separate from the Cosmos chain ID.
+evm-chain-id = 1337
 
 ###############################################################################
 ###                           JSON RPC Configuration                        ###

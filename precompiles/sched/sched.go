@@ -88,44 +88,42 @@ func (p *Precompile) RequiredGas(input []byte) uint64 {
 
 // Run implements vm.PrecompiledContract.
 func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz []byte, err error) {
-	ctx, stateDB, snapshot, method, initialGas, args, err := p.RunSetup(evm, contract, readonly, p.IsTransaction)
+	ctx, stateDB, method, initialGas, args, err := p.RunSetup(evm, contract, readonly, p.IsTransaction)
 	if err != nil {
 		return nil, err
 	}
 
 	// This handles any out of gas errors that may occur during the execution of a precompile tx or query.
 	// It avoids panics and returns the out of gas error so the EVM can continue gracefully.
-	defer evmcmn.HandleGasError(ctx, contract, initialGas, &err, stateDB, snapshot)()
+	defer evmcmn.HandleGasError(ctx, contract, initialGas, &err)()
 
-	return p.RunAtomic(snapshot, stateDB, func() ([]byte, error) {
-		switch method.Name {
-		// transactions
+	switch method.Name {
+	// transactions
 
-		// queries
-		case CallbackByIdMethod:
-			bz, err = p.CallbackByIdMethod(ctx, method, args)
-		case CallbacksMethod:
-			bz, err = p.CallbacksMethod(ctx, method, args)
-		case GetAddressMethod:
-			bz, err = p.GetAddressMethod(ctx, method, args)
-		}
+	// queries
+	case CallbackByIdMethod:
+		bz, err = p.CallbackByIdMethod(ctx, method, args)
+	case CallbacksMethod:
+		bz, err = p.CallbacksMethod(ctx, method, args)
+	case GetAddressMethod:
+		bz, err = p.GetAddressMethod(ctx, method, args)
+	}
 
-		if err != nil {
-			return nil, err
-		}
+	if err != nil {
+		return nil, err
+	}
 
-		cost := ctx.GasMeter().GasConsumed() - initialGas
+	cost := ctx.GasMeter().GasConsumed() - initialGas
 
-		if !contract.UseGas(cost, nil, tracing.GasChangeCallPrecompiledContract) {
-			return nil, vm.ErrOutOfGas
-		}
+	if !contract.UseGas(cost, nil, tracing.GasChangeCallPrecompiledContract) {
+		return nil, vm.ErrOutOfGas
+	}
 
-		if err := p.AddJournalEntries(stateDB, snapshot); err != nil {
-			return nil, err
-		}
+	if err := p.AddJournalEntries(stateDB); err != nil {
+		return nil, err
+	}
 
-		return bz, nil
-	})
+	return bz, nil
 }
 
 func (p *Precompile) IsTransaction(method *abi.Method) bool {

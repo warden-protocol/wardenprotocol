@@ -28,4 +28,6 @@ var (
 	ErrInvalidCallback      = sdkerrors.Register(ModuleName, 1105, "invalid callback")
 	ErrInsufficientFees     = sdkerrors.Register(ModuleName, 1106, "insufficient fees for plugin")
 	ErrNoSolvers            = sdkerrors.Register(ModuleName, 1107, "no solvers")
+	ErrInvalidTaskId        = sdkerrors.Register(ModuleName, 1108, "invalid task id")
+	ErrUnauthorised         = sdkerrors.Register(ModuleName, 1109, "unauthorized action")
 )

@@ -23,6 +23,7 @@ import "google/protobuf/any.proto";
 import "warden/async/v1beta1/params.proto";
 import "warden/async/v1beta1/plugin.proto";
 import "warden/async/v1beta1/task.proto";
+import "warden/async/v1beta1/metrics.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1";
 
@@ -59,6 +60,10 @@ service Query {
   // Queries Plugins by validator.
   rpc PluginsByValidator(QueryPluginsByValidatorRequest) returns (QueryPluginsByValidatorResponse) {
     option (google.api.http).get = "/warden/async/plugins_by_validator/{validator}";
+  }
+
+  rpc PluginMetricsById(QueryPluginMetricsByIdRequest) returns (QueryPluginMetricsByIdResponse) { 
+    option (google.api.http).get = "/warden/async/plugin_metrics/{id}";
   }
 }
 
@@ -145,4 +150,12 @@ message QueryPluginValidatorsResponse {
   int64 queue_total_weight = 1;
   repeated QueuePriority queue_priorities = 2 [(gogoproto.nullable) = false];
   repeated QueueWeight queue_weights = 3 [(gogoproto.nullable) = false];
+}
+
+message QueryPluginMetricsByIdRequest { 
+  string id = 1;
+}
+
+message QueryPluginMetricsByIdResponse { 
+  PluginMetrics metrics = 1;
 }

@@ -65,7 +65,7 @@ func (k Keeper) BeginBlocker(ctx context.Context) error {
 			}
 
 			if err := k.prunePluginScore(ctx, t.Plugin, t.Id); err != nil {
-				return fmt.Errorf("failed to cleanup plugin score for task %d: %w", id, err)
+				return err
 			}
 		}
 	}

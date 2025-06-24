@@ -14,7 +14,6 @@
 package v1beta1
 
 import (
-	"errors"
 	"time"
 
 	"cosmossdk.io/math"
@@ -30,35 +29,12 @@ func NewPluginMetrics(pluginId string) PluginMetrics {
 		TotalOutputSizeBytes: math.ZeroInt(),
 		TotalResultTimeMsec:  math.ZeroInt(),
 		TotalFees:            sdk.NewCoins(),
-		Score: &PluginScoreMetric{
-			TotalScore:  math.ZeroInt(),
-			ScoresCount: 0,
-		},
 	}
 }
 
 func IsValidScore(score uint32) bool {
 	// Check if the score is within the valid range
 	return score >= 1 && score <= 5
-}
-
-func NewPluginScore(pluginId string, taskId uint64, score uint32) PluginScoreItem {
-	return PluginScoreItem{
-		PluginId: pluginId,
-		TaskId:   taskId,
-		Score:    score,
-	}
-}
-
-func (m *PluginMetrics) UpdateScore(score uint32) error {
-	if !IsValidScore(score) {
-		return errors.New("invalid score")
-	}
-
-	m.Score.TotalScore = m.Score.TotalScore.Add(math.NewInt(int64(score)))
-	m.Score.ScoresCount += 1
-
-	return nil
 }
 
 func (m *PluginMetrics) UpdateUsageMetrics(inputSize int) {

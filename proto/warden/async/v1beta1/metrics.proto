@@ -45,31 +45,11 @@ message PluginMetrics {
     (gogoproto.nullable) = false
   ];
 
-  PluginScoreMetric score = 7;
-
   // Total fees paid by users for using the plugin.
-  repeated cosmos.base.v1beta1.Coin total_fees = 8 [
+  repeated cosmos.base.v1beta1.Coin total_fees = 7 [
     (gogoproto.nullable) = false,
     (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
     (amino.dont_omitempty) = true,
     (amino.encoding) = "legacy_coins"
   ];
-}
-
-message PluginScoreMetric {
-  // The total score of the plugin.
-  string total_score = 1 [
-    (cosmos_proto.scalar) = "cosmos.Int",
-    (gogoproto.customtype) = "cosmossdk.io/math.Int",
-    (gogoproto.nullable) = false
-  ];
-
-  // The amount of scores set by users.
-  uint64 scores_count = 2;
-}
-
-message PluginScoreItem {
-  string plugin_id = 1;
-  uint64 task_id = 2;
-  uint32 score = 3;
 }

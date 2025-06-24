@@ -152,10 +152,10 @@ message QueryPluginValidatorsResponse {
   repeated QueueWeight queue_weights = 3 [(gogoproto.nullable) = false];
 }
 
-message QueryPluginMetricsByIdRequest { 
+message QueryPluginMetricsByIdRequest {
   string id = 1;
 }
 
-message QueryPluginMetricsByIdResponse { 
+message QueryPluginMetricsByIdResponse {
   PluginMetrics metrics = 1;
 }

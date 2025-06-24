@@ -36,9 +36,6 @@ service Msg {
 
   // Create a new Task to be executed.
   rpc AddTask(MsgAddTask) returns (MsgAddTaskResponse);
-
-  // Add user score to plugin.
-  rpc AddPluginScore(MsgAddPluginScore) returns (MsgAddPluginScoreResponse);
 }
 
 // MsgUpdateParams is the Msg/UpdateParams request type.
@@ -81,13 +78,3 @@ message MsgAddTask {
 message MsgAddTaskResponse {
   uint64 id = 1;
 }
-
-message MsgAddPluginScore { 
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator = 1;
-  string plugin_id = 2;
-  uint64 task_id = 3;
-  uint32 score = 4;
-}
-
-message MsgAddPluginScoreResponse {}

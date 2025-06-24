@@ -36,9 +36,8 @@ type PluginMetrics struct {
 	TotalResultTimeMsec  cosmossdk_io_math.Int `protobuf:"bytes,4,opt,name=total_result_time_msec,json=totalResultTimeMsec,proto3,customtype=cosmossdk.io/math.Int" json:"total_result_time_msec"`
 	TotalInputSizeBytes  cosmossdk_io_math.Int `protobuf:"bytes,5,opt,name=total_input_size_bytes,json=totalInputSizeBytes,proto3,customtype=cosmossdk.io/math.Int" json:"total_input_size_bytes"`
 	TotalOutputSizeBytes cosmossdk_io_math.Int `protobuf:"bytes,6,opt,name=total_output_size_bytes,json=totalOutputSizeBytes,proto3,customtype=cosmossdk.io/math.Int" json:"total_output_size_bytes"`
-	Score                *PluginScoreMetric    `protobuf:"bytes,7,opt,name=score,proto3" json:"score,omitempty"`
 	// Total fees paid by users for using the plugin.
-	TotalFees github_com_cosmos_cosmos_sdk_types.Coins `protobuf:"bytes,8,rep,name=total_fees,json=totalFees,proto3,castrepeated=github.com/cosmos/cosmos-sdk/types.Coins" json:"total_fees"`
+	TotalFees github_com_cosmos_cosmos_sdk_types.Coins `protobuf:"bytes,7,rep,name=total_fees,json=totalFees,proto3,castrepeated=github.com/cosmos/cosmos-sdk/types.Coins" json:"total_fees"`
 }
 
 func (m *PluginMetrics) Reset()         { *m = PluginMetrics{} }
@@ -95,13 +94,6 @@ func (m *PluginMetrics) GetResultsCount() uint64 {
 	return 0
 }
 
-func (m *PluginMetrics) GetScore() *PluginScoreMetric {
-	if m != nil {
-		return m.Score
-	}
-	return nil
-}
-
 func (m *PluginMetrics) GetTotalFees() github_com_cosmos_cosmos_sdk_types.Coins {
 	if m != nil {
 		return m.TotalFees
@@ -109,117 +101,8 @@ func (m *PluginMetrics) GetTotalFees() github_com_cosmos_cosmos_sdk_types.Coins 
 	return nil
 }
 
-type PluginScoreMetric struct {
-	// The total score of the plugin.
-	TotalScore cosmossdk_io_math.Int `protobuf:"bytes,1,opt,name=total_score,json=totalScore,proto3,customtype=cosmossdk.io/math.Int" json:"total_score"`
-	// The amount of scores set by users.
-	ScoresCount uint64 `protobuf:"varint,2,opt,name=scores_count,json=scoresCount,proto3" json:"scores_count,omitempty"`
-}
-
-func (m *PluginScoreMetric) Reset()         { *m = PluginScoreMetric{} }
-func (m *PluginScoreMetric) String() string { return proto.CompactTextString(m) }
-func (*PluginScoreMetric) ProtoMessage()    {}
-func (*PluginScoreMetric) Descriptor() ([]byte, []int) {
-	return fileDescriptor_2206726f71ebe3ae, []int{1}
-}
-func (m *PluginScoreMetric) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *PluginScoreMetric) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_PluginScoreMetric.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *PluginScoreMetric) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_PluginScoreMetric.Merge(m, src)
-}
-func (m *PluginScoreMetric) XXX_Size() int {
-	return m.Size()
-}
-func (m *PluginScoreMetric) XXX_DiscardUnknown() {
-	xxx_messageInfo_PluginScoreMetric.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_PluginScoreMetric proto.InternalMessageInfo
-
-func (m *PluginScoreMetric) GetScoresCount() uint64 {
-	if m != nil {
-		return m.ScoresCount
-	}
-	return 0
-}
-
-type PluginScoreItem struct {
-	PluginId string `protobuf:"bytes,1,opt,name=plugin_id,json=pluginId,proto3" json:"plugin_id,omitempty"`
-	TaskId   uint64 `protobuf:"varint,2,opt,name=task_id,json=taskId,proto3" json:"task_id,omitempty"`
-	Score    uint32 `protobuf:"varint,3,opt,name=score,proto3" json:"score,omitempty"`
-}
-
-func (m *PluginScoreItem) Reset()         { *m = PluginScoreItem{} }
-func (m *PluginScoreItem) String() string { return proto.CompactTextString(m) }
-func (*PluginScoreItem) ProtoMessage()    {}
-func (*PluginScoreItem) Descriptor() ([]byte, []int) {
-	return fileDescriptor_2206726f71ebe3ae, []int{2}
-}
-func (m *PluginScoreItem) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *PluginScoreItem) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_PluginScoreItem.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *PluginScoreItem) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_PluginScoreItem.Merge(m, src)
-}
-func (m *PluginScoreItem) XXX_Size() int {
-	return m.Size()
-}
-func (m *PluginScoreItem) XXX_DiscardUnknown() {
-	xxx_messageInfo_PluginScoreItem.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_PluginScoreItem proto.InternalMessageInfo
-
-func (m *PluginScoreItem) GetPluginId() string {
-	if m != nil {
-		return m.PluginId
-	}
-	return ""
-}
-
-func (m *PluginScoreItem) GetTaskId() uint64 {
-	if m != nil {
-		return m.TaskId
-	}
-	return 0
-}
-
-func (m *PluginScoreItem) GetScore() uint32 {
-	if m != nil {
-		return m.Score
-	}
-	return 0
-}
-
 func init() {
 	proto.RegisterType((*PluginMetrics)(nil), "warden.async.v1beta1.PluginMetrics")
-	proto.RegisterType((*PluginScoreMetric)(nil), "warden.async.v1beta1.PluginScoreMetric")
-	proto.RegisterType((*PluginScoreItem)(nil), "warden.async.v1beta1.PluginScoreItem")
 }
 
 func init() {
@@ -227,43 +110,37 @@ func init() {
 }
 
 var fileDescriptor_2206726f71ebe3ae = []byte{
-	// 575 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x54, 0x41, 0x6b, 0x13, 0x41,
-	0x14, 0xce, 0xd8, 0x34, 0x6d, 0x26, 0x09, 0xd2, 0x35, 0xda, 0x6d, 0x85, 0x4d, 0x8c, 0x07, 0x43,
-	0x25, 0xbb, 0xb4, 0x9e, 0xbd, 0xa4, 0x10, 0x58, 0xb0, 0x28, 0x5b, 0x4f, 0x82, 0x6c, 0x77, 0x67,
-	0xc7, 0x74, 0x48, 0x76, 0x27, 0x64, 0x66, 0xd5, 0xf4, 0xe4, 0xc1, 0x1f, 0xe0, 0xd9, 0x5f, 0x20,
-	0x9e, 0x7a, 0xf0, 0x47, 0xf4, 0x58, 0x3c, 0x89, 0x48, 0x95, 0xe4, 0xd0, 0xbf, 0x21, 0x33, 0x6f,
-	0xd2, 0xd6, 0x2a, 0x42, 0x7b, 0x49, 0xf2, 0xbe, 0xf9, 0xf6, 0xfb, 0xde, 0xbc, 0xf7, 0x6d, 0x70,
-	0xeb, 0x4d, 0x34, 0x4e, 0x68, 0xe6, 0x45, 0x62, 0x92, 0x11, 0xef, 0xf5, 0x66, 0x4c, 0x65, 0xb4,
-	0xe9, 0xa5, 0x54, 0x8e, 0x19, 0x11, 0xee, 0x68, 0xcc, 0x25, 0xb7, 0xea, 0xc0, 0x71, 0x35, 0xc7,
-	0x35, 0x9c, 0xf5, 0x95, 0x28, 0x65, 0x19, 0xf7, 0xf4, 0x27, 0x10, 0xd7, 0x1d, 0xc2, 0x45, 0xca,
-	0x85, 0x17, 0x47, 0x82, 0x9e, 0x69, 0x11, 0xce, 0x32, 0x73, 0xbe, 0x06, 0xe7, 0xa1, 0xae, 0x3c,
-	0x28, 0xcc, 0x51, 0xbd, 0xcf, 0xfb, 0x1c, 0x70, 0xf5, 0x0b, 0xd0, 0xd6, 0x8f, 0x22, 0xae, 0x3d,
-	0x1b, 0xe6, 0x7d, 0x96, 0xed, 0x40, 0x47, 0xd6, 0x5d, 0x5c, 0x1e, 0x69, 0x20, 0x64, 0x89, 0x8d,
-	0x9a, 0xa8, 0x5d, 0x0e, 0x96, 0x01, 0xf0, 0x13, 0xab, 0x81, 0x2b, 0x32, 0x12, 0x03, 0x11, 0x12,
-	0x9e, 0x67, 0xd2, 0xbe, 0xd1, 0x44, 0xed, 0x62, 0x80, 0x35, 0xb4, 0xad, 0x10, 0xeb, 0x3e, 0xae,
-	0x8d, 0xa9, 0xc8, 0x87, 0x72, 0x4e, 0x59, 0xd0, 0x94, 0xaa, 0x01, 0x81, 0xb4, 0x87, 0xef, 0x48,
-	0x2e, 0xa3, 0x61, 0x08, 0x68, 0x28, 0x59, 0x4a, 0xc3, 0x54, 0x50, 0x62, 0x17, 0x95, 0x5f, 0xf7,
-	0xe1, 0xd1, 0x49, 0xa3, 0xf0, 0xfd, 0xa4, 0x71, 0x1b, 0x2e, 0x20, 0x92, 0x81, 0xcb, 0xb8, 0x97,
-	0x46, 0x72, 0xdf, 0xf5, 0x33, 0xf9, 0xf5, 0x4b, 0x07, 0x9b, 0x9b, 0xf9, 0x99, 0x0c, 0x6e, 0x69,
-	0xa9, 0x40, 0x2b, 0x3d, 0x67, 0x29, 0xdd, 0x11, 0x94, 0x9c, 0x3b, 0xb0, 0x6c, 0x94, 0xcb, 0x50,
-	0xb0, 0x03, 0x1a, 0xc6, 0x13, 0x49, 0x85, 0xbd, 0x78, 0x5d, 0x07, 0x5f, 0x29, 0xed, 0xb2, 0x03,
-	0xda, 0x55, 0x3a, 0x56, 0x8c, 0x57, 0xc1, 0x81, 0xe7, 0xf2, 0x92, 0x45, 0xe9, 0xea, 0x16, 0x75,
-	0xad, 0xf5, 0x54, 0x4b, 0x9d, 0x7b, 0x3c, 0xc6, 0x8b, 0x82, 0xf0, 0x31, 0xb5, 0x97, 0x9a, 0xa8,
-	0x5d, 0xd9, 0x7a, 0xe0, 0xfe, 0x2b, 0x26, 0x2e, 0xac, 0x6f, 0x57, 0x11, 0x61, 0x87, 0x01, 0x3c,
-	0x65, 0xbd, 0x43, 0x18, 0x43, 0x8f, 0xaf, 0x28, 0x15, 0xf6, 0x72, 0x73, 0xa1, 0x5d, 0xd9, 0x5a,
-	0x73, 0x8d, 0xad, 0x8a, 0xd0, 0x99, 0xc6, 0x36, 0x67, 0x59, 0xb7, 0xa7, 0x3a, 0xfe, 0xfc, 0xb3,
-	0xd1, 0xee, 0x33, 0xb9, 0x9f, 0xc7, 0x2e, 0xe1, 0xa9, 0x89, 0x90, 0xf9, 0xea, 0x88, 0x64, 0xe0,
-	0xc9, 0xc9, 0x88, 0x0a, 0xfd, 0x80, 0xf8, 0x78, 0x7a, 0xb8, 0x51, 0x1d, 0xd2, 0x7e, 0x44, 0x26,
-	0xa1, 0x0a, 0xa1, 0xf8, 0x74, 0x7a, 0xb8, 0x81, 0x82, 0xb2, 0x36, 0xed, 0x51, 0x2a, 0x5a, 0xef,
-	0x11, 0x5e, 0xf9, 0xab, 0x3f, 0xeb, 0x09, 0xae, 0x40, 0x5f, 0x70, 0x3b, 0x74, 0xf5, 0x79, 0xc1,
-	0xbd, 0xb4, 0xa6, 0x75, 0x0f, 0x57, 0xb5, 0xce, 0x9f, 0xa1, 0xac, 0x00, 0xa6, 0x03, 0xd7, 0x7a,
-	0x89, 0x6f, 0x5e, 0xe8, 0xc2, 0x97, 0x34, 0xfd, 0x7f, 0xcc, 0x57, 0xf1, 0x92, 0xca, 0xb4, 0x3a,
-	0x02, 0xb5, 0x92, 0x2a, 0xfd, 0xc4, 0xaa, 0xcf, 0x37, 0xa2, 0x62, 0x5d, 0x33, 0x83, 0xee, 0xee,
-	0x1d, 0x4d, 0x1d, 0x74, 0x3c, 0x75, 0xd0, 0xaf, 0xa9, 0x83, 0x3e, 0xcc, 0x9c, 0xc2, 0xf1, 0xcc,
-	0x29, 0x7c, 0x9b, 0x39, 0x85, 0x17, 0xbd, 0x0b, 0xa3, 0x84, 0xe5, 0x75, 0xf4, 0x7b, 0x47, 0xf8,
-	0xd0, 0xd4, 0x97, 0x4a, 0xef, 0xad, 0xf9, 0xa3, 0xd0, 0x63, 0x9e, 0xbf, 0xe2, 0x71, 0x49, 0xd3,
-	0x1e, 0xfd, 0x0e, 0x00, 0x00, 0xff, 0xff, 0xd2, 0x99, 0x94, 0x40, 0x4d, 0x04, 0x00, 0x00,
+	// 474 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x93, 0xb1, 0x6e, 0xd3, 0x40,
+	0x1c, 0xc6, 0x63, 0x1a, 0x0a, 0xb9, 0xb6, 0x03, 0x21, 0x80, 0x5b, 0x24, 0x27, 0x2a, 0x4b, 0x54,
+	0x14, 0x9f, 0x0a, 0x6f, 0x90, 0x4a, 0x91, 0x32, 0x54, 0x20, 0xc3, 0xc4, 0x72, 0x3d, 0x9f, 0xff,
+	0xb8, 0xa7, 0xd8, 0x77, 0x51, 0xfe, 0x67, 0x20, 0x9d, 0x78, 0x04, 0x66, 0x24, 0x76, 0xc4, 0xd4,
+	0x81, 0x87, 0xe8, 0x58, 0x31, 0x21, 0x86, 0x82, 0x92, 0xa1, 0xaf, 0x81, 0x7c, 0x77, 0xa1, 0xa8,
+	0x1b, 0x2c, 0xb6, 0xff, 0xdf, 0x7d, 0xf7, 0xfd, 0xee, 0xa4, 0xcf, 0x64, 0xf7, 0x2d, 0x9f, 0x65,
+	0xa0, 0x28, 0xc7, 0xb9, 0x12, 0xf4, 0xcd, 0x7e, 0x0a, 0x86, 0xef, 0xd3, 0x12, 0xcc, 0x4c, 0x0a,
+	0x8c, 0xa7, 0x33, 0x6d, 0x74, 0xbb, 0xe3, 0x3c, 0xb1, 0xf5, 0xc4, 0xde, 0xb3, 0x73, 0x87, 0x97,
+	0x52, 0x69, 0x6a, 0x9f, 0xce, 0xb8, 0x13, 0x09, 0x8d, 0xa5, 0x46, 0x9a, 0x72, 0x84, 0x3f, 0x59,
+	0x42, 0x4b, 0xe5, 0xd7, 0xb7, 0xdd, 0x3a, 0xb3, 0x13, 0x75, 0x83, 0x5f, 0xea, 0xe4, 0x3a, 0xd7,
+	0x4e, 0xaf, 0xbf, 0x9c, 0xba, 0xfb, 0xa9, 0x49, 0xb6, 0x9e, 0x17, 0x55, 0x2e, 0xd5, 0xa1, 0x3b,
+	0x51, 0xfb, 0x21, 0x69, 0x4d, 0xad, 0xc0, 0x64, 0x16, 0x06, 0xbd, 0xa0, 0xdf, 0x4a, 0x6e, 0x3b,
+	0x61, 0x9c, 0xb5, 0xbb, 0x64, 0xc3, 0x70, 0x9c, 0x20, 0x13, 0xba, 0x52, 0x26, 0xbc, 0xd1, 0x0b,
+	0xfa, 0xcd, 0x84, 0x58, 0xe9, 0xa0, 0x56, 0xda, 0x8f, 0xc8, 0xd6, 0x0c, 0xb0, 0x2a, 0xcc, 0xca,
+	0xb2, 0x66, 0x2d, 0x9b, 0x5e, 0x74, 0xa6, 0x23, 0x72, 0xdf, 0x68, 0xc3, 0x0b, 0xe6, 0x54, 0x66,
+	0x64, 0x09, 0xac, 0x44, 0x10, 0x61, 0xb3, 0xe6, 0x0d, 0x1f, 0x9f, 0x5d, 0x74, 0x1b, 0x3f, 0x2e,
+	0xba, 0xf7, 0xdc, 0x05, 0x30, 0x9b, 0xc4, 0x52, 0xd3, 0x92, 0x9b, 0xe3, 0x78, 0xac, 0xcc, 0xb7,
+	0xaf, 0x03, 0xe2, 0x6f, 0x36, 0x56, 0x26, 0xb9, 0x6b, 0xa3, 0x12, 0x9b, 0xf4, 0x52, 0x96, 0x70,
+	0x88, 0x20, 0xae, 0x08, 0x52, 0x4d, 0x2b, 0xc3, 0x50, 0x9e, 0x00, 0x4b, 0xe7, 0x06, 0x30, 0xbc,
+	0xf9, 0xbf, 0x84, 0x71, 0x9d, 0xf4, 0x42, 0x9e, 0xc0, 0xb0, 0xce, 0x69, 0xa7, 0xe4, 0x81, 0x23,
+	0xe8, 0xca, 0x5c, 0x43, 0xac, 0xff, 0x3b, 0xa2, 0x63, 0xb3, 0x9e, 0xd9, 0xa8, 0x2b, 0xc6, 0xfb,
+	0x80, 0x10, 0x07, 0x79, 0x0d, 0x80, 0xe1, 0xad, 0xde, 0x5a, 0x7f, 0xe3, 0xc9, 0x76, 0xec, 0xf7,
+	0xd5, 0x1d, 0x58, 0x75, 0x25, 0x3e, 0xd0, 0x52, 0x0d, 0x47, 0x35, 0xf2, 0xcb, 0xcf, 0x6e, 0x3f,
+	0x97, 0xe6, 0xb8, 0x4a, 0x63, 0xa1, 0x4b, 0xdf, 0x01, 0xff, 0x1a, 0x60, 0x36, 0xa1, 0x66, 0x3e,
+	0x05, 0xb4, 0x1b, 0xf0, 0xe3, 0xe5, 0xe9, 0xde, 0x66, 0x01, 0x39, 0x17, 0x73, 0x56, 0xb7, 0x08,
+	0x3f, 0x5f, 0x9e, 0xee, 0x05, 0x49, 0xcb, 0x42, 0x47, 0x00, 0x38, 0x3c, 0x3a, 0x5b, 0x44, 0xc1,
+	0xf9, 0x22, 0x0a, 0x7e, 0x2d, 0xa2, 0xe0, 0xc3, 0x32, 0x6a, 0x9c, 0x2f, 0xa3, 0xc6, 0xf7, 0x65,
+	0xd4, 0x78, 0x35, 0xfa, 0x0b, 0xe2, 0xea, 0x3b, 0xb0, 0x95, 0x12, 0xba, 0xf0, 0xf3, 0xb5, 0x91,
+	0xbe, 0xf3, 0xff, 0x80, 0x3d, 0xc0, 0xaa, 0xbd, 0xe9, 0xba, 0xb5, 0x3d, 0xfd, 0x1d, 0x00, 0x00,
+	0xff, 0xff, 0x92, 0x82, 0xdb, 0xf3, 0x28, 0x03, 0x00, 0x00,
 }
 
 func (m *PluginMetrics) Marshal() (dAtA []byte, err error) {
@@ -297,20 +174,8 @@ func (m *PluginMetrics) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 				i = encodeVarintMetrics(dAtA, i, uint64(size))
 			}
 			i--
-			dAtA[i] = 0x42
+			dAtA[i] = 0x3a
 		}
-	}
-	if m.Score != nil {
-		{
-			size, err := m.Score.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintMetrics(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x3a
 	}
 	{
 		size := m.TotalOutputSizeBytes.Size()
@@ -362,84 +227,6 @@ func (m *PluginMetrics) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *PluginScoreMetric) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *PluginScoreMetric) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *PluginScoreMetric) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.ScoresCount != 0 {
-		i = encodeVarintMetrics(dAtA, i, uint64(m.ScoresCount))
-		i--
-		dAtA[i] = 0x10
-	}
-	{
-		size := m.TotalScore.Size()
-		i -= size
-		if _, err := m.TotalScore.MarshalTo(dAtA[i:]); err != nil {
-			return 0, err
-		}
-		i = encodeVarintMetrics(dAtA, i, uint64(size))
-	}
-	i--
-	dAtA[i] = 0xa
-	return len(dAtA) - i, nil
-}
-
-func (m *PluginScoreItem) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *PluginScoreItem) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *PluginScoreItem) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.Score != 0 {
-		i = encodeVarintMetrics(dAtA, i, uint64(m.Score))
-		i--
-		dAtA[i] = 0x18
-	}
-	if m.TaskId != 0 {
-		i = encodeVarintMetrics(dAtA, i, uint64(m.TaskId))
-		i--
-		dAtA[i] = 0x10
-	}
-	if len(m.PluginId) > 0 {
-		i -= len(m.PluginId)
-		copy(dAtA[i:], m.PluginId)
-		i = encodeVarintMetrics(dAtA, i, uint64(len(m.PluginId)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
 func encodeVarintMetrics(dAtA []byte, offset int, v uint64) int {
 	offset -= sovMetrics(v)
 	base := offset
@@ -473,48 +260,11 @@ func (m *PluginMetrics) Size() (n int) {
 	n += 1 + l + sovMetrics(uint64(l))
 	l = m.TotalOutputSizeBytes.Size()
 	n += 1 + l + sovMetrics(uint64(l))
-	if m.Score != nil {
-		l = m.Score.Size()
-		n += 1 + l + sovMetrics(uint64(l))
-	}
 	if len(m.TotalFees) > 0 {
 		for _, e := range m.TotalFees {
 			l = e.Size()
 			n += 1 + l + sovMetrics(uint64(l))
 		}
-	}
-	return n
-}
-
-func (m *PluginScoreMetric) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = m.TotalScore.Size()
-	n += 1 + l + sovMetrics(uint64(l))
-	if m.ScoresCount != 0 {
-		n += 1 + sovMetrics(uint64(m.ScoresCount))
-	}
-	return n
-}
-
-func (m *PluginScoreItem) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.PluginId)
-	if l > 0 {
-		n += 1 + l + sovMetrics(uint64(l))
-	}
-	if m.TaskId != 0 {
-		n += 1 + sovMetrics(uint64(m.TaskId))
-	}
-	if m.Score != 0 {
-		n += 1 + sovMetrics(uint64(m.Score))
 	}
 	return n
 }
@@ -728,42 +478,6 @@ func (m *PluginMetrics) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 7:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Score", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowMetrics
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthMetrics
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthMetrics
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Score == nil {
-				m.Score = &PluginScoreMetric{}
-			}
-			if err := m.Score.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 8:
-			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field TotalFees", wireType)
 			}
 			var msglen int
@@ -796,229 +510,6 @@ func (m *PluginMetrics) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipMetrics(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthMetrics
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *PluginScoreMetric) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowMetrics
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: PluginScoreMetric: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: PluginScoreMetric: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TotalScore", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowMetrics
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthMetrics
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthMetrics
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if err := m.TotalScore.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 2:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ScoresCount", wireType)
-			}
-			m.ScoresCount = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowMetrics
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.ScoresCount |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipMetrics(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthMetrics
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *PluginScoreItem) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowMetrics
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: PluginScoreItem: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: PluginScoreItem: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field PluginId", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowMetrics
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthMetrics
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthMetrics
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.PluginId = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TaskId", wireType)
-			}
-			m.TaskId = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowMetrics
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.TaskId |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 3:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Score", wireType)
-			}
-			m.Score = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowMetrics
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Score |= uint32(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipMetrics(dAtA[iNdEx:])

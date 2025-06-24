@@ -63,10 +63,6 @@ func (k Keeper) BeginBlocker(ctx context.Context) error {
 			if err := k.tasks.pruneTask(ctx, t); err != nil {
 				return err
 			}
-
-			if err := k.prunePluginScore(ctx, t.Plugin, t.Id); err != nil {
-				return err
-			}
 		}
 	}
 

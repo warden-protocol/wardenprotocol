@@ -16,54 +16,54 @@ import (
 	sync "sync"
 )
 
-var _ protoreflect.List = (*_PluginMetrics_8_list)(nil)
+var _ protoreflect.List = (*_PluginMetrics_7_list)(nil)
 
-type _PluginMetrics_8_list struct {
+type _PluginMetrics_7_list struct {
 	list *[]*v1beta1.Coin
 }
 
-func (x *_PluginMetrics_8_list) Len() int {
+func (x *_PluginMetrics_7_list) Len() int {
 	if x.list == nil {
 		return 0
 	}
 	return len(*x.list)
 }
 
-func (x *_PluginMetrics_8_list) Get(i int) protoreflect.Value {
+func (x *_PluginMetrics_7_list) Get(i int) protoreflect.Value {
 	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
 }
 
-func (x *_PluginMetrics_8_list) Set(i int, value protoreflect.Value) {
+func (x *_PluginMetrics_7_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.Message()
 	concreteValue := valueUnwrapped.Interface().(*v1beta1.Coin)
 	(*x.list)[i] = concreteValue
 }
 
-func (x *_PluginMetrics_8_list) Append(value protoreflect.Value) {
+func (x *_PluginMetrics_7_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.Message()
 	concreteValue := valueUnwrapped.Interface().(*v1beta1.Coin)
 	*x.list = append(*x.list, concreteValue)
 }
 
-func (x *_PluginMetrics_8_list) AppendMutable() protoreflect.Value {
+func (x *_PluginMetrics_7_list) AppendMutable() protoreflect.Value {
 	v := new(v1beta1.Coin)
 	*x.list = append(*x.list, v)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
-func (x *_PluginMetrics_8_list) Truncate(n int) {
+func (x *_PluginMetrics_7_list) Truncate(n int) {
 	for i := n; i < len(*x.list); i++ {
 		(*x.list)[i] = nil
 	}
 	*x.list = (*x.list)[:n]
 }
 
-func (x *_PluginMetrics_8_list) NewElement() protoreflect.Value {
+func (x *_PluginMetrics_7_list) NewElement() protoreflect.Value {
 	v := new(v1beta1.Coin)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
-func (x *_PluginMetrics_8_list) IsValid() bool {
+func (x *_PluginMetrics_7_list) IsValid() bool {
 	return x.list != nil
 }
 
@@ -75,7 +75,6 @@ var (
 	fd_PluginMetrics_total_result_time_msec  protoreflect.FieldDescriptor
 	fd_PluginMetrics_total_input_size_bytes  protoreflect.FieldDescriptor
 	fd_PluginMetrics_total_output_size_bytes protoreflect.FieldDescriptor
-	fd_PluginMetrics_score                   protoreflect.FieldDescriptor
 	fd_PluginMetrics_total_fees              protoreflect.FieldDescriptor
 )
 
@@ -88,7 +87,6 @@ func init() {
 	fd_PluginMetrics_total_result_time_msec = md_PluginMetrics.Fields().ByName("total_result_time_msec")
 	fd_PluginMetrics_total_input_size_bytes = md_PluginMetrics.Fields().ByName("total_input_size_bytes")
 	fd_PluginMetrics_total_output_size_bytes = md_PluginMetrics.Fields().ByName("total_output_size_bytes")
-	fd_PluginMetrics_score = md_PluginMetrics.Fields().ByName("score")
 	fd_PluginMetrics_total_fees = md_PluginMetrics.Fields().ByName("total_fees")
 }
 
@@ -193,14 +191,8 @@ func (x *fastReflection_PluginMetrics) Range(f func(protoreflect.FieldDescriptor
 			return
 		}
 	}
-	if x.Score != nil {
-		value := protoreflect.ValueOfMessage(x.Score.ProtoReflect())
-		if !f(fd_PluginMetrics_score, value) {
-			return
-		}
-	}
 	if len(x.TotalFees) != 0 {
-		value := protoreflect.ValueOfList(&_PluginMetrics_8_list{list: &x.TotalFees})
+		value := protoreflect.ValueOfList(&_PluginMetrics_7_list{list: &x.TotalFees})
 		if !f(fd_PluginMetrics_total_fees, value) {
 			return
 		}
@@ -232,8 +224,6 @@ func (x *fastReflection_PluginMetrics) Has(fd protoreflect.FieldDescriptor) bool
 		return x.TotalInputSizeBytes != ""
 	case "warden.async.v1beta1.PluginMetrics.total_output_size_bytes":
 		return x.TotalOutputSizeBytes != ""
-	case "warden.async.v1beta1.PluginMetrics.score":
-		return x.Score != nil
 	case "warden.async.v1beta1.PluginMetrics.total_fees":
 		return len(x.TotalFees) != 0
 	default:
@@ -264,8 +254,6 @@ func (x *fastReflection_PluginMetrics) Clear(fd protoreflect.FieldDescriptor) {
 		x.TotalInputSizeBytes = ""
 	case "warden.async.v1beta1.PluginMetrics.total_output_size_bytes":
 		x.TotalOutputSizeBytes = ""
-	case "warden.async.v1beta1.PluginMetrics.score":
-		x.Score = nil
 	case "warden.async.v1beta1.PluginMetrics.total_fees":
 		x.TotalFees = nil
 	default:
@@ -302,14 +290,11 @@ func (x *fastReflection_PluginMetrics) Get(descriptor protoreflect.FieldDescript
 	case "warden.async.v1beta1.PluginMetrics.total_output_size_bytes":
 		value := x.TotalOutputSizeBytes
 		return protoreflect.ValueOfString(value)
-	case "warden.async.v1beta1.PluginMetrics.score":
-		value := x.Score
-		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	case "warden.async.v1beta1.PluginMetrics.total_fees":
 		if len(x.TotalFees) == 0 {
-			return protoreflect.ValueOfList(&_PluginMetrics_8_list{})
+			return protoreflect.ValueOfList(&_PluginMetrics_7_list{})
 		}
-		listValue := &_PluginMetrics_8_list{list: &x.TotalFees}
+		listValue := &_PluginMetrics_7_list{list: &x.TotalFees}
 		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
@@ -343,11 +328,9 @@ func (x *fastReflection_PluginMetrics) Set(fd protoreflect.FieldDescriptor, valu
 		x.TotalInputSizeBytes = value.Interface().(string)
 	case "warden.async.v1beta1.PluginMetrics.total_output_size_bytes":
 		x.TotalOutputSizeBytes = value.Interface().(string)
-	case "warden.async.v1beta1.PluginMetrics.score":
-		x.Score = value.Message().Interface().(*PluginScoreMetric)
 	case "warden.async.v1beta1.PluginMetrics.total_fees":
 		lv := value.List()
-		clv := lv.(*_PluginMetrics_8_list)
+		clv := lv.(*_PluginMetrics_7_list)
 		x.TotalFees = *clv.list
 	default:
 		if fd.IsExtension() {
@@ -369,16 +352,11 @@ func (x *fastReflection_PluginMetrics) Set(fd protoreflect.FieldDescriptor, valu
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_PluginMetrics) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.PluginMetrics.score":
-		if x.Score == nil {
-			x.Score = new(PluginScoreMetric)
-		}
-		return protoreflect.ValueOfMessage(x.Score.ProtoReflect())
 	case "warden.async.v1beta1.PluginMetrics.total_fees":
 		if x.TotalFees == nil {
 			x.TotalFees = []*v1beta1.Coin{}
 		}
-		value := &_PluginMetrics_8_list{list: &x.TotalFees}
+		value := &_PluginMetrics_7_list{list: &x.TotalFees}
 		return protoreflect.ValueOfList(value)
 	case "warden.async.v1beta1.PluginMetrics.plugin_id":
 		panic(fmt.Errorf("field plugin_id of message warden.async.v1beta1.PluginMetrics is not mutable"))
@@ -417,12 +395,9 @@ func (x *fastReflection_PluginMetrics) NewField(fd protoreflect.FieldDescriptor)
 		return protoreflect.ValueOfString("")
 	case "warden.async.v1beta1.PluginMetrics.total_output_size_bytes":
 		return protoreflect.ValueOfString("")
-	case "warden.async.v1beta1.PluginMetrics.score":
-		m := new(PluginScoreMetric)
-		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	case "warden.async.v1beta1.PluginMetrics.total_fees":
 		list := []*v1beta1.Coin{}
-		return protoreflect.ValueOfList(&_PluginMetrics_8_list{list: &list})
+		return protoreflect.ValueOfList(&_PluginMetrics_7_list{list: &list})
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginMetrics"))
@@ -514,10 +489,6 @@ func (x *fastReflection_PluginMetrics) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if x.Score != nil {
-			l = options.Size(x.Score)
-			n += 1 + l + runtime.Sov(uint64(l))
-		}
 		if len(x.TotalFees) > 0 {
 			for _, e := range x.TotalFees {
 				l = options.Size(e)
@@ -566,22 +537,8 @@ func (x *fastReflection_PluginMetrics) ProtoMethods() *protoiface.Methods {
 				copy(dAtA[i:], encoded)
 				i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
 				i--
-				dAtA[i] = 0x42
+				dAtA[i] = 0x3a
 			}
-		}
-		if x.Score != nil {
-			encoded, err := options.Marshal(x.Score)
-			if err != nil {
-				return protoiface.MarshalOutput{
-					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-					Buf:               input.Buf,
-				}, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
-			i--
-			dAtA[i] = 0x3a
 		}
 		if len(x.TotalOutputSizeBytes) > 0 {
 			i -= len(x.TotalOutputSizeBytes)
@@ -838,42 +795,6 @@ func (x *fastReflection_PluginMetrics) ProtoMethods() *protoiface.Methods {
 				iNdEx = postIndex
 			case 7:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Score", wireType)
-				}
-				var msglen int
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					msglen |= int(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				if msglen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + msglen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				if x.Score == nil {
-					x.Score = &PluginScoreMetric{}
-				}
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Score); err != nil {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
-				}
-				iNdEx = postIndex
-			case 8:
-				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field TotalFees", wireType)
 				}
 				var msglen int
@@ -941,990 +862,6 @@ func (x *fastReflection_PluginMetrics) ProtoMethods() *protoiface.Methods {
 	}
 }
 
-var (
-	md_PluginScoreMetric              protoreflect.MessageDescriptor
-	fd_PluginScoreMetric_total_score  protoreflect.FieldDescriptor
-	fd_PluginScoreMetric_scores_count protoreflect.FieldDescriptor
-)
-
-func init() {
-	file_warden_async_v1beta1_metrics_proto_init()
-	md_PluginScoreMetric = File_warden_async_v1beta1_metrics_proto.Messages().ByName("PluginScoreMetric")
-	fd_PluginScoreMetric_total_score = md_PluginScoreMetric.Fields().ByName("total_score")
-	fd_PluginScoreMetric_scores_count = md_PluginScoreMetric.Fields().ByName("scores_count")
-}
-
-var _ protoreflect.Message = (*fastReflection_PluginScoreMetric)(nil)
-
-type fastReflection_PluginScoreMetric PluginScoreMetric
-
-func (x *PluginScoreMetric) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_PluginScoreMetric)(x)
-}
-
-func (x *PluginScoreMetric) slowProtoReflect() protoreflect.Message {
-	mi := &file_warden_async_v1beta1_metrics_proto_msgTypes[1]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-var _fastReflection_PluginScoreMetric_messageType fastReflection_PluginScoreMetric_messageType
-var _ protoreflect.MessageType = fastReflection_PluginScoreMetric_messageType{}
-
-type fastReflection_PluginScoreMetric_messageType struct{}
-
-func (x fastReflection_PluginScoreMetric_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_PluginScoreMetric)(nil)
-}
-func (x fastReflection_PluginScoreMetric_messageType) New() protoreflect.Message {
-	return new(fastReflection_PluginScoreMetric)
-}
-func (x fastReflection_PluginScoreMetric_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_PluginScoreMetric
-}
-
-// Descriptor returns message descriptor, which contains only the protobuf
-// type information for the message.
-func (x *fastReflection_PluginScoreMetric) Descriptor() protoreflect.MessageDescriptor {
-	return md_PluginScoreMetric
-}
-
-// Type returns the message type, which encapsulates both Go and protobuf
-// type information. If the Go type information is not needed,
-// it is recommended that the message descriptor be used instead.
-func (x *fastReflection_PluginScoreMetric) Type() protoreflect.MessageType {
-	return _fastReflection_PluginScoreMetric_messageType
-}
-
-// New returns a newly allocated and mutable empty message.
-func (x *fastReflection_PluginScoreMetric) New() protoreflect.Message {
-	return new(fastReflection_PluginScoreMetric)
-}
-
-// Interface unwraps the message reflection interface and
-// returns the underlying ProtoMessage interface.
-func (x *fastReflection_PluginScoreMetric) Interface() protoreflect.ProtoMessage {
-	return (*PluginScoreMetric)(x)
-}
-
-// Range iterates over every populated field in an undefined order,
-// calling f for each field descriptor and value encountered.
-// Range returns immediately if f returns false.
-// While iterating, mutating operations may only be performed
-// on the current field descriptor.
-func (x *fastReflection_PluginScoreMetric) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
-	if x.TotalScore != "" {
-		value := protoreflect.ValueOfString(x.TotalScore)
-		if !f(fd_PluginScoreMetric_total_score, value) {
-			return
-		}
-	}
-	if x.ScoresCount != uint64(0) {
-		value := protoreflect.ValueOfUint64(x.ScoresCount)
-		if !f(fd_PluginScoreMetric_scores_count, value) {
-			return
-		}
-	}
-}
-
-// Has reports whether a field is populated.
-//
-// Some fields have the property of nullability where it is possible to
-// distinguish between the default value of a field and whether the field
-// was explicitly populated with the default value. Singular message fields,
-// member fields of a oneof, and proto2 scalar fields are nullable. Such
-// fields are populated only if explicitly set.
-//
-// In other cases (aside from the nullable cases above),
-// a proto3 scalar field is populated if it contains a non-zero value, and
-// a repeated field is populated if it is non-empty.
-func (x *fastReflection_PluginScoreMetric) Has(fd protoreflect.FieldDescriptor) bool {
-	switch fd.FullName() {
-	case "warden.async.v1beta1.PluginScoreMetric.total_score":
-		return x.TotalScore != ""
-	case "warden.async.v1beta1.PluginScoreMetric.scores_count":
-		return x.ScoresCount != uint64(0)
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginScoreMetric"))
-		}
-		panic(fmt.Errorf("message warden.async.v1beta1.PluginScoreMetric does not contain field %s", fd.FullName()))
-	}
-}
-
-// Clear clears the field such that a subsequent Has call reports false.
-//
-// Clearing an extension field clears both the extension type and value
-// associated with the given field number.
-//
-// Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_PluginScoreMetric) Clear(fd protoreflect.FieldDescriptor) {
-	switch fd.FullName() {
-	case "warden.async.v1beta1.PluginScoreMetric.total_score":
-		x.TotalScore = ""
-	case "warden.async.v1beta1.PluginScoreMetric.scores_count":
-		x.ScoresCount = uint64(0)
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginScoreMetric"))
-		}
-		panic(fmt.Errorf("message warden.async.v1beta1.PluginScoreMetric does not contain field %s", fd.FullName()))
-	}
-}
-
-// Get retrieves the value for a field.
-//
-// For unpopulated scalars, it returns the default value, where
-// the default value of a bytes scalar is guaranteed to be a copy.
-// For unpopulated composite types, it returns an empty, read-only view
-// of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_PluginScoreMetric) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
-	switch descriptor.FullName() {
-	case "warden.async.v1beta1.PluginScoreMetric.total_score":
-		value := x.TotalScore
-		return protoreflect.ValueOfString(value)
-	case "warden.async.v1beta1.PluginScoreMetric.scores_count":
-		value := x.ScoresCount
-		return protoreflect.ValueOfUint64(value)
-	default:
-		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginScoreMetric"))
-		}
-		panic(fmt.Errorf("message warden.async.v1beta1.PluginScoreMetric does not contain field %s", descriptor.FullName()))
-	}
-}
-
-// Set stores the value for a field.
-//
-// For a field belonging to a oneof, it implicitly clears any other field
-// that may be currently set within the same oneof.
-// For extension fields, it implicitly stores the provided ExtensionType.
-// When setting a composite type, it is unspecified whether the stored value
-// aliases the source's memory in any way. If the composite value is an
-// empty, read-only value, then it panics.
-//
-// Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_PluginScoreMetric) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
-	switch fd.FullName() {
-	case "warden.async.v1beta1.PluginScoreMetric.total_score":
-		x.TotalScore = value.Interface().(string)
-	case "warden.async.v1beta1.PluginScoreMetric.scores_count":
-		x.ScoresCount = value.Uint()
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginScoreMetric"))
-		}
-		panic(fmt.Errorf("message warden.async.v1beta1.PluginScoreMetric does not contain field %s", fd.FullName()))
-	}
-}
-
-// Mutable returns a mutable reference to a composite type.
-//
-// If the field is unpopulated, it may allocate a composite value.
-// For a field belonging to a oneof, it implicitly clears any other field
-// that may be currently set within the same oneof.
-// For extension fields, it implicitly stores the provided ExtensionType
-// if not already stored.
-// It panics if the field does not contain a composite type.
-//
-// Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_PluginScoreMetric) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
-	switch fd.FullName() {
-	case "warden.async.v1beta1.PluginScoreMetric.total_score":
-		panic(fmt.Errorf("field total_score of message warden.async.v1beta1.PluginScoreMetric is not mutable"))
-	case "warden.async.v1beta1.PluginScoreMetric.scores_count":
-		panic(fmt.Errorf("field scores_count of message warden.async.v1beta1.PluginScoreMetric is not mutable"))
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginScoreMetric"))
-		}
-		panic(fmt.Errorf("message warden.async.v1beta1.PluginScoreMetric does not contain field %s", fd.FullName()))
-	}
-}
-
-// NewField returns a new value that is assignable to the field
-// for the given descriptor. For scalars, this returns the default value.
-// For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_PluginScoreMetric) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
-	switch fd.FullName() {
-	case "warden.async.v1beta1.PluginScoreMetric.total_score":
-		return protoreflect.ValueOfString("")
-	case "warden.async.v1beta1.PluginScoreMetric.scores_count":
-		return protoreflect.ValueOfUint64(uint64(0))
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginScoreMetric"))
-		}
-		panic(fmt.Errorf("message warden.async.v1beta1.PluginScoreMetric does not contain field %s", fd.FullName()))
-	}
-}
-
-// WhichOneof reports which field within the oneof is populated,
-// returning nil if none are populated.
-// It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_PluginScoreMetric) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
-	switch d.FullName() {
-	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.PluginScoreMetric", d.FullName()))
-	}
-	panic("unreachable")
-}
-
-// GetUnknown retrieves the entire list of unknown fields.
-// The caller may only mutate the contents of the RawFields
-// if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_PluginScoreMetric) GetUnknown() protoreflect.RawFields {
-	return x.unknownFields
-}
-
-// SetUnknown stores an entire list of unknown fields.
-// The raw fields must be syntactically valid according to the wire format.
-// An implementation may panic if this is not the case.
-// Once stored, the caller must not mutate the content of the RawFields.
-// An empty RawFields may be passed to clear the fields.
-//
-// SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_PluginScoreMetric) SetUnknown(fields protoreflect.RawFields) {
-	x.unknownFields = fields
-}
-
-// IsValid reports whether the message is valid.
-//
-// An invalid message is an empty, read-only value.
-//
-// An invalid message often corresponds to a nil pointer of the concrete
-// message type, but the details are implementation dependent.
-// Validity is not part of the protobuf data model, and may not
-// be preserved in marshaling or other operations.
-func (x *fastReflection_PluginScoreMetric) IsValid() bool {
-	return x != nil
-}
-
-// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
-// This method may return nil.
-//
-// The returned methods type is identical to
-// "google.golang.org/protobuf/runtime/protoiface".Methods.
-// Consult the protoiface package documentation for details.
-func (x *fastReflection_PluginScoreMetric) ProtoMethods() *protoiface.Methods {
-	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*PluginScoreMetric)
-		if x == nil {
-			return protoiface.SizeOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Size:              0,
-			}
-		}
-		options := runtime.SizeInputToOptions(input)
-		_ = options
-		var n int
-		var l int
-		_ = l
-		l = len(x.TotalScore)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
-		}
-		if x.ScoresCount != 0 {
-			n += 1 + runtime.Sov(uint64(x.ScoresCount))
-		}
-		if x.unknownFields != nil {
-			n += len(x.unknownFields)
-		}
-		return protoiface.SizeOutput{
-			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-			Size:              n,
-		}
-	}
-
-	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*PluginScoreMetric)
-		if x == nil {
-			return protoiface.MarshalOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Buf:               input.Buf,
-			}, nil
-		}
-		options := runtime.MarshalInputToOptions(input)
-		_ = options
-		size := options.Size(x)
-		dAtA := make([]byte, size)
-		i := len(dAtA)
-		_ = i
-		var l int
-		_ = l
-		if x.unknownFields != nil {
-			i -= len(x.unknownFields)
-			copy(dAtA[i:], x.unknownFields)
-		}
-		if x.ScoresCount != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.ScoresCount))
-			i--
-			dAtA[i] = 0x10
-		}
-		if len(x.TotalScore) > 0 {
-			i -= len(x.TotalScore)
-			copy(dAtA[i:], x.TotalScore)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.TotalScore)))
-			i--
-			dAtA[i] = 0xa
-		}
-		if input.Buf != nil {
-			input.Buf = append(input.Buf, dAtA...)
-		} else {
-			input.Buf = dAtA
-		}
-		return protoiface.MarshalOutput{
-			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-			Buf:               input.Buf,
-		}, nil
-	}
-	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*PluginScoreMetric)
-		if x == nil {
-			return protoiface.UnmarshalOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Flags:             input.Flags,
-			}, nil
-		}
-		options := runtime.UnmarshalInputToOptions(input)
-		_ = options
-		dAtA := input.Buf
-		l := len(dAtA)
-		iNdEx := 0
-		for iNdEx < l {
-			preIndex := iNdEx
-			var wire uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-				}
-				if iNdEx >= l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				wire |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			fieldNum := int32(wire >> 3)
-			wireType := int(wire & 0x7)
-			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: PluginScoreMetric: wiretype end group for non-group")
-			}
-			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: PluginScoreMetric: illegal tag %d (wire type %d)", fieldNum, wire)
-			}
-			switch fieldNum {
-			case 1:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field TotalScore", wireType)
-				}
-				var stringLen uint64
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.TotalScore = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
-			case 2:
-				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ScoresCount", wireType)
-				}
-				x.ScoresCount = 0
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					x.ScoresCount |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-			default:
-				iNdEx = preIndex
-				skippy, err := runtime.Skip(dAtA[iNdEx:])
-				if err != nil {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
-				}
-				if (skippy < 0) || (iNdEx+skippy) < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if (iNdEx + skippy) > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				if !options.DiscardUnknown {
-					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
-				}
-				iNdEx += skippy
-			}
-		}
-
-		if iNdEx > l {
-			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-		}
-		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
-	}
-	return &protoiface.Methods{
-		NoUnkeyedLiterals: struct{}{},
-		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
-		Size:              size,
-		Marshal:           marshal,
-		Unmarshal:         unmarshal,
-		Merge:             nil,
-		CheckInitialized:  nil,
-	}
-}
-
-var (
-	md_PluginScoreItem           protoreflect.MessageDescriptor
-	fd_PluginScoreItem_plugin_id protoreflect.FieldDescriptor
-	fd_PluginScoreItem_task_id   protoreflect.FieldDescriptor
-	fd_PluginScoreItem_score     protoreflect.FieldDescriptor
-)
-
-func init() {
-	file_warden_async_v1beta1_metrics_proto_init()
-	md_PluginScoreItem = File_warden_async_v1beta1_metrics_proto.Messages().ByName("PluginScoreItem")
-	fd_PluginScoreItem_plugin_id = md_PluginScoreItem.Fields().ByName("plugin_id")
-	fd_PluginScoreItem_task_id = md_PluginScoreItem.Fields().ByName("task_id")
-	fd_PluginScoreItem_score = md_PluginScoreItem.Fields().ByName("score")
-}
-
-var _ protoreflect.Message = (*fastReflection_PluginScoreItem)(nil)
-
-type fastReflection_PluginScoreItem PluginScoreItem
-
-func (x *PluginScoreItem) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_PluginScoreItem)(x)
-}
-
-func (x *PluginScoreItem) slowProtoReflect() protoreflect.Message {
-	mi := &file_warden_async_v1beta1_metrics_proto_msgTypes[2]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-var _fastReflection_PluginScoreItem_messageType fastReflection_PluginScoreItem_messageType
-var _ protoreflect.MessageType = fastReflection_PluginScoreItem_messageType{}
-
-type fastReflection_PluginScoreItem_messageType struct{}
-
-func (x fastReflection_PluginScoreItem_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_PluginScoreItem)(nil)
-}
-func (x fastReflection_PluginScoreItem_messageType) New() protoreflect.Message {
-	return new(fastReflection_PluginScoreItem)
-}
-func (x fastReflection_PluginScoreItem_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_PluginScoreItem
-}
-
-// Descriptor returns message descriptor, which contains only the protobuf
-// type information for the message.
-func (x *fastReflection_PluginScoreItem) Descriptor() protoreflect.MessageDescriptor {
-	return md_PluginScoreItem
-}
-
-// Type returns the message type, which encapsulates both Go and protobuf
-// type information. If the Go type information is not needed,
-// it is recommended that the message descriptor be used instead.
-func (x *fastReflection_PluginScoreItem) Type() protoreflect.MessageType {
-	return _fastReflection_PluginScoreItem_messageType
-}
-
-// New returns a newly allocated and mutable empty message.
-func (x *fastReflection_PluginScoreItem) New() protoreflect.Message {
-	return new(fastReflection_PluginScoreItem)
-}
-
-// Interface unwraps the message reflection interface and
-// returns the underlying ProtoMessage interface.
-func (x *fastReflection_PluginScoreItem) Interface() protoreflect.ProtoMessage {
-	return (*PluginScoreItem)(x)
-}
-
-// Range iterates over every populated field in an undefined order,
-// calling f for each field descriptor and value encountered.
-// Range returns immediately if f returns false.
-// While iterating, mutating operations may only be performed
-// on the current field descriptor.
-func (x *fastReflection_PluginScoreItem) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
-	if x.PluginId != "" {
-		value := protoreflect.ValueOfString(x.PluginId)
-		if !f(fd_PluginScoreItem_plugin_id, value) {
-			return
-		}
-	}
-	if x.TaskId != uint64(0) {
-		value := protoreflect.ValueOfUint64(x.TaskId)
-		if !f(fd_PluginScoreItem_task_id, value) {
-			return
-		}
-	}
-	if x.Score != uint32(0) {
-		value := protoreflect.ValueOfUint32(x.Score)
-		if !f(fd_PluginScoreItem_score, value) {
-			return
-		}
-	}
-}
-
-// Has reports whether a field is populated.
-//
-// Some fields have the property of nullability where it is possible to
-// distinguish between the default value of a field and whether the field
-// was explicitly populated with the default value. Singular message fields,
-// member fields of a oneof, and proto2 scalar fields are nullable. Such
-// fields are populated only if explicitly set.
-//
-// In other cases (aside from the nullable cases above),
-// a proto3 scalar field is populated if it contains a non-zero value, and
-// a repeated field is populated if it is non-empty.
-func (x *fastReflection_PluginScoreItem) Has(fd protoreflect.FieldDescriptor) bool {
-	switch fd.FullName() {
-	case "warden.async.v1beta1.PluginScoreItem.plugin_id":
-		return x.PluginId != ""
-	case "warden.async.v1beta1.PluginScoreItem.task_id":
-		return x.TaskId != uint64(0)
-	case "warden.async.v1beta1.PluginScoreItem.score":
-		return x.Score != uint32(0)
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginScoreItem"))
-		}
-		panic(fmt.Errorf("message warden.async.v1beta1.PluginScoreItem does not contain field %s", fd.FullName()))
-	}
-}
-
-// Clear clears the field such that a subsequent Has call reports false.
-//
-// Clearing an extension field clears both the extension type and value
-// associated with the given field number.
-//
-// Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_PluginScoreItem) Clear(fd protoreflect.FieldDescriptor) {
-	switch fd.FullName() {
-	case "warden.async.v1beta1.PluginScoreItem.plugin_id":
-		x.PluginId = ""
-	case "warden.async.v1beta1.PluginScoreItem.task_id":
-		x.TaskId = uint64(0)
-	case "warden.async.v1beta1.PluginScoreItem.score":
-		x.Score = uint32(0)
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginScoreItem"))
-		}
-		panic(fmt.Errorf("message warden.async.v1beta1.PluginScoreItem does not contain field %s", fd.FullName()))
-	}
-}
-
-// Get retrieves the value for a field.
-//
-// For unpopulated scalars, it returns the default value, where
-// the default value of a bytes scalar is guaranteed to be a copy.
-// For unpopulated composite types, it returns an empty, read-only view
-// of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_PluginScoreItem) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
-	switch descriptor.FullName() {
-	case "warden.async.v1beta1.PluginScoreItem.plugin_id":
-		value := x.PluginId
-		return protoreflect.ValueOfString(value)
-	case "warden.async.v1beta1.PluginScoreItem.task_id":
-		value := x.TaskId
-		return protoreflect.ValueOfUint64(value)
-	case "warden.async.v1beta1.PluginScoreItem.score":
-		value := x.Score
-		return protoreflect.ValueOfUint32(value)
-	default:
-		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginScoreItem"))
-		}
-		panic(fmt.Errorf("message warden.async.v1beta1.PluginScoreItem does not contain field %s", descriptor.FullName()))
-	}
-}
-
-// Set stores the value for a field.
-//
-// For a field belonging to a oneof, it implicitly clears any other field
-// that may be currently set within the same oneof.
-// For extension fields, it implicitly stores the provided ExtensionType.
-// When setting a composite type, it is unspecified whether the stored value
-// aliases the source's memory in any way. If the composite value is an
-// empty, read-only value, then it panics.
-//
-// Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_PluginScoreItem) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
-	switch fd.FullName() {
-	case "warden.async.v1beta1.PluginScoreItem.plugin_id":
-		x.PluginId = value.Interface().(string)
-	case "warden.async.v1beta1.PluginScoreItem.task_id":
-		x.TaskId = value.Uint()
-	case "warden.async.v1beta1.PluginScoreItem.score":
-		x.Score = uint32(value.Uint())
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginScoreItem"))
-		}
-		panic(fmt.Errorf("message warden.async.v1beta1.PluginScoreItem does not contain field %s", fd.FullName()))
-	}
-}
-
-// Mutable returns a mutable reference to a composite type.
-//
-// If the field is unpopulated, it may allocate a composite value.
-// For a field belonging to a oneof, it implicitly clears any other field
-// that may be currently set within the same oneof.
-// For extension fields, it implicitly stores the provided ExtensionType
-// if not already stored.
-// It panics if the field does not contain a composite type.
-//
-// Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_PluginScoreItem) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
-	switch fd.FullName() {
-	case "warden.async.v1beta1.PluginScoreItem.plugin_id":
-		panic(fmt.Errorf("field plugin_id of message warden.async.v1beta1.PluginScoreItem is not mutable"))
-	case "warden.async.v1beta1.PluginScoreItem.task_id":
-		panic(fmt.Errorf("field task_id of message warden.async.v1beta1.PluginScoreItem is not mutable"))
-	case "warden.async.v1beta1.PluginScoreItem.score":
-		panic(fmt.Errorf("field score of message warden.async.v1beta1.PluginScoreItem is not mutable"))
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginScoreItem"))
-		}
-		panic(fmt.Errorf("message warden.async.v1beta1.PluginScoreItem does not contain field %s", fd.FullName()))
-	}
-}
-
-// NewField returns a new value that is assignable to the field
-// for the given descriptor. For scalars, this returns the default value.
-// For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_PluginScoreItem) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
-	switch fd.FullName() {
-	case "warden.async.v1beta1.PluginScoreItem.plugin_id":
-		return protoreflect.ValueOfString("")
-	case "warden.async.v1beta1.PluginScoreItem.task_id":
-		return protoreflect.ValueOfUint64(uint64(0))
-	case "warden.async.v1beta1.PluginScoreItem.score":
-		return protoreflect.ValueOfUint32(uint32(0))
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginScoreItem"))
-		}
-		panic(fmt.Errorf("message warden.async.v1beta1.PluginScoreItem does not contain field %s", fd.FullName()))
-	}
-}
-
-// WhichOneof reports which field within the oneof is populated,
-// returning nil if none are populated.
-// It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_PluginScoreItem) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
-	switch d.FullName() {
-	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.PluginScoreItem", d.FullName()))
-	}
-	panic("unreachable")
-}
-
-// GetUnknown retrieves the entire list of unknown fields.
-// The caller may only mutate the contents of the RawFields
-// if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_PluginScoreItem) GetUnknown() protoreflect.RawFields {
-	return x.unknownFields
-}
-
-// SetUnknown stores an entire list of unknown fields.
-// The raw fields must be syntactically valid according to the wire format.
-// An implementation may panic if this is not the case.
-// Once stored, the caller must not mutate the content of the RawFields.
-// An empty RawFields may be passed to clear the fields.
-//
-// SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_PluginScoreItem) SetUnknown(fields protoreflect.RawFields) {
-	x.unknownFields = fields
-}
-
-// IsValid reports whether the message is valid.
-//
-// An invalid message is an empty, read-only value.
-//
-// An invalid message often corresponds to a nil pointer of the concrete
-// message type, but the details are implementation dependent.
-// Validity is not part of the protobuf data model, and may not
-// be preserved in marshaling or other operations.
-func (x *fastReflection_PluginScoreItem) IsValid() bool {
-	return x != nil
-}
-
-// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
-// This method may return nil.
-//
-// The returned methods type is identical to
-// "google.golang.org/protobuf/runtime/protoiface".Methods.
-// Consult the protoiface package documentation for details.
-func (x *fastReflection_PluginScoreItem) ProtoMethods() *protoiface.Methods {
-	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*PluginScoreItem)
-		if x == nil {
-			return protoiface.SizeOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Size:              0,
-			}
-		}
-		options := runtime.SizeInputToOptions(input)
-		_ = options
-		var n int
-		var l int
-		_ = l
-		l = len(x.PluginId)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
-		}
-		if x.TaskId != 0 {
-			n += 1 + runtime.Sov(uint64(x.TaskId))
-		}
-		if x.Score != 0 {
-			n += 1 + runtime.Sov(uint64(x.Score))
-		}
-		if x.unknownFields != nil {
-			n += len(x.unknownFields)
-		}
-		return protoiface.SizeOutput{
-			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-			Size:              n,
-		}
-	}
-
-	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*PluginScoreItem)
-		if x == nil {
-			return protoiface.MarshalOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Buf:               input.Buf,
-			}, nil
-		}
-		options := runtime.MarshalInputToOptions(input)
-		_ = options
-		size := options.Size(x)
-		dAtA := make([]byte, size)
-		i := len(dAtA)
-		_ = i
-		var l int
-		_ = l
-		if x.unknownFields != nil {
-			i -= len(x.unknownFields)
-			copy(dAtA[i:], x.unknownFields)
-		}
-		if x.Score != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.Score))
-			i--
-			dAtA[i] = 0x18
-		}
-		if x.TaskId != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.TaskId))
-			i--
-			dAtA[i] = 0x10
-		}
-		if len(x.PluginId) > 0 {
-			i -= len(x.PluginId)
-			copy(dAtA[i:], x.PluginId)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.PluginId)))
-			i--
-			dAtA[i] = 0xa
-		}
-		if input.Buf != nil {
-			input.Buf = append(input.Buf, dAtA...)
-		} else {
-			input.Buf = dAtA
-		}
-		return protoiface.MarshalOutput{
-			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-			Buf:               input.Buf,
-		}, nil
-	}
-	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*PluginScoreItem)
-		if x == nil {
-			return protoiface.UnmarshalOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Flags:             input.Flags,
-			}, nil
-		}
-		options := runtime.UnmarshalInputToOptions(input)
-		_ = options
-		dAtA := input.Buf
-		l := len(dAtA)
-		iNdEx := 0
-		for iNdEx < l {
-			preIndex := iNdEx
-			var wire uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-				}
-				if iNdEx >= l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				wire |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			fieldNum := int32(wire >> 3)
-			wireType := int(wire & 0x7)
-			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: PluginScoreItem: wiretype end group for non-group")
-			}
-			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: PluginScoreItem: illegal tag %d (wire type %d)", fieldNum, wire)
-			}
-			switch fieldNum {
-			case 1:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field PluginId", wireType)
-				}
-				var stringLen uint64
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.PluginId = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
-			case 2:
-				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field TaskId", wireType)
-				}
-				x.TaskId = 0
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					x.TaskId |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-			case 3:
-				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Score", wireType)
-				}
-				x.Score = 0
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					x.Score |= uint32(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-			default:
-				iNdEx = preIndex
-				skippy, err := runtime.Skip(dAtA[iNdEx:])
-				if err != nil {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
-				}
-				if (skippy < 0) || (iNdEx+skippy) < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if (iNdEx + skippy) > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				if !options.DiscardUnknown {
-					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
-				}
-				iNdEx += skippy
-			}
-		}
-
-		if iNdEx > l {
-			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-		}
-		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
-	}
-	return &protoiface.Methods{
-		NoUnkeyedLiterals: struct{}{},
-		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
-		Size:              size,
-		Marshal:           marshal,
-		Unmarshal:         unmarshal,
-		Merge:             nil,
-		CheckInitialized:  nil,
-	}
-}
-
 // Copyright (c) 2025 Warden Labs. All Rights Reserved.
 //
 // ** RESTRICTED LICENSE **
@@ -1957,15 +894,14 @@ type PluginMetrics struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Id of the plugin.
-	PluginId             string             `protobuf:"bytes,1,opt,name=plugin_id,json=pluginId,proto3" json:"plugin_id,omitempty"`
-	TasksCount           uint64             `protobuf:"varint,2,opt,name=tasks_count,json=tasksCount,proto3" json:"tasks_count,omitempty"`
-	ResultsCount         uint64             `protobuf:"varint,3,opt,name=results_count,json=resultsCount,proto3" json:"results_count,omitempty"`
-	TotalResultTimeMsec  string             `protobuf:"bytes,4,opt,name=total_result_time_msec,json=totalResultTimeMsec,proto3" json:"total_result_time_msec,omitempty"`
-	TotalInputSizeBytes  string             `protobuf:"bytes,5,opt,name=total_input_size_bytes,json=totalInputSizeBytes,proto3" json:"total_input_size_bytes,omitempty"`
-	TotalOutputSizeBytes string             `protobuf:"bytes,6,opt,name=total_output_size_bytes,json=totalOutputSizeBytes,proto3" json:"total_output_size_bytes,omitempty"`
-	Score                *PluginScoreMetric `protobuf:"bytes,7,opt,name=score,proto3" json:"score,omitempty"`
+	PluginId             string `protobuf:"bytes,1,opt,name=plugin_id,json=pluginId,proto3" json:"plugin_id,omitempty"`
+	TasksCount           uint64 `protobuf:"varint,2,opt,name=tasks_count,json=tasksCount,proto3" json:"tasks_count,omitempty"`
+	ResultsCount         uint64 `protobuf:"varint,3,opt,name=results_count,json=resultsCount,proto3" json:"results_count,omitempty"`
+	TotalResultTimeMsec  string `protobuf:"bytes,4,opt,name=total_result_time_msec,json=totalResultTimeMsec,proto3" json:"total_result_time_msec,omitempty"`
+	TotalInputSizeBytes  string `protobuf:"bytes,5,opt,name=total_input_size_bytes,json=totalInputSizeBytes,proto3" json:"total_input_size_bytes,omitempty"`
+	TotalOutputSizeBytes string `protobuf:"bytes,6,opt,name=total_output_size_bytes,json=totalOutputSizeBytes,proto3" json:"total_output_size_bytes,omitempty"`
 	// Total fees paid by users for using the plugin.
-	TotalFees []*v1beta1.Coin `protobuf:"bytes,8,rep,name=total_fees,json=totalFees,proto3" json:"total_fees,omitempty"`
+	TotalFees []*v1beta1.Coin `protobuf:"bytes,7,rep,name=total_fees,json=totalFees,proto3" json:"total_fees,omitempty"`
 }
 
 func (x *PluginMetrics) Reset() {
@@ -2030,114 +966,11 @@ func (x *PluginMetrics) GetTotalOutputSizeBytes() string {
 	return ""
 }
 
-func (x *PluginMetrics) GetScore() *PluginScoreMetric {
-	if x != nil {
-		return x.Score
-	}
-	return nil
-}
-
 func (x *PluginMetrics) GetTotalFees() []*v1beta1.Coin {
 	if x != nil {
 		return x.TotalFees
 	}
 	return nil
-}
-
-type PluginScoreMetric struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	// The total score of the plugin.
-	TotalScore string `protobuf:"bytes,1,opt,name=total_score,json=totalScore,proto3" json:"total_score,omitempty"`
-	// The amount of scores set by users.
-	ScoresCount uint64 `protobuf:"varint,2,opt,name=scores_count,json=scoresCount,proto3" json:"scores_count,omitempty"`
-}
-
-func (x *PluginScoreMetric) Reset() {
-	*x = PluginScoreMetric{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_warden_async_v1beta1_metrics_proto_msgTypes[1]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *PluginScoreMetric) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*PluginScoreMetric) ProtoMessage() {}
-
-// Deprecated: Use PluginScoreMetric.ProtoReflect.Descriptor instead.
-func (*PluginScoreMetric) Descriptor() ([]byte, []int) {
-	return file_warden_async_v1beta1_metrics_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *PluginScoreMetric) GetTotalScore() string {
-	if x != nil {
-		return x.TotalScore
-	}
-	return ""
-}
-
-func (x *PluginScoreMetric) GetScoresCount() uint64 {
-	if x != nil {
-		return x.ScoresCount
-	}
-	return 0
-}
-
-type PluginScoreItem struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	PluginId string `protobuf:"bytes,1,opt,name=plugin_id,json=pluginId,proto3" json:"plugin_id,omitempty"`
-	TaskId   uint64 `protobuf:"varint,2,opt,name=task_id,json=taskId,proto3" json:"task_id,omitempty"`
-	Score    uint32 `protobuf:"varint,3,opt,name=score,proto3" json:"score,omitempty"`
-}
-
-func (x *PluginScoreItem) Reset() {
-	*x = PluginScoreItem{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_warden_async_v1beta1_metrics_proto_msgTypes[2]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *PluginScoreItem) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*PluginScoreItem) ProtoMessage() {}
-
-// Deprecated: Use PluginScoreItem.ProtoReflect.Descriptor instead.
-func (*PluginScoreItem) Descriptor() ([]byte, []int) {
-	return file_warden_async_v1beta1_metrics_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *PluginScoreItem) GetPluginId() string {
-	if x != nil {
-		return x.PluginId
-	}
-	return ""
-}
-
-func (x *PluginScoreItem) GetTaskId() uint64 {
-	if x != nil {
-		return x.TaskId
-	}
-	return 0
-}
-
-func (x *PluginScoreItem) GetScore() uint32 {
-	if x != nil {
-		return x.Score
-	}
-	return 0
 }
 
 var File_warden_async_v1beta1_metrics_proto protoreflect.FileDescriptor
@@ -2152,7 +985,7 @@ var file_warden_async_v1beta1_metrics_proto_rawDesc = []byte{
 	0x61, 0x31, 0x2f, 0x63, 0x6f, 0x69, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x19, 0x63,
 	0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x5f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x63, 0x6f, 0x73, 0x6d,
 	0x6f, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xdc,
+	0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x9d,
 	0x04, 0x0a, 0x0d, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x73,
 	0x12, 0x1b, 0x0a, 0x09, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20,
 	0x01, 0x28, 0x09, 0x52, 0x08, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x49, 0x64, 0x12, 0x1f, 0x0a,
@@ -2178,49 +1011,31 @@ var file_warden_async_v1beta1_metrics_proto_rawDesc = []byte{
 	0x1f, 0x15, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x6d,
 	0x61, 0x74, 0x68, 0x2e, 0x49, 0x6e, 0x74, 0xd2, 0xb4, 0x2d, 0x0a, 0x63, 0x6f, 0x73, 0x6d, 0x6f,
 	0x73, 0x2e, 0x49, 0x6e, 0x74, 0x52, 0x14, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x4f, 0x75, 0x74, 0x70,
-	0x75, 0x74, 0x53, 0x69, 0x7a, 0x65, 0x42, 0x79, 0x74, 0x65, 0x73, 0x12, 0x3d, 0x0a, 0x05, 0x73,
-	0x63, 0x6f, 0x72, 0x65, 0x18, 0x07, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x77, 0x61, 0x72,
-	0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
-	0x31, 0x2e, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x53, 0x63, 0x6f, 0x72, 0x65, 0x4d, 0x65, 0x74,
-	0x72, 0x69, 0x63, 0x52, 0x05, 0x73, 0x63, 0x6f, 0x72, 0x65, 0x12, 0x80, 0x01, 0x0a, 0x0a, 0x74,
-	0x6f, 0x74, 0x61, 0x6c, 0x5f, 0x66, 0x65, 0x65, 0x73, 0x18, 0x08, 0x20, 0x03, 0x28, 0x0b, 0x32,
-	0x19, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x76, 0x31,
-	0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x42, 0x46, 0xc8, 0xde, 0x1f, 0x00,
-	0xaa, 0xdf, 0x1f, 0x28, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x63,
-	0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2d, 0x73, 0x64, 0x6b,
-	0x2f, 0x74, 0x79, 0x70, 0x65, 0x73, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x73, 0x9a, 0xe7, 0xb0, 0x2a,
-	0x0c, 0x6c, 0x65, 0x67, 0x61, 0x63, 0x79, 0x5f, 0x63, 0x6f, 0x69, 0x6e, 0x73, 0xa8, 0xe7, 0xb0,
-	0x2a, 0x01, 0x52, 0x09, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x46, 0x65, 0x65, 0x73, 0x22, 0x84, 0x01,
-	0x0a, 0x11, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x53, 0x63, 0x6f, 0x72, 0x65, 0x4d, 0x65, 0x74,
-	0x72, 0x69, 0x63, 0x12, 0x4c, 0x0a, 0x0b, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x5f, 0x73, 0x63, 0x6f,
-	0x72, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x2b, 0xc8, 0xde, 0x1f, 0x00, 0xda, 0xde,
-	0x1f, 0x15, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x6d,
-	0x61, 0x74, 0x68, 0x2e, 0x49, 0x6e, 0x74, 0xd2, 0xb4, 0x2d, 0x0a, 0x63, 0x6f, 0x73, 0x6d, 0x6f,
-	0x73, 0x2e, 0x49, 0x6e, 0x74, 0x52, 0x0a, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x53, 0x63, 0x6f, 0x72,
-	0x65, 0x12, 0x21, 0x0a, 0x0c, 0x73, 0x63, 0x6f, 0x72, 0x65, 0x73, 0x5f, 0x63, 0x6f, 0x75, 0x6e,
-	0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0b, 0x73, 0x63, 0x6f, 0x72, 0x65, 0x73, 0x43,
-	0x6f, 0x75, 0x6e, 0x74, 0x22, 0x5d, 0x0a, 0x0f, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x53, 0x63,
-	0x6f, 0x72, 0x65, 0x49, 0x74, 0x65, 0x6d, 0x12, 0x1b, 0x0a, 0x09, 0x70, 0x6c, 0x75, 0x67, 0x69,
-	0x6e, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x70, 0x6c, 0x75, 0x67,
-	0x69, 0x6e, 0x49, 0x64, 0x12, 0x17, 0x0a, 0x07, 0x74, 0x61, 0x73, 0x6b, 0x5f, 0x69, 0x64, 0x18,
-	0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x06, 0x74, 0x61, 0x73, 0x6b, 0x49, 0x64, 0x12, 0x14, 0x0a,
-	0x05, 0x73, 0x63, 0x6f, 0x72, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x05, 0x73, 0x63,
-	0x6f, 0x72, 0x65, 0x42, 0xeb, 0x01, 0x0a, 0x18, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64,
-	0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
-	0x42, 0x0c, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01,
-	0x5a, 0x4f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72,
-	0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72,
-	0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f,
-	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2f, 0x76, 0x31, 0x62,
-	0x65, 0x74, 0x61, 0x31, 0x3b, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
-	0x31, 0xa2, 0x02, 0x03, 0x57, 0x41, 0x58, 0xaa, 0x02, 0x14, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e,
-	0x2e, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xca, 0x02,
-	0x14, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x5c, 0x56, 0x31,
-	0x62, 0x65, 0x74, 0x61, 0x31, 0xe2, 0x02, 0x20, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x41,
-	0x73, 0x79, 0x6e, 0x63, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x5c, 0x47, 0x50, 0x42,
-	0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x16, 0x57, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x3a, 0x3a, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61,
-	0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x75, 0x74, 0x53, 0x69, 0x7a, 0x65, 0x42, 0x79, 0x74, 0x65, 0x73, 0x12, 0x80, 0x01, 0x0a, 0x0a,
+	0x74, 0x6f, 0x74, 0x61, 0x6c, 0x5f, 0x66, 0x65, 0x65, 0x73, 0x18, 0x07, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x19, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x76,
+	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x42, 0x46, 0xc8, 0xde, 0x1f,
+	0x00, 0xaa, 0xdf, 0x1f, 0x28, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f,
+	0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2d, 0x73, 0x64,
+	0x6b, 0x2f, 0x74, 0x79, 0x70, 0x65, 0x73, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x73, 0x9a, 0xe7, 0xb0,
+	0x2a, 0x0c, 0x6c, 0x65, 0x67, 0x61, 0x63, 0x79, 0x5f, 0x63, 0x6f, 0x69, 0x6e, 0x73, 0xa8, 0xe7,
+	0xb0, 0x2a, 0x01, 0x52, 0x09, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x46, 0x65, 0x65, 0x73, 0x42, 0xeb,
+	0x01, 0x0a, 0x18, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73,
+	0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x42, 0x0c, 0x4d, 0x65, 0x74,
+	0x72, 0x69, 0x63, 0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x4f, 0x67, 0x69, 0x74,
+	0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65,
+	0x6e, 0x2f, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x3b,
+	0x61, 0x73, 0x79, 0x6e, 0x63, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xa2, 0x02, 0x03, 0x57,
+	0x41, 0x58, 0xaa, 0x02, 0x14, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x41, 0x73, 0x79, 0x6e,
+	0x63, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xca, 0x02, 0x14, 0x57, 0x61, 0x72, 0x64,
+	0x65, 0x6e, 0x5c, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
+	0xe2, 0x02, 0x20, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x5c,
+	0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64,
+	0x61, 0x74, 0x61, 0xea, 0x02, 0x16, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x41, 0x73,
+	0x79, 0x6e, 0x63, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x62, 0x06, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -2235,21 +1050,18 @@ func file_warden_async_v1beta1_metrics_proto_rawDescGZIP() []byte {
 	return file_warden_async_v1beta1_metrics_proto_rawDescData
 }
 
-var file_warden_async_v1beta1_metrics_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_warden_async_v1beta1_metrics_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_warden_async_v1beta1_metrics_proto_goTypes = []interface{}{
-	(*PluginMetrics)(nil),     // 0: warden.async.v1beta1.PluginMetrics
-	(*PluginScoreMetric)(nil), // 1: warden.async.v1beta1.PluginScoreMetric
-	(*PluginScoreItem)(nil),   // 2: warden.async.v1beta1.PluginScoreItem
-	(*v1beta1.Coin)(nil),      // 3: cosmos.base.v1beta1.Coin
+	(*PluginMetrics)(nil), // 0: warden.async.v1beta1.PluginMetrics
+	(*v1beta1.Coin)(nil),  // 1: cosmos.base.v1beta1.Coin
 }
 var file_warden_async_v1beta1_metrics_proto_depIdxs = []int32{
-	1, // 0: warden.async.v1beta1.PluginMetrics.score:type_name -> warden.async.v1beta1.PluginScoreMetric
-	3, // 1: warden.async.v1beta1.PluginMetrics.total_fees:type_name -> cosmos.base.v1beta1.Coin
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	1, // 0: warden.async.v1beta1.PluginMetrics.total_fees:type_name -> cosmos.base.v1beta1.Coin
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_warden_async_v1beta1_metrics_proto_init() }
@@ -2270,30 +1082,6 @@ func file_warden_async_v1beta1_metrics_proto_init() {
 				return nil
 			}
 		}
-		file_warden_async_v1beta1_metrics_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PluginScoreMetric); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_warden_async_v1beta1_metrics_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PluginScoreItem); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -2301,7 +1089,7 @@ func file_warden_async_v1beta1_metrics_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_warden_async_v1beta1_metrics_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -32,9 +32,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Msg_UpdateParams_FullMethodName   = "/warden.async.v1beta1.Msg/UpdateParams"
-	Msg_AddTask_FullMethodName        = "/warden.async.v1beta1.Msg/AddTask"
-	Msg_AddPluginScore_FullMethodName = "/warden.async.v1beta1.Msg/AddPluginScore"
+	Msg_UpdateParams_FullMethodName = "/warden.async.v1beta1.Msg/UpdateParams"
+	Msg_AddTask_FullMethodName      = "/warden.async.v1beta1.Msg/AddTask"
 )
 
 // MsgClient is the client API for Msg service.
@@ -48,8 +47,6 @@ type MsgClient interface {
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
 	// Create a new Task to be executed.
 	AddTask(ctx context.Context, in *MsgAddTask, opts ...grpc.CallOption) (*MsgAddTaskResponse, error)
-	// Add user score to plugin.
-	AddPluginScore(ctx context.Context, in *MsgAddPluginScore, opts ...grpc.CallOption) (*MsgAddPluginScoreResponse, error)
 }
 
 type msgClient struct {
@@ -80,16 +77,6 @@ func (c *msgClient) AddTask(ctx context.Context, in *MsgAddTask, opts ...grpc.Ca
 	return out, nil
 }
 
-func (c *msgClient) AddPluginScore(ctx context.Context, in *MsgAddPluginScore, opts ...grpc.CallOption) (*MsgAddPluginScoreResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(MsgAddPluginScoreResponse)
-	err := c.cc.Invoke(ctx, Msg_AddPluginScore_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility.
@@ -101,8 +88,6 @@ type MsgServer interface {
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
 	// Create a new Task to be executed.
 	AddTask(context.Context, *MsgAddTask) (*MsgAddTaskResponse, error)
-	// Add user score to plugin.
-	AddPluginScore(context.Context, *MsgAddPluginScore) (*MsgAddPluginScoreResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -118,9 +103,6 @@ func (UnimplementedMsgServer) UpdateParams(context.Context, *MsgUpdateParams) (*
 }
 func (UnimplementedMsgServer) AddTask(context.Context, *MsgAddTask) (*MsgAddTaskResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddTask not implemented")
-}
-func (UnimplementedMsgServer) AddPluginScore(context.Context, *MsgAddPluginScore) (*MsgAddPluginScoreResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddPluginScore not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 func (UnimplementedMsgServer) testEmbeddedByValue()             {}
@@ -179,24 +161,6 @@ func _Msg_AddTask_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_AddPluginScore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgAddPluginScore)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).AddPluginScore(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Msg_AddPluginScore_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).AddPluginScore(ctx, req.(*MsgAddPluginScore))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -211,10 +175,6 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddTask",
 			Handler:    _Msg_AddTask_Handler,
-		},
-		{
-			MethodName: "AddPluginScore",
-			Handler:    _Msg_AddPluginScore_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

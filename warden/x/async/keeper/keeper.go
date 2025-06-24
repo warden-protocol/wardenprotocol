@@ -54,7 +54,6 @@ type (
 		votes              collections.Map[collections.Pair[uint64, sdk.ConsAddress], int32]
 
 		pluginMetrics collections.Map[string, types.PluginMetrics]
-		pluginScores  collections.Map[collections.Pair[string, uint64], types.PluginScoreItem]
 
 		p *prophet.P
 
@@ -112,7 +111,6 @@ func NewKeeper(
 	queueTotalWeights := collections.NewMap(sb, QueueTotalWeightPrefix, "queue_total_weight", QueueIDKey, WeightValue)
 	queuePriorities := collections.NewMap(sb, QueuePriorityPrefix, "queue_priorities", collections.PairKeyCodec(QueueIDKey, sdk.ConsAddressKey), PriorityValue)
 	pluginMetrics := collections.NewMap(sb, PluginMetricsPrefix, "plugin_metrics", collections.StringKey, codec.CollValue[types.PluginMetrics](cdc))
-	pluginScores := collections.NewMap(sb, PluginScoresPrefix, "plugin_scores", collections.PairKeyCodec(collections.StringKey, collections.Uint64Key), codec.CollValue[types.PluginScoreItem](cdc))
 
 	_, err := sb.Build()
 	if err != nil {
@@ -140,7 +138,6 @@ func NewKeeper(
 		votes:              votes,
 
 		pluginMetrics: pluginMetrics,
-		pluginScores:  pluginScores,
 
 		p: p,
 

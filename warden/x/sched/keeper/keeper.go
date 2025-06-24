@@ -308,7 +308,7 @@ func (k Keeper) callbackFee(ctx context.Context, gas uint64) (feeAmt *big.Int, f
 	baseFee := evmKeeper.GetBaseFee(sdkCtx)
 	gasInt := new(big.Int).SetUint64(gas)
 	feeAmt = new(big.Int).Mul(baseFee, gasInt)
-	fee = sdk.Coins{{Denom: params.EvmDenom, Amount: sdkmath.NewIntFromBigInt(feeAmt)}}
+	fee = sdk.NewCoins(sdk.NewCoin(params.EvmDenom, sdkmath.NewIntFromBigInt(feeAmt)))
 
 	return feeAmt, fee
 }

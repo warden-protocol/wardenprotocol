@@ -22,54 +22,54 @@ import "gogoproto/gogo.proto";
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1";
 
 message PluginMetrics {
-    // Id of the plugin.
-    string plugin_id = 1;
-    
-    uint64 tasks_count = 2;
-    uint64 results_count = 3;
-    string total_result_time_msec = 4 [
-        (cosmos_proto.scalar) = "cosmos.Int",
-        (gogoproto.customtype) = "cosmossdk.io/math.Int",
-        (gogoproto.nullable) = false
-    ];
+  // Id of the plugin.
+  string plugin_id = 1;
 
-    string total_input_size_bytes = 5 [
-        (cosmos_proto.scalar) = "cosmos.Int",
-        (gogoproto.customtype) = "cosmossdk.io/math.Int",
-        (gogoproto.nullable) = false
-    ];
-    
-    string total_output_size_bytes = 6 [
-        (cosmos_proto.scalar) = "cosmos.Int",
-        (gogoproto.customtype) = "cosmossdk.io/math.Int",
-        (gogoproto.nullable) = false
-    ];
+  uint64 tasks_count = 2;
+  uint64 results_count = 3;
+  string total_result_time_msec = 4 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "cosmossdk.io/math.Int",
+    (gogoproto.nullable) = false
+  ];
 
-    PluginScoreMetric score = 7;
+  string total_input_size_bytes = 5 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "cosmossdk.io/math.Int",
+    (gogoproto.nullable) = false
+  ];
 
-    // Total fees paid by users for using the plugin.
-    repeated cosmos.base.v1beta1.Coin total_fees = 8 [
-        (gogoproto.nullable) = false,
-        (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
-        (amino.dont_omitempty) = true,
-        (amino.encoding) = "legacy_coins"
-    ];
+  string total_output_size_bytes = 6 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "cosmossdk.io/math.Int",
+    (gogoproto.nullable) = false
+  ];
+
+  PluginScoreMetric score = 7;
+
+  // Total fees paid by users for using the plugin.
+  repeated cosmos.base.v1beta1.Coin total_fees = 8 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
+    (amino.dont_omitempty) = true,
+    (amino.encoding) = "legacy_coins"
+  ];
 }
 
 message PluginScoreMetric {
-    // The total score of the plugin.
-    string total_score = 1 [
-        (cosmos_proto.scalar) = "cosmos.Int",
-        (gogoproto.customtype) = "cosmossdk.io/math.Int",
-        (gogoproto.nullable) = false
-    ];
+  // The total score of the plugin.
+  string total_score = 1 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "cosmossdk.io/math.Int",
+    (gogoproto.nullable) = false
+  ];
 
-    // The amount of scores set by users.
-    uint64 scores_count = 2;
+  // The amount of scores set by users.
+  uint64 scores_count = 2;
 }
 
-message PluginScoreItem { 
-    string plugin_id = 1;
-    uint64 task_id = 2;
-    uint32 score = 3;
+message PluginScoreItem {
+  string plugin_id = 1;
+  uint64 task_id = 2;
+  uint32 score = 3;
 }

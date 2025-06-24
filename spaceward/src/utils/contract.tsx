@@ -56,7 +56,7 @@ export async function assertChain(
 			toastResult = toast({
 				title: "Error",
 				description:
-					(e as any)?.message ?? "An unexpected error has occured",
+					(e as any)?.message ?? "An unexpected error has occurred",
 				action: <a href={`https://chainlist.org/chain/${id}`} target="_blank" onClick={() => toastResult.dismiss()}>ChainList</a>,
 				duration: 999999,
 			});
@@ -118,7 +118,7 @@ export async function handleContractWrite(
 			id,
 			title: TxStatus.Failed,
 			description:
-				(e as any)?.message ?? "An unexpected error has occured",
+				(e as any)?.message ?? "An unexpected error has occurred",
 		});
 
 		throw e;

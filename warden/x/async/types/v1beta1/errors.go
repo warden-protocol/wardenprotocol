@@ -29,5 +29,7 @@ var (
 	ErrInsufficientFees     = sdkerrors.Register(ModuleName, 1106, "insufficient fees for plugin")
 	ErrNoSolvers            = sdkerrors.Register(ModuleName, 1107, "no solvers")
 	ErrInvalidTaskId        = sdkerrors.Register(ModuleName, 1108, "invalid task id")
-	ErrUnauthorised         = sdkerrors.Register(ModuleName, 1109, "unauthorized action")
+	ErrInvalidPluginId      = sdkerrors.Register(ModuleName, 1109, "invalid plugin id")
+	ErrTaskAlreadyHasScore  = sdkerrors.Register(ModuleName, 1110, "task already has score")
+	ErrUnauthorised         = sdkerrors.Register(ModuleName, 1111, "unauthorized action")
 )

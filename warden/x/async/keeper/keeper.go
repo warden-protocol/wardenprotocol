@@ -271,19 +271,6 @@ func (k *Keeper) AddPlugin(ctx context.Context, p types.Plugin) error {
 	return k.plugins.Set(ctx, id, p)
 }
 
-func (k *Keeper) GetPluginMetrics(ctx context.Context, plugin string) (types.PluginMetrics, error) {
-	if exists, _ := k.pluginMetrics.Has(ctx, plugin); exists {
-		return k.pluginMetrics.Get(ctx, plugin)
-	}
-
-	pluginMetrics := v1beta1.NewPluginMetrics(plugin)
-	if err := k.pluginMetrics.Set(ctx, plugin, pluginMetrics); err != nil {
-		return types.PluginMetrics{}, fmt.Errorf("failed to set plugin metrics for %s: %w", plugin, err)
-	}
-
-	return pluginMetrics, nil
-}
-
 func (k *Keeper) GetPlugin(ctx context.Context, id string) (types.Plugin, error) {
 	return k.plugins.Get(ctx, id)
 }

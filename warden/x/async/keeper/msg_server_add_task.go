@@ -72,7 +72,7 @@ func (k msgServer) AddTask(ctx context.Context, msg *types.MsgAddTask) (*types.M
 
 	pluginMetrics, err := k.GetPluginMetrics(ctx, msg.Plugin)
 	if err != nil {
-		return nil, errorsmod.Wrapf(types.ErrInvalidPlugin, "plugin %s does not have metrics", msg.Plugin)
+		return nil, errorsmod.Wrapf(types.ErrInvalidPlugin, "failed get metrics for plugin %s", msg.Plugin)
 	}
 
 	pluginMetrics.UpdateUsageMetrics(len(msg.Input))

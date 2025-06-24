@@ -28,7 +28,6 @@ import (
 
 	"github.com/warden-protocol/wardenprotocol/prophet"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
-	v1beta1 "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 
 type (
@@ -54,8 +53,8 @@ type (
 		tasks              *TaskKeeper
 		votes              collections.Map[collections.Pair[uint64, sdk.ConsAddress], int32]
 
-		pluginMetrics collections.Map[string, v1beta1.PluginMetrics]
-		pluginScores  collections.Map[collections.Pair[string, uint64], v1beta1.PluginScoreItem]
+		pluginMetrics collections.Map[string, types.PluginMetrics]
+		pluginScores  collections.Map[collections.Pair[string, uint64], types.PluginScoreItem]
 
 		p *prophet.P
 
@@ -112,8 +111,8 @@ func NewKeeper(
 	queueWeights := collections.NewMap(sb, QueueWeightPrefix, "queue_weights", collections.PairKeyCodec(QueueIDKey, sdk.ConsAddressKey), WeightValue)
 	queueTotalWeights := collections.NewMap(sb, QueueTotalWeightPrefix, "queue_total_weight", QueueIDKey, WeightValue)
 	queuePriorities := collections.NewMap(sb, QueuePriorityPrefix, "queue_priorities", collections.PairKeyCodec(QueueIDKey, sdk.ConsAddressKey), PriorityValue)
-	pluginMetrics := collections.NewMap(sb, PluginMetricsPrefix, "plugin_metrics", collections.StringKey, codec.CollValue[v1beta1.PluginMetrics](cdc))
-	pluginScores := collections.NewMap(sb, PluginScoresPrefix, "plugin_scores", collections.PairKeyCodec(collections.StringKey, collections.Uint64Key), codec.CollValue[v1beta1.PluginScoreItem](cdc))
+	pluginMetrics := collections.NewMap(sb, PluginMetricsPrefix, "plugin_metrics", collections.StringKey, codec.CollValue[types.PluginMetrics](cdc))
+	pluginScores := collections.NewMap(sb, PluginScoresPrefix, "plugin_scores", collections.PairKeyCodec(collections.StringKey, collections.Uint64Key), codec.CollValue[types.PluginScoreItem](cdc))
 
 	_, err := sb.Build()
 	if err != nil {

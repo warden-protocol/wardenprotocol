@@ -1,4 +1,5 @@
 chain_id := "warden_1337-1"
+evm_chain_id := "1337"
 shulgin := "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5"
 shulgin_mnemonic := "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
 val2 := "warden194j3dx4t7u80765k2puu3082vc39yfqnvrxqu7"
@@ -56,7 +57,7 @@ start bin="wardend" install="true":
     {{bin}} genesis add-genesis-plugin veniceimg
     {{bin}} genesis add-genesis-plugin quantkit
 
-    {{bin}} genesis gentx val 1000000000000000000000award
+    {{bin}} genesis gentx val 1000000000000000000000award --chain-id {{chain_id}}
     {{bin}} genesis collect-gentxs
     {{bin}} genesis add-genesis-slinky-markets
 
@@ -98,7 +99,7 @@ start bin="wardend" install="true":
       fi
     }
 
-    (post_start &) && {{bin}} start
+    (post_start &) && {{bin}} start --evm.evm-chain-id {{evm_chain_id}}
 
 # deploy a .wasm binary to the chain and return the contract address
 deploy-contract contract from="shulgin" label="":

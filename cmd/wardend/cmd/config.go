@@ -73,7 +73,6 @@ func initAppConfig() (string, interface{}) {
 		MetricsEnabled: false,
 	}
 
-	evmConfig := evmservercfg.DefaultEVMConfig()
 	jsonRpcConfig := evmservercfg.DefaultJSONRPCConfig()
 	jsonRpcConfig.Enable = true
 	tlsConfig := evmservercfg.DefaultTLSConfig()
@@ -84,6 +83,9 @@ func initAppConfig() (string, interface{}) {
 	veniceimgConfig := veniceimgconfig.DefaultConfig()
 
 	quantkitConfig := quantkitconfig.DefaultConfig()
+
+	evmConfig := evmservercfg.DefaultEVMConfig()
+	evmConfig.EVMChainID = 1337 // we typically use warden_1337-1 as our default chain id
 
 	customAppConfig := CustomAppConfig{
 		Config:  *srvCfg,

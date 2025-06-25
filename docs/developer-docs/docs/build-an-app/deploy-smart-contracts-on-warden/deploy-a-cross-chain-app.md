@@ -72,7 +72,7 @@ Before you start, complete the following prerequisites:
 
 ### 1.2. Add the contract
 
-1. In the `contracts` directory, create a new file `BurnableToken.sol` with the following contents:
+1. In the `contracts` directory, create a `BurnableToken.sol` file with the following contents:
 
 ```solidity title="burnable-token/contracts/BurnableToken.sol"
 
@@ -175,7 +175,7 @@ module.exports = {
 
 Now you need to add a migration script that will deploy the contract and mint the initial supply to the contract address.
 
-In `migrations`, create a new file `migrations/2_deploy_contracts.js` with the following contents:
+In `migrations`, create a `migrations/2_deploy_contracts.js` file with the following contents:
 
 ```javascript title="burnable-token/migrations/2_deploy_contracts.js"
 const BurnableToken = artifacts.require("BurnableToken");

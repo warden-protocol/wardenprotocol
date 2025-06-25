@@ -10,6 +10,7 @@ import (
 	evmcmn "github.com/cosmos/evm/precompiles/common"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	ethcmn "github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/tracing"
 	"github.com/ethereum/go-ethereum/core/vm"
 
 	"github.com/warden-protocol/wardenprotocol/precompiles/common"
@@ -88,47 +89,45 @@ func (p *Precompile) RequiredGas(input []byte) uint64 {
 
 // Run implements vm.PrecompiledContract.
 func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz []byte, err error) {
-	ctx, stateDB, snapshot, method, initialGas, args, err := p.RunSetup(evm, contract, readonly, p.IsTransaction)
+	ctx, stateDB, method, initialGas, args, err := p.RunSetup(evm, contract, readonly, p.IsTransaction)
 	if err != nil {
 		return nil, err
 	}
 
 	// This handles any out of gas errors that may occur during the execution of a precompile tx or query.
 	// It avoids panics and returns the out of gas error so the EVM can continue gracefully.
-	defer evmcmn.HandleGasError(ctx, contract, initialGas, &err, stateDB, snapshot)()
+	defer evmcmn.HandleGasError(ctx, contract, initialGas, &err)()
 
-	return p.RunAtomic(snapshot, stateDB, func() ([]byte, error) {
-		switch method.Name {
-		// transactions
-		case AddTaskMethod:
-			bz, err = p.AddTaskMethod(ctx, evm.Origin, stateDB, method, args)
-		// queries
-		case TaskByIdMethod:
-			bz, err = p.TaskByIdMethod(ctx, method, args)
-		case TasksMethod:
-			bz, err = p.TasksMethod(ctx, method, args)
-		case PendingTasksMethod:
-			bz, err = p.PendingTasksMethod(ctx, method, args)
-		case PluginsMethod:
-			bz, err = p.PluginsMethod(ctx, method, args)
-		}
+	switch method.Name {
+	// transactions
+	case AddTaskMethod:
+		bz, err = p.AddTaskMethod(ctx, evm.Origin, stateDB, method, args)
+	// queries
+	case TaskByIdMethod:
+		bz, err = p.TaskByIdMethod(ctx, method, args)
+	case TasksMethod:
+		bz, err = p.TasksMethod(ctx, method, args)
+	case PendingTasksMethod:
+		bz, err = p.PendingTasksMethod(ctx, method, args)
+	case PluginsMethod:
+		bz, err = p.PluginsMethod(ctx, method, args)
+	}
 
-		if err != nil {
-			return nil, err
-		}
+	if err != nil {
+		return nil, err
+	}
 
-		cost := ctx.GasMeter().GasConsumed() - initialGas
+	cost := ctx.GasMeter().GasConsumed() - initialGas
 
-		if !contract.UseGas(cost) {
-			return nil, vm.ErrOutOfGas
-		}
+	if !contract.UseGas(cost, nil, tracing.GasChangeCallPrecompiledContract) {
+		return nil, vm.ErrOutOfGas
+	}
 
-		if err := p.AddJournalEntries(stateDB, snapshot); err != nil {
-			return nil, err
-		}
+	if err := p.AddJournalEntries(stateDB); err != nil {
+		return nil, err
+	}
 
-		return bz, nil
-	})
+	return bz, nil
 }
 
 func (p *Precompile) IsTransaction(method *abi.Method) bool {

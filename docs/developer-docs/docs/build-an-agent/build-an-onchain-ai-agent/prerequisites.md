@@ -64,7 +64,7 @@ orders/
 ```
 
 :::note Full code
-You can find the full code of the example on GitHub: [`orders`](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders)
+You can find the full code of the example on GitHub: [`orders`](https://github.com/warden-protocol/wardenprotocol/tree/v0.6.3/solidity/orders)
 :::
 
 ## Required knowledge
@@ -76,7 +76,7 @@ You should learn about the following Warden features:
    - `x/warden`: Managing keys and handling signature requests  
      Functions: [keyById()](/build-an-app/interact-with-warden-modules/interact-with-x-warden/manage-keys#query-a-key-by-id), [newSignRequest()](/build-an-app/interact-with-warden-modules/interact-with-x-warden/manage-signature-requests#create-a-new-signature-request)  
    - `x/oracle`: The price feed system and data retrieval methods  
-     Functions: [getPrice()](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/slinky/ISlinky.sol)
+     Functions: [getPrice()](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/precompiles/slinky/ISlinky.sol)
    - `x/async`: Task-based operations and the price prediction system   
      Functions: [addTask()](/build-an-app/interact-with-warden-modules/interact-with-x-async#create-a-new-task), [taskById()](/build-an-app/interact-with-warden-modules/interact-with-x-async#query-a-task-by-id)  
 

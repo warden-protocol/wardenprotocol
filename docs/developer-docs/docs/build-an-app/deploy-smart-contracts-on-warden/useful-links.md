@@ -20,7 +20,7 @@ sidebar_position: 4
   - [Documentation for the storage helpers](https://docs.rs/cosmwasm-storage/latest/cosmwasm_storage/index.html)
 - **CosmWasm guides and examples**
   - [Awesome CosmWasm: a collection of resources](https://github.com/CosmWasm/awesome-cosmwasm)
-  - [Guides by Archway](https://docs.archway.io/developers/cosmwasm-documentation/introduction)
+  - [Guides by Archway](https://docs.archway.io/developers/smart-contracts/introduction)
   - [Creating CosmWasm contracts with sylvia](https://cosmwasm.github.io/sylvia-book/)
   - [Area-52: CosmWasm courses](https://area-52.io/)
   - [Examples of CosmWasm contracts by Deus Labs](https://github.com/deus-labs/cw-contracts)

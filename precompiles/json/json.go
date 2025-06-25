@@ -83,100 +83,98 @@ func (p *Precompile) RequiredGas(input []byte) uint64 {
 
 // Run implements vm.PrecompiledContract.
 func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz []byte, err error) {
-	ctx, stateDB, snapshot, method, initialGas, args, err := p.RunSetup(evm, contract, readonly, p.IsTransaction)
+	ctx, stateDB, method, initialGas, args, err := p.RunSetup(evm, contract, readonly, p.IsTransaction)
 	if err != nil {
 		return nil, err
 	}
 
 	// This handles any out of gas errors that may occur during the execution of a precompile tx or query.
 	// It avoids panics and returns the out of gas error so the EVM can continue gracefully.
-	defer evmcmn.HandleGasError(ctx, contract, initialGas, &err, stateDB, snapshot)()
+	defer evmcmn.HandleGasError(ctx, contract, initialGas, &err)()
 
-	return p.RunAtomic(snapshot, stateDB, func() ([]byte, error) {
-		switch method.Name {
-		// queries
-		case NewJsonMethod:
-			bz, err = p.NewJson(ctx, method, args)
-		case RemoveMethod:
-			bz, err = p.Remove(ctx, method, args)
-		case SetStringMethod:
-			bz, err = p.SetString(ctx, method, args)
-		case SetBoolMethod:
-			bz, err = p.SetBool(ctx, method, args)
-		case SetAddressMethod:
-			bz, err = p.SetAddressValue(ctx, method, args)
-		case SetInt256Method:
-			bz, err = p.SetInt256(ctx, method, args)
-		case SetUint256Method:
-			bz, err = p.SetUint256(ctx, method, args)
-		case SetFloatMethod:
-			bz, err = p.SetFloat(ctx, method, args)
-		case SetObjectMethod:
-			bz, err = p.SetObject(ctx, method, args)
-		case SetStringArrayMethod:
-			bz, err = p.SetStringArray(ctx, method, args)
-		case SetUintArrayMethod:
-			bz, err = p.SetUintArray(ctx, method, args)
-		case SetIntArrayMethod:
-			bz, err = p.SetIntArray(ctx, method, args)
-		case SetFloatArrayMethod:
-			bz, err = p.SetFloatArray(ctx, method, args)
-		case SetBoolArrayMethod:
-			bz, err = p.SetBoolArray(ctx, method, args)
-		case SetAddressArrayMethod:
-			bz, err = p.SetAddressArray(ctx, method, args)
-		case SetObjectsArrayMethod:
-			bz, err = p.SetObjectsArray(ctx, method, args)
-		case GetMethod:
-			bz, err = p.Get(ctx, method, args)
-		case GetStringMethod:
-			bz, err = p.GetString(ctx, method, args)
-		case GetBoolMethod:
-			bz, err = p.GetBool(ctx, method, args)
-		case GetAddressMethod:
-			bz, err = p.GetAddressValue(ctx, method, args)
-		case GetInt256Method:
-			bz, err = p.GetInt256(ctx, method, args)
-		case GetUint256Method:
-			bz, err = p.GetUint256(ctx, method, args)
-		case GetFloatMethod:
-			bz, err = p.GetFloat(ctx, method, args)
-		case GetStringArrayMethod:
-			bz, err = p.GetStringArray(ctx, method, args)
-		case GetUintArrayMethod:
-			bz, err = p.GetUintArray(ctx, method, args)
-		case GetIntArrayMethod:
-			bz, err = p.GetIntArray(ctx, method, args)
-		case GetFloatArrayMethod:
-			bz, err = p.GetFloatArray(ctx, method, args)
-		case GetBoolArrayMethod:
-			bz, err = p.GetBoolArray(ctx, method, args)
-		case GetAddressArrayMethod:
-			bz, err = p.GetAddressArray(ctx, method, args)
-		case GetObjectsArrayMethod:
-			bz, err = p.GetObjectsArray(ctx, method, args)
-		case ReadMethod:
-			bz, err = p.Read(ctx, method, args)
-		case WriteMethod:
-			bz, err = p.Write(ctx, method, args)
-		}
+	switch method.Name {
+	// queries
+	case NewJsonMethod:
+		bz, err = p.NewJson(ctx, method, args)
+	case RemoveMethod:
+		bz, err = p.Remove(ctx, method, args)
+	case SetStringMethod:
+		bz, err = p.SetString(ctx, method, args)
+	case SetBoolMethod:
+		bz, err = p.SetBool(ctx, method, args)
+	case SetAddressMethod:
+		bz, err = p.SetAddressValue(ctx, method, args)
+	case SetInt256Method:
+		bz, err = p.SetInt256(ctx, method, args)
+	case SetUint256Method:
+		bz, err = p.SetUint256(ctx, method, args)
+	case SetFloatMethod:
+		bz, err = p.SetFloat(ctx, method, args)
+	case SetObjectMethod:
+		bz, err = p.SetObject(ctx, method, args)
+	case SetStringArrayMethod:
+		bz, err = p.SetStringArray(ctx, method, args)
+	case SetUintArrayMethod:
+		bz, err = p.SetUintArray(ctx, method, args)
+	case SetIntArrayMethod:
+		bz, err = p.SetIntArray(ctx, method, args)
+	case SetFloatArrayMethod:
+		bz, err = p.SetFloatArray(ctx, method, args)
+	case SetBoolArrayMethod:
+		bz, err = p.SetBoolArray(ctx, method, args)
+	case SetAddressArrayMethod:
+		bz, err = p.SetAddressArray(ctx, method, args)
+	case SetObjectsArrayMethod:
+		bz, err = p.SetObjectsArray(ctx, method, args)
+	case GetMethod:
+		bz, err = p.Get(ctx, method, args)
+	case GetStringMethod:
+		bz, err = p.GetString(ctx, method, args)
+	case GetBoolMethod:
+		bz, err = p.GetBool(ctx, method, args)
+	case GetAddressMethod:
+		bz, err = p.GetAddressValue(ctx, method, args)
+	case GetInt256Method:
+		bz, err = p.GetInt256(ctx, method, args)
+	case GetUint256Method:
+		bz, err = p.GetUint256(ctx, method, args)
+	case GetFloatMethod:
+		bz, err = p.GetFloat(ctx, method, args)
+	case GetStringArrayMethod:
+		bz, err = p.GetStringArray(ctx, method, args)
+	case GetUintArrayMethod:
+		bz, err = p.GetUintArray(ctx, method, args)
+	case GetIntArrayMethod:
+		bz, err = p.GetIntArray(ctx, method, args)
+	case GetFloatArrayMethod:
+		bz, err = p.GetFloatArray(ctx, method, args)
+	case GetBoolArrayMethod:
+		bz, err = p.GetBoolArray(ctx, method, args)
+	case GetAddressArrayMethod:
+		bz, err = p.GetAddressArray(ctx, method, args)
+	case GetObjectsArrayMethod:
+		bz, err = p.GetObjectsArray(ctx, method, args)
+	case ReadMethod:
+		bz, err = p.Read(ctx, method, args)
+	case WriteMethod:
+		bz, err = p.Write(ctx, method, args)
+	}
 
-		if err != nil {
-			return nil, err
-		}
+	if err != nil {
+		return nil, err
+	}
 
-		cost := ctx.GasMeter().GasConsumed() - initialGas
+	cost := ctx.GasMeter().GasConsumed() - initialGas
 
-		if !contract.UseGas(cost, nil, tracing.GasChangeCallPrecompiledContract) {
-			return nil, vm.ErrOutOfGas
-		}
+	if !contract.UseGas(cost, nil, tracing.GasChangeCallPrecompiledContract) {
+		return nil, vm.ErrOutOfGas
+	}
 
-		if err := p.AddJournalEntries(stateDB, snapshot); err != nil {
-			return nil, err
-		}
+	if err := p.AddJournalEntries(stateDB); err != nil {
+		return nil, err
+	}
 
-		return bz, nil
-	})
+	return bz, nil
 }
 
 func (p *Precompile) IsTransaction(method *abi.Method) bool {

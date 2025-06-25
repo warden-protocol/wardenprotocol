@@ -66,6 +66,7 @@ import (
 	erc20keeper "github.com/cosmos/evm/x/erc20/keeper"
 	erc20types "github.com/cosmos/evm/x/erc20/types"
 	feemarketkeeper "github.com/cosmos/evm/x/feemarket/keeper"
+	ibccallbackskeeper "github.com/cosmos/evm/x/ibc/callbacks/keeper"
 	transferkeeper "github.com/cosmos/evm/x/ibc/transfer/keeper" // NOTE: override ICS20 keeper to support IBC transfers of ERC20 tokens
 	precisebankkeeper "github.com/cosmos/evm/x/precisebank/keeper"
 	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
@@ -164,6 +165,7 @@ type App struct {
 	EVMKeeper         *evmkeeper.Keeper
 	Erc20Keeper       erc20keeper.Keeper
 	PreciseBankKeeper precisebankkeeper.Keeper
+	CallbackKeeper    ibccallbackskeeper.ContractKeeper
 
 	// simulation manager
 	sm *module.SimulationManager
@@ -680,7 +682,7 @@ func BlockedAddresses() map[string]bool {
 	blockedPrecompilesHex = append(blockedPrecompilesHex, precompiles.WardenPrecompilesAddresses()...)
 
 	for _, precompile := range blockedPrecompilesHex {
-		result[cosmosevmutils.EthHexToCosmosAddr(precompile).String()] = true
+		result[cosmosevmutils.Bech32StringFromHexAddress(precompile)] = true
 	}
 
 	return result

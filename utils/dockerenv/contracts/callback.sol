@@ -93,8 +93,10 @@ contract Destination {
 
             output = task.taskResponse.result.output;
         }
-        uint256 fees = mailbox.quoteDispatch(origin, sender, output);
-        msgId = mailbox.dispatch{value: fees}(origin, sender, output);
+        
+        bytes memory data = abi.encode(output, id);
+        uint256 fees = mailbox.quoteDispatch(origin, sender, data);
+        msgId = mailbox.dispatch{value: fees}(origin, sender, data);
         return o;
     }
     

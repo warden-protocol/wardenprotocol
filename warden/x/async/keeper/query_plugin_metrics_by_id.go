@@ -15,7 +15,10 @@ package keeper
 
 import (
 	"context"
+	"math"
 
+	cosmosmath "cosmossdk.io/math"
+	cosmos_types "github.com/cosmos/cosmos-sdk/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
@@ -27,12 +30,49 @@ func (k Keeper) PluginMetricsById(ctx context.Context, req *types.QueryPluginMet
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	metrics, err := k.pluginMetrics.Get(ctx, req.Id)
+	metrics, err := k.GetPluginMetrics(ctx, req.Id)
 	if err != nil {
 		return nil, status.Error(codes.NotFound, err.Error())
 	}
 
+	averageTimeToGetResultMsec := cosmosmath.ZeroInt()
+	if metrics.ResultsCount > 0 {
+		averageTimeToGetResultMsec = metrics.TotalResultTimeMsec.Quo(cosmosmath.NewIntFromUint64(metrics.ResultsCount))
+	}
+
+	averageInputSizeBytes := cosmosmath.ZeroInt()
+	if metrics.TasksCount > 0 {
+		averageInputSizeBytes = metrics.TotalInputSizeBytes.Quo(cosmosmath.NewIntFromUint64(metrics.TasksCount))
+	}
+
+	averageOutputSizeBytes := cosmosmath.ZeroInt()
+	if metrics.ResultsCount > 0 {
+		averageOutputSizeBytes = metrics.TotalOutputSizeBytes.Quo(cosmosmath.NewIntFromUint64(metrics.ResultsCount))
+	}
+
+	precision := int64(6)
+	successTaskRatio := cosmosmath.LegacyNewDec(0)
+	if metrics.ResultsCount > 0 {
+		successTaskRatio = cosmosmath.LegacyNewDecFromIntWithPrec(cosmosmath.NewIntFromUint64(metrics.TasksCount*uint64(math.Pow10(int(precision)))), precision).
+			Quo(cosmosmath.LegacyNewDecFromIntWithPrec(cosmosmath.NewIntFromUint64(metrics.ResultsCount*uint64(math.Pow10(int(precision)))), precision))
+	}
+
+	avgFee := []cosmos_types.Coin{}
+	for _, v := range metrics.TotalFees {
+		avgFee = append(avgFee, cosmos_types.Coin{
+			Denom:  v.Denom,
+			Amount: v.Amount.Quo(cosmosmath.NewIntFromUint64(metrics.ResultsCount)),
+		})
+	}
+
 	return &types.QueryPluginMetricsByIdResponse{
-		Metrics: &metrics,
+		Plugin:                     req.Id,
+		AverageTimeToGetResultMsec: averageTimeToGetResultMsec,
+		AverageInputSizeBytes:      averageInputSizeBytes,
+		AverageOutputSizeBytes:     averageOutputSizeBytes,
+		TasksCount:                 metrics.TasksCount,
+		ResultsCount:               metrics.ResultsCount,
+		SuccessTaskRatio:           successTaskRatio,
+		AverageFeePaid:             avgFee,
 	}, nil
 }

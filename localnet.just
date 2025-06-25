@@ -52,6 +52,7 @@ start bin="wardend" install="true":
 
     {{bin}} genesis add-genesis-plugin echo
     {{bin}} genesis add-genesis-plugin http
+    {{bin}} genesis add-genesis-plugin pfp
     {{bin}} genesis add-genesis-plugin pricepred
     {{bin}} genesis add-genesis-plugin venice
     {{bin}} genesis add-genesis-plugin veniceimg

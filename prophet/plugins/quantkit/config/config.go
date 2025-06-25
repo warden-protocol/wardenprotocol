@@ -17,7 +17,7 @@ func DefaultConfig() *Config {
 
 const DefaultConfigTemplate = `
 ###############################################################################
-###                      Quantkit configuration                               ###
+###                      Quantkit configuration                             ###
 ###############################################################################
 [quantkit]
 

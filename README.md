@@ -21,7 +21,7 @@ is released under the terms of the Apache 2.0 License - see [LICENSE](./LICENSE)
 for details.
 
 Elements of this project are based on the work made by Qredo Ltd on 
-[Fusion Chain](https://github.com/qredo/fusionchain) and were released under 
+Fusion Chain and were released under 
 the Apache 2 license. See [NOTICE](./NOTICE) for more details.
 
 **IMPORTANT EXCEPTION:**

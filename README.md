@@ -20,6 +20,10 @@ With the exception of the SpaceWard folder and the x/async module, this project
 is released under the terms of the Apache 2.0 License - see [LICENSE](./LICENSE) 
 for details.
 
+Elements of this project are based on the work made by Qredo Ltd on 
+Fusion Chain and were released under 
+the Apache 2 license. See [NOTICE](./NOTICE) for more details.
+
 **IMPORTANT EXCEPTION:**
 
 The following module(s) included in this repository are **NOT** covered by the 

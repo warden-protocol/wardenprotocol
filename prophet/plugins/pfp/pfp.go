@@ -108,6 +108,10 @@ func (p Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {
 		return nil, err
 	}
 
+	if len(res.Images) == 0 {
+		return nil, errors.New("PFP: no images generated")
+	}
+
 	// Get the bytes of the generated image
 	imgBytes, err := base64.StdEncoding.DecodeString(res.Images[0])
 	if err != nil {

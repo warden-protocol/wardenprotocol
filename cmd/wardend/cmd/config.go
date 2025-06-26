@@ -9,6 +9,7 @@ import (
 	oracleconfig "github.com/skip-mev/slinky/oracle/config"
 
 	httpconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/http/config"
+	pfpconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/pfp/config"
 	pricepredconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/pricepred/config"
 	quantkitconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/quantkit/config"
 	veniceconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/venice/config"
@@ -43,6 +44,7 @@ func initAppConfig() (string, interface{}) {
 		// Prophet plugins
 		PricePred pricepredconfig.Config `mapstructure:"pricepred"`
 		Http      httpconfig.Config      `mapstructure:"http"`
+		PFP       pfpconfig.Config       `mapstructure:"pfp"`
 		Quantkit  quantkitconfig.Config  `mapstructure:"quantkit"`
 		Venice    veniceconfig.Config    `mapstructure:"venice"`
 		Veniceimg veniceimgconfig.Config `mapstructure:"veniceimg"`
@@ -79,10 +81,10 @@ func initAppConfig() (string, interface{}) {
 
 	pricePredictionConfig := pricepredconfig.DefaultConfig()
 	httpConfig := httpconfig.DefaultConfig()
+	pfpConfig := pfpconfig.DefaultConfig()
+	quantkitConfig := quantkitconfig.DefaultConfig()
 	veniceConfig := veniceconfig.DefaultConfig()
 	veniceimgConfig := veniceimgconfig.DefaultConfig()
-
-	quantkitConfig := quantkitconfig.DefaultConfig()
 
 	evmConfig := evmservercfg.DefaultEVMConfig()
 	evmConfig.EVMChainID = 1337 // we typically use warden_1337-1 as our default chain id
@@ -96,6 +98,7 @@ func initAppConfig() (string, interface{}) {
 		// Rosetta:   *evmservercfg.DefaultRosettaConfig(),
 		PricePred: *pricePredictionConfig,
 		Http:      *httpConfig,
+		PFP:       *pfpConfig,
 		Quantkit:  *quantkitConfig,
 		Venice:    *veniceConfig,
 		Veniceimg: *veniceimgConfig,
@@ -107,6 +110,7 @@ func initAppConfig() (string, interface{}) {
 		// evmservercfg.DefaultRosettaConfigTemplate +
 		pricepredconfig.DefaultConfigTemplate +
 		httpconfig.DefaultConfigTemplate +
+		pfpconfig.DefaultConfigTemplate +
 		quantkitconfig.DefaultConfigTemplate +
 		veniceconfig.DefaultConfigTemplate +
 		veniceimgconfig.DefaultConfigTemplate

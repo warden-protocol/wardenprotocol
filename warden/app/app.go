@@ -85,6 +85,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/prophet"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/echo"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/http"
+	"github.com/warden-protocol/wardenprotocol/prophet/plugins/pfp"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/pricepred"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/quantkit"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/venice"
@@ -244,6 +245,15 @@ func registerProphetHandlers(appOpts servertypes.AppOptions) {
 	if cast.ToBool(appOpts.Get("quantkit.enabled")) {
 		prophet.Register("quantkit", quantkit.New(cast.ToString(appOpts.Get("quantkit.api-key")),
 			cast.ToString(appOpts.Get("quantkit.api-url"))))
+	}
+
+	if cast.ToBool(appOpts.Get("pfp.enabled")) {
+		prophet.Register("pfp", pfp.New(cast.ToString(appOpts.Get("pfp.api-key")),
+			cast.ToString(appOpts.Get("pfp.api-url")),
+			cast.ToString(appOpts.Get("pfp.bucket-key")),
+			cast.ToString(appOpts.Get("pfp.bucket-secret-key")),
+			cast.ToString(appOpts.Get("pfp.bucket-name")),
+			cast.ToString(appOpts.Get("pfp.bucket-region"))))
 	}
 
 	if cast.ToBool(appOpts.Get("venice.enabled")) {

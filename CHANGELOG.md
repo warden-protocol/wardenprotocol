@@ -46,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - (x/async) Improve error message when there are no solvers registered for a plugin
 - (x/async) Add a list of plugins to register onchain to the genesis file
 - (x/async) Initial version of a Venice.ai plugin for LLM completions
+- (x/async) PFP image generation plugin using Venice.ai
 - (wardend) Fixed EVM initialization on chain id different than "warden-1337_1"
 
 ### Consensus Breaking Changes
@@ -267,7 +268,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     * This is useful for users who want to keep their signatures private, allowing them to use in dApps such as dYdX, where the signature is used to "login".
 * (x/warden) Remove deprecated `SignMethod` field from `MsgNewSignatureRequest`. Use analyzers instead.
 * (x/act) Fix bug for Rules hooks not having the creator of the Action in the context
-* (x/act) Added a new MsgCheckAction for manually re-checking the action rule status 
+* (x/act) Added a new MsgCheckAction for manually re-checking the action rule status
 * (x/act) Added Export/Import for the State the module (`Rules`, `Actions`)
 * (x/gmp) Added a new module to make Axelar GMP requests from Warden.
 * (cosmwasm) Installed IBC-Hooks to be able to call CosmWasm contracts from the other chains.
@@ -355,5 +356,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v0.1.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.1.0) - 2024-03-06
 
 Initial release of `wardend` and launch of the Alfama testnet.
-
-

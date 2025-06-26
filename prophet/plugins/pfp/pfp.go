@@ -5,6 +5,7 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/base64"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -113,7 +114,7 @@ func (p Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {
 		return nil, err
 	}
 
-	metaURL, err := p.UploadToBucket(imgBytes, &in)
+	metaURL, err := p.UploadToBucket(ctx, imgBytes, &in)
 	if err != nil {
 		return nil, err
 	}
@@ -168,15 +169,15 @@ func (c *imageGen) generate(ctx context.Context, cfgScale float32, model string,
 	return res, nil
 }
 
-func (p *Plugin) UploadToBucket(image []byte, input *inputPayload) (string, error) {
+func (p *Plugin) UploadToBucket(ctx context.Context, image []byte, input *inputPayload) (string, error) {
 	// Generate a hash of the bytes to use as file name
 	hasher := sha256.New()
 	hasher.Write(image)
 	hash := hasher.Sum(nil)
-	imgName := fmt.Sprintf("%x", hash)
+	imgName := hex.EncodeToString(hash)
 	imgFilename := imgName + ".jpg"
 
-	err := p.UploadFile("image/jpg", imgFilename, image)
+	err := p.UploadFile(ctx, "image/jpg", imgFilename, image)
 	if err != nil {
 		return "", err
 	}
@@ -195,15 +196,16 @@ func (p *Plugin) UploadToBucket(image []byte, input *inputPayload) (string, erro
 	metaFilename := imgName + ".json"
 
 	// Upload the meta file
-	err = p.UploadFile("application/json", metaFilename, metaData)
+	err = p.UploadFile(ctx, "application/json", metaFilename, metaData)
 	if err != nil {
 		return "", err
 	}
+
 	return p.getPublicURL(metaFilename), nil
 }
 
-func (p *Plugin) UploadFile(mimeType, filePath string, fileData []byte) error {
-	cfg, err := config.LoadDefaultConfig(context.TODO(),
+func (p *Plugin) UploadFile(ctx context.Context, mimeType, filePath string, fileData []byte) error {
+	cfg, err := config.LoadDefaultConfig(ctx,
 		config.WithRegion(p.bucketStorage.bucketRegion),
 		config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(
 			p.bucketStorage.bucketKey,
@@ -226,7 +228,7 @@ func (p *Plugin) UploadFile(mimeType, filePath string, fileData []byte) error {
 		ContentType: aws.String(mimeType),
 	}
 
-	_, err = client.PutObject(context.TODO(), input)
+	_, err = client.PutObject(ctx, input)
 	if err != nil {
 		return err
 	}
@@ -234,7 +236,7 @@ func (p *Plugin) UploadFile(mimeType, filePath string, fileData []byte) error {
 	return nil
 }
 
-// getPublicURL returns the public URL for an object
+// getPublicURL returns the public URL for an object.
 func (p *Plugin) getPublicURL(filePath string) string {
 	return fmt.Sprintf("https://%s.s3.%s.amazonaws.com/%s", p.bucketStorage.bucketName, p.bucketStorage.bucketRegion, filePath)
 }

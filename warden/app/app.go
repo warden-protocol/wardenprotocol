@@ -252,7 +252,8 @@ func registerProphetHandlers(appOpts servertypes.AppOptions) {
 			cast.ToString(appOpts.Get("pfp.api-url")),
 			cast.ToString(appOpts.Get("pfp.bucket-key")),
 			cast.ToString(appOpts.Get("pfp.bucket-secret-key")),
-			cast.ToString(appOpts.Get("pfp.bucket-id"))))
+			cast.ToString(appOpts.Get("pfp.bucket-name")),
+			cast.ToString(appOpts.Get("pfp.bucket-region"))))
 	}
 
 	if cast.ToBool(appOpts.Get("venice.enabled")) {

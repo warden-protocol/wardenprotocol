@@ -6,7 +6,8 @@ type Config struct {
 	ApiURL          string `mapstructure:"api-url" toml:"api-url"`
 	BucketKey       string `mapstructure:"bucket-key" toml:"bucket-key"`
 	BucketSecretKey string `mapstructure:"bucket-secret-key" toml:"bucket-secret-key"`
-	BucketID        string `mapstructure:"bucket-id" toml:"bucket-id"`
+	BucketName      string `mapstructure:"bucket-name" toml:"bucket-name"`
+	BucketRegion    string `mapstructure:"bucket-region" toml:"bucket-region"`
 }
 
 // DefaultConfig returns a default configuration for Quantkit plugin.
@@ -17,7 +18,8 @@ func DefaultConfig() *Config {
 		ApiURL:          "",
 		BucketKey:       "",
 		BucketSecretKey: "",
-		BucketID:        "",
+		BucketName:      "",
+		BucketRegion:    "",
 	}
 }
 
@@ -36,14 +38,16 @@ api-key = "{{ .PFP.ApiKey }}"
 # API URL used when making PFP API requests
 api-url = "{{ .PFP.ApiURL }}"
 
-# API Key used when storing PFP data
+# Bucket Key used when storing PFP data on S3
 bucket-key = "{{ .PFP.BucketKey }}"
 
-# API Service Key used whenstoring PFP data
+# Bucket Secret Key used when storing PFP data on S3
 bucket-secret-key = "{{ .PFP.BucketSecretKey }}"
 
-# API URL used when storing PFP data
-bucket-id = "{{ .PFP.BucketID }}"
+# Bucket name used when storing PFP data on S3
+bucket-name = "{{ .PFP.BucketName }}"
 
+# Bucket region for S3
+bucket-region = "{{ .PFP.BucketRegion }}"
 
 `

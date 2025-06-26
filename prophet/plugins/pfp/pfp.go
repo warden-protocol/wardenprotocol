@@ -21,7 +21,7 @@ type Plugin struct {
 	bucketStorage storageClient
 }
 
-func New(apiKey string, apiURL string, bucketKey string, bucketServiceKey string, bucketID string) Plugin {
+func New(apiKey, apiURL, bucketKey, bucketSecretKey, bucketName, bucketRegion string) Plugin {
 	return Plugin{
 		imageGen: imageGen{
 			c:      &http.Client{},
@@ -29,10 +29,11 @@ func New(apiKey string, apiURL string, bucketKey string, bucketServiceKey string
 			apiURL: apiURL,
 		},
 		bucketStorage: storageClient{
-			c:                &http.Client{},
-			bucketKey:        bucketKey,
-			bucketServiceKey: bucketServiceKey,
-			bucketID:         bucketID,
+			c:               &http.Client{},
+			bucketKey:       bucketKey,
+			bucketSecretKey: bucketSecretKey,
+			bucketName:      bucketName,
+			bucketRegion:    bucketRegion,
 		},
 	}
 }
@@ -60,10 +61,11 @@ type imageGen struct {
 }
 
 type storageClient struct {
-	c                *http.Client
-	bucketKey        string
-	bucketServiceKey string
-	bucketID         string
+	c               *http.Client
+	bucketKey       string
+	bucketSecretKey string
+	bucketName      string
+	bucketRegion    string
 }
 
 type generatePayload struct {
@@ -180,7 +182,7 @@ func (p *Plugin) UploadToBucket(image []byte, input *inputPayload) (string, erro
 	}
 
 	// Get public URL for the image
-	imageURL := getPublicURL(imgFilename)
+	imageURL := p.getPublicURL(imgFilename)
 
 	metaData, err := json.Marshal(imageMetadata{
 		Name:        input.Name,
@@ -197,22 +199,15 @@ func (p *Plugin) UploadToBucket(image []byte, input *inputPayload) (string, erro
 	if err != nil {
 		return "", err
 	}
-	return getPublicURL(metaFilename), nil
+	return p.getPublicURL(metaFilename), nil
 }
 
 func (p *Plugin) UploadFile(mimeType, filePath string, fileData []byte) error {
-	bucket := "warden-ethcc"
-	region := "eu-west-1"
-
-	if filePath == "" || p.bucketStorage.bucketKey == "" || p.bucketStorage.bucketServiceKey == "" {
-		return errors.New("Failed to load AWS credentials (empty)")
-	}
-
 	cfg, err := config.LoadDefaultConfig(context.TODO(),
-		config.WithRegion(region),
+		config.WithRegion(p.bucketStorage.bucketRegion),
 		config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(
 			p.bucketStorage.bucketKey,
-			p.bucketStorage.bucketServiceKey,
+			p.bucketStorage.bucketSecretKey,
 			"", // optional
 		)),
 	)
@@ -225,7 +220,7 @@ func (p *Plugin) UploadFile(mimeType, filePath string, fileData []byte) error {
 
 	// Upload object
 	input := &s3.PutObjectInput{
-		Bucket:      aws.String(bucket),
+		Bucket:      aws.String(p.bucketStorage.bucketName),
 		Key:         aws.String(filePath),
 		Body:        bytes.NewReader(fileData),
 		ContentType: aws.String(mimeType),
@@ -240,6 +235,6 @@ func (p *Plugin) UploadFile(mimeType, filePath string, fileData []byte) error {
 }
 
 // getPublicURL returns the public URL for an object
-func getPublicURL(filePath string) string {
-	return fmt.Sprintf("https://warden-ethcc.s3.eu-west-1.amazonaws.com/%s", filePath)
+func (p *Plugin) getPublicURL(filePath string) string {
+	return fmt.Sprintf("https://%s.s3.%s.amazonaws.com/%s", p.bucketStorage.bucketName, p.bucketStorage.bucketRegion, filePath)
 }

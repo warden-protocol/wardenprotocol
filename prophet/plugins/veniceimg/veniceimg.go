@@ -25,7 +25,6 @@ func New(apiKey string) Plugin {
 }
 
 type inputPayload struct {
-	CfgScale    int    `json:"cfg_scale"`
 	Model       string `json:"model"`
 	Prompt      string `json:"prompt"`
 	Steps       int    `json:"steps"`
@@ -38,7 +37,7 @@ func (p Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {
 		return nil, err
 	}
 
-	res, err := p.veniceimg.generate(ctx, in.CfgScale, in.Model, in.Prompt, in.Steps, in.StylePreset)
+	res, err := p.veniceimg.generate(ctx, in.Model, in.Prompt, in.Steps, in.StylePreset)
 	if err != nil {
 		return nil, err
 	}
@@ -61,9 +60,7 @@ type veniceimgClient struct {
 }
 
 type generatePayload struct {
-	CfgScale      int    `json:"cfg_scale"`
 	Format        string `json:"format"`
-	Height        int    `json:"height"`
 	HideWatermark bool   `json:"hide_watermark"`
 	Model         string `json:"model"`
 	Prompt        string `json:"prompt"`
@@ -85,11 +82,9 @@ type generateResponse struct {
 	Timing  timing          `json:"timing"`
 }
 
-func (c *veniceimgClient) generate(ctx context.Context, cfgScale int, model string, prompt string, steps int, stylePreset string) (generateResponse, error) {
+func (c *veniceimgClient) generate(ctx context.Context, model string, prompt string, steps int, stylePreset string) (generateResponse, error) {
 	body, err := json.Marshal(generatePayload{
-		CfgScale:      cfgScale,
 		Format:        "webp",
-		Height:        480,
 		HideWatermark: true,
 		Model:         model,
 		Prompt:        prompt,

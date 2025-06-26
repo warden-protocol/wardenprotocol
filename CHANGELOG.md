@@ -57,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - (x/async) Add Plugin's timeout param. This is the maximum time a solver has for submitting the result before the Task is marked as errored automatically.
 - (x/crisis) Remove deprecated x/crisis module. See https://github.com/cosmos/cosmos-sdk/pull/23722. Will be removed in Cosmos SDK v0.54.
 - (x/sched) Fix a bug leading to invalid sdk.Coins when callback fees were zero
+- (x/async) Add governance gated message MsgAddPlugin to create new plugins after genesis
 
 ### Bug Fixes
 

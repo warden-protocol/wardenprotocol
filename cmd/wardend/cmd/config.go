@@ -44,7 +44,7 @@ func initAppConfig() (string, interface{}) {
 		// Prophet plugins
 		PricePred pricepredconfig.Config `mapstructure:"pricepred"`
 		Http      httpconfig.Config      `mapstructure:"http"`
-		Pfp       pfpconfig.Config       `mapstructure:"pfp"`
+		PFP       pfpconfig.Config       `mapstructure:"pfp"`
 		Quantkit  quantkitconfig.Config  `mapstructure:"quantkit"`
 		Venice    veniceconfig.Config    `mapstructure:"venice"`
 		Veniceimg veniceimgconfig.Config `mapstructure:"veniceimg"`
@@ -98,7 +98,7 @@ func initAppConfig() (string, interface{}) {
 		// Rosetta:   *evmservercfg.DefaultRosettaConfig(),
 		PricePred: *pricePredictionConfig,
 		Http:      *httpConfig,
-		Pfp:       *pfpConfig,
+		PFP:       *pfpConfig,
 		Quantkit:  *quantkitConfig,
 		Venice:    *veniceConfig,
 		Veniceimg: *veniceimgConfig,

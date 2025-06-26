@@ -6,10 +6,14 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 
-	storage_go "github.com/supabase-community/storage-go"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/credentials"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
 type Plugin struct {
@@ -17,7 +21,7 @@ type Plugin struct {
 	bucketStorage storageClient
 }
 
-func New(apiKey string, apiURL string, bucketKey string, bucketID string) Plugin {
+func New(apiKey string, apiURL string, bucketKey string, bucketServiceKey string, bucketID string) Plugin {
 	return Plugin{
 		imageGen: imageGen{
 			c:      &http.Client{},
@@ -25,9 +29,10 @@ func New(apiKey string, apiURL string, bucketKey string, bucketID string) Plugin
 			apiURL: apiURL,
 		},
 		bucketStorage: storageClient{
-			c:         &http.Client{},
-			bucketKey: bucketKey,
-			bucketID:  bucketID,
+			c:                &http.Client{},
+			bucketKey:        bucketKey,
+			bucketServiceKey: bucketServiceKey,
+			bucketID:         bucketID,
 		},
 	}
 }
@@ -40,70 +45,12 @@ type imageMetadata struct {
 }
 
 type inputPayload struct {
-	CfgScale    int    `json:"cfg_scale"`
-	Model       string `json:"model"`
-	Prompt      string `json:"prompt"`
-	Steps       int    `json:"steps"`
-	StylePreset string `json:"style_preset"`
-}
-
-func (p Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {
-	var in inputPayload
-	if err := json.Unmarshal(input, &in); err != nil {
-		return nil, err
-	}
-
-	res, err := p.imageGen.generate(ctx, in.CfgScale, in.Model, in.Prompt, in.Steps, in.StylePreset)
-	if err != nil {
-		return nil, err
-	}
-
-	// Get the bytes of the generated image
-	imgBytes, err := base64.StdEncoding.DecodeString(res.Images[0])
-	if err != nil {
-		return nil, err
-	}
-
-	// Generate a hash of the bytes to use as file name
-	hasher := sha256.New()
-	hasher.Write(imgBytes)
-	hash := hasher.Sum(nil)
-	imgName := fmt.Sprintf("%x", hash)
-	imgFilename := imgName + ".jpg"
-
-	// Prepare Supabase client
-	baseURL := fmt.Sprintf("https://%s.supabase.co/storage/v1", p.bucketStorage.bucketID)
-	storageClient := storage_go.NewClient(baseURL, p.bucketStorage.bucketKey, nil)
-
-	// Store the image in the Supabase bucket
-	_, err = storageClient.UploadFile(imgName, imgFilename, bytes.NewReader(imgBytes))
-	if err != nil {
-		return nil, err
-	}
-
-	// Generate the metadata file
-	meta, err := json.Marshal(imageMetadata{
-		Name:        imgName,
-		Description: in.Prompt,
-		Image:       baseURL + imgName,
-	})
-	if err != nil {
-		return nil, err
-	}
-	metaURL := baseURL + imgName
-
-	// Store the metadata file
-	_, err = storageClient.UploadFile(imgName, imgName, bytes.NewReader([]byte(meta)))
-	if err != nil {
-		return nil, err
-	}
-
-	// Return the metadata URL
-	return []byte(metaURL), nil
-}
-
-func (p Plugin) Verify(ctx context.Context, input, output []byte) error {
-	return nil
+	Name        string  `json:"name"`
+	CfgScale    float32 `json:"cfg_scale"`
+	Model       string  `json:"model"`
+	Prompt      string  `json:"prompt"`
+	Steps       int     `json:"steps"`
+	StylePreset string  `json:"style_preset"`
 }
 
 type imageGen struct {
@@ -113,20 +60,20 @@ type imageGen struct {
 }
 
 type storageClient struct {
-	c         *http.Client
-	bucketKey string
-	bucketID  string
+	c                *http.Client
+	bucketKey        string
+	bucketServiceKey string
+	bucketID         string
 }
 
 type generatePayload struct {
-	CfgScale      int    `json:"cfg_scale"`
-	Format        string `json:"format"`
-	Height        int    `json:"height"`
-	HideWatermark bool   `json:"hide_watermark"`
-	Model         string `json:"model"`
-	Prompt        string `json:"prompt"`
-	Steps         int    `json:"steps"`
-	StylePreset   string `json:"style_preset"`
+	CfgScale      float32 `json:"cfg_scale"`
+	Format        string  `json:"format"`
+	HideWatermark bool    `json:"hide_watermark"`
+	Model         string  `json:"model"`
+	Prompt        string  `json:"prompt"`
+	Steps         int     `json:"steps"`
+	StylePreset   string  `json:"style_preset"`
 }
 
 type timing struct {
@@ -143,11 +90,44 @@ type generateResponse struct {
 	Timing  timing          `json:"timing"`
 }
 
-func (c *imageGen) generate(ctx context.Context, cfgScale int, model string, prompt string, steps int, stylePreset string) (generateResponse, error) {
+func (p Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {
+	var in inputPayload
+	if err := json.Unmarshal(input, &in); err != nil {
+		return nil, err
+	}
+
+	if len(in.Name) == 0 {
+		in.Name = "Venice generated PFP"
+	}
+
+	res, err := p.imageGen.generate(ctx, in.CfgScale, in.Model, in.Prompt, in.Steps, in.StylePreset)
+	if err != nil {
+		return nil, err
+	}
+
+	// Get the bytes of the generated image
+	imgBytes, err := base64.StdEncoding.DecodeString(res.Images[0])
+	if err != nil {
+		return nil, err
+	}
+
+	metaURL, err := p.UploadToBucket(imgBytes, &in)
+	if err != nil {
+		return nil, err
+	}
+
+	// Return the metadata URL
+	return []byte(metaURL), nil
+}
+
+func (p Plugin) Verify(ctx context.Context, input, output []byte) error {
+	return nil
+}
+
+func (c *imageGen) generate(ctx context.Context, cfgScale float32, model string, prompt string, steps int, stylePreset string) (generateResponse, error) {
 	body, err := json.Marshal(generatePayload{
 		CfgScale:      cfgScale,
 		Format:        "jpeg",
-		Height:        400,
 		HideWatermark: true,
 		Model:         model,
 		Prompt:        prompt,
@@ -184,4 +164,82 @@ func (c *imageGen) generate(ctx context.Context, cfgScale int, model string, pro
 	}
 
 	return res, nil
+}
+
+func (p *Plugin) UploadToBucket(image []byte, input *inputPayload) (string, error) {
+	// Generate a hash of the bytes to use as file name
+	hasher := sha256.New()
+	hasher.Write(image)
+	hash := hasher.Sum(nil)
+	imgName := fmt.Sprintf("%x", hash)
+	imgFilename := imgName + ".jpg"
+
+	err := p.UploadFile("image/jpg", imgFilename, image)
+	if err != nil {
+		return "", err
+	}
+
+	// Get public URL for the image
+	imageURL := getPublicURL(imgFilename)
+
+	metaData, err := json.Marshal(imageMetadata{
+		Name:        input.Name,
+		Description: input.Prompt,
+		Image:       imageURL,
+	})
+	if err != nil {
+		return "", err
+	}
+	metaFilename := imgName + ".json"
+
+	// Upload the meta file
+	err = p.UploadFile("application/json", metaFilename, metaData)
+	if err != nil {
+		return "", err
+	}
+	return getPublicURL(metaFilename), nil
+}
+
+func (p *Plugin) UploadFile(mimeType, filePath string, fileData []byte) error {
+	bucket := "warden-ethcc"
+	region := "eu-west-1"
+
+	if filePath == "" || p.bucketStorage.bucketKey == "" || p.bucketStorage.bucketServiceKey == "" {
+		return errors.New("Failed to load AWS credentials (empty)")
+	}
+
+	cfg, err := config.LoadDefaultConfig(context.TODO(),
+		config.WithRegion(region),
+		config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(
+			p.bucketStorage.bucketKey,
+			p.bucketStorage.bucketServiceKey,
+			"", // optional
+		)),
+	)
+	if err != nil {
+		return errors.New("Failed to load AWS config: " + err.Error())
+	}
+
+	// Create S3 client
+	client := s3.NewFromConfig(cfg)
+
+	// Upload object
+	input := &s3.PutObjectInput{
+		Bucket:      aws.String(bucket),
+		Key:         aws.String(filePath),
+		Body:        bytes.NewReader(fileData),
+		ContentType: aws.String(mimeType),
+	}
+
+	_, err = client.PutObject(context.TODO(), input)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// getPublicURL returns the public URL for an object
+func getPublicURL(filePath string) string {
+	return fmt.Sprintf("https://warden-ethcc.s3.eu-west-1.amazonaws.com/%s", filePath)
 }

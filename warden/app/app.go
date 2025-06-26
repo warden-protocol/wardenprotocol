@@ -251,6 +251,7 @@ func registerProphetHandlers(appOpts servertypes.AppOptions) {
 		prophet.Register("pfp", pfp.New(cast.ToString(appOpts.Get("pfp.api-key")),
 			cast.ToString(appOpts.Get("pfp.api-url")),
 			cast.ToString(appOpts.Get("pfp.bucket-key")),
+			cast.ToString(appOpts.Get("pfp.bucket-secret-key")),
 			cast.ToString(appOpts.Get("pfp.bucket-id"))))
 	}
 

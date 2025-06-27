@@ -13,7 +13,7 @@ This guide explains how to run a local chain for development and testing purpose
 Before you start, complete the following prerequisites:
 
 - [Install Go](https://go.dev/doc/install) 1.24 or later.
-- [Install Just](https://github.com/casey/just) 1.34.0 or later.
+- [Install just](https://github.com/casey/just) 1.34.0 or later.
 - [Install jq](https://jqlang.org/download/).
 
 :::tip

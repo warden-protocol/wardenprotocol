@@ -60,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - (x/async) Add governance gated message MsgAddPlugin to create new plugins after genesis
 
 ### Bug Fixes
+- (x/async) PFP image generation plugin will only take one input (string) which is the AI prompt
 
 ## [v0.6.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.3) - 2025-04-16
 

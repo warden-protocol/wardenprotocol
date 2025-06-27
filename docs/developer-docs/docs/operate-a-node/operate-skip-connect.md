@@ -43,7 +43,7 @@ In order to point your binary to Connect, update the `[oracle]` section of your 
 - The `metrics_enabled` setting is optional.
 :::
 
-```toml title='/.warden/app.toml'
+```toml title='/.warden/config/app.toml'
 ###############################################################################
 ###                                  Oracle                                 ###
 ###############################################################################

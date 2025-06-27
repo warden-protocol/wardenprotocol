@@ -12,6 +12,8 @@ echo "Contract deployed at: $CONTRACT"
 echo "Scheduling HTTP request..."
 cast send --rpc-url http://127.0.0.1:8545 --private-key $SHULGIN_PRIVATE $CONTRACT "run()"
 
+echo "Read task id:"
+TASK_ID=$(cast call --rpc-url http://127.0.0.1:8545 $CONTRACT 'lastTaskId()(uint64)')
 # Query the task result
 # echo "Querying task result..."
 # TASK_RESULT=$(./wardend q async tasks --output json | jq -r '.tasks[0].task')
@@ -23,7 +25,7 @@ sleep 10
 
 # Manually invoke the callback to process the result
 echo "Processing the result..."
-cast send --rpc-url http://127.0.0.1:8545 --private-key $SHULGIN_PRIVATE $CONTRACT "cb()"
+cast send --rpc-url http://127.0.0.1:8545 --private-key $SHULGIN_PRIVATE $CONTRACT "cb(uint64,bytes)" $TASK_ID 0x
 
 echo "Response body:"
 cast call --rpc-url http://127.0.0.1:8545 $CONTRACT 'responseBody()(bytes)'

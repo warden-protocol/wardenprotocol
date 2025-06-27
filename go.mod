@@ -106,7 +106,7 @@ require (
 	github.com/envoyproxy/go-control-plane/envoy v1.32.4 // indirect
 	github.com/envoyproxy/protoc-gen-validate v1.2.1 // indirect
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect
-	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
+	github.com/go-viper/mapstructure/v2 v2.3.0 // indirect
 	github.com/gofrs/flock v0.12.1 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.10 // indirect

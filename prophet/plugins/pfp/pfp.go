@@ -46,15 +46,6 @@ type imageMetadata struct {
 	Image       string `json:"image"`
 }
 
-type inputPayload struct {
-	Name        string  `json:"name"`
-	CfgScale    float32 `json:"cfg_scale"`
-	Model       string  `json:"model"`
-	Prompt      string  `json:"prompt"`
-	Steps       int     `json:"steps"`
-	StylePreset string  `json:"style_preset"`
-}
-
 type imageGen struct {
 	c      *http.Client
 	apiKey string
@@ -94,16 +85,7 @@ type generateResponse struct {
 }
 
 func (p Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {
-	var in inputPayload
-	if err := json.Unmarshal(input, &in); err != nil {
-		return nil, err
-	}
-
-	if len(in.Name) == 0 {
-		in.Name = "Venice generated PFP"
-	}
-
-	res, err := p.imageGen.generate(ctx, in.CfgScale, in.Model, in.Prompt, in.Steps, in.StylePreset)
+	res, err := p.imageGen.generate(ctx, string(input))
 	if err != nil {
 		return nil, err
 	}
@@ -118,7 +100,7 @@ func (p Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {
 		return nil, err
 	}
 
-	metaURL, err := p.UploadToBucket(ctx, imgBytes, &in)
+	metaURL, err := p.UploadToBucket(ctx, imgBytes, string(input))
 	if err != nil {
 		return nil, err
 	}
@@ -131,15 +113,15 @@ func (p Plugin) Verify(ctx context.Context, input, output []byte) error {
 	return nil
 }
 
-func (c *imageGen) generate(ctx context.Context, cfgScale float32, model string, prompt string, steps int, stylePreset string) (generateResponse, error) {
+func (c *imageGen) generate(ctx context.Context, prompt string) (generateResponse, error) {
 	body, err := json.Marshal(generatePayload{
-		CfgScale:      cfgScale,
+		CfgScale:      8,
 		Format:        "jpeg",
 		HideWatermark: true,
-		Model:         model,
+		Model:         "venice-sd35",
 		Prompt:        prompt,
-		Steps:         steps,
-		StylePreset:   stylePreset,
+		Steps:         20,
+		StylePreset:   "Photographic",
 	})
 	if err != nil {
 		return generateResponse{}, err
@@ -173,7 +155,7 @@ func (c *imageGen) generate(ctx context.Context, cfgScale float32, model string,
 	return res, nil
 }
 
-func (p *Plugin) UploadToBucket(ctx context.Context, image []byte, input *inputPayload) (string, error) {
+func (p *Plugin) UploadToBucket(ctx context.Context, image []byte, prompt string) (string, error) {
 	// Generate a hash of the bytes to use as file name
 	hasher := sha256.New()
 	hasher.Write(image)
@@ -190,8 +172,8 @@ func (p *Plugin) UploadToBucket(ctx context.Context, image []byte, input *inputP
 	imageURL := p.getPublicURL(imgFilename)
 
 	metaData, err := json.Marshal(imageMetadata{
-		Name:        input.Name,
-		Description: input.Prompt,
+		Name:        "Venice generated PFP",
+		Description: prompt,
 		Image:       imageURL,
 	})
 	if err != nil {

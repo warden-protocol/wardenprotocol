@@ -162,7 +162,7 @@ export default function CreateKeyModal({
 						<div>1,234</div>
 					</div>
 					<div className="flex items-center justify-between py-1">
-						<div>Last actvity</div>
+						<div>Last activity</div>
 						<div>Use this Keychain</div>
 					</div>
 				</div> */}

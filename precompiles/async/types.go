@@ -161,6 +161,7 @@ func mapTask(task types.Task) (Task, error) {
 			ExecutorReward:      mapSdkCoins(task.Fee.ExecutorReward),
 		},
 		CallbackId: task.CallbackId,
+		Solver:     task.Solver,
 		CreatedAt:  mapTimestamp(task.CreatedAt),
 	}, nil
 }

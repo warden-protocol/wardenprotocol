@@ -187,9 +187,9 @@ message QueryPluginMetricsByIdResponse {
     (gogoproto.nullable) = false
   ];
 
-  repeated cosmos.base.v1beta1.Coin average_fee_paid = 8 [
+  repeated cosmos.base.v1beta1.DecCoin average_fee_paid = 8 [
     (gogoproto.nullable) = false,
-    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.DecCoins",
     (amino.dont_omitempty) = true,
     (amino.encoding) = "legacy_coins"
   ];

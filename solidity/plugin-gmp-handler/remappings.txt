@@ -1,0 +1,1 @@
+@warden-protocol/precompiled=../../precompiles

@@ -18,6 +18,12 @@ contract PricePredExample is callback.ICallback {
     uint256 public predictedMetric0;
     uint256 public predictedMetric7;
 
+    // Receive function to accept award transfers
+    receive() external payable {
+        // Contract can now receive award
+        // You can add custom logic here if needed
+    }
+
     function run() public returns (pricepred.PricePredictor.InputData memory request) {
         request.date = 1749254400;
 
@@ -38,7 +44,7 @@ contract PricePredExample is callback.ICallback {
         types.Types.Coin[] memory maxFees = new types.Types.Coin[](1);
         maxFees[0] = types.Types.Coin("award", 1);
 
-        uint64 maxGas = 1000000;
+        uint64 maxGas = 1000000000;
         sched.CallbackParams memory callbackData = sched.CallbackParams(address(this), maxGas);
 
         lastTaskId = async.IASYNC_CONTRACT.addTask(

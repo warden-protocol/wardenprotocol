@@ -8,6 +8,10 @@ echo "Deploying HttpExample contract..."
 CONTRACT=$(forge create --root . --rpc-url http://localhost:8545 --evm-version paris --private-key $SHULGIN_PRIVATE HttpExample.sol:HttpExample --json --broadcast | jq -r '.deployedTo')
 echo "Contract deployed at: $CONTRACT"
 
+# ATTENTION HERE: We have to top up the contract with some coins to pay for the callback, otherwise it will fail.
+echo "Topping up the contract with some coins..."
+cast send $CONTRACT --value 1000000000000 --private-key $SHULGIN_PRIVATE
+
 # Schedule the task (make the HTTP request)
 echo "Scheduling HTTP request..."
 cast send --rpc-url http://127.0.0.1:8545 --private-key $SHULGIN_PRIVATE $CONTRACT "run()"
@@ -22,10 +26,6 @@ TASK_ID=$(cast call --rpc-url http://127.0.0.1:8545 $CONTRACT 'lastTaskId()(uint
 # Wait for the task to be processed
 echo "Waiting for the task to be processed..."
 sleep 10
-
-# Manually invoke the callback to process the result
-echo "Processing the result..."
-cast send --rpc-url http://127.0.0.1:8545 --private-key $SHULGIN_PRIVATE $CONTRACT "cb(uint64,bytes)" $TASK_ID 0x
 
 echo "Response body:"
 cast call --rpc-url http://127.0.0.1:8545 $CONTRACT 'responseBody()(bytes)'

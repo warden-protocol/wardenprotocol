@@ -17,6 +17,12 @@ contract HttpExample is callback.ICallback {
 
     bytes public responseBody;
 
+    // Receive function to accept award transfers
+    receive() external payable {
+        // Contract can now receive award
+        // You can add custom logic here if needed
+    }
+
     function run() public returns (http.Http.Request memory request) {
         request.url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether,uniswap&vs_currencies=usd";
         request.method = "GET";
@@ -25,7 +31,7 @@ contract HttpExample is callback.ICallback {
         types.Types.Coin[] memory maxFees = new types.Types.Coin[](1);
         maxFees[0] = types.Types.Coin("award", 1);
 
-        uint64 maxGas = 1000000;
+        uint64 maxGas = 1000000000;
         sched.CallbackParams memory callbackData = sched.CallbackParams(address(this), maxGas);
 
         lastTaskId = async.IASYNC_CONTRACT.addTask("http", abi.encode(request), maxFees, callbackData);
@@ -64,4 +70,7 @@ contract HttpExample is callback.ICallback {
         tetherPrice = tether;
         uniswapPrice = uniswap;
     }
+
+
+
 }

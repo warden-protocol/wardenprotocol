@@ -54,7 +54,7 @@ func (k *Keeper) registerGenesisPlugins(ctx sdk.Context, activePlugins []types.G
 			return fmt.Errorf("maximum timeout allowed for plugins: %s, got %s for %s", maxTaskTimeout, timeout, p.Name)
 		}
 
-		if err := k.AddPlugin(ctx, types.Plugin{
+		if err := k.addPlugin(ctx, types.Plugin{
 			Id:          p.Name,
 			Creator:     k.asyncModuleAddress.String(),
 			Description: "",

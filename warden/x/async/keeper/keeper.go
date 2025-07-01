@@ -226,7 +226,7 @@ func (k Keeper) GetTaskVotes(ctx context.Context, taskId uint64) ([]types.TaskVo
 	return votes, nil
 }
 
-func (k *Keeper) AddPlugin(ctx context.Context, p types.Plugin) error {
+func (k *Keeper) addPlugin(ctx context.Context, p types.Plugin) error {
 	id := p.GetId()
 
 	if id == "" {

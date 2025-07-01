@@ -15,19 +15,23 @@ import (
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	grpc1 "github.com/cosmos/gogoproto/grpc"
 	proto "github.com/cosmos/gogoproto/proto"
+	github_com_cosmos_gogoproto_types "github.com/cosmos/gogoproto/types"
 	v1beta1 "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	_ "google.golang.org/protobuf/types/known/durationpb"
 	io "io"
 	math "math"
 	math_bits "math/bits"
+	time "time"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
+var _ = time.Kitchen
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the proto package it is being compiled against.
@@ -128,6 +132,119 @@ func (m *MsgUpdateParamsResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgUpdateParamsResponse proto.InternalMessageInfo
 
+type MsgAddPlugin struct {
+	// authority is the address that controls the module (defaults to x/gov unless overwritten).
+	Authority   string        `protobuf:"bytes,1,opt,name=authority,proto3" json:"authority,omitempty"`
+	Name        string        `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description string        `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	Fee         PluginFee     `protobuf:"bytes,4,opt,name=fee,proto3" json:"fee"`
+	Timeout     time.Duration `protobuf:"bytes,5,opt,name=timeout,proto3,stdduration" json:"timeout"`
+}
+
+func (m *MsgAddPlugin) Reset()         { *m = MsgAddPlugin{} }
+func (m *MsgAddPlugin) String() string { return proto.CompactTextString(m) }
+func (*MsgAddPlugin) ProtoMessage()    {}
+func (*MsgAddPlugin) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9b79defe11b4babb, []int{2}
+}
+func (m *MsgAddPlugin) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgAddPlugin) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgAddPlugin.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgAddPlugin) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgAddPlugin.Merge(m, src)
+}
+func (m *MsgAddPlugin) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgAddPlugin) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgAddPlugin.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgAddPlugin proto.InternalMessageInfo
+
+func (m *MsgAddPlugin) GetAuthority() string {
+	if m != nil {
+		return m.Authority
+	}
+	return ""
+}
+
+func (m *MsgAddPlugin) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *MsgAddPlugin) GetDescription() string {
+	if m != nil {
+		return m.Description
+	}
+	return ""
+}
+
+func (m *MsgAddPlugin) GetFee() PluginFee {
+	if m != nil {
+		return m.Fee
+	}
+	return PluginFee{}
+}
+
+func (m *MsgAddPlugin) GetTimeout() time.Duration {
+	if m != nil {
+		return m.Timeout
+	}
+	return 0
+}
+
+type MsgAddPluginResponse struct {
+}
+
+func (m *MsgAddPluginResponse) Reset()         { *m = MsgAddPluginResponse{} }
+func (m *MsgAddPluginResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgAddPluginResponse) ProtoMessage()    {}
+func (*MsgAddPluginResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9b79defe11b4babb, []int{3}
+}
+func (m *MsgAddPluginResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgAddPluginResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgAddPluginResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgAddPluginResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgAddPluginResponse.Merge(m, src)
+}
+func (m *MsgAddPluginResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgAddPluginResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgAddPluginResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgAddPluginResponse proto.InternalMessageInfo
+
 type MsgAddTask struct {
 	Creator        string                                   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Plugin         string                                   `protobuf:"bytes,2,opt,name=plugin,proto3" json:"plugin,omitempty"`
@@ -140,7 +257,7 @@ func (m *MsgAddTask) Reset()         { *m = MsgAddTask{} }
 func (m *MsgAddTask) String() string { return proto.CompactTextString(m) }
 func (*MsgAddTask) ProtoMessage()    {}
 func (*MsgAddTask) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9b79defe11b4babb, []int{2}
+	return fileDescriptor_9b79defe11b4babb, []int{4}
 }
 func (m *MsgAddTask) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -212,7 +329,7 @@ func (m *MsgAddTaskResponse) Reset()         { *m = MsgAddTaskResponse{} }
 func (m *MsgAddTaskResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgAddTaskResponse) ProtoMessage()    {}
 func (*MsgAddTaskResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9b79defe11b4babb, []int{3}
+	return fileDescriptor_9b79defe11b4babb, []int{5}
 }
 func (m *MsgAddTaskResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -251,6 +368,8 @@ func (m *MsgAddTaskResponse) GetId() uint64 {
 func init() {
 	proto.RegisterType((*MsgUpdateParams)(nil), "warden.async.v1beta1.MsgUpdateParams")
 	proto.RegisterType((*MsgUpdateParamsResponse)(nil), "warden.async.v1beta1.MsgUpdateParamsResponse")
+	proto.RegisterType((*MsgAddPlugin)(nil), "warden.async.v1beta1.MsgAddPlugin")
+	proto.RegisterType((*MsgAddPluginResponse)(nil), "warden.async.v1beta1.MsgAddPluginResponse")
 	proto.RegisterType((*MsgAddTask)(nil), "warden.async.v1beta1.MsgAddTask")
 	proto.RegisterType((*MsgAddTaskResponse)(nil), "warden.async.v1beta1.MsgAddTaskResponse")
 }
@@ -258,46 +377,54 @@ func init() {
 func init() { proto.RegisterFile("warden/async/v1beta1/tx.proto", fileDescriptor_9b79defe11b4babb) }
 
 var fileDescriptor_9b79defe11b4babb = []byte{
-	// 614 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x53, 0xcf, 0x8f, 0xd2, 0x40,
-	0x18, 0xa5, 0xfc, 0x94, 0x59, 0xb2, 0xab, 0x0d, 0x71, 0x0b, 0xd1, 0x82, 0xb8, 0x26, 0x0d, 0x09,
-	0x6d, 0xc0, 0xc4, 0xc3, 0x5e, 0xcc, 0x62, 0xc2, 0xc1, 0x84, 0xc4, 0x74, 0xdd, 0x8b, 0x17, 0x9c,
-	0xb6, 0xb3, 0x43, 0x43, 0xdb, 0x69, 0x3a, 0x65, 0x05, 0x4f, 0xc6, 0xa3, 0x27, 0xcf, 0xfe, 0x05,
-	0xc6, 0x13, 0x07, 0x2f, 0x1e, 0xbc, 0xe3, 0x6d, 0xe3, 0xc9, 0xd3, 0x6a, 0xe0, 0xc0, 0xbf, 0x61,
-	0x3a, 0x9d, 0x82, 0x4b, 0x30, 0x7a, 0xa1, 0xbc, 0x79, 0xef, 0xfb, 0xfa, 0x7d, 0xef, 0x4d, 0xc1,
-	0xdd, 0x57, 0x30, 0xb0, 0x90, 0xa7, 0x41, 0x3a, 0xf5, 0x4c, 0xed, 0xa2, 0x6d, 0xa0, 0x10, 0xb6,
-	0xb5, 0x70, 0xa2, 0xfa, 0x01, 0x09, 0x89, 0x58, 0x8e, 0x69, 0x95, 0xd1, 0x2a, 0xa7, 0xab, 0xb7,
-	0xa0, 0x6b, 0x7b, 0x44, 0x63, 0xbf, 0xb1, 0xb0, 0x2a, 0x9b, 0x84, 0xba, 0x84, 0x6a, 0x06, 0xa4,
-	0x68, 0xdd, 0xc6, 0x24, 0xb6, 0xc7, 0xf9, 0x43, 0xce, 0xbb, 0x14, 0x6b, 0x17, 0xed, 0xe8, 0xc1,
-	0x89, 0x4a, 0x4c, 0x0c, 0x18, 0xd2, 0x62, 0xc0, 0xa9, 0x32, 0x26, 0x98, 0xc4, 0xe7, 0xd1, 0xbf,
-	0xa4, 0x00, 0x13, 0x82, 0x1d, 0xa4, 0x31, 0x64, 0x8c, 0xcf, 0x35, 0xe8, 0x4d, 0x39, 0x75, 0x6f,
-	0xe7, 0x32, 0x3e, 0x0c, 0xa0, 0x9b, 0xf4, 0xbc, 0xcf, 0x25, 0xd4, 0x1c, 0x22, 0x6b, 0x33, 0x28,
-	0x74, 0x1c, 0x03, 0x9a, 0xa3, 0x58, 0xd4, 0xf8, 0x2a, 0x80, 0x83, 0x3e, 0xc5, 0x67, 0xbe, 0x05,
-	0x43, 0xf4, 0x8c, 0x95, 0x8b, 0x8f, 0x40, 0x11, 0x8e, 0xc3, 0x21, 0x09, 0xec, 0x70, 0x2a, 0x09,
-	0x75, 0x41, 0x29, 0x76, 0xa5, 0xef, 0x9f, 0x5b, 0x65, 0x3e, 0xf1, 0x89, 0x65, 0x05, 0x88, 0xd2,
-	0xd3, 0x30, 0xb0, 0x3d, 0xac, 0x6f, 0xa4, 0xe2, 0x63, 0x90, 0x8f, 0x07, 0x90, 0xd2, 0x75, 0x41,
-	0xd9, 0xeb, 0xdc, 0x51, 0x77, 0x59, 0xaa, 0xc6, 0x6f, 0xe9, 0x16, 0xe7, 0x57, 0xb5, 0xd4, 0xc7,
-	0xd5, 0xac, 0x29, 0xe8, 0xbc, 0xec, 0xb8, 0xfd, 0x76, 0x35, 0x6b, 0x6e, 0x1a, 0xbe, 0x5b, 0xcd,
-	0x9a, 0x32, 0x5f, 0x62, 0xc2, 0x37, 0xdd, 0x9a, 0xb5, 0x51, 0x01, 0x87, 0x5b, 0x47, 0x3a, 0xa2,
-	0x3e, 0xf1, 0x28, 0x6a, 0x7c, 0x49, 0x03, 0xd0, 0xa7, 0xf8, 0xc4, 0xb2, 0x9e, 0x43, 0x3a, 0x12,
-	0x25, 0x50, 0x30, 0x03, 0x04, 0x43, 0x12, 0xc4, 0x3b, 0xe9, 0x09, 0x14, 0x6f, 0x83, 0xbc, 0xef,
-	0x8c, 0xb1, 0xed, 0xb1, 0xb9, 0x8b, 0x3a, 0x47, 0x62, 0x19, 0xe4, 0x6c, 0xcf, 0x1f, 0x87, 0x52,
-	0xa6, 0x2e, 0x28, 0x25, 0x3d, 0x06, 0xe2, 0x6b, 0x50, 0x70, 0xe1, 0x64, 0x70, 0x8e, 0x90, 0x94,
-	0xab, 0x67, 0x94, 0xbd, 0x4e, 0x45, 0xe5, 0xc6, 0x44, 0x17, 0x62, 0xbd, 0xe5, 0x13, 0x62, 0x7b,
-	0xdd, 0x5e, 0xb4, 0xe3, 0xa7, 0x9f, 0x35, 0x05, 0xdb, 0xe1, 0x70, 0x6c, 0xa8, 0x26, 0x71, 0x79,
-	0xee, 0xfc, 0xd1, 0xa2, 0xd6, 0x48, 0x0b, 0xa7, 0x3e, 0xa2, 0xac, 0x80, 0x7e, 0x58, 0xcd, 0x9a,
-	0x25, 0x07, 0x61, 0x68, 0x4e, 0x07, 0xd1, 0x95, 0xa2, 0xdc, 0x20, 0x17, 0x4e, 0x7a, 0x08, 0x89,
-	0xa7, 0xe0, 0x20, 0xc9, 0x6f, 0xc0, 0xad, 0xce, 0x33, 0xab, 0x8f, 0x12, 0xab, 0x59, 0xd8, 0x9b,
-	0x21, 0xb8, 0x98, 0x5b, 0x9e, 0x9d, 0x5f, 0xd5, 0x04, 0x7d, 0xdf, 0xbc, 0x76, 0x7a, 0x5c, 0x8a,
-	0x5c, 0x4f, 0xcc, 0x78, 0x9a, 0xbd, 0x91, 0xbd, 0x99, 0x6b, 0x1c, 0x01, 0x71, 0x63, 0x5d, 0xe2,
-	0xa8, 0xb8, 0x0f, 0xd2, 0xb6, 0xc5, 0xdc, 0xcb, 0xea, 0x69, 0xdb, 0xea, 0x7c, 0x13, 0x40, 0xa6,
-	0x4f, 0xb1, 0x68, 0x81, 0xd2, 0xb5, 0x0b, 0xf4, 0x60, 0x77, 0xf0, 0x5b, 0x41, 0x55, 0x5b, 0xff,
-	0x25, 0x5b, 0xbf, 0xfd, 0x0c, 0x14, 0x92, 0x2c, 0xeb, 0x7f, 0xad, 0xe4, 0x8a, 0xaa, 0xf2, 0x2f,
-	0x45, 0xd2, 0xb6, 0x9a, 0x7b, 0x13, 0x59, 0xdc, 0x7d, 0x39, 0x5f, 0xc8, 0xc2, 0xe5, 0x42, 0x16,
-	0x7e, 0x2d, 0x64, 0xe1, 0xfd, 0x52, 0x4e, 0x5d, 0x2e, 0xe5, 0xd4, 0x8f, 0xa5, 0x9c, 0x7a, 0xd1,
-	0xfb, 0x23, 0xbc, 0xb8, 0x69, 0x8b, 0x7d, 0x3b, 0x26, 0x71, 0x38, 0xde, 0x82, 0xeb, 0xcb, 0xca,
-	0x82, 0x4d, 0xbe, 0x3c, 0x23, 0xcf, 0x64, 0x0f, 0x7f, 0x07, 0x00, 0x00, 0xff, 0xff, 0x78, 0xc6,
-	0x7a, 0x7f, 0x88, 0x04, 0x00, 0x00,
+	// 745 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x54, 0xbd, 0x6f, 0xd3, 0x5e,
+	0x14, 0x8d, 0xf3, 0xf9, 0xcb, 0x6b, 0x7e, 0x2d, 0x3c, 0x45, 0x6d, 0x1a, 0x81, 0x13, 0x42, 0x91,
+	0xa2, 0x48, 0xb1, 0x95, 0x22, 0x81, 0xd4, 0x05, 0x35, 0xa0, 0x0c, 0x48, 0x95, 0x2a, 0x97, 0x2e,
+	0x30, 0x84, 0x17, 0xfb, 0xd5, 0xb5, 0x1a, 0xfb, 0x45, 0x7e, 0x76, 0x49, 0x98, 0x10, 0x23, 0x13,
+	0x23, 0xe2, 0x0f, 0x40, 0x08, 0x31, 0x64, 0x60, 0x61, 0x60, 0xef, 0x58, 0x31, 0x31, 0x51, 0xd4,
+	0x0e, 0xf9, 0x37, 0xd0, 0xfb, 0xb0, 0xd3, 0x46, 0xfd, 0x40, 0x5d, 0x62, 0xdf, 0x77, 0xce, 0x7d,
+	0xbe, 0xf7, 0xdc, 0x73, 0x03, 0x6e, 0xbf, 0x42, 0xbe, 0x85, 0x3d, 0x1d, 0xd1, 0x91, 0x67, 0xea,
+	0xfb, 0xad, 0x1e, 0x0e, 0x50, 0x4b, 0x0f, 0x86, 0xda, 0xc0, 0x27, 0x01, 0x81, 0x45, 0x01, 0x6b,
+	0x1c, 0xd6, 0x24, 0x5c, 0xbe, 0x89, 0x5c, 0xc7, 0x23, 0x3a, 0xff, 0x15, 0xc4, 0xb2, 0x6a, 0x12,
+	0xea, 0x12, 0xaa, 0xf7, 0x10, 0xc5, 0xf1, 0x35, 0x26, 0x71, 0x3c, 0x89, 0x2f, 0x49, 0xdc, 0xa5,
+	0xb6, 0xbe, 0xdf, 0x62, 0x0f, 0x09, 0x2c, 0x0b, 0xa0, 0xcb, 0x23, 0x5d, 0x04, 0x12, 0x2a, 0xda,
+	0xc4, 0x26, 0xe2, 0x9c, 0xbd, 0x45, 0x09, 0x36, 0x21, 0x76, 0x1f, 0xeb, 0x3c, 0xea, 0x85, 0x3b,
+	0x3a, 0xf2, 0x46, 0x51, 0x11, 0xb3, 0x90, 0x15, 0xfa, 0x28, 0x70, 0x48, 0x54, 0xc4, 0x9d, 0x73,
+	0x9b, 0x1d, 0x20, 0x1f, 0xb9, 0xf4, 0x72, 0x4a, 0x3f, 0xb4, 0xe3, 0x56, 0xee, 0x4a, 0x0a, 0x35,
+	0x77, 0xb1, 0x35, 0xed, 0x15, 0xf5, 0xfb, 0x3d, 0x64, 0xee, 0x09, 0x52, 0xed, 0x87, 0x02, 0x16,
+	0x36, 0xa8, 0xbd, 0x3d, 0xb0, 0x50, 0x80, 0x37, 0xf9, 0x17, 0xe0, 0x03, 0x90, 0x47, 0x61, 0xb0,
+	0x4b, 0x7c, 0x27, 0x18, 0x95, 0x94, 0xaa, 0x52, 0xcf, 0xb7, 0x4b, 0x3f, 0xbf, 0x35, 0x8b, 0xb2,
+	0xe9, 0x75, 0xcb, 0xf2, 0x31, 0xa5, 0x5b, 0x81, 0xef, 0x78, 0xb6, 0x31, 0xa5, 0xc2, 0x47, 0x20,
+	0x2b, 0x6a, 0x2c, 0x25, 0xab, 0x4a, 0x7d, 0x6e, 0xf5, 0x96, 0x76, 0xde, 0x54, 0x34, 0xf1, 0x95,
+	0x76, 0xfe, 0xe0, 0x77, 0x25, 0xf1, 0x79, 0x32, 0x6e, 0x28, 0x86, 0x4c, 0x5b, 0x6b, 0xbd, 0x9d,
+	0x8c, 0x1b, 0xd3, 0x0b, 0xdf, 0x4d, 0xc6, 0x0d, 0x55, 0x36, 0x31, 0x94, 0x9d, 0xce, 0xd4, 0x5a,
+	0x5b, 0x06, 0x4b, 0x33, 0x47, 0x06, 0xa6, 0x03, 0xe2, 0x51, 0x5c, 0xfb, 0x9a, 0x04, 0x85, 0x0d,
+	0x6a, 0xaf, 0x5b, 0xd6, 0x26, 0x97, 0xe5, 0xda, 0x7d, 0x41, 0x90, 0xf6, 0x90, 0x8b, 0x79, 0x57,
+	0x79, 0x83, 0xbf, 0xc3, 0x2a, 0x98, 0xb3, 0x30, 0x35, 0x7d, 0x67, 0xc0, 0xe6, 0x56, 0x4a, 0x71,
+	0xe8, 0xf4, 0x11, 0x7c, 0x08, 0x52, 0x3b, 0x18, 0x97, 0xd2, 0x5c, 0x8a, 0xca, 0x05, 0x52, 0xf0,
+	0xc2, 0x3a, 0x18, 0xb7, 0xd3, 0x4c, 0x0d, 0x83, 0x65, 0xc0, 0x36, 0xc8, 0x05, 0x8e, 0x8b, 0x49,
+	0x18, 0x94, 0x32, 0x3c, 0x79, 0x59, 0x13, 0x7e, 0xd1, 0x22, 0xbf, 0x68, 0x4f, 0xa4, 0x5f, 0xda,
+	0xff, 0xb3, 0xb4, 0x0f, 0x47, 0x15, 0x45, 0x08, 0x19, 0x25, 0x5e, 0x47, 0xc9, 0x45, 0x50, 0x3c,
+	0xad, 0x56, 0x2c, 0xe3, 0xf7, 0x24, 0x00, 0x02, 0x78, 0x86, 0xe8, 0x1e, 0x2c, 0x81, 0x9c, 0xe9,
+	0x63, 0x14, 0x10, 0x5f, 0x48, 0x68, 0x44, 0x21, 0x5c, 0x04, 0x59, 0xe1, 0x3f, 0x29, 0x94, 0x8c,
+	0x60, 0x11, 0x64, 0x1c, 0x6f, 0x10, 0x06, 0x5c, 0xa4, 0x82, 0x21, 0x02, 0xf8, 0x1a, 0xe4, 0x5c,
+	0x34, 0xec, 0x32, 0x89, 0x32, 0xd5, 0x14, 0xef, 0x52, 0xce, 0x81, 0xad, 0x66, 0xac, 0xd0, 0x63,
+	0xe2, 0x78, 0xed, 0x0e, 0xeb, 0xf2, 0xcb, 0x51, 0xa5, 0x6e, 0x3b, 0xc1, 0x6e, 0xd8, 0xd3, 0x4c,
+	0xe2, 0xca, 0x0d, 0x94, 0x8f, 0x26, 0xb5, 0xf6, 0xf4, 0x60, 0x34, 0xc0, 0x94, 0x27, 0xd0, 0x8f,
+	0x93, 0x71, 0xa3, 0xd0, 0xc7, 0x36, 0x32, 0x47, 0x5d, 0xb6, 0xdc, 0x54, 0xfa, 0xcc, 0x45, 0xc3,
+	0x0e, 0xc6, 0x70, 0x0b, 0x2c, 0x44, 0x6b, 0xd0, 0x95, 0x8e, 0xcd, 0x72, 0xa5, 0x57, 0xa2, 0x31,
+	0xf1, 0x9d, 0x99, 0x16, 0x21, 0xc9, 0xd2, 0xb9, 0x6c, 0x56, 0x8a, 0x31, 0x6f, 0x9e, 0x39, 0x5d,
+	0x2b, 0x30, 0xc9, 0x23, 0x31, 0x9e, 0xa6, 0xff, 0x4b, 0xdf, 0xc8, 0xd4, 0x56, 0x00, 0x9c, 0x4a,
+	0x17, 0x29, 0x0a, 0xe7, 0x41, 0xd2, 0xb1, 0xb8, 0x7a, 0x69, 0x23, 0xe9, 0x58, 0xab, 0x9f, 0x92,
+	0x20, 0xb5, 0x41, 0x6d, 0x68, 0x81, 0xc2, 0x99, 0x3d, 0xbc, 0x77, 0xbe, 0x69, 0x66, 0x06, 0x57,
+	0x6e, 0xfe, 0x13, 0x2d, 0xfe, 0xfa, 0x0b, 0x90, 0x9f, 0xae, 0x44, 0xed, 0xc2, 0xdc, 0x98, 0x53,
+	0x6e, 0x5c, 0xcd, 0x89, 0x2f, 0xdf, 0x06, 0xb9, 0xc8, 0x28, 0xd5, 0xcb, 0xd2, 0x18, 0xa3, 0x5c,
+	0xbf, 0x8a, 0x11, 0x5d, 0x5b, 0xce, 0xbc, 0x61, 0xf3, 0x6b, 0xbf, 0x3c, 0x38, 0x56, 0x95, 0xc3,
+	0x63, 0x55, 0xf9, 0x73, 0xac, 0x2a, 0xef, 0x4f, 0xd4, 0xc4, 0xe1, 0x89, 0x9a, 0xf8, 0x75, 0xa2,
+	0x26, 0x9e, 0x77, 0x4e, 0x39, 0x43, 0x5c, 0xda, 0xe4, 0xcb, 0x62, 0x92, 0xbe, 0x8c, 0x67, 0xc2,
+	0x78, 0x0d, 0xb8, 0x6b, 0xa2, 0x7f, 0xc7, 0x5e, 0x96, 0xd3, 0xee, 0xff, 0x0d, 0x00, 0x00, 0xff,
+	0xff, 0x63, 0xa6, 0x15, 0x31, 0x6f, 0x06, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -315,6 +442,9 @@ type MsgClient interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
+	// AddPlugin defines a (governance) operation for creating a new plugin. The
+	// authority defaults to the x/gov module account.
+	AddPlugin(ctx context.Context, in *MsgAddPlugin, opts ...grpc.CallOption) (*MsgAddPluginResponse, error)
 	// Create a new Task to be executed.
 	AddTask(ctx context.Context, in *MsgAddTask, opts ...grpc.CallOption) (*MsgAddTaskResponse, error)
 }
@@ -336,6 +466,15 @@ func (c *msgClient) UpdateParams(ctx context.Context, in *MsgUpdateParams, opts 
 	return out, nil
 }
 
+func (c *msgClient) AddPlugin(ctx context.Context, in *MsgAddPlugin, opts ...grpc.CallOption) (*MsgAddPluginResponse, error) {
+	out := new(MsgAddPluginResponse)
+	err := c.cc.Invoke(ctx, "/warden.async.v1beta1.Msg/AddPlugin", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *msgClient) AddTask(ctx context.Context, in *MsgAddTask, opts ...grpc.CallOption) (*MsgAddTaskResponse, error) {
 	out := new(MsgAddTaskResponse)
 	err := c.cc.Invoke(ctx, "/warden.async.v1beta1.Msg/AddTask", in, out, opts...)
@@ -350,6 +489,9 @@ type MsgServer interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
+	// AddPlugin defines a (governance) operation for creating a new plugin. The
+	// authority defaults to the x/gov module account.
+	AddPlugin(context.Context, *MsgAddPlugin) (*MsgAddPluginResponse, error)
 	// Create a new Task to be executed.
 	AddTask(context.Context, *MsgAddTask) (*MsgAddTaskResponse, error)
 }
@@ -360,6 +502,9 @@ type UnimplementedMsgServer struct {
 
 func (*UnimplementedMsgServer) UpdateParams(ctx context.Context, req *MsgUpdateParams) (*MsgUpdateParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateParams not implemented")
+}
+func (*UnimplementedMsgServer) AddPlugin(ctx context.Context, req *MsgAddPlugin) (*MsgAddPluginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddPlugin not implemented")
 }
 func (*UnimplementedMsgServer) AddTask(ctx context.Context, req *MsgAddTask) (*MsgAddTaskResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddTask not implemented")
@@ -383,6 +528,24 @@ func _Msg_UpdateParams_Handler(srv interface{}, ctx context.Context, dec func(in
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).UpdateParams(ctx, req.(*MsgUpdateParams))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_AddPlugin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgAddPlugin)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).AddPlugin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/warden.async.v1beta1.Msg/AddPlugin",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).AddPlugin(ctx, req.(*MsgAddPlugin))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -413,6 +576,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateParams",
 			Handler:    _Msg_UpdateParams_Handler,
+		},
+		{
+			MethodName: "AddPlugin",
+			Handler:    _Msg_AddPlugin_Handler,
 		},
 		{
 			MethodName: "AddTask",
@@ -479,6 +646,91 @@ func (m *MsgUpdateParamsResponse) MarshalTo(dAtA []byte) (int, error) {
 }
 
 func (m *MsgUpdateParamsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgAddPlugin) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgAddPlugin) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgAddPlugin) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	n2, err2 := github_com_cosmos_gogoproto_types.StdDurationMarshalTo(m.Timeout, dAtA[i-github_com_cosmos_gogoproto_types.SizeOfStdDuration(m.Timeout):])
+	if err2 != nil {
+		return 0, err2
+	}
+	i -= n2
+	i = encodeVarintTx(dAtA, i, uint64(n2))
+	i--
+	dAtA[i] = 0x2a
+	{
+		size, err := m.Fee.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintTx(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0x22
+	if len(m.Description) > 0 {
+		i -= len(m.Description)
+		copy(dAtA[i:], m.Description)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Description)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Name)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Authority) > 0 {
+		i -= len(m.Authority)
+		copy(dAtA[i:], m.Authority)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Authority)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgAddPluginResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgAddPluginResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgAddPluginResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -611,6 +863,40 @@ func (m *MsgUpdateParams) Size() (n int) {
 }
 
 func (m *MsgUpdateParamsResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgAddPlugin) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Authority)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Name)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Description)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = m.Fee.Size()
+	n += 1 + l + sovTx(uint64(l))
+	l = github_com_cosmos_gogoproto_types.SizeOfStdDuration(m.Timeout)
+	n += 1 + l + sovTx(uint64(l))
+	return n
+}
+
+func (m *MsgAddPluginResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -810,6 +1096,268 @@ func (m *MsgUpdateParamsResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgUpdateParamsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgAddPlugin) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgAddPlugin: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgAddPlugin: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Authority", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Authority = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Name = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Description", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Description = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Fee", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Fee.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Timeout", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := github_com_cosmos_gogoproto_types.StdDurationUnmarshal(&m.Timeout, dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgAddPluginResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgAddPluginResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgAddPluginResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

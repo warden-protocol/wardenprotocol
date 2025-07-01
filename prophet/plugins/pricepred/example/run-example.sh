@@ -4,8 +4,8 @@ set -e  # Exit on any error
 SHULGIN_PRIVATE='0xba4ce04e9390b2011960bf2ac71977861145ff9bb90137a3f3c56bc722e972f5'
 
 # Deploy the contract
-echo "Deploying HttpExample contract..."
-CONTRACT=$(forge create --root . --rpc-url http://localhost:8545 --evm-version paris --private-key $SHULGIN_PRIVATE HttpExample.sol:HttpExample --json --broadcast | jq -r '.deployedTo')
+echo "Deploying PricePredExample contract..."
+CONTRACT=$(forge create --root . --rpc-url http://localhost:8545 --evm-version paris --private-key $SHULGIN_PRIVATE PricePredExample.sol:PricePredExample --json --broadcast | jq -r '.deployedTo')
 echo "Contract deployed at: $CONTRACT"
 
 # ATTENTION HERE: We have to top up the contract with some coins to pay for the callback, otherwise it will fail.
@@ -21,22 +21,19 @@ TASK_ID=$(cast call --rpc-url http://127.0.0.1:8545 $CONTRACT 'lastTaskId()(uint
 
 # Wait for the task to be processed
 echo "Waiting for the task to be processed..."
-sleep 10
+sleep 20
 
 # Query the task result
-# echo "Querying task result..."
-# TASK_RESULT=$(./wardend q async tasks --output json | jq -r '.tasks[0].task')
-# echo "Task result: $FUTURE_RESULT"
+echo "Querying task result..."
+TASK_RESULT=$(wardend q async task-by-id --id $TASK_ID --output json | jq -r '.task')
+echo "Task result: $TASK_RESULT"
 
-echo "Response body:"
-cast call --rpc-url http://127.0.0.1:8545 $CONTRACT 'responseBody()(bytes)'
 
-# Check the retrieved prices
-echo "Bitcoin price:"
-cast call --rpc-url http://127.0.0.1:8545 $CONTRACT 'bitcoinPrice()(int256)'
 
-echo "Tether price:"
-cast call --rpc-url http://127.0.0.1:8545 $CONTRACT 'tetherPrice()(int256)'
-
-echo "Uniswap price:"
-cast call --rpc-url http://127.0.0.1:8545 $CONTRACT 'uniswapPrice()(int256)'
+# Print predicted price and metrics
+echo "Predicted Price:"
+cast call --rpc-url http://127.0.0.1:8545 $CONTRACT 'predictedPrice()(uint256)'
+echo "Predicted Metric 0:"
+cast call --rpc-url http://127.0.0.1:8545 $CONTRACT 'predictedMetric0()(uint256)'
+echo "Predicted Metric 7:"
+cast call --rpc-url http://127.0.0.1:8545 $CONTRACT 'predictedMetric7()(uint256)'

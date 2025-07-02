@@ -1,5 +1,5 @@
 {
-  "name": "@wardenprotocol/warden-app",
+  "name": "@wardenprotocol/tracker",
   "version": "1.0.0",
   "license": "ISC",
   "devDependencies": {

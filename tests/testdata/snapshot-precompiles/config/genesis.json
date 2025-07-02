@@ -14,7 +14,12 @@
       "templates": []
     },
     "async": {
-      "active_plugins": [],
+      "active_plugins": [
+        {
+          "name": "echo",
+          "timeout": null
+        }
+      ],
       "params": {
         "max_task_timeout": "86400s",
         "task_prune_timeout": "86400s"
@@ -25,7 +30,21 @@
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "0",
-          "address": "warden1ezhcfdzqzgm7c5zgpy85d33jwvetuuw0e942u3",
+          "address": "warden1gkt0v9qhurz04epuyqdf5rxsdca5q0laqaaf82",
+          "pub_key": null,
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "account_number": "1",
+          "address": "warden1kfhkmse7p2f62hpu4g7m7mjcz4wkef2lqkeknw",
+          "pub_key": null,
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "account_number": "2",
+          "address": "warden1uzkwnvxx0wrqh53vll9mppv370xrkmjzwrjd3h",
           "pub_key": null,
           "sequence": "0"
         }
@@ -44,13 +63,26 @@
     "bank": {
       "balances": [
         {
-          "address": "warden1ezhcfdzqzgm7c5zgpy85d33jwvetuuw0e942u3",
+          "address": "warden1gkt0v9qhurz04epuyqdf5rxsdca5q0laqaaf82",
           "coins": [
             {
               "amount": "10000000000000000000000000000000000000",
               "denom": "award"
             }
           ]
+        },
+        {
+          "address": "warden1kfhkmse7p2f62hpu4g7m7mjcz4wkef2lqkeknw",
+          "coins": [
+            {
+              "amount": "10000000000000000000000000000000000000",
+              "denom": "award"
+            }
+          ]
+        },
+        {
+          "address": "warden1uzkwnvxx0wrqh53vll9mppv370xrkmjzwrjd3h",
+          "coins": []
         }
       ],
       "denom_metadata": [],
@@ -61,7 +93,7 @@
       "send_enabled": [],
       "supply": [
         {
-          "amount": "10000000000000000000000000000000000000",
+          "amount": "20000000000000000000000000000000000000",
           "denom": "award"
         }
       ]
@@ -146,7 +178,24 @@
             "access_type": "ACCESS_TYPE_PERMISSIONLESS"
           }
         },
-        "active_static_precompiles": null,
+        "active_static_precompiles": [
+          "0x0000000000000000000000000000000000000100",
+          "0x0000000000000000000000000000000000000400",
+          "0x0000000000000000000000000000000000000800",
+          "0x0000000000000000000000000000000000000801",
+          "0x0000000000000000000000000000000000000802",
+          "0x0000000000000000000000000000000000000803",
+          "0x0000000000000000000000000000000000000804",
+          "0x0000000000000000000000000000000000000805",
+          "0x0000000000000000000000000000000000000806",
+          "0x0000000000000000000000000000000000000807",
+          "0x0000000000000000000000000000000000000901",
+          "0x0000000000000000000000000000000000000902",
+          "0x0000000000000000000000000000000000000904",
+          "0x0000000000000000000000000000000000000905",
+          "0x0000000000000000000000000000000000000900",
+          "0x0000000000000000000000000000000000000903"
+        ],
         "allow_unprotected_txs": false,
         "evm_channels": [],
         "evm_denom": "atest",
@@ -187,7 +236,7 @@
                 },
                 "public_key": {
                   "@type": "/cosmos.evm.crypto.v1.ethsecp256k1.PubKey",
-                  "key": "AtE9ENfzXP7hVl2+CG/WR2ocCfL1E1m4t0MlwBHjzLY6"
+                  "key": "ApEwOJUI6iTeMz1P+yspJOUv3md1piS2zvhILR8WowHI"
                 },
                 "sequence": "0"
               }
@@ -196,7 +245,7 @@
           },
           "body": {
             "extension_options": [],
-            "memo": "38d79e1aae59e234ad6a60fd92896082bf41c64e@169.254.41.120:26656",
+            "memo": "dbafff433fe3c3711b6ade63130895b84e777eb3@169.254.41.120:26656",
             "messages": [
               {
                 "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
@@ -216,9 +265,9 @@
                 "min_self_delegation": "1",
                 "pubkey": {
                   "@type": "/cosmos.crypto.ed25519.PubKey",
-                  "key": "jBWLvq4MFkgsHBWOODcialtAsi/04zdC7bE1R8o9dX0="
+                  "key": "OCB3hoM6s2qmDjyiR5xocahDayXIzwrJjxyIjjT2qbg="
                 },
-                "validator_address": "wardenvaloper1ezhcfdzqzgm7c5zgpy85d33jwvetuuw0g7h0nq",
+                "validator_address": "wardenvaloper1gkt0v9qhurz04epuyqdf5rxsdca5q0la3xlvgm",
                 "value": {
                   "amount": "1000000000000000000000",
                   "denom": "award"
@@ -231,7 +280,7 @@
             "unordered": false
           },
           "signatures": [
-            "Zz+Vyy1QW7D4/pZ7kujTz9Ip0LnWMTIVS/5uOkmWNLEL2cQQsBJfokqPthvPSqaWRcyKTmxzHMTIemdQEPQOCwE="
+            "EDjY5ZqD1mfXE56HBgXeizTVhbacTJ9/ilN9yjXn8zlJXjbKR/sy6C/dDEQ9kAZNK+KlvJGOGFsURhSbgLrsZgA="
           ]
         }
       ]
@@ -427,7 +476,20 @@
       "keys": [],
       "params": {},
       "sign_requests": [],
-      "spaces": []
+      "spaces": [
+        {
+          "approve_admin_template_id": "0",
+          "approve_sign_template_id": "0",
+          "creator": "warden1gkt0v9qhurz04epuyqdf5rxsdca5q0laqaaf82",
+          "id": "1",
+          "nonce": "0",
+          "owners": [
+            "warden1gkt0v9qhurz04epuyqdf5rxsdca5q0laqaaf82"
+          ],
+          "reject_admin_template_id": "0",
+          "reject_sign_template_id": "0"
+        }
+      ]
     },
     "wasm": {
       "codes": [],
@@ -468,6 +530,6 @@
       }
     }
   },
-  "genesis_time": "2025-07-02T07:20:09.401315Z",
+  "genesis_time": "2025-07-02T07:19:44.810428Z",
   "initial_height": 1
 }

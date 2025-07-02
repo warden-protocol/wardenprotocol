@@ -48,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - (x/async) Initial version of a Venice.ai plugin for LLM completions
 - (x/async) PFP image generation plugin using Venice.ai
 - (wardend) Fixed EVM initialization on chain id different than "warden-1337_1"
+- (wardend) Use upstream cosmos-sdk instead of our fork
 
 ### Consensus Breaking Changes
 

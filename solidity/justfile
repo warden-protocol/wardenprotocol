@@ -17,6 +17,20 @@ test-orders:
 localnet-orders $RPC_URL=local_rpc_url $CHAIN_ID=local_chain_id $MNEMONIC=shulgin_mnemonic $SCHEDULER_ADDRESS=shulgin $FACTORY_OWNER_ADDRESS=shulgin:
     cd orders && CHAIN_ID=$CHAIN_ID RPC_URL=$RPC_URL pnpm deploy
 
+warden-app: build-warden-app lint-warden-app test-warden-app
+
+build-warden-app:
+    cd warden-app && pnpm install && pnpm build
+
+lint-warden-app:
+    cd warden-app && pnpm lint
+
+test-warden-app:
+    cd warden-app && pnpm test
+
+localnet-warden-app $RPC_URL=local_rpc_url $CHAIN_ID=local_chain_id $MNEMONIC=shulgin_mnemonic:
+    cd warden-app && CHAIN_ID=$CHAIN_ID RPC_URL=$RPC_URL npm run deploy
+
 # Example:
 # just solidity create-basic-order \
 # 3324181371 \

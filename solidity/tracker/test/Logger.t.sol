@@ -15,7 +15,7 @@ contract LoggerTest is Test {
     function test_AddInteraction() public {
         bytes32 txHash = keccak256(abi.encodePacked("testHash"));
         string memory network = "testNetwork";
-        Types.TransactionType transactionType = Types.TransactionType.Sign;
+        Types.TransactionType transactionType = Types.TransactionType.Transfer;
 
         logger.addInteraction(txHash, network, transactionType);
 
@@ -26,7 +26,7 @@ contract LoggerTest is Test {
     function test_AddInteractionRevertsWithEmptyNetwork() public {
         bytes32 txHash = keccak256(abi.encodePacked("testHash"));
         string memory network = "";
-        Types.TransactionType transactionType = Types.TransactionType.Sign;
+        Types.TransactionType transactionType = Types.TransactionType.Transfer;
 
         vm.expectRevert(BadNetwork.selector);
         logger.addInteraction(txHash, network, transactionType);
@@ -35,7 +35,7 @@ contract LoggerTest is Test {
     function test_AddInteractionEmitsEvent() public {
         bytes32 txHash = keccak256(abi.encodePacked("testHash"));
         string memory network = "testNetwork";
-        Types.TransactionType transactionType = Types.TransactionType.Sign;
+        Types.TransactionType transactionType = Types.TransactionType.Transfer;
 
         vm.expectEmit(true, true, false, false);
         emit NewTx(address(this), transactionType);
@@ -50,7 +50,7 @@ contract LoggerTest is Test {
         logger.addInteraction(txHash, network, transactionType);
 
         // Retrieve interaction
-        Types.TransactionType retrievedTransactionType = logger.getInteraction(network, address(this), txHash);
+        Types.TransactionType retrievedTransactionType = logger.interactions(network, address(this), txHash);
 
         // Assert that the retrieved interaction matches the added interaction
         assertEq(uint256(retrievedTransactionType), uint256(transactionType));

@@ -3,7 +3,7 @@ pragma solidity >=0.8.25 <0.9.0;
 
 library Types {
     enum TransactionType {
-        Sign,
+        Swap,
         Transfer,
         Other
     }

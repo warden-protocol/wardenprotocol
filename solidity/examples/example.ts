@@ -29,7 +29,7 @@ async function main() {
     const contractAddress = process.env.YOUR_CONTRACT_ADDRESS as `0x${string}`; // Replace with your contract address
     const abi = parseAbi([
         "function addInteraction(bytes32 txHash, string network, uint8 transactionType) public",
-        "function getInteraction(string network, address account, bytes32 txHash) public view returns (uint8)"
+        "function interactions(string network, address account, bytes32 txHash) public view returns (uint8)"
     ]);
 
     // Generate txHash and network
@@ -59,7 +59,7 @@ async function main() {
     // Encode function data for getInteraction
     const getInteractionData = encodeFunctionData({
         abi,
-        functionName: "getInteraction",
+        functionName: "interactions",
         args: [network, account.address, txHash],
     });
 
@@ -72,7 +72,7 @@ async function main() {
     // Decode result
     const interaction = decodeFunctionResult({
         abi,
-        functionName: "getInteraction",
+        functionName: "interactions",
         data: result.data as unknown as `0x${string}`, // Convert to unknown first
     });
     console.log("Retrieved interaction:", interaction);

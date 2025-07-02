@@ -7,10 +7,7 @@
     "prettier": "^3.0.0",
     "solhint": "^3.6.2"
   },
-  "dependencies": {
-    "@0xsequence/create3": "https://github.com/0xsequence/create3#acc4703a21ec1d71dc2a99db088c4b1f467530fd",
-    "@openzeppelin/contracts": "^5.0.1"
-  },
+  "dependencies": {},
   "scripts": {
     "clean": "rm -rf cache out",
     "build": "forge build src --via-ir",

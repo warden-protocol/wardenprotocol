@@ -222,6 +222,7 @@ func (app *App) setupABCILifecycle(
 		abciutil.ProcessProposalHandlers{},
 		slinkyProposalHandler.ProcessProposalHandler(),
 		app.AsyncKeeper.ProcessProposalHandler(),
+		app.SchedKeeper.ProcessProposalHandler(app.txConfig),
 	)
 	app.SetProcessProposal(processProposalHandlers.ProcessProposalHandler())
 
@@ -247,6 +248,7 @@ func (app *App) setupABCILifecycle(
 	prepareProposalHandlers := append(abciutil.PrepareProposalHandlers{},
 		slinkyProposalHandler.PrepareProposalHandler(),
 		app.AsyncKeeper.PrepareProposalHandler(),
+		app.SchedKeeper.PrepareProposalHandler(app.txConfig),
 	)
 	app.SetPrepareProposal(prepareProposalHandlers.PrepareProposalHandler())
 

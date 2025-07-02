@@ -7,7 +7,12 @@ import (
 	"strings"
 
 	"cosmossdk.io/math"
+	"github.com/cosmos/cosmos-sdk/codec"
+	"github.com/cosmos/cosmos-sdk/codec/legacy"
+	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/evm/crypto/ethsecp256k1"
+	evmcodec "github.com/cosmos/evm/encoding/codec"
 	"github.com/cosmos/evm/ethereum/eip712"
 	evmtypes "github.com/cosmos/evm/x/vm/types"
 )
@@ -19,6 +24,16 @@ var coinInfo = evmtypes.EvmCoinInfo{
 	ExtendedDenom: "award",
 	DisplayDenom:  "WARD",
 	Decimals:      evmtypes.EighteenDecimals,
+}
+
+func RegisterEVMCodec(legacyAmino *codec.LegacyAmino, interfaceRegistry codectypes.InterfaceRegistry) {
+	legacyAmino.RegisterConcrete(&ethsecp256k1.PubKey{},
+		ethsecp256k1.PubKeyName, nil)
+	legacyAmino.RegisterConcrete(&ethsecp256k1.PrivKey{},
+		ethsecp256k1.PrivKeyName, nil)
+	legacy.Cdc = legacyAmino
+
+	evmcodec.RegisterInterfaces(interfaceRegistry)
 }
 
 func (app *App) setupEVM() error {

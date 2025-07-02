@@ -17,8 +17,11 @@ import (
 	evmante "github.com/cosmos/evm/ante/evm"
 	anteinterfaces "github.com/cosmos/evm/ante/interfaces"
 	evmtypes "github.com/cosmos/evm/x/vm/types"
+	"github.com/cosmos/gogoproto/proto"
 	ibcante "github.com/cosmos/ibc-go/v10/modules/core/ante"
 	"github.com/cosmos/ibc-go/v10/modules/core/keeper"
+
+	schedv1beta1 "github.com/warden-protocol/wardenprotocol/api/warden/sched/v1beta1"
 )
 
 // HandlerOptions extend the SDK's AnteHandler options by requiring the IBC
@@ -138,6 +141,47 @@ func NewAnteHandler(options HandlerOptions) sdk.AnteHandler {
 			opts := txWithExtensions.GetExtensionOptions()
 			if len(opts) > 0 {
 				switch typeURL := opts[0].GetTypeUrl(); typeURL {
+				case "/" + proto.MessageName(&schedv1beta1.ExtensionOptionsCallbacks{}):
+					// This check prevents any external user to submit a transaction using the
+					// ExtensionOptionsCallbacks.
+					// If a validator still builds a proposal containing an invalid transaction,
+					// the rest of the validators should reject such proposal during
+					// ProcessProposal.
+					if ctx.IsCheckTx() {
+						return ctx, errorsmod.Wrapf(
+							errortypes.ErrInvalidType,
+							"cannot send tx with extension type: %s", typeURL,
+						)
+					}
+
+					// This transaction will bypass normal authentication checks such as signature and nonce.
+					// It's dangerous and should only be allowed if built by the x/sched module.
+					// The code below is a stripped version of the normal EVM ante handler.
+
+					ctx, err = evmante.SetupContextAndResetTransientGas(ctx, tx, options.EVMKeeper)
+					if err != nil {
+						return ctx, err
+					}
+
+					decUtils, err := evmante.NewMonoDecoratorUtils(ctx, options.EVMKeeper)
+					if err != nil {
+						return ctx, err
+					}
+
+					if err := evmante.CheckGasWanted(ctx, options.FeeMarketKeeper, tx, decUtils.Rules.IsLondon); err != nil {
+						return ctx, err
+					}
+
+					for i, msg := range tx.GetMsgs() {
+						ethMsg, _, err := evmtypes.UnpackEthMsg(msg)
+						if err != nil {
+							return ctx, err
+						}
+						txIdx := uint64(i) //nolint:gosec // G115
+						evmante.EmitTxHashEvent(ctx, ethMsg, decUtils.BlockTxIndex, txIdx)
+					}
+
+					return ctx, nil
 				case "/cosmos.evm.vm.v1.ExtensionOptionsEthereumTx":
 					// handle as *evmtypes.MsgEthereumTx
 					anteHandler = newMonoEVMAnteHandler(options)

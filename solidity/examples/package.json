@@ -1,0 +1,19 @@
+{
+  "name": "tracker-examples",
+  "version": "1.0.0",
+  "description": "Examples for interacting with Warden App",
+  "main": "dist/example.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/example.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.0.1",
+    "ethers": "^6.9.0",
+    "viem": "^2.31.6"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.10",
+    "typescript": "^5.0.0"
+  }
+}

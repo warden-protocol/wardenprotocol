@@ -38,7 +38,7 @@ contract LoggerTest is Test {
         Types.TransactionType transactionType = Types.TransactionType.Transfer;
 
         vm.expectEmit(true, true, false, false);
-        emit NewTx(address(this), transactionType);
+        emit NewTx(address(this), txHash, transactionType);
 
         logger.addInteraction(txHash, network, transactionType);
     }
@@ -54,5 +54,43 @@ contract LoggerTest is Test {
 
         // Assert that the retrieved interaction matches the added interaction
         assertEq(uint256(retrievedTransactionType), uint256(transactionType));
+    }
+
+    function test_InteractionCount() public {
+        bytes32 txHash1 = keccak256(abi.encodePacked("testHash1"));
+        bytes32 txHash2 = keccak256(abi.encodePacked("testHash2"));
+        string memory network = "testNetwork";
+        Types.TransactionType transactionType = Types.TransactionType.Swap;
+
+        logger.addInteraction(txHash1, network, transactionType);
+        logger.addInteraction(txHash2, network, transactionType);
+
+        uint64 count = logger.interactionsCounters(network, address(this), transactionType);
+        assertEq(count, 2);
+    }
+
+    function test_InteractionCountWithDifferentTypes() public {
+        bytes32 txHash1 = keccak256(abi.encodePacked("testHash1"));
+        bytes32 txHash2 = keccak256(abi.encodePacked("testHash2"));
+        string memory network = "testNetwork";
+        Types.TransactionType transactionType1 = Types.TransactionType.Swap;
+        Types.TransactionType transactionType2 = Types.TransactionType.Transfer;
+
+        logger.addInteraction(txHash1, network, transactionType1);
+        logger.addInteraction(txHash2, network, transactionType2);
+
+        uint64 countSwap = logger.interactionsCounters(network, address(this), transactionType1);
+        uint64 countTransfer = logger.interactionsCounters(network, address(this), transactionType2);
+
+        assertEq(countSwap, 1);
+        assertEq(countTransfer, 1);
+    }
+
+    function test_InteractionCountWithNoInteractions() public {
+        string memory network = "testNetwork";
+        Types.TransactionType transactionType = Types.TransactionType.Other;
+
+        uint64 count = logger.interactionsCounters(network, address(this), transactionType);
+        assertEq(count, 0);
     }
 }

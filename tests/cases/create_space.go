@@ -21,14 +21,11 @@ type Test_CreateSpace struct {
 	w *exec.WardenNode
 }
 
-func (c *Test_CreateSpace) Setup(t *testing.T, build framework.BuildResult) {
-	c.w = exec.NewWardenNode(t, build.Wardend)
-
-	go c.w.Start(t, "./testdata/snapshot-base")
-	c.w.WaitRunning(t)
+func (c *Test_CreateSpace) Setup(t *testing.T, f *framework.F) {
+	c.w = f.StartNodeFromSnapshot(t, framework.SnapshotBase)
 }
 
-func (c *Test_CreateSpace) Run(t *testing.T, build framework.BuildResult) {
+func (c *Test_CreateSpace) Run(t *testing.T, f *framework.F) {
 	alice := exec.NewWardend(c.w, "alice")
 	res := alice.Tx(t, "warden new-space")
 	checks.SuccessTx(t, res)

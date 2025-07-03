@@ -1,0 +1,6 @@
+precompile-json/=../../../../precompiles/json/
+precompile-async/=../../../../precompiles/async/
+precompile-sched/=../../../../precompiles/sched/
+precompile-callbacks/=../../../../precompiles/callbacks/
+precompile-common/=../../../../precompiles/common/
+pricepred/=../

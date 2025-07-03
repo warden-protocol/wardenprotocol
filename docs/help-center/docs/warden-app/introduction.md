@@ -34,7 +34,7 @@ Within the Warden App, you can do the following:
 - [Manage your wallet](manage-your-wallet)
 - [Manage assets](manage-assets)
 - [Use AI agents](use-ai-agents)
-- [Create-your-coin](create-your-coin)
+- [Create your coin](create-your-coin)
 
 ## Supported networks
 

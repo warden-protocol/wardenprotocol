@@ -38,8 +38,12 @@ contract Deploy is Script {
         string memory output = "output";
         string memory loggerK = "logger";
         string memory out = vm.serializeString(output, loggerK, vm.toString(loggerAddress));
-        string memory path = string.concat("./broadcast/Deploy.s.sol/", chainId, "/latest.json");
-        vm.writeJson(out, path);
+        string memory path = string.concat("./broadcast/Deploy.s.sol/", chainId);
+        if (!vm.exists(path)) {
+            vm.createDir(path, true);
+        }
+        string memory filePath = string.concat(path, "/latest.json");
+        vm.writeJson(out, filePath);
     }
 
     function deployWithCreate2(bytes32 salt, bytes memory initCode, string memory name) internal returns (address) {

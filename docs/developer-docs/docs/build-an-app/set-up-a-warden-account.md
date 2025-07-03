@@ -34,6 +34,13 @@ To deploy a smart contract locally, you need to run a local chain and make sure 
    cd wardenprotocol
    ```
 
+   If you wish to test the latest testnet release locally, run this instead:
+   
+   ```bash
+   git clone --depth 1 --branch v0.6.3 https://github.com/warden-protocol/wardenprotocol
+   cd wardenprotocol
+   ```
+
 3. Execute the `just` script:
       
    ```bash

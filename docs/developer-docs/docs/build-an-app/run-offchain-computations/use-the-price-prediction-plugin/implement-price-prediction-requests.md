@@ -6,7 +6,7 @@ sidebar_position: 3
 
 ## Overview
 
-This tutorial explains how to implement a **price prediction request** for **Bitcoin**. You'll also learn how to request **metrics** providing metadata about predictions and their accuracy.
+This tutorial explains how to implement a **price prediction request** for **Bitcoin**. You'll also learn how to request **metrics** describing the quality, accuracy, and statistical properties of predictions.
 
 :::tip
 You can expand the example code from this tutorial to implement multiple price predictions for different cryptocurrencies.

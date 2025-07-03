@@ -13,7 +13,7 @@ This guide explains how to run a local chain for development and testing purpose
 Before you start, complete the following prerequisites:
 
 - [Install Go](https://go.dev/doc/install) 1.24 or later.
-- [Install Just](https://github.com/casey/just) 1.34.0 or later.
+- [Install just](https://github.com/casey/just) 1.34.0 or later.
 - [Install jq](https://jqlang.org/download/).
 
 :::tip
@@ -30,6 +30,13 @@ Clone the Warden Protocol repository and navigate to the root directory:
    
 ```bash
 git clone https://github.com/warden-protocol/wardenprotocol
+cd wardenprotocol
+```
+
+If you wish to test the latest testnet release locally, run this instead:
+
+```bash
+git clone --depth 1 --branch v0.6.3 https://github.com/warden-protocol/wardenprotocol
 cd wardenprotocol
 ```
 
@@ -87,6 +94,7 @@ Alternatively you can do this:
   just localnet
   ```
 - Delete all local chain data but keep `config.toml`, `app.toml`, and keys.
+
   ```bash
   wardend comet unsafe-reset-all
   wardend start

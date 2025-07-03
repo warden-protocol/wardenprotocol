@@ -23,7 +23,7 @@ Before you start, complete the following prerequisites:
   - 32GB of RAM
   - 300GB of disk space
 - [Install Go](https://golang.org/doc/install) 1.22.3 or later.
-- If you wish to build the binary from the source code, [install Just](https://github.com/casey/just) 1.34.0 or later.
+- If you wish to build the binary from the source code, [install just](https://github.com/casey/just) 1.34.0 or later.
 
 ## 1. Install
 
@@ -86,7 +86,7 @@ To configure `wardend`, do the following:
    wget https://buenavista-genesis.s3.eu-west-1.amazonaws.com/genesis.json.tar.xz | tar -xJ
    ```
 
-   These commands will remove the `$HOME/.warden/genesis.json` file and replace it with the correct version.
+   These commands will remove the `$HOME/.warden/config/genesis.json` file and replace it with the correct version.
 
 2. In the `app.toml` file, set the mandatory options: the minimum gas price and persistent peers.
 
@@ -98,7 +98,7 @@ To configure `wardend`, do the following:
    chainInfoUrl='https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/buenavista/chain.json'
    code={`sed -i 's/persistent_peers = ""/persistent_peers = "{{persistent_peers}}"/' config.toml`} />
 
-   These commands will update the `minimum-gas-prices` and `persistent_peers` fields in `$HOME/.warden/app.toml`. Alternatively, you can adjust the file manually.
+   These commands will update the `minimum-gas-prices` and `persistent_peers` fields in `$HOME/.warden/config/app.toml`. Alternatively, you can adjust the file manually.
 
 ## 3. Set up the state sync
 
@@ -144,7 +144,7 @@ https://rpc.buenavista.wardenprotocol.org
    s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.warden/config/config.toml
    ```
 
-   These commands will update the `[statesync]` section in `$HOME/.warden/config.toml`. Alternatively, you can adjust the file manually.
+   These commands will update the `[statesync]` section in `$HOME/.warden/config/config.toml`. Alternatively, you can adjust the file manually.
 
 ## 4. Start the node
 

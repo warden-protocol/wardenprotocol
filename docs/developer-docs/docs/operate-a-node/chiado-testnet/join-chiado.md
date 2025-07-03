@@ -21,7 +21,7 @@ Before you start, complete the following prerequisites:
   - 16GB of RAM
   - 300GB of disk space
 - [Install Go](https://go.dev/doc/install) 1.24 or later.
-- If you wish to build the binary from the source code, [install Just](https://github.com/casey/just) 1.34.0 or later.
+- If you wish to build the binary from the source code, [install just](https://github.com/casey/just) 1.34.0 or later.
 
 ## 1. Install
 

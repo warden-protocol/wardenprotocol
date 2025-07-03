@@ -15,16 +15,16 @@ syntax = "proto3";
 package warden.async.v1beta1;
 
 import "amino/amino.proto";
-import "cosmos/base/v1beta1/coin.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
+import "cosmos/base/v1beta1/coin.proto";
 import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/any.proto";
+import "warden/async/v1beta1/metrics.proto";
 import "warden/async/v1beta1/params.proto";
 import "warden/async/v1beta1/plugin.proto";
 import "warden/async/v1beta1/task.proto";
-import "warden/async/v1beta1/metrics.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1";
 
@@ -63,7 +63,7 @@ service Query {
     option (google.api.http).get = "/warden/async/plugins_by_validator/{validator}";
   }
 
-  rpc PluginMetricsById(QueryPluginMetricsByIdRequest) returns (QueryPluginMetricsByIdResponse) { 
+  rpc PluginMetricsById(QueryPluginMetricsByIdRequest) returns (QueryPluginMetricsByIdResponse) {
     option (google.api.http).get = "/warden/async/plugin_metrics/{id}";
   }
 }

@@ -65,7 +65,7 @@ contract LoggerTest is Test {
         logger.addInteraction(txHash1, network, transactionType);
         logger.addInteraction(txHash2, network, transactionType);
 
-        uint64 count = logger.interactionsCounters(network, address(this), transactionType);
+        uint64 count = logger.interactionsCounters(address(this), transactionType);
         assertEq(count, 2);
     }
 
@@ -79,18 +79,17 @@ contract LoggerTest is Test {
         logger.addInteraction(txHash1, network, transactionType1);
         logger.addInteraction(txHash2, network, transactionType2);
 
-        uint64 countSwap = logger.interactionsCounters(network, address(this), transactionType1);
-        uint64 countTransfer = logger.interactionsCounters(network, address(this), transactionType2);
+        uint64 countSwap = logger.interactionsCounters(address(this), transactionType1);
+        uint64 countTransfer = logger.interactionsCounters(address(this), transactionType2);
 
         assertEq(countSwap, 1);
         assertEq(countTransfer, 1);
     }
 
-    function test_InteractionCountWithNoInteractions() public {
-        string memory network = "testNetwork";
+    function test_InteractionCountWithNoInteractions() public view {
         Types.TransactionType transactionType = Types.TransactionType.Other;
 
-        uint64 count = logger.interactionsCounters(network, address(this), transactionType);
+        uint64 count = logger.interactionsCounters(address(this), transactionType);
         assertEq(count, 0);
     }
 }

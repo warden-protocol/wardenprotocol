@@ -12,10 +12,8 @@ contract Logger {
         string network => mapping(address account => mapping(bytes32 txHash => Types.TransactionType transactionType))
     ) public interactions;
 
-    mapping(
-        string network
-            => mapping(address account => mapping(Types.TransactionType transactionType => uint64 interactionCount))
-    ) public interactionsCounters;
+    mapping(address account => mapping(Types.TransactionType transactionType => uint64 interactionCount)) public
+        interactionsCounters;
 
     function addInteraction(bytes32 txHash, string calldata network, Types.TransactionType transactionType) public {
         if (bytes(network).length == 0) {
@@ -23,10 +21,10 @@ contract Logger {
         }
 
         // Increment the interaction count for the network and account
-        if (interactionsCounters[network][msg.sender][transactionType] == 0) {
-            interactionsCounters[network][msg.sender][transactionType] = 1;
+        if (interactionsCounters[msg.sender][transactionType] == 0) {
+            interactionsCounters[msg.sender][transactionType] = 1;
         } else {
-            interactionsCounters[network][msg.sender][transactionType]++;
+            interactionsCounters[msg.sender][transactionType]++;
         }
 
         interactions[network][msg.sender][txHash] = transactionType;

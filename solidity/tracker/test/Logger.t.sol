@@ -2,7 +2,7 @@
 pragma solidity >=0.8.25 <0.9.0;
 
 import { Test } from "forge-std/src/Test.sol";
-import { Logger, BadNetwork, NewTx } from "../src/Logger.sol";
+import { Logger, NewTx, BadNetwork, DuplicatedTransaction, BadTransactionType } from "../src/Logger.sol";
 import { Types } from "../src/types/Types.sol";
 
 contract LoggerTest is Test {
@@ -65,7 +65,7 @@ contract LoggerTest is Test {
         logger.addInteraction(txHash1, network, transactionType);
         logger.addInteraction(txHash2, network, transactionType);
 
-        uint64 count = logger.interactionsCounters(address(this), transactionType);
+        uint256 count = logger.interactionsCounters(address(this), transactionType);
         assertEq(count, 2);
     }
 
@@ -79,8 +79,8 @@ contract LoggerTest is Test {
         logger.addInteraction(txHash1, network, transactionType1);
         logger.addInteraction(txHash2, network, transactionType2);
 
-        uint64 countSwap = logger.interactionsCounters(address(this), transactionType1);
-        uint64 countTransfer = logger.interactionsCounters(address(this), transactionType2);
+        uint256 countSwap = logger.interactionsCounters(address(this), transactionType1);
+        uint256 countTransfer = logger.interactionsCounters(address(this), transactionType2);
 
         assertEq(countSwap, 1);
         assertEq(countTransfer, 1);
@@ -89,7 +89,27 @@ contract LoggerTest is Test {
     function test_InteractionCountWithNoInteractions() public view {
         Types.TransactionType transactionType = Types.TransactionType.Other;
 
-        uint64 count = logger.interactionsCounters(address(this), transactionType);
+        uint256 count = logger.interactionsCounters(address(this), transactionType);
         assertEq(count, 0);
+    }
+
+    function test_AddInteractionRevertsWithDuplicatedTransaction() public {
+        bytes32 txHash = keccak256(abi.encodePacked("testHash"));
+        string memory network = "testNetwork";
+        Types.TransactionType transactionType = Types.TransactionType.Swap;
+
+        logger.addInteraction(txHash, network, transactionType);
+
+        vm.expectRevert(DuplicatedTransaction.selector);
+        logger.addInteraction(txHash, network, transactionType); // Duplicate
+    }
+
+    function test_AddInteractionRevertsWithBadTransactionType() public {
+        bytes32 txHash = keccak256(abi.encodePacked("testHash"));
+        string memory network = "testNetwork";
+        Types.TransactionType transactionType = Types.TransactionType.Undefined;
+
+        vm.expectRevert(BadTransactionType.selector);
+        logger.addInteraction(txHash, network, transactionType);
     }
 }

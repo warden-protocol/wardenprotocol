@@ -47,13 +47,13 @@ The plugin expects a base64-encoded JSON payload with the following format:
     "assets": [
       {
         "amount": 1.0,
-        "coin_id": "BTC"
+        "coin_id": "bitcoin"
       }
     ]
   },
-  "begin": "2023-01-01",
-  "end": "2023-01-07",
-  "horizon": "7d",
+  "begin": "2025-01-01T00:00:00Z",
+  "end": "2025-01-20T00:00:00Z",
+  "horizon": "2025-01-25T00:00:00Z",
   "strategy_name": "selected_strategy"
 }
 ```
@@ -73,10 +73,10 @@ Here is the current list of strategies:
 * `state` represents the current portfolio state.
   * `assets` contains an array of assets in the portfolio.
     * `amount` is the amount of the asset held.
-    * `coin_id` is the ID of the asset (e.g., "BTC", "ETH").
-* `begin` is the start date for the recommendation period (YYYY-MM-DD).
-* `end` is the end date for the recommendation period (YYYY-MM-DD).
-* `horizon` is the time horizon for the recommendations (e.g., "7d", "30d").
+    * `coin_id` is the ID of the asset (e.g., "bitcoin", "ethereum").
+* `begin` is the start date for the recommendation period.
+* `end` is the end date for the recommendation period.
+* `horizon` is the time horizon for the recommendations.
 * `strategy_name` is the name of the strategy to use for generating recommendations.
 
 ## Output
@@ -86,10 +86,11 @@ The plugin returns a base64-encoded JSON payload with the following format:
 ```json
 {
   "orders": [
+    {},
     {
-      "src": "BTC",
-      "dst": "USD",
-      "amount": 0.5
+      "src": "bitcoin",
+      "dst": "tether",
+      "amount": 0.123
     }
   ]
 }

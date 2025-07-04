@@ -73,7 +73,7 @@ Here is the current list of strategies:
 * `state` represents the current portfolio state.
   * `assets` contains an array of assets in the portfolio.
     * `amount` is the amount of the asset held.
-    * `coin_id` is the ID of the asset (e.g., "BTC", "ETH").
+    * `coin_id` is the ID of the asset (e.g., "bitcoin", "ethereum").
 * `begin` is the start date for the recommendation period.
 * `end` is the end date for the recommendation period.
 * `horizon` is the time horizon for the recommendations.

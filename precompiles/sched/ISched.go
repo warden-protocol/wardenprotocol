@@ -76,7 +76,7 @@ type TypesPageResponse struct {
 
 // ISchedMetaData contains all meta data concerning the ISched contract.
 var ISchedMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"name\":\"callbackById\",\"outputs\":[{\"components\":[{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"addressValue\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"gasLimit\",\"type\":\"uint64\"}],\"internalType\":\"structCallback\",\"name\":\"callback\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"enumCallbackStatus\",\"name\":\"status\",\"type\":\"uint8\"},{\"internalType\":\"bytes\",\"name\":\"result\",\"type\":\"bytes\"}],\"internalType\":\"structCallbackResult\",\"name\":\"result\",\"type\":\"tuple\"}],\"internalType\":\"structCallbackResponse\",\"name\":\"callbackResponse\",\"type\":\"tuple\"}],\"internalType\":\"structCallbackByIdResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"}],\"name\":\"callbacks\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"addressValue\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"gasLimit\",\"type\":\"uint64\"}],\"internalType\":\"structCallback\",\"name\":\"callback\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"enumCallbackStatus\",\"name\":\"status\",\"type\":\"uint8\"},{\"internalType\":\"bytes\",\"name\":\"result\",\"type\":\"bytes\"}],\"internalType\":\"structCallbackResult\",\"name\":\"result\",\"type\":\"tuple\"}],\"internalType\":\"structCallbackResponse[]\",\"name\":\"callbacks\",\"type\":\"tuple[]\"}],\"internalType\":\"structCallbacksResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"name\":\"callbackById\",\"outputs\":[{\"components\":[{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"addressValue\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"gasLimit\",\"type\":\"uint64\"}],\"internalType\":\"structCallback\",\"name\":\"callback\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"enumCallbackStatus\",\"name\":\"status\",\"type\":\"uint8\"},{\"internalType\":\"bytes\",\"name\":\"result\",\"type\":\"bytes\"}],\"internalType\":\"structCallbackResult\",\"name\":\"result\",\"type\":\"tuple\"}],\"internalType\":\"structCallbackResponse\",\"name\":\"callbackResponse\",\"type\":\"tuple\"}],\"internalType\":\"structCallbackByIdResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"}],\"name\":\"callbacks\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"addressValue\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"gasLimit\",\"type\":\"uint64\"}],\"internalType\":\"structCallback\",\"name\":\"callback\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"enumCallbackStatus\",\"name\":\"status\",\"type\":\"uint8\"},{\"internalType\":\"bytes\",\"name\":\"result\",\"type\":\"bytes\"}],\"internalType\":\"structCallbackResult\",\"name\":\"result\",\"type\":\"tuple\"}],\"internalType\":\"structCallbackResponse[]\",\"name\":\"callbacks\",\"type\":\"tuple[]\"}],\"internalType\":\"structCallbacksResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"executeCallbacks\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
 }
 
 // ISchedABI is the input ABI used to generate the binding from.
@@ -316,4 +316,25 @@ func (_ISched *ISchedSession) GetAddress() (common.Address, error) {
 // Solidity: function getAddress() view returns(address)
 func (_ISched *ISchedCallerSession) GetAddress() (common.Address, error) {
 	return _ISched.Contract.GetAddress(&_ISched.CallOpts)
+}
+
+// ExecuteCallbacks is a paid mutator transaction binding the contract method 0x06e6ee28.
+//
+// Solidity: function executeCallbacks() returns()
+func (_ISched *ISchedTransactor) ExecuteCallbacks(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _ISched.contract.Transact(opts, "executeCallbacks")
+}
+
+// ExecuteCallbacks is a paid mutator transaction binding the contract method 0x06e6ee28.
+//
+// Solidity: function executeCallbacks() returns()
+func (_ISched *ISchedSession) ExecuteCallbacks() (*types.Transaction, error) {
+	return _ISched.Contract.ExecuteCallbacks(&_ISched.TransactOpts)
+}
+
+// ExecuteCallbacks is a paid mutator transaction binding the contract method 0x06e6ee28.
+//
+// Solidity: function executeCallbacks() returns()
+func (_ISched *ISchedTransactorSession) ExecuteCallbacks() (*types.Transaction, error) {
+	return _ISched.Contract.ExecuteCallbacks(&_ISched.TransactOpts)
 }

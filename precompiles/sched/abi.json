@@ -180,6 +180,13 @@
     },
     {
       "inputs": [],
+      "name": "executeCallbacks",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "getAddress",
       "outputs": [
         {

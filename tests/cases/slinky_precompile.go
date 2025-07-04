@@ -30,10 +30,9 @@ const (
 
 // TODO(backsapc): Implement positive test cases with slinky sidecar integration.
 func (c *Test_SlinkyPrecompile) Run(t *testing.T, _ *framework.F) {
-	alice := exec.NewWardend(c.w, "alice")
+	alice := exec.NewWardendEth(t, c.w, "alice")
 
-	evmClient := c.w.EthClient(t)
-	iSlinkyClient, err := slinky.NewISlinky(common.HexToAddress(slinky.PrecompileAddress), evmClient)
+	iSlinkyClient, err := slinky.NewISlinky(common.HexToAddress(slinky.PrecompileAddress), alice.Client)
 	require.NoError(t, err)
 
 	_, err = iSlinkyClient.GetPrice(alice.CallOps(t), "ETH", "USDT")

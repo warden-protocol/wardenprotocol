@@ -6,7 +6,6 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/bech32"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
 
@@ -31,40 +30,34 @@ func (c *Test_ExternalContractPrecompile) Setup(t *testing.T, f *framework.F) {
 }
 
 func (c *Test_ExternalContractPrecompile) Run(t *testing.T, f *framework.F) {
-	alice := exec.NewWardend(c.w, "alice")
-	bob := exec.NewWardend(c.w, "bob")
+	alice := exec.NewWardendEth(t, c.w, "alice")
+	bob := exec.NewWardendEth(t, c.w, "bob")
 
-	evmClient := c.w.EthClient(t)
-	iActClient, err := act.NewIAct(common.HexToAddress(act.PrecompileAddress), evmClient)
+	iActClient, err := act.NewIAct(common.HexToAddress(act.PrecompileAddress), alice.Client)
 	require.NoError(t, err)
 
-	iWardenClient, err := warden.NewIWarden(common.HexToAddress(warden.PrecompileAddress), evmClient)
+	iWardenClient, err := warden.NewIWarden(common.HexToAddress(warden.PrecompileAddress), alice.Client)
 	require.NoError(t, err)
 
-	address, _, instance, err := caller.DeployCaller(alice.TransactOps(t, evmClient), evmClient)
-	if err != nil {
-		t.Fatal(err)
-	}
+	address, _, instance, err := caller.DeployCaller(alice.TransactOps(t), alice.Client)
+	require.NoError(t, err)
 
 	bech32Address, err := bech32.ConvertAndEncode("warden", sdk.AccAddress(address.Bytes()))
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
 
 	t.Run("work with new action", func(t *testing.T) {
 		contractApprovedTemplated := fmt.Sprintf("any(1, [%s])", bech32Address)
 
 		newTemplateTx, err := iActClient.NewTemplate(
-			alice.TransactOps(t, evmClient),
+			alice.TransactOps(t),
 			"contract approved template",
 			contractApprovedTemplated)
 		require.NoError(t, err)
 
-		_, err = bind.WaitMined(t.Context(), evmClient, newTemplateTx)
-		require.NoError(t, err)
+		alice.Client.WaitMinedSuccess(t, newTemplateTx)
 
 		updateSpaceTx, err := iWardenClient.UpdateSpace(
-			alice.TransactOps(t, evmClient),
+			alice.TransactOps(t),
 			1, 0,
 			1, 0,
 			0, 0,
@@ -72,37 +65,35 @@ func (c *Test_ExternalContractPrecompile) Run(t *testing.T, f *framework.F) {
 			"any(1, warden.space.owners)", "any(1, warden.space.owners)")
 		require.NoError(t, err)
 
-		_, err = bind.WaitMined(t.Context(), evmClient, updateSpaceTx)
-		require.NoError(t, err)
+		alice.Client.WaitMinedSuccess(t, updateSpaceTx)
 
 		space, err := iWardenClient.SpaceById(alice.CallOps(t), 1)
 		require.NoError(t, err)
 		require.Equal(t, warden.Space{
 			Id:                     1,
-			Creator:                alice.EthAddress(t),
+			Creator:                alice.From,
 			Nonce:                  1,
 			ApproveAdminTemplateId: 1,
 			RejectAdminTemplateId:  0,
 			ApproveSignTemplateId:  0,
 			RejectSignTemplateId:   0,
-			Owners:                 []common.Address{alice.EthAddress(t)},
+			Owners:                 []common.Address{alice.From},
 		}, space)
 
 		// addSpaceOwner
 		abi, error := warden.IWardenMetaData.GetAbi()
 		require.NoError(t, error)
 
-		packedAction, err := abi.Pack("addSpaceOwner", uint64(1), bob.EthAddress(t), uint64(1), uint64(15000), contractApprovedTemplated, "any(1, warden.space.owners)")
+		packedAction, err := abi.Pack("addSpaceOwner", uint64(1), bob.From, uint64(1), uint64(15000), contractApprovedTemplated, "any(1, warden.space.owners)")
 		require.NoError(t, err)
 
 		addSpaceOwnerTx, err := instance.CallOtherContract(
-			alice.TransactOps(t, evmClient),
+			alice.TransactOps(t),
 			common.HexToAddress("0x0000000000000000000000000000000000000900"),
 			packedAction)
 		require.NoError(t, err)
 
-		_, err = bind.WaitMined(t.Context(), evmClient, addSpaceOwnerTx)
-		require.NoError(t, err)
+		alice.Client.WaitMinedSuccess(t, addSpaceOwnerTx)
 
 		action, err := iActClient.ActionById(alice.CallOps(t), 2)
 		require.NoError(t, err)
@@ -112,23 +103,22 @@ func (c *Test_ExternalContractPrecompile) Run(t *testing.T, f *framework.F) {
 		require.NoError(t, err)
 		require.Equal(t, warden.Space{
 			Id:                     1,
-			Creator:                alice.EthAddress(t),
+			Creator:                alice.From,
 			Nonce:                  2,
 			ApproveAdminTemplateId: 1,
 			ApproveSignTemplateId:  0,
 			RejectAdminTemplateId:  0,
 			RejectSignTemplateId:   0,
-			Owners:                 []common.Address{alice.EthAddress(t), bob.EthAddress(t)},
+			Owners:                 []common.Address{alice.From, bob.From},
 		}, space)
 	})
 
 	t.Run("work with new action", func(t *testing.T) {
 		newSpaceTx, err := iWardenClient.NewSpace(
-			alice.TransactOps(t, evmClient), 0, 0, 0, 0, []common.Address{})
+			alice.TransactOps(t), 0, 0, 0, 0, []common.Address{})
 		require.NoError(t, err)
 
-		_, err = bind.WaitMined(t.Context(), evmClient, newSpaceTx)
-		require.NoError(t, err)
+		alice.Client.WaitMinedSuccess(t, newSpaceTx)
 
 		// Just valid address, which is not equal to address of Caller contract
 		bech32Address, err := bech32.ConvertAndEncode(
@@ -141,16 +131,15 @@ func (c *Test_ExternalContractPrecompile) Run(t *testing.T, f *framework.F) {
 		contractApprovedTemplated := fmt.Sprintf("any(1, [%s])", bech32Address)
 
 		newTemplateTx, err := iActClient.NewTemplate(
-			alice.TransactOps(t, evmClient),
+			alice.TransactOps(t),
 			"contract approved template",
 			contractApprovedTemplated)
 		require.NoError(t, err)
 
-		_, err = bind.WaitMined(t.Context(), evmClient, newTemplateTx)
-		require.NoError(t, err)
+		alice.Client.WaitMinedSuccess(t, newTemplateTx)
 
 		updateSpaceTx, err := iWardenClient.UpdateSpace(
-			alice.TransactOps(t, evmClient),
+			alice.TransactOps(t),
 			2, 0,
 			2, 0,
 			0, 0,
@@ -158,37 +147,35 @@ func (c *Test_ExternalContractPrecompile) Run(t *testing.T, f *framework.F) {
 			"any(1, warden.space.owners)", "any(1, warden.space.owners)")
 		require.NoError(t, err)
 
-		_, err = bind.WaitMined(t.Context(), evmClient, updateSpaceTx)
-		require.NoError(t, err)
+		alice.Client.WaitMinedSuccess(t, updateSpaceTx)
 
 		space, err := iWardenClient.SpaceById(alice.CallOps(t), 2)
 		require.NoError(t, err)
 		require.Equal(t, warden.Space{
 			Id:                     2,
-			Creator:                alice.EthAddress(t),
+			Creator:                alice.From,
 			Nonce:                  1,
 			ApproveAdminTemplateId: 2,
 			RejectAdminTemplateId:  0,
 			ApproveSignTemplateId:  0,
 			RejectSignTemplateId:   0,
-			Owners:                 []common.Address{alice.EthAddress(t)},
+			Owners:                 []common.Address{alice.From},
 		}, space)
 
 		// addSpaceOwner
 		abi, error := warden.IWardenMetaData.GetAbi()
 		require.NoError(t, error)
 
-		packedAction, err := abi.Pack("addSpaceOwner", uint64(1), bob.EthAddress(t), uint64(1), uint64(15000), contractApprovedTemplated, "any(1, warden.space.owners)")
+		packedAction, err := abi.Pack("addSpaceOwner", uint64(1), bob.From, uint64(1), uint64(15000), contractApprovedTemplated, "any(1, warden.space.owners)")
 		require.NoError(t, err)
 
 		addSpaceOwnerTx, err := instance.CallOtherContract(
-			alice.TransactOps(t, evmClient),
+			alice.TransactOps(t),
 			common.HexToAddress("0x0000000000000000000000000000000000000900"),
 			packedAction)
 		require.NoError(t, err)
 
-		_, err = bind.WaitMined(t.Context(), evmClient, addSpaceOwnerTx)
-		require.NoError(t, err)
+		alice.Client.WaitMinedFail(t, addSpaceOwnerTx)
 
 		action, err := iActClient.ActionById(alice.CallOps(t), 2)
 		require.NoError(t, err)
@@ -198,13 +185,13 @@ func (c *Test_ExternalContractPrecompile) Run(t *testing.T, f *framework.F) {
 		require.NoError(t, err)
 		require.Equal(t, warden.Space{
 			Id:                     2,
-			Creator:                alice.EthAddress(t),
+			Creator:                alice.From,
 			Nonce:                  1,
 			ApproveAdminTemplateId: 2,
 			ApproveSignTemplateId:  0,
 			RejectAdminTemplateId:  0,
 			RejectSignTemplateId:   0,
-			Owners:                 []common.Address{alice.EthAddress(t)},
+			Owners:                 []common.Address{alice.From},
 		}, space)
 	})
 }

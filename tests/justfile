@@ -21,6 +21,17 @@ snapshot:
   echo "deprecated: use \"just test true\" to regenerate the snapshots instead"
   exit 1
 
+gen-contract name:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  contract_dir="testdata/contracts/{{name}}"
+  echo "Compiling contract: {{name}}"
+  pushd "$contract_dir"
+  solc --evm-version paris --bin --abi precompiles/=../../../../precompiles/ "./{{name}}.sol" -o . --overwrite --via-ir
+  abigen --bin=./{{name}}.bin --abi=./{{name}}.abi --pkg=contracts --type={{name}} --out=../{{name}}.go
+  popd
+  echo "Successfully compiled: {{name}}"
+
 # regenerate caller contract
 contract-caller:
   solc --evm-version paris --bin ./testdata/contracts/caller/Caller.sol -o ./testdata/contracts/caller --overwrite

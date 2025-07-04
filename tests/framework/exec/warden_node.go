@@ -10,7 +10,6 @@ import (
 
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
 	insecurecreds "google.golang.org/grpc/credentials/insecure"
@@ -44,16 +43,6 @@ func NewWardenNode(t *testing.T, binPath string) *WardenNode {
 		Stdout:  new(iowriter.IOWriter),
 		Stderr:  new(iowriter.IOWriter),
 	}
-}
-
-func (w *WardenNode) run(ctx context.Context, args ...string) error {
-	cmd := &Exec{
-		Bin:    w.BinPath,
-		Args:   args,
-		Stdout: w.Stdout,
-		Stderr: w.Stderr,
-	}
-	return cmd.Run(ctx)
 }
 
 func (w *WardenNode) Start(t *testing.T, snapshot string) {
@@ -127,14 +116,6 @@ func (w *WardenNode) PrintLogsAtTheEnd(t *testing.T, filters []string) {
 	})
 }
 
-func (w *WardenNode) grpcAddr() string {
-	return fmt.Sprintf("127.0.0.1:%d", w.grpcPort)
-}
-
-func (w *WardenNode) jsonRpcAddr() string {
-	return fmt.Sprintf("http://127.0.0.1:%d", w.jsonRPCPort)
-}
-
 type GRPCClient struct {
 	Warden wardentypes.QueryClient
 	Act    acttypes.QueryClient
@@ -158,9 +139,20 @@ func (w *WardenNode) GRPCClient(t *testing.T) *GRPCClient {
 	}
 }
 
-func (w *WardenNode) EthClient(t *testing.T) *ethclient.Client {
-	client, err := ethclient.Dial(w.jsonRpcAddr())
-	require.NoError(t, err)
+func (w *WardenNode) run(ctx context.Context, args ...string) error {
+	cmd := &Exec{
+		Bin:    w.BinPath,
+		Args:   args,
+		Stdout: w.Stdout,
+		Stderr: w.Stderr,
+	}
+	return cmd.Run(ctx)
+}
 
-	return client
+func (w *WardenNode) grpcAddr() string {
+	return fmt.Sprintf("127.0.0.1:%d", w.grpcPort)
+}
+
+func (w *WardenNode) jsonRpcAddr() string {
+	return fmt.Sprintf("http://127.0.0.1:%d", w.jsonRPCPort)
 }

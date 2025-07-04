@@ -132,6 +132,7 @@ func NewAvailableStaticPrecompiles(
 		*oracleKeeper,
 		asyncKeeper,
 		schedKeeper,
+		evmKeeper,
 	)
 	if err != nil {
 		panic(err)

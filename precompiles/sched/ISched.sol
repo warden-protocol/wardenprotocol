@@ -75,4 +75,9 @@ interface ISched {
      * @return The address of the sched module
      */
     function getAddress() external view returns (address);
+
+    /**
+     * @notice This is an internal API (even if marked as external). Do not call.
+     */
+    function executeCallbacks() external;
 }

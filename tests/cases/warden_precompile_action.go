@@ -3,7 +3,6 @@ package cases
 import (
 	"testing"
 
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
 
@@ -29,38 +28,35 @@ func (c *Test_WardenPrecompileAction) Setup(t *testing.T, f *framework.F) {
 }
 
 func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
-	alice := exec.NewWardend(c.w, "alice")
-	bob := exec.NewWardend(c.w, "bob")
+	alice := exec.NewWardendEth(t, c.w, "alice")
+	bob := exec.NewWardendEth(t, c.w, "bob")
 
-	evmClient := c.w.EthClient(t)
-
-	iActClient, err := act.NewIAct(common.HexToAddress(act.PrecompileAddress), evmClient)
+	iActClient, err := act.NewIAct(common.HexToAddress(act.PrecompileAddress), alice.Client)
 	require.NoError(t, err)
 
-	iWardenClient, err := warden.NewIWarden(common.HexToAddress(warden.PrecompileAddress), evmClient)
+	iWardenClient, err := warden.NewIWarden(common.HexToAddress(warden.PrecompileAddress), alice.Client)
 	require.NoError(t, err)
 
 	t.Run("work with new action", func(t *testing.T) {
 		// addSpaceOwner
 		addSpaceOwnerTx, err := iWardenClient.AddSpaceOwner(
-			alice.TransactOps(t, evmClient),
+			alice.TransactOps(t),
 			1,
-			bob.EthAddress(t),
+			bob.From,
 			0,
 			0,
 			"any(1, warden.space.owners)",
 			"any(1, warden.space.owners)")
 		require.NoError(t, err)
 
-		addSpaceOwnerTxReceipt, err := bind.WaitMined(t.Context(), evmClient, addSpaceOwnerTx)
-		require.NoError(t, err)
+		addSpaceOwnerTxReceipt := alice.Client.WaitMinedSuccess(t, addSpaceOwnerTx)
 
 		addSpaceOwnerEvents, err := checks.GetParsedEventsOnly(addSpaceOwnerTxReceipt, iWardenClient.ParseAddSpaceOwner)
 		require.NoError(t, err)
 
 		require.Len(t, addSpaceOwnerEvents, 1)
 		require.Equal(t, addSpaceOwnerEvents[0].SpaceId, uint64(1))
-		require.Equal(t, addSpaceOwnerEvents[0].NewOwner, bob.EthAddress(t))
+		require.Equal(t, addSpaceOwnerEvents[0].NewOwner, bob.From)
 
 		actions1, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
 
@@ -71,35 +67,34 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
 		require.NoError(t, err)
 		require.Equal(t, warden.Space{
 			Id:                     1,
-			Creator:                alice.EthAddress(t),
+			Creator:                alice.From,
 			Nonce:                  1,
 			ApproveSignTemplateId:  0,
 			RejectAdminTemplateId:  0,
 			ApproveAdminTemplateId: 0,
 			RejectSignTemplateId:   0,
-			Owners:                 []common.Address{alice.EthAddress(t), bob.EthAddress(t)},
+			Owners:                 []common.Address{alice.From, bob.From},
 		}, spaceById1)
 
 		// removeSpaceOwner
 		removeSpaceOwnerTx, err := iWardenClient.RemoveSpaceOwner(
-			alice.TransactOps(t, evmClient),
+			alice.TransactOps(t),
 			1,
-			bob.EthAddress(t),
+			bob.From,
 			1,
 			0,
 			"any(1, warden.space.owners)",
 			"any(1, warden.space.owners)")
 		require.NoError(t, err)
 
-		removeSpaceOwnerTxReceipt, err := bind.WaitMined(t.Context(), evmClient, removeSpaceOwnerTx)
-		require.NoError(t, err)
+		removeSpaceOwnerTxReceipt := alice.Client.WaitMinedSuccess(t, removeSpaceOwnerTx)
 
 		removeSpaceOwnerEvents, err := checks.GetParsedEventsOnly(removeSpaceOwnerTxReceipt, iWardenClient.ParseRemoveSpaceOwner)
 		require.NoError(t, err)
 
 		require.Len(t, removeSpaceOwnerEvents, 1)
 		require.Equal(t, removeSpaceOwnerEvents[0].SpaceId, uint64(1))
-		require.Equal(t, removeSpaceOwnerEvents[0].RemovedOwner, bob.EthAddress(t))
+		require.Equal(t, removeSpaceOwnerEvents[0].RemovedOwner, bob.From)
 
 		actions2, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
 
@@ -110,20 +105,19 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
 		require.NoError(t, err)
 		require.Equal(t, warden.Space{
 			Id:                     1,
-			Creator:                alice.EthAddress(t),
+			Creator:                alice.From,
 			Nonce:                  2,
 			ApproveSignTemplateId:  0,
 			RejectAdminTemplateId:  0,
 			ApproveAdminTemplateId: 0,
 			RejectSignTemplateId:   0,
-			Owners:                 []common.Address{alice.EthAddress(t)},
+			Owners:                 []common.Address{alice.From},
 		}, spaceById2)
 
-		newKeychainTx, err := iWardenClient.NewKeychain(alice.TransactOps(t, evmClient), "test keychain", warden.KeychainFees{}, "", "", "")
+		newKeychainTx, err := iWardenClient.NewKeychain(alice.TransactOps(t), "test keychain", warden.KeychainFees{}, "", "", "")
 		require.NoError(t, err)
 
-		_, err = bind.WaitMined(t.Context(), evmClient, newKeychainTx)
-		require.NoError(t, err)
+		alice.Client.WaitMinedSuccess(t, newKeychainTx)
 
 		keychains1, err := iWardenClient.Keychains(alice.CallOps(t), warden.TypesPageRequest{})
 
@@ -131,22 +125,21 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
 		require.Len(t, keychains1.Keychains, 1)
 
 		addKeychainWriterTx, err := iWardenClient.AddKeychainWriter(
-			alice.TransactOps(t, evmClient),
+			alice.TransactOps(t),
 			1,
-			alice.EthAddress(t))
+			alice.From)
 		require.NoError(t, err)
 
-		_, err = bind.WaitMined(t.Context(), evmClient, addKeychainWriterTx)
-		require.NoError(t, err)
+		alice.Client.WaitMinedSuccess(t, addKeychainWriterTx)
 
 		keychains2, err := iWardenClient.Keychains(alice.CallOps(t), warden.TypesPageRequest{})
 
 		require.NoError(t, err)
-		require.Equal(t, keychains2.Keychains[0].Writers[0], alice.EthAddress(t))
+		require.Equal(t, keychains2.Keychains[0].Writers[0], alice.From)
 
 		// newKeyRequest
 		newKeyRequestTx, err := iWardenClient.NewKeyRequest(
-			alice.TransactOps(t, evmClient),
+			alice.TransactOps(t),
 			1,
 			1,
 			uint8(types.KeyType_KEY_TYPE_ECDSA_SECP256K1),
@@ -159,8 +152,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
 			"any(1, warden.space.owners)")
 		require.NoError(t, err)
 
-		newKeyRequestTxReceipt, err := bind.WaitMined(t.Context(), evmClient, newKeyRequestTx)
-		require.NoError(t, err)
+		newKeyRequestTxReceipt := alice.Client.WaitMinedSuccess(t, newKeyRequestTx)
 
 		newKeyRequestEvents, err := checks.GetParsedEventsOnly(newKeyRequestTxReceipt, iWardenClient.ParseNewKeyRequest)
 		require.NoError(t, err)
@@ -172,7 +164,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
 		require.Equal(t, newKeyRequestEvents[0].ApproveTemplateId, uint64(0))
 		require.Equal(t, newKeyRequestEvents[0].RejectTemplateId, uint64(0))
 		require.Equal(t, newKeyRequestEvents[0].KeyType, uint8(types.KeyType_KEY_TYPE_ECDSA_SECP256K1))
-		require.Equal(t, newKeyRequestEvents[0].Creator, alice.EthAddress(t))
+		require.Equal(t, newKeyRequestEvents[0].Creator, alice.From)
 
 		actions3, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
 
@@ -185,7 +177,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
 		require.Len(t, keyRequests1.KeyRequests, 1)
 		require.Equal(t, warden.KeyRequest{
 			Id:                   1,
-			Creator:              alice.EthAddress(t),
+			Creator:              alice.From,
 			SpaceId:              1,
 			KeychainId:           1,
 			ApproveTemplateId:    0,
@@ -197,14 +189,13 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
 		}, keyRequests1.KeyRequests[0])
 
 		fulfilKeyRequestTx, err := iWardenClient.FulfilKeyRequest(
-			alice.TransactOps(t, evmClient),
+			alice.TransactOps(t),
 			1,
 			[]byte{3, 127, 233, 231, 7, 1, 37, 58, 229, 52, 192, 74, 160, 180, 120, 109, 158, 81, 170, 197, 189, 110, 90, 124, 50, 198, 188, 78, 49, 207, 247, 159, 237},
 		)
 		require.NoError(t, err)
 
-		_, err = bind.WaitMined(t.Context(), evmClient, fulfilKeyRequestTx)
-		require.NoError(t, err)
+		alice.Client.WaitMinedSuccess(t, fulfilKeyRequestTx)
 
 		keyRequests2, err := iWardenClient.KeyRequests(alice.CallOps(t), warden.TypesPageRequest{}, 1, uint8(types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED), 1)
 
@@ -213,7 +204,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
 
 		// newSignRequest automatic
 		signRequestAutomatic, err := iWardenClient.NewSignRequest(
-			alice.TransactOps(t, evmClient),
+			alice.TransactOps(t),
 			1,
 			[]byte{30, 134, 120, 103, 230, 84, 237, 151, 116, 242, 69, 17, 228, 215, 27, 180, 86, 107, 152, 98, 133, 215, 201, 146, 4, 157, 189, 118, 13, 42, 35, 142},
 			[][]byte{},
@@ -226,8 +217,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
 			uint8(types.BroadcastType_BROADCAST_TYPE_AUTOMATIC))
 		require.NoError(t, err)
 
-		newSignRequestAutomaticTxReceipt, err := bind.WaitMined(t.Context(), evmClient, signRequestAutomatic)
-		require.NoError(t, err)
+		newSignRequestAutomaticTxReceipt := alice.Client.WaitMinedSuccess(t, signRequestAutomatic)
 
 		newSignRequestAutomaticEvents, err := checks.GetParsedEventsOnly(newSignRequestAutomaticTxReceipt, iWardenClient.ParseNewSignRequest)
 		require.NoError(t, err)
@@ -235,7 +225,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
 		require.Len(t, newSignRequestAutomaticEvents, 1)
 		require.Equal(t, newSignRequestAutomaticEvents[0].Id, uint64(1))
 		require.Equal(t, newSignRequestAutomaticEvents[0].KeyId, uint64(1))
-		require.Equal(t, newSignRequestAutomaticEvents[0].Creator, alice.EthAddress(t))
+		require.Equal(t, newSignRequestAutomaticEvents[0].Creator, alice.From)
 		require.Equal(t, newSignRequestAutomaticEvents[0].BroadcastType, uint8(types.BroadcastType_BROADCAST_TYPE_AUTOMATIC))
 
 		actions4, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
@@ -249,7 +239,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
 		require.Len(t, signRequestsAutomatic.SignRequests, 1)
 		require.Equal(t, warden.SignRequest{
 			Id:                   1,
-			Creator:              alice.EthAddress(t),
+			Creator:              alice.From,
 			KeyId:                1,
 			Status:               uint8(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING),
 			EncryptionKey:        []byte{},
@@ -270,7 +260,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
 
 		// newSignRequest disabled
 		newSignRequestDisabledTx, err := iWardenClient.NewSignRequest(
-			alice.TransactOps(t, evmClient),
+			alice.TransactOps(t),
 			1,
 			[]byte{30, 134, 120, 103, 230, 84, 237, 151, 116, 242, 69, 17, 228, 215, 27, 180, 86, 107, 152, 98, 133, 215, 201, 146, 4, 157, 189, 118, 13, 42, 35, 142},
 			[][]byte{},
@@ -283,8 +273,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
 			uint8(types.BroadcastType_BROADCAST_TYPE_DISABLED))
 		require.NoError(t, err)
 
-		newSignRequestDisabledTxReceipt, err := bind.WaitMined(t.Context(), evmClient, newSignRequestDisabledTx)
-		require.NoError(t, err)
+		newSignRequestDisabledTxReceipt := alice.Client.WaitMinedSuccess(t, newSignRequestDisabledTx)
 
 		newSignRequestDisabledEvents, err := checks.GetParsedEventsOnly(newSignRequestDisabledTxReceipt, iWardenClient.ParseNewSignRequest)
 		require.NoError(t, err)
@@ -292,7 +281,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
 		require.Len(t, newSignRequestDisabledEvents, 1)
 		require.Equal(t, newSignRequestDisabledEvents[0].Id, uint64(2))
 		require.Equal(t, newSignRequestDisabledEvents[0].KeyId, uint64(1))
-		require.Equal(t, newSignRequestDisabledEvents[0].Creator, alice.EthAddress(t))
+		require.Equal(t, newSignRequestDisabledEvents[0].Creator, alice.From)
 		require.Equal(t, newSignRequestDisabledEvents[0].BroadcastType, uint8(types.BroadcastType_BROADCAST_TYPE_DISABLED))
 
 		actions5, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
@@ -306,7 +295,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
 		require.Len(t, signRequestsDisabled.SignRequests, 1)
 		require.Equal(t, warden.SignRequest{
 			Id:                   2,
-			Creator:              alice.EthAddress(t),
+			Creator:              alice.From,
 			KeyId:                1,
 			Status:               uint8(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING),
 			EncryptionKey:        []byte{},
@@ -336,16 +325,15 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
 
 		// updateKey
 		newTemplateTx, err := iActClient.NewTemplate(
-			alice.TransactOps(t, evmClient),
+			alice.TransactOps(t),
 			"test template",
 			"any(2, warden.space.owners)")
 		require.NoError(t, err)
 
-		_, err = bind.WaitMined(t.Context(), evmClient, newTemplateTx)
-		require.NoError(t, err)
+		alice.Client.WaitMinedSuccess(t, newTemplateTx)
 
 		updateKeyTx, err := iWardenClient.UpdateKey(
-			alice.TransactOps(t, evmClient),
+			alice.TransactOps(t),
 			1,
 			1,
 			1,
@@ -354,8 +342,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
 			"any(1, warden.space.owners)")
 		require.NoError(t, err)
 
-		updateKeyTxReceipt, err := bind.WaitMined(t.Context(), evmClient, updateKeyTx)
-		require.NoError(t, err)
+		updateKeyTxReceipt := alice.Client.WaitMinedSuccess(t, updateKeyTx)
 
 		updateKeyEvents, err := checks.GetParsedEventsOnly(updateKeyTxReceipt, iWardenClient.ParseUpdateKey)
 		require.NoError(t, err)
@@ -389,7 +376,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
 
 		// updateSpace
 		updateSpaceTx, err := iWardenClient.UpdateSpace(
-			alice.TransactOps(t, evmClient),
+			alice.TransactOps(t),
 			1,
 			2,
 			1,
@@ -401,8 +388,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
 			"any(1, warden.space.owners)")
 		require.NoError(t, err)
 
-		updateSpaceTxReceipt, err := bind.WaitMined(t.Context(), evmClient, updateSpaceTx)
-		require.NoError(t, err)
+		updateSpaceTxReceipt := alice.Client.WaitMinedSuccess(t, updateSpaceTx)
 
 		updateSpaceEvents, err := checks.GetParsedEventsOnly(updateSpaceTxReceipt, iWardenClient.ParseUpdateSpace)
 		require.NoError(t, err)
@@ -424,13 +410,13 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
 		require.NoError(t, err)
 		require.Equal(t, warden.Space{
 			Id:                     1,
-			Creator:                alice.EthAddress(t),
+			Creator:                alice.From,
 			Nonce:                  3,
 			ApproveSignTemplateId:  1,
 			RejectAdminTemplateId:  1,
 			ApproveAdminTemplateId: 1,
 			RejectSignTemplateId:   1,
-			Owners:                 []common.Address{alice.EthAddress(t)},
+			Owners:                 []common.Address{alice.From},
 		}, space)
 	})
 }

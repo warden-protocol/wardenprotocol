@@ -146,6 +146,7 @@ func ProvideClientContext(
 	txConfig client.TxConfig,
 	legacyAmino *codec.LegacyAmino,
 ) client.Context {
+	app.RegisterEVMCodec(legacyAmino, interfaceRegistry)
 	clientCtx := client.Context{}.
 		WithCodec(appCodec).
 		WithInterfaceRegistry(interfaceRegistry).

@@ -59,7 +59,6 @@ import (
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	evmante "github.com/cosmos/evm/ante"
 	cosmosevmante "github.com/cosmos/evm/ante/evm"
-	evmencodingcodec "github.com/cosmos/evm/encoding/codec"
 	srvflags "github.com/cosmos/evm/server/flags"
 	cosmosevmtypes "github.com/cosmos/evm/types"
 	cosmosevmutils "github.com/cosmos/evm/utils"
@@ -201,14 +200,6 @@ func getGovProposalHandlers() []govclient.ProposalHandler {
 	return govProposalHandlers
 }
 
-func ProvideCustomRegisterCrypto() runtime.CustomRegisterLegacyAminoCodec {
-	return evmencodingcodec.RegisterLegacyAminoCodec
-}
-
-func ProvideCustomRegisterInterfaces() runtime.CustomRegisterInterfaces {
-	return evmencodingcodec.RegisterInterfaces
-}
-
 func registerProphetHandlers(appOpts servertypes.AppOptions) {
 	prophet.Register("echo", echo.Plugin{})
 
@@ -268,10 +259,6 @@ func registerProphetHandlers(appOpts servertypes.AppOptions) {
 // AppConfig returns the default app config.
 func AppConfig() depinject.Config {
 	return depinject.Configs(
-		// used in runtime.ProvideApp to register eth signing types
-		depinject.Provide(ProvideCustomRegisterCrypto),
-		depinject.Provide(ProvideCustomRegisterInterfaces),
-
 		moduleConfig(),
 		// will be used inside runtime.ProvideInterfaceRegistry
 		depinject.Provide(ProvideMsgEthereumTxCustomGetSigner),
@@ -476,9 +463,12 @@ func New(
 			func(bApp *baseapp.BaseApp) {
 				bApp.SetTxDecoder(app.txConfig.TxDecoder())
 			},
-		}, baseAppOptions...)
+		},
+		baseAppOptions...)
 
 	app.App = appBuilder.Build(db, traceStore, updatedBaseAppOptions...)
+
+	RegisterEVMCodec(app.legacyAmino, app.interfaceRegistry)
 
 	app.SetTxEncoder(app.txConfig.TxEncoder())
 

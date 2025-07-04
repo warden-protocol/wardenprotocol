@@ -47,13 +47,13 @@ The plugin expects a base64-encoded JSON payload with the following format:
     "assets": [
       {
         "amount": 1.0,
-        "coin_id": "BTC"
+        "coin_id": "bitcoin"
       }
     ]
   },
-  "begin": "2023-01-01",
-  "end": "2023-01-07",
-  "horizon": "7d",
+  "begin": "2025-01-01T00:00:00Z",
+  "end": "2025-01-20T00:00:00Z",
+  "horizon": "2025-01-25T00:00:00Z",
   "strategy_name": "selected_strategy"
 }
 ```
@@ -86,10 +86,11 @@ The plugin returns a base64-encoded JSON payload with the following format:
 ```json
 {
   "orders": [
+    {},
     {
-      "src": "BTC",
-      "dst": "USD",
-      "amount": 0.5
+      "src": "bitcoin",
+      "dst": "tether",
+      "amount": 0.123
     }
   ]
 }

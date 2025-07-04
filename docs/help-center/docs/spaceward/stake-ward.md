@@ -46,7 +46,7 @@ To manage your stake, do the following:
 5. If required, specify details such as the amount of WARD or a new validator.
 6. Confirm the transaction in your connected wallet.
 
-![Find stake details](../../static/img/stake-details-1.png)
+![Find stake details](../../static/img/spaceward/stake-details-1.png)
 
-![Manage your stake](../../static/img/manage-stake.png)
+![Manage your stake](../../static/img/spaceward/manage-stake.png)
 

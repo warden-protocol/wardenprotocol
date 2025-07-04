@@ -39,6 +39,7 @@ const (
 	Query_Plugins_FullMethodName            = "/warden.async.v1beta1.Query/Plugins"
 	Query_PluginValidators_FullMethodName   = "/warden.async.v1beta1.Query/PluginValidators"
 	Query_PluginsByValidator_FullMethodName = "/warden.async.v1beta1.Query/PluginsByValidator"
+	Query_PluginMetricsById_FullMethodName  = "/warden.async.v1beta1.Query/PluginMetricsById"
 )
 
 // QueryClient is the client API for Query service.
@@ -59,6 +60,7 @@ type QueryClient interface {
 	PluginValidators(ctx context.Context, in *QueryPluginValidatorsRequest, opts ...grpc.CallOption) (*QueryPluginValidatorsResponse, error)
 	// Queries Plugins by validator.
 	PluginsByValidator(ctx context.Context, in *QueryPluginsByValidatorRequest, opts ...grpc.CallOption) (*QueryPluginsByValidatorResponse, error)
+	PluginMetricsById(ctx context.Context, in *QueryPluginMetricsByIdRequest, opts ...grpc.CallOption) (*QueryPluginMetricsByIdResponse, error)
 }
 
 type queryClient struct {
@@ -139,6 +141,16 @@ func (c *queryClient) PluginsByValidator(ctx context.Context, in *QueryPluginsBy
 	return out, nil
 }
 
+func (c *queryClient) PluginMetricsById(ctx context.Context, in *QueryPluginMetricsByIdRequest, opts ...grpc.CallOption) (*QueryPluginMetricsByIdResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(QueryPluginMetricsByIdResponse)
+	err := c.cc.Invoke(ctx, Query_PluginMetricsById_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 // All implementations must embed UnimplementedQueryServer
 // for forward compatibility.
@@ -157,6 +169,7 @@ type QueryServer interface {
 	PluginValidators(context.Context, *QueryPluginValidatorsRequest) (*QueryPluginValidatorsResponse, error)
 	// Queries Plugins by validator.
 	PluginsByValidator(context.Context, *QueryPluginsByValidatorRequest) (*QueryPluginsByValidatorResponse, error)
+	PluginMetricsById(context.Context, *QueryPluginMetricsByIdRequest) (*QueryPluginMetricsByIdResponse, error)
 	mustEmbedUnimplementedQueryServer()
 }
 
@@ -187,6 +200,9 @@ func (UnimplementedQueryServer) PluginValidators(context.Context, *QueryPluginVa
 }
 func (UnimplementedQueryServer) PluginsByValidator(context.Context, *QueryPluginsByValidatorRequest) (*QueryPluginsByValidatorResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PluginsByValidator not implemented")
+}
+func (UnimplementedQueryServer) PluginMetricsById(context.Context, *QueryPluginMetricsByIdRequest) (*QueryPluginMetricsByIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PluginMetricsById not implemented")
 }
 func (UnimplementedQueryServer) mustEmbedUnimplementedQueryServer() {}
 func (UnimplementedQueryServer) testEmbeddedByValue()               {}
@@ -335,6 +351,24 @@ func _Query_PluginsByValidator_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_PluginMetricsById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryPluginMetricsByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).PluginMetricsById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_PluginMetricsById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).PluginMetricsById(ctx, req.(*QueryPluginMetricsByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Query_ServiceDesc is the grpc.ServiceDesc for Query service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -369,6 +403,10 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PluginsByValidator",
 			Handler:    _Query_PluginsByValidator_Handler,
+		},
+		{
+			MethodName: "PluginMetricsById",
+			Handler:    _Query_PluginMetricsById_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

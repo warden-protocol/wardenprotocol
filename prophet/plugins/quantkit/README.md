@@ -74,9 +74,9 @@ Here is the current list of strategies:
   * `assets` contains an array of assets in the portfolio.
     * `amount` is the amount of the asset held.
     * `coin_id` is the ID of the asset (e.g., "BTC", "ETH").
-* `begin` is the start date for the recommendation period (YYYY-MM-DD).
-* `end` is the end date for the recommendation period (YYYY-MM-DD).
-* `horizon` is the time horizon for the recommendations (e.g., "7d", "30d").
+* `begin` is the start date for the recommendation period.
+* `end` is the end date for the recommendation period.
+* `horizon` is the time horizon for the recommendations.
 * `strategy_name` is the name of the strategy to use for generating recommendations.
 
 ## Output

@@ -14,6 +14,11 @@ contract PluginGmpHandler {
     bytes32 public constant Venice = keccak256(abi.encodePacked("venice"));
     bytes32 public constant VeniceImg = keccak256(abi.encodePacked("veniceimg"));
 
+    struct QuantkitAsset {
+        string coinId;
+        uint256 amount;
+    }
+
     struct QuantkitInput {
         QuantkitAsset[] assets;
         string strategyName;
@@ -22,9 +27,11 @@ contract PluginGmpHandler {
         string horizonTimestamp;
     }
 
-    struct QuantkitAsset {
-        string coinId;
-        uint256 amount;
+    struct VeniceInput {
+        string model;
+        string message;
+        uint256 top_p;
+        uint256 temperature;
     }
 
     IMailbox public mailbox;
@@ -41,24 +48,34 @@ contract PluginGmpHandler {
         mailbox = IMailbox(_mailbox);
     }
 
-    function Run(bytes calldata payload) public {
-        Types.Coin[] memory maxFee;
-        (string memory plugin, bytes memory pluginPayload) = abi.decode(payload, (string, bytes));
-
+    function decodeAndProcessPluginInput(string memory plugin, bytes memory pluginPayload)
+        public
+        view
+        returns (bytes memory)
+    {
         bytes32 p = keccak256(abi.encodePacked(plugin));
 
-        bytes memory pluginInput;
         if (p == Echo || p == Http || p == Pfp || p == PricePred) {
-            pluginInput = pluginPayload;
+            return pluginPayload;
         } else if (p == Venice) {
-            (string memory model, string memory message) = abi.decode(pluginPayload, (string, string));
+            VeniceInput memory inp = abi.decode(pluginPayload, (VeniceInput));
+            bytes memory j = json.IJSON_CONTRACT.newJson();
+            json.SetKeyValue[] memory setKeyValuePairs = new json.SetKeyValue[](4);
+            setKeyValuePairs[0] = json.SetKeyValue("model", "string", abi.encode(inp.model), 0);
+            setKeyValuePairs[1] = json.SetKeyValue("message", "string", abi.encode(inp.message), 0);
+            setKeyValuePairs[2] = json.SetKeyValue("top_p", "float", abi.encode(inp.top_p), 1);
+            setKeyValuePairs[3] = json.SetKeyValue("temperature", "float", abi.encode(inp.temperature), 1);
+            return json.IJSON_CONTRACT.write(j, setKeyValuePairs);
+        } else if (p == VeniceImg) {
+            (string memory model, string memory prompt, int256 steps, string memory stylePreset) =
+                abi.decode(pluginPayload, (string, string, int256, string));
             bytes memory j = json.IJSON_CONTRACT.newJson();
             json.SetKeyValue[] memory setKeyValuePairs = new json.SetKeyValue[](4);
             setKeyValuePairs[0] = json.SetKeyValue("model", "string", abi.encode(model), 0);
-            setKeyValuePairs[1] = json.SetKeyValue("message", "string", abi.encode(message), 0);
-            setKeyValuePairs[2] = json.SetKeyValue("top_p", "float", abi.encode(9), 1);
-            setKeyValuePairs[3] = json.SetKeyValue("temperature", "float", abi.encode(8), 1);
-            pluginInput = json.IJSON_CONTRACT.write(j, setKeyValuePairs);
+            setKeyValuePairs[1] = json.SetKeyValue("prompt", "string", abi.encode(prompt), 0);
+            setKeyValuePairs[2] = json.SetKeyValue("steps", "int", abi.encode(steps), 0);
+            setKeyValuePairs[3] = json.SetKeyValue("style_preset", "string", abi.encode(stylePreset), 0);
+            return json.IJSON_CONTRACT.write(j, setKeyValuePairs);
             // } else if (p == Quantkit) {
             // TODO: currently hitting a cosmos/evm limit:
             // https://github.com/cosmos/evm/issues/135
@@ -86,20 +103,16 @@ contract PluginGmpHandler {
             //     j = json.IJSON_CONTRACT.setObject(j, "state", state);
             //
             //     pluginInput = j;
-        } else if (p == VeniceImg) {
-            (string memory model, string memory prompt, int256 steps, string memory stylePreset) =
-                abi.decode(pluginPayload, (string, string, int256, string));
-            bytes memory j = json.IJSON_CONTRACT.newJson();
-            json.SetKeyValue[] memory setKeyValuePairs = new json.SetKeyValue[](4);
-            setKeyValuePairs[0] = json.SetKeyValue("model", "string", abi.encode(model), 0);
-            setKeyValuePairs[1] = json.SetKeyValue("prompt", "string", abi.encode(prompt), 0);
-            setKeyValuePairs[2] = json.SetKeyValue("steps", "int", abi.encode(steps), 0);
-            setKeyValuePairs[3] = json.SetKeyValue("style_preset", "string", abi.encode(stylePreset), 0);
-            pluginInput = json.IJSON_CONTRACT.write(j, setKeyValuePairs);
-        } else {
-            revert("unsupported plugin");
         }
 
+        revert("unsupported plugin");
+    }
+
+    function Run(bytes calldata payload) public {
+        Types.Coin[] memory maxFee;
+        (string memory plugin, bytes memory pluginPayload) = abi.decode(payload, (string, bytes));
+
+        bytes memory pluginInput = decodeAndProcessPluginInput(plugin, pluginPayload);
         lastTaskId = IASYNC_CONTRACT.addTask(plugin, pluginInput, maxFee, CallbackParams(address(this), 100000000));
 
         TaskByIdResponse memory taskResponse = IASYNC_CONTRACT.taskById(lastTaskId);

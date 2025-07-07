@@ -28,10 +28,9 @@ func (c *Test_JsonPrecompile) Setup(t *testing.T, f *framework.F) {
 }
 
 func (c *Test_JsonPrecompile) Run(t *testing.T, _ *framework.F) {
-	alice := exec.NewWardend(c.w, "alice")
+	alice := exec.NewWardendEth(t, c.w, "alice")
 
-	evmClient := c.w.EthClient(t)
-	iJsonClient, err := jsonPrecompile.NewIJson(common.HexToAddress(jsonPrecompile.PrecompileAddress), evmClient)
+	iJsonClient, err := jsonPrecompile.NewIJson(common.HexToAddress(jsonPrecompile.PrecompileAddress), alice.Client)
 	require.NoError(t, err)
 
 	t.Run("create empty json", func(t *testing.T) {
@@ -486,11 +485,13 @@ func (c *Test_JsonPrecompile) Run(t *testing.T, _ *framework.F) {
 
 		// Act
 		getResponse1, err := iJsonClient.GetFloat(alice.CallOps(t), newJsonObjectBytes, "nestedKey2.nestedKey1.nestedKey", 0)
+		require.NoError(t, err)
 		getResponse2, err := iJsonClient.GetFloat(alice.CallOps(t), newJsonObjectBytes, "nestedKey2.nestedKey1.nestedKey", 1)
+		require.NoError(t, err)
 		getResponse3, err := iJsonClient.GetFloat(alice.CallOps(t), newJsonObjectBytes, "nestedKey2.nestedKey1.nestedKey", 2)
+		require.NoError(t, err)
 
 		// Assert
-		require.NoError(t, err)
 		require.Equal(t, expectedValue1.Int64(), getResponse1.Int64())
 		require.Equal(t, expectedValue2, getResponse2)
 		require.Equal(t, expectedValue3, getResponse3)
@@ -614,7 +615,7 @@ func (c *Test_JsonPrecompile) Run(t *testing.T, _ *framework.F) {
 		require.NoError(t, err)
 		require.Equal(t, 3, len(getResponse))
 
-		for i := 0; i < len(getResponse); i++ {
+		for i := range getResponse {
 			dec := json.NewDecoder(bytes.NewReader(getResponse[i]))
 			dec.UseNumber()
 			innerItem, err := gabs.ParseJSONDecoder(dec)

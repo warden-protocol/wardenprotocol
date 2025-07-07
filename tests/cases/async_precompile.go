@@ -4,7 +4,6 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
 
@@ -28,10 +27,9 @@ func (c *Test_AsyncPrecompile) Setup(t *testing.T, f *framework.F) {
 
 // TODO(backsapc): Implement positive test cases with async sidecar integration.
 func (c *Test_AsyncPrecompile) Run(t *testing.T, _ *framework.F) {
-	alice := exec.NewWardend(c.w, "alice")
+	alice := exec.NewWardendEth(t, c.w, "alice")
 
-	evmClient := c.w.EthClient(t)
-	iAsyncClient, err := async.NewIAsync(common.HexToAddress(async.PrecompileAddress), evmClient)
+	iAsyncClient, err := async.NewIAsync(common.HexToAddress(async.PrecompileAddress), alice.Client)
 	require.NoError(t, err)
 
 	tasksQuery, err := iAsyncClient.Tasks(alice.CallOps(t), async.TypesPageRequest{}, common.Address{})
@@ -43,15 +41,14 @@ func (c *Test_AsyncPrecompile) Run(t *testing.T, _ *framework.F) {
 		Amount: new(big.Int).SetInt64(1),
 	}}
 	addTaskTx, err := iAsyncClient.AddTask(
-		alice.TransactOps(t, evmClient),
+		alice.TransactOps(t),
 		"echo",
 		[]byte("USDT"),
 		maxFee,
 		async.CallbackParams{})
 	require.NoError(t, err)
 
-	addTaskReceipt, err := bind.WaitMined(t.Context(), evmClient, addTaskTx)
-	require.NoError(t, err)
+	addTaskReceipt := alice.Client.WaitMinedSuccess(t, addTaskTx)
 
 	createTaskEvents, err := checks.GetParsedEventsOnly(addTaskReceipt, iAsyncClient.ParseCreateTask)
 	require.NoError(t, err)
@@ -60,7 +57,7 @@ func (c *Test_AsyncPrecompile) Run(t *testing.T, _ *framework.F) {
 	createTaskEvent := createTaskEvents[0]
 	require.Equal(t, "echo", createTaskEvent.Plugin)
 	require.Equal(t, uint64(1), createTaskEvent.TaskId)
-	require.Equal(t, alice.EthAddress(t), createTaskEvent.Creator)
+	require.Equal(t, alice.From, createTaskEvent.Creator)
 
 	oneTasksQuery, err := iAsyncClient.Tasks(alice.CallOps(t), async.TypesPageRequest{}, common.Address{})
 	require.NoError(t, err)
@@ -68,7 +65,7 @@ func (c *Test_AsyncPrecompile) Run(t *testing.T, _ *framework.F) {
 
 	oneTask := oneTasksQuery.Tasks[0]
 	require.Equal(t, uint64(1), oneTask.Task.Id)
-	require.Equal(t, alice.EthAddress(t), oneTask.Task.Creator)
+	require.Equal(t, alice.From, oneTask.Task.Creator)
 	require.Equal(t, "echo", oneTask.Task.Plugin)
 	require.Equal(t, []byte("USDT"), oneTask.Task.Input)
 	require.Equal(t, async.TaskResult{
@@ -81,7 +78,7 @@ func (c *Test_AsyncPrecompile) Run(t *testing.T, _ *framework.F) {
 
 	onePendingTask := onePendingTasksQuery.Tasks[0]
 	require.Equal(t, uint64(1), onePendingTask.Id)
-	require.Equal(t, alice.EthAddress(t), onePendingTask.Creator)
+	require.Equal(t, alice.From, onePendingTask.Creator)
 	require.Equal(t, "echo", onePendingTask.Plugin)
 	require.Equal(t, []byte("USDT"), onePendingTask.Input)
 }

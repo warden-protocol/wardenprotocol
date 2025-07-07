@@ -3,8 +3,8 @@ package cases
 import (
 	"testing"
 
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/stretchr/testify/require"
+
 	"github.com/warden-protocol/wardenprotocol/tests/framework"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/checks"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/exec"
@@ -24,20 +24,17 @@ func (c *Test_JsonPrecompileUser) Setup(t *testing.T, f *framework.F) {
 }
 
 func (c *Test_JsonPrecompileUser) Run(t *testing.T, f *framework.F) {
-	alice := exec.NewWardend(c.w, "alice")
+	alice := exec.NewWardendEth(t, c.w, "alice")
 
-	evmClient := c.w.EthClient(t)
-
-	_, _, instance, err := json_user.DeployJsonUser(alice.TransactOps(t, evmClient), evmClient)
+	_, _, instance, err := json_user.DeployJsonUser(alice.TransactOps(t), alice.Client)
 	require.NoError(t, err)
 
 	createdJsonTx, err := instance.DoSomeJsonActions(
-		alice.TransactOps(t, evmClient),
+		alice.TransactOps(t),
 	)
 	require.NoError(t, err)
 
-	receipt, err := bind.WaitMined(t.Context(), evmClient, createdJsonTx)
-	require.NoError(t, err)
+	receipt := alice.Client.WaitMinedSuccess(t, createdJsonTx)
 	require.Equal(t, receipt.Status, uint64(1))
 
 	okEvents, err := checks.GetParsedEventsOnly(receipt, instance.ParseOk)

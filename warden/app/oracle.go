@@ -27,6 +27,7 @@ import (
 	servicemetrics "github.com/skip-mev/slinky/service/metrics"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
 
+	"github.com/warden-protocol/wardenprotocol/warden/abciutil"
 	"github.com/warden-protocol/wardenprotocol/warden/app/vemanager"
 )
 
@@ -217,10 +218,13 @@ func (app *App) setupABCILifecycle(
 	slinkyPreBlockHandler := app.slinkyClient.PreblockHandler()
 	slinkyVEHandler := app.slinkyClient.VoteExtensionHandler()
 
-	app.SetProcessProposal(combineProcessProposal(
+	processProposalHandlers := append(
+		abciutil.ProcessProposalHandlers{},
 		slinkyProposalHandler.ProcessProposalHandler(),
 		app.AsyncKeeper.ProcessProposalHandler(),
-	))
+		app.SchedKeeper.ProcessProposalHandler(app.txConfig),
+	)
+	app.SetProcessProposal(processProposalHandlers.ProcessProposalHandler())
 
 	app.SetPreBlocker(combinePreBlocker(
 		slinkyPreBlockHandler.WrappedPreBlocker(app.ModuleManager),
@@ -233,30 +237,23 @@ func (app *App) setupABCILifecycle(
 	veManager.Register(
 		slinkyVEHandler.ExtendVoteHandler(),
 		slinkyVEHandler.VerifyVoteExtensionHandler(),
-		slinkyProposalHandler.PrepareProposalHandler(),
 	)
 
 	// register x/async handlers
 	veManager.Register(
 		app.AsyncKeeper.ExtendVoteHandler(),
 		app.AsyncKeeper.VerifyVoteExtensionHandler(),
-		app.AsyncKeeper.PrepareProposalHandler(),
 	)
 
-	app.SetPrepareProposal(veManager.PrepareProposalHandler())
+	prepareProposalHandlers := append(abciutil.PrepareProposalHandlers{},
+		slinkyProposalHandler.PrepareProposalHandler(),
+		app.AsyncKeeper.PrepareProposalHandler(),
+		app.SchedKeeper.PrepareProposalHandler(app.txConfig),
+	)
+	app.SetPrepareProposal(prepareProposalHandlers.PrepareProposalHandler())
+
 	app.SetExtendVoteHandler(veManager.ExtendVoteHandler())
 	app.SetVerifyVoteExtensionHandler(veManager.VerifyVoteExtensionHandler())
-}
-
-func combineProcessProposal(a, b sdk.ProcessProposalHandler) sdk.ProcessProposalHandler {
-	return func(ctx sdk.Context, req *cometabci.RequestProcessProposal) (*cometabci.ResponseProcessProposal, error) {
-		resp, err := a(ctx, req)
-		if err != nil || resp.Status == cometabci.ResponseProcessProposal_REJECT {
-			return resp, err
-		}
-
-		return b(ctx, req)
-	}
 }
 
 func combinePreBlocker(a, b sdk.PreBlocker) sdk.PreBlocker {

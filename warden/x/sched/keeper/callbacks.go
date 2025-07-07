@@ -12,6 +12,7 @@ import (
 
 type CallbackKeeper struct {
 	callbacks repo.SeqCollection[types.Callback]
+	queue     collections.Map[uint64, []byte]
 	results   collections.Map[uint64, types.CallbackResult]
 }
 
@@ -20,11 +21,12 @@ func NewCallbackKeeper(sb *collections.SchemaBuilder, cdc codec.Codec) *Callback
 	callbacksColl := collections.NewMap(sb, CallbacksPrefix, "callbacks", collections.Uint64Key, codec.CollValue[types.Callback](cdc))
 
 	callbacks := repo.NewSeqCollection(callbacksSeq, callbacksColl, func(t *types.Callback, u uint64) { t.Id = u })
-
+	queue := collections.NewMap(sb, QueuePrefix, "callback_queue", collections.Uint64Key, collections.BytesValue)
 	results := collections.NewMap(sb, ResultsPrefix, "callback_results", collections.Uint64Key, codec.CollValue[types.CallbackResult](cdc))
 
 	return &CallbackKeeper{
 		callbacks: callbacks,
+		queue:     queue,
 		results:   results,
 	}
 }
@@ -74,4 +76,12 @@ func (k *CallbackKeeper) setFailed(ctx context.Context, id uint64, reason string
 
 func (k *CallbackKeeper) GetResult(ctx context.Context, id uint64) (types.CallbackResult, error) {
 	return k.results.Get(ctx, id)
+}
+
+func (k *CallbackKeeper) Enqueue(ctx context.Context, id uint64, output []byte) error {
+	return k.queue.Set(ctx, id, output)
+}
+
+func (k *CallbackKeeper) Queue() collections.Map[uint64, []byte] {
+	return k.queue
 }

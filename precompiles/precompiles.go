@@ -1,6 +1,7 @@
 package precompiles
 
 import (
+	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
 	ethcmn "github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
@@ -36,6 +37,7 @@ func NewWardenPrecompiles(
 	oraclekeeper oraclekeeper.Keeper,
 	asynckeeper asynckeeper.Keeper,
 	schedkeeper schedkeeper.Keeper,
+	evmKeeper *evmkeeper.Keeper,
 ) (map[ethcmn.Address]vm.PrecompiledContract, error) {
 	precompiles := make(map[ethcmn.Address]vm.PrecompiledContract)
 	eventsRegistry := cmn.NewEthEventsRegistry()
@@ -100,7 +102,7 @@ func NewWardenPrecompiles(
 
 	precompiles[newJsonPrecompile.Address()] = newJsonPrecompile
 
-	newSchedPrecompile, err := schedprecompile.NewPrecompile(schedkeeper, eventsRegistry)
+	newSchedPrecompile, err := schedprecompile.NewPrecompile(schedkeeper, evmKeeper, eventsRegistry)
 	if err != nil {
 		return nil, err
 	}

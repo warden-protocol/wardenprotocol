@@ -40,6 +40,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased changes
 
+### Consensus Breaking Changes
+
+### Features (non-breaking)
+
+### Bug Fixes
+
+## [v0.6.4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.4) - 2025-07-07
+
+This release requires a fresh start. It's not possible to update from older versions to v0.6.4.
+
 ### Features (non-breaking)
 
 - (go-client) Fix handling of EthAccounts in AuthQueryClient
@@ -63,7 +73,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 - (x/async) PFP image generation plugin will only take one input (string) which is the AI prompt
-
 - (x/async) Fix missing Solver field in precompile queries
 
 ## [v0.6.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.3) - 2025-04-16

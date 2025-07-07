@@ -118,11 +118,6 @@ const config: Config = {
                     label: "GitHub",
                     position: "right",
                 },
-                {
-                    href: "https://help.wardenprotocol.org",
-                    label: "SpaceWard",
-                    position: "right",
-                },
             ],
         },
 

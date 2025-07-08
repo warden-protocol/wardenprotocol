@@ -105,6 +105,8 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz 
 		return nil, err
 	}
 
+	p.GetBalanceHandler().BeforeBalanceChange(ctx)
+
 	// This handles any out of gas errors that may occur during the execution of a precompile tx or query.
 	// It avoids panics and returns the out of gas error so the EVM can continue gracefully.
 	defer cmn.HandleGasError(ctx, contract, initialGas, &err)()
@@ -180,7 +182,7 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz 
 		return nil, vm.ErrOutOfGas
 	}
 
-	if err := p.AddJournalEntries(stateDB); err != nil {
+	if err = p.GetBalanceHandler().AfterBalanceChange(ctx, stateDB); err != nil {
 		return nil, err
 	}
 

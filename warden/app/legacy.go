@@ -165,6 +165,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		app.appCodec,
 		app.GetKey(evmtypes.StoreKey),
 		app.GetTransientKey(evmtypes.TransientKey),
+		app.kvStoreKeys(),
 		authtypes.NewModuleAddress(govtypes.ModuleName),
 		app.AccountKeeper,
 		app.PreciseBankKeeper,

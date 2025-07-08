@@ -55,7 +55,7 @@ require (
 	github.com/cosmos/cosmos-db v1.1.3
 	github.com/cosmos/cosmos-proto v1.0.0-beta.5
 	github.com/cosmos/cosmos-sdk v0.53.2
-	github.com/cosmos/evm v1.0.0-rc2
+	github.com/cosmos/evm v1.0.0-rc2.0.20250707012801-af6f8d436a41
 	github.com/cosmos/go-bip39 v1.0.0
 	github.com/cosmos/gogoproto v1.7.0
 	github.com/cosmos/ibc-go/v10 v10.3.0
@@ -202,8 +202,8 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.7 // indirect
 	github.com/crate-crypto/go-eth-kzg v1.3.0 // indirect
 	github.com/crate-crypto/go-ipa v0.0.0-20240724233137-53bbb0ceb27a // indirect
-	github.com/creachadair/atomicfile v0.3.3 // indirect
-	github.com/creachadair/tomledit v0.0.26 // indirect
+	github.com/creachadair/atomicfile v0.3.7 // indirect
+	github.com/creachadair/tomledit v0.0.28 // indirect
 	github.com/creack/pty v1.1.20 // indirect
 	github.com/danieljoos/wincred v1.2.2 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect

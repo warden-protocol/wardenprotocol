@@ -34,6 +34,13 @@ contract PluginGmpHandler {
         uint256 temperature;
     }
 
+    struct VeniceImgInput {
+        string model;
+        string prompt;
+        uint256 steps;
+        string style_preset;
+    }
+
     IMailbox public mailbox;
     bytes32 public destinationSender;
     bytes public destinationMsg;
@@ -67,14 +74,13 @@ contract PluginGmpHandler {
             setKeyValuePairs[3] = json.SetKeyValue("temperature", "float", abi.encode(inp.temperature), 1);
             return json.IJSON_CONTRACT.write(j, setKeyValuePairs);
         } else if (p == VeniceImg) {
-            (string memory model, string memory prompt, int256 steps, string memory stylePreset) =
-                abi.decode(pluginPayload, (string, string, int256, string));
+            VeniceImgInput memory inp = abi.decode(pluginPayload, (VeniceImgInput));
             bytes memory j = json.IJSON_CONTRACT.newJson();
             json.SetKeyValue[] memory setKeyValuePairs = new json.SetKeyValue[](4);
-            setKeyValuePairs[0] = json.SetKeyValue("model", "string", abi.encode(model), 0);
-            setKeyValuePairs[1] = json.SetKeyValue("prompt", "string", abi.encode(prompt), 0);
-            setKeyValuePairs[2] = json.SetKeyValue("steps", "int", abi.encode(steps), 0);
-            setKeyValuePairs[3] = json.SetKeyValue("style_preset", "string", abi.encode(stylePreset), 0);
+            setKeyValuePairs[0] = json.SetKeyValue("model", "string", abi.encode(inp.model), 0);
+            setKeyValuePairs[1] = json.SetKeyValue("prompt", "string", abi.encode(inp.prompt), 0);
+            setKeyValuePairs[2] = json.SetKeyValue("steps", "uint256", abi.encode(inp.steps), 0);
+            setKeyValuePairs[3] = json.SetKeyValue("style_preset", "string", abi.encode(inp.style_preset), 0);
             return json.IJSON_CONTRACT.write(j, setKeyValuePairs);
             // } else if (p == Quantkit) {
             // TODO: currently hitting a cosmos/evm limit:

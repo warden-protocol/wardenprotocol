@@ -5,6 +5,7 @@ import (
 	"math/big"
 
 	"cosmossdk.io/math"
+	"cosmossdk.io/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
@@ -26,8 +27,9 @@ func (p *Precompile) ExecuteCallbacksMethod(
 	method *abi.Method,
 	args any,
 ) ([]byte, error) {
-	queue := p.schedKeeper.CallbacksQueue(ctx)
+	ctx = ctx.WithGasMeter(types.NewInfiniteGasMeter())
 
+	queue := p.schedKeeper.CallbacksQueue(ctx)
 	it, err := queue.Iterate(ctx, nil)
 	if err != nil {
 		return nil, err
@@ -80,7 +82,6 @@ func (p *Precompile) ExecuteCallbacksMethod(
 			uint256.MustFromDecimal("0"),
 		)
 		if err != nil {
-			stateDB.RevertToSnapshot(snapshot)
 			if err := p.schedKeeper.SetFailed(ctx, id, fmt.Errorf("executing callback: %w", err)); err != nil {
 				return nil, err
 			}

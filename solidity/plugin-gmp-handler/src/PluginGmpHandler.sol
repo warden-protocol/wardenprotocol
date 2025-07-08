@@ -120,8 +120,8 @@ contract PluginGmpHandler {
     }
 
     function cb(uint64 id, bytes calldata o) external returns (bytes memory) {
-        if (msg.sender != ISCHED_CONTRACT.getAddress()) {
-            revert Unauthorized();
+        if (msg.sender != ISCHED_PRECOMPILE_ADDRESS) {
+            revert Unauthorized(msg.sender);
         }
 
         if (id == lastCbId) {
@@ -145,7 +145,7 @@ contract PluginGmpHandler {
     }
 }
 
-error Unauthorized();
+error Unauthorized(address);
 error NotReady();
 
 interface IMailbox {

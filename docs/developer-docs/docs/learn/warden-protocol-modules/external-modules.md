@@ -34,22 +34,6 @@ Learn more:
 - [CosmWasm Contract Semantics](https://docs.cosmwasm.com/docs/smart-contracts/contract-semantics)
 - [`x/wasm` on GitHub](https://github.com/CosmWasm/wasmd/blob/main/x/wasm)
 
-## x/gmp
-
-The `x/gmp` module is a Cosmos SDK module that enables **Axelar GMP** (General Message Passing): sending and receiving messages on EVM and Cosmos chains.
-
-GMP allows smart contracts on one chain to send messages and data to smart contracts on another chain. This technology can be used for various purposes: token transfers, data sharing, or triggering actions across chains.
-
-To start using `x/gmp`, follow this guide:
-
-- [Deploy a crosschain app](/build-an-app/deploy-smart-contracts-on-warden/deploy-a-cross-chain-app)
-
-Learn more:
-
-- [Cosmos GMP documentation](https://docs.axelar.dev/dev/general-message-passing/cosmos-gmp/overview/)
-- [Axelar GMP SDK on GitHub](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity)
-- [Warden docs: Bridging](../bridging)
-
 ## x/oracle
 
 The `x/oracle` module is a Cosmos SDK module by **Skip Protocol** that enables storing prices onchain in **Skip:Connect** (an oracle service).

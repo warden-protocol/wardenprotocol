@@ -12,7 +12,7 @@ In this section you'll find a full list of **Intelligent Applications** that are
 
 The Warden App is an AI-driven application for performing Web3 actions through chat or voice commands:
 
-- 👉 [Join our waitlist to test the Warden App](https://app.wardenprotocol.org/)
+- 👉 [Try Warden App](https://app.wardenprotocol.org)
 - 👉 [Visit Warden App docs](https://help.wardenprotocol.org/warden-app/introduction)
 
 ## SpaceWard

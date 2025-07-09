@@ -43,7 +43,7 @@ export FAUCET_TOKEN=faucet-token  # Optional: Only required if you're using the 
 ```
 
 :::tip
-To get a Warden Faucet API token, reach out to us in [Discord](https://discord.com/invite/wardenprotocol).
+To get a Warden Faucet API token, reach out to us in [Discord](https://discord.com/invite/wardenprotocol) or [X](https://x.com/wardenprotocol).
 :::
 
 

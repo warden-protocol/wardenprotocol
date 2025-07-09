@@ -89,14 +89,6 @@ See also: [Unbonding validator](#unbonding-validator), [Unbonded validator](#unb
 
 ---
 
-## Bridging
-
-Bridging is a method allowing users to transfer assets across different blockchain networks. This technology utilizes crosschain bridges—smart contracts that receive and lock tokens on the source chain and then mint a corresponding number of wrapped tokens on the destination chain. Warden currently supports bridging through Axelar.
-
-Learn more: [Bridging](bridging).
-
----
-
 ## Builder incentive
 
 Warden Protocol is open to third-party contributions: core protocol development or building [Intelligent Applications](#intelligent-application) in the Warden ecosystem. We'll reward both types of contributions with builder incentives in [WARD](#ward-token). More details will be announced soon.
@@ -157,6 +149,16 @@ The Intent Engine is an immutable onchain interpreter of the [Intent-Specific La
 ## Intent-Specific Language
 
 The Intent-Specific Language (ISL) is a language that allows users to configure [Approval Rules](#approval-rule) (as part of [Intents](#intent)). It's composable, extensive, declarative, human-readable, and English-like. The ISL is interpreted by the [Intent Engine](#intent-engine).
+
+---
+
+## Interoperability
+
+**Interoperability** is the ability of different blockchains to communicate and exchange data or assets. Warden supports it through integration with Hyperlane, a leading modular interoperability framework.
+
+This collaboration makes the output from Warden's [AVR Plugins](#avr-plugin) universally accessible across 150+ blockchains—from Ethereum and Solana to Cosmos-based ecosystems and beyond. This enables developers to access verifiable AI anywhere.
+
+Learn more: [Interoperability](interoperability).
 
 ---
 
@@ -310,7 +312,8 @@ This concept is implemented in the `x/warden` [module](#module). Learn more: [`x
 
 SpaceWard is an [Intelligent Application](#intelligent-application) functioning as the front-end interface for Warden. It provides a user-friendly platform where you can create [Spaces](#space), manage wallets and [Intents](#intent), and interact with decentralized applications (dApps) and other components of the Web3 ecosystem.
 
-Learn more: [SpaceWard documentation](https://help.wardenprotocol.org).
+Learn more: [SpaceWard documentation](https://help.wardenprotocol.org).  
+Try it out: [SpaceWard](https://spaceward.chiado.wardenprotocol.org).
 
 ---
 
@@ -405,4 +408,5 @@ Learn more: [Warden Agent Kit](/build-an-agent/warden-agent-kit/introduction).
 
 The Warden App is an AI-driven [Intelligent Application](#intelligent-application) that lets users perform complex Web3 actions—like swaps and transfers—through simple chat or voice commands. The Warden App does all the thinking and problem solving for the user, making complex work like cross-chain transactions, portfolio management, or risk assessments easy.
 
-To test the Warden App, [join our waitlist](https://app.wardenprotocol.org/).
+Learn more: [Warden App documentation](https://help.wardenprotocol.org/warden-app/introduction).  
+Try it out: [Warden App](https://app.wardenprotocol.org/).

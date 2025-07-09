@@ -316,11 +316,6 @@ wardend query wasm contract-state smart my-contract-address '{"get_greeting":{}}
 
 In the output, you should see this: `data: Hello, World!`
 
-If you encounter any issues, please reach out to us in [Discord](https://discord.com/invite/wardenprotocol) or [Twitter](https://twitter.com/wardenprotocol).
+If you encounter any issues, please reach out to us in [Discord](https://discord.com/invite/wardenprotocol) or [X](https://x.com/wardenprotocol).
 
 Happy coding! 🚀
-
-## Next steps
-
-After deploying a basic WASM smart contract, you can [deploy a crosschain app using GMP](deploy-a-cross-chain-app).
-

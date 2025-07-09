@@ -246,7 +246,7 @@ Error: server returned a null response when a non-null response was expected
 ```
 
 :::tip
-If you're experiencing troubles querying a particular API with `x/async`, please contact us in [Discord](https://discord.com/invite/wardenprotocol).
+If you're experiencing troubles querying a particular API with `x/async`, please contact us in [Discord](https://discord.com/invite/wardenprotocol) or [X](https://x.com/wardenprotocol).
 :::
 
 ### 3.4. Call the OpenWeatherMap API

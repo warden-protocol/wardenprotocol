@@ -235,7 +235,7 @@ If your transaction fails, try the following:
   - [Check your balance](../set-up-a-warden-account#check-the-key-balance) to make sure you have enough funds in your account. If funds are insufficient, you may need to [fund your key](../set-up-a-warden-account#fund-a-key) or [run a local chain](/operate-a-node/run-a-local-chain) from scratch.
   - Verify your contract address, as shown in [Step 4](#4-verify-the-deployment).
 
-If you encounter any other issues, please reach out to us in [Discord](https://discord.com/invite/wardenprotocol) or [Twitter](https://twitter.com/wardenprotocol).
+If you encounter any other issues, please reach out to us in [Discord](https://discord.com/invite/wardenprotocol) or [X](https://x.com/wardenprotocol).
 
 Happy coding! 🚀
 

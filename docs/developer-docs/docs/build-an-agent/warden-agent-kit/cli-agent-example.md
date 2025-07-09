@@ -49,7 +49,7 @@ export OPENAI_API_KEY=your-openai-api-key
 export PRIVATE_KEY=your-wallet-private-key
 ```
 
-To use the [`request_funds` tool](agent-actions) in [Step 4.1](#41-get-ward), you'll need to get a Warden faucet API token: just reach out to us in [Discord](https://discord.com/invite/wardenprotocol). After obtaining the token, set it as an environment variable:
+To use the [`request_funds` tool](agent-actions) in [Step 4.1](#41-get-ward), you'll need to get a Warden faucet API token: just reach out to us in [Discord](https://discord.com/invite/wardenprotocol) or [X](https://x.com/wardenprotocol). After obtaining the token, set it as an environment variable:
 
 ```bash
 export FAUCET_TOKEN=your-faucet-token

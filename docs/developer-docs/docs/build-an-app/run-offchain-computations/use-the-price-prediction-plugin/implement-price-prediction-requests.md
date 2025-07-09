@@ -197,6 +197,6 @@ You can use price predictions for creating automated Orders. For example, you ca
 
 Learn more: [Implement automated Orders with price prediction](/build-an-agent/build-an-onchain-ai-agent/implement-orders-with-price-prediction).
 
-If you encounter any issues, please reach out to us in [Discord](https://discord.com/invite/wardenprotocol) or [Twitter](https://twitter.com/wardenprotocol).
+If you encounter any issues, please reach out to us in [Discord](https://discord.com/invite/wardenprotocol) or [X](https://x.com/wardenprotocol).
 
 Happy coding! 🚀

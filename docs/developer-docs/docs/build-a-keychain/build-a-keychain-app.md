@@ -304,6 +304,6 @@ You've built a basic Keychain in Go using the Keychain SDK. This Keychain stores
 
 By implementing request handlers, you can plug in any key generation and signing logic you need. Your Keychain can interact with external APIs, hardware security modules, or other key management systems such as MPC networks.
 
-If you have any questions or need help, feel free to ask on [Discord](https://discord.com/invite/wardenprotocol).
+If you have any questions or need help, feel free to ask on [Discord](https://discord.com/invite/wardenprotocol) or [X](https://x.com/wardenprotocol).
 
 Happy coding! 🚀

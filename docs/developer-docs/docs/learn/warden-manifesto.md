@@ -35,7 +35,7 @@ This became our mission: to build the foundational infrastructure for Intelligen
 
 ### Solution: A Home for Intelligent Applications
 
-We built Warden protocol—**a full-stack purpose-built blockchain designed for developers to create Intelligent Applications**. And **for everyday users, we built the Warden App**: free, private, and uncensored AI that lets anyone use voice or chat to do anything in crypto. Yes, anything. Out goal is to own both the infra and, with the Warden App, the application layer.
+We built Warden protocol—**a full-stack purpose-built blockchain designed for developers to create Intelligent Applications**. And **for everyday users, we built the Warden App**: free, private, and uncensored AI that lets anyone use voice or chat to do anything in crypto. Yes, anything. Our goal is to own both the infra and, with the Warden App, the application layer.
 
 The Warden stack enables any application or smart contract to access and verify AI models, bringing AI onchain with cryptographic guarantees, and to immediately be able to surface these applications to a rich user base on the Warden App. Warden is structured across three layers: a Blockchain Layer with access to Asynchronous Verifiable Resources (“**AVRs**”), a Verifiability Layer powered by a Statistical Proof of Execution (“**SPEx**”) for verifying models and AVRs, and an Application Layer with tools and primitives to build Intelligent Applications. Making this possible meant deep **innovation**, we built:
 

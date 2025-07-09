@@ -63,7 +63,7 @@ func parseCreateTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 
 	typedEvent := v1beta1.EventCreateTemplate{}
 
-	err := common.ParseSdkEvent(sdkEvent, typedEvent.XXX_Merge)
+	err := common.ParseSdkEventDeprecated(sdkEvent, typedEvent.XXX_Merge)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +109,7 @@ func parseUpdateTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 
 	typedEvent := v1beta1.EventUpdateTemplate{}
 
-	err := common.ParseSdkEvent(sdkEvent, typedEvent.XXX_Merge)
+	err := common.ParseSdkEventDeprecated(sdkEvent, typedEvent.XXX_Merge)
 	if err != nil {
 		return nil, err
 	}
@@ -155,7 +155,7 @@ func parseCreateActionEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 
 	typedEvent := v1beta1.EventCreateAction{}
 
-	err := common.ParseSdkEvent(sdkEvent, typedEvent.XXX_Merge)
+	err := common.ParseSdkEventDeprecated(sdkEvent, typedEvent.XXX_Merge)
 	if err != nil {
 		return nil, err
 	}
@@ -201,7 +201,7 @@ func parseActionVotedEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 
 	typedEvent := v1beta1.EventActionVoted{}
 
-	err := common.ParseSdkEvent(sdkEvent, typedEvent.XXX_Merge)
+	err := common.ParseSdkEventDeprecated(sdkEvent, typedEvent.XXX_Merge)
 	if err != nil {
 		return nil, err
 	}
@@ -248,7 +248,7 @@ func parseActionStateChangeEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 
 	typedEvent := v1beta1.EventActionStateChange{}
 
-	err := common.ParseSdkEvent(sdkEvent, typedEvent.XXX_Merge)
+	err := common.ParseSdkEventDeprecated(sdkEvent, typedEvent.XXX_Merge)
 	if err != nil {
 		return nil, err
 	}

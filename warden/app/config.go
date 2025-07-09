@@ -11,6 +11,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec/legacy"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/x/auth/migrations/legacytx"
 	"github.com/cosmos/evm/crypto/ethsecp256k1"
 	evmcodec "github.com/cosmos/evm/encoding/codec"
 	"github.com/cosmos/evm/ethereum/eip712"
@@ -32,6 +33,7 @@ func RegisterEVMCodec(legacyAmino *codec.LegacyAmino, interfaceRegistry codectyp
 	legacyAmino.RegisterConcrete(&ethsecp256k1.PrivKey{},
 		ethsecp256k1.PrivKeyName, nil)
 	legacy.Cdc = legacyAmino
+	legacytx.RegressionTestingAminoCodec = legacyAmino
 
 	evmcodec.RegisterInterfaces(interfaceRegistry)
 }

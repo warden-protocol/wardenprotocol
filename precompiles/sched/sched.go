@@ -7,6 +7,7 @@ import (
 	storetypes "cosmossdk.io/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	evmcmn "github.com/cosmos/evm/precompiles/common"
+	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	ethcmn "github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/tracing"
@@ -30,6 +31,7 @@ var f embed.FS
 type Precompile struct {
 	evmcmn.Precompile
 	schedKeeper    schedkeeper.Keeper
+	evmKeeper      *evmkeeper.Keeper
 	eventsRegistry *common.EthEventsRegistry
 	queryServer    types.QueryServer
 }
@@ -40,7 +42,7 @@ func LoadABI() (abi.ABI, error) {
 	return evmcmn.LoadABI(f, "abi.json")
 }
 
-func NewPrecompile(schedKeeper schedkeeper.Keeper, er *common.EthEventsRegistry) (*Precompile, error) {
+func NewPrecompile(schedKeeper schedkeeper.Keeper, evmKeeper *evmkeeper.Keeper, er *common.EthEventsRegistry) (*Precompile, error) {
 	abi, err := LoadABI()
 	if err != nil {
 		return nil, err
@@ -53,6 +55,7 @@ func NewPrecompile(schedKeeper schedkeeper.Keeper, er *common.EthEventsRegistry)
 			TransientKVGasConfig: storetypes.TransientGasConfig(),
 		},
 		schedKeeper:    schedKeeper,
+		evmKeeper:      evmKeeper,
 		eventsRegistry: er,
 		queryServer:    schedkeeper.NewQueryServerImpl(schedKeeper),
 	}
@@ -93,12 +96,16 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 		return nil, err
 	}
 
+	p.GetBalanceHandler().BeforeBalanceChange(ctx)
+
 	// This handles any out of gas errors that may occur during the execution of a precompile tx or query.
 	// It avoids panics and returns the out of gas error so the EVM can continue gracefully.
 	defer evmcmn.HandleGasError(ctx, contract, initialGas, &err)()
 
 	switch method.Name {
 	// transactions
+	case ExecuteCallbacksMethod:
+		bz, err = p.ExecuteCallbacksMethod(ctx, evm, stateDB, method, args)
 
 	// queries
 	case CallbackByIdMethod:
@@ -119,7 +126,7 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 		return nil, vm.ErrOutOfGas
 	}
 
-	if err := p.AddJournalEntries(stateDB); err != nil {
+	if err = p.GetBalanceHandler().AfterBalanceChange(ctx, stateDB); err != nil {
 		return nil, err
 	}
 

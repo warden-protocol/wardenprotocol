@@ -26,6 +26,7 @@ import (
 	"github.com/skip-mev/slinky/abci/ve"
 
 	"github.com/warden-protocol/wardenprotocol/prophet"
+	"github.com/warden-protocol/wardenprotocol/warden/abciutil"
 	"github.com/warden-protocol/wardenprotocol/warden/app/vemanager"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
@@ -229,28 +230,16 @@ func (k Keeper) VerifyVoteExtensionHandler() sdk.VerifyVoteExtensionHandler {
 	}
 }
 
+// PrepareProposalHandler returns a PrepareProposalHandler that inject the
+// x/async's [types.AsyncInjectedTx] at the position 1 of every block.
 func (k Keeper) PrepareProposalHandler() sdk.PrepareProposalHandler {
-	return func(ctx sdk.Context, req *cometabci.RequestPrepareProposal) (*cometabci.ResponsePrepareProposal, error) {
-		resp := &cometabci.ResponsePrepareProposal{
-			Txs: req.Txs,
-		}
-
-		if !ve.VoteExtensionsEnabled(ctx) {
-			return resp, nil
-		}
-
-		log := ctx.Logger().With("module", "prophet")
+	return abciutil.InjectTxPrepareProposalHandler(func(ctx sdk.Context, req *cometabci.RequestPrepareProposal) (int, []byte, error) {
 		asyncTx, err := k.buildAsyncTx(req.LocalLastCommit.Votes)
 		if err != nil {
-			log.Error("failed to build async tx", "err", err)
-			return resp, nil
+			return 0, nil, err
 		}
-
-		resp.Txs = trimExcessBytes(resp.Txs, req.MaxTxBytes-int64(len(asyncTx)))
-		resp.Txs = injectTx(asyncTx, 1, resp.Txs)
-
-		return resp, nil
-	}
+		return 1, asyncTx, nil
+	})
 }
 
 func (k Keeper) ProcessProposalHandler() sdk.ProcessProposalHandler {
@@ -484,40 +473,6 @@ func (k Keeper) buildAsyncTx(votes []cometabci.ExtendedVoteInfo) ([]byte, error)
 	}
 
 	return txBytes, nil
-}
-
-func injectTx(newTx []byte, position int, appTxs [][]byte) [][]byte {
-	if position < 0 {
-		panic("position must be >= 0")
-	}
-
-	if position == 0 {
-		return append([][]byte{newTx}, appTxs...)
-	}
-
-	if position >= len(appTxs) {
-		return append(appTxs, newTx)
-	}
-
-	return append(appTxs[:position], append([][]byte{newTx}, appTxs[position:]...)...)
-}
-
-func trimExcessBytes(txs [][]byte, maxSizeBytes int64) [][]byte {
-	var (
-		returnedTxs   [][]byte
-		consumedBytes int64
-	)
-
-	for _, tx := range txs {
-		consumedBytes += int64(len(tx))
-		if consumedBytes > maxSizeBytes {
-			break
-		}
-
-		returnedTxs = append(returnedTxs, tx)
-	}
-
-	return returnedTxs
 }
 
 func isEqualLocalAndOnchainPlugins(localPlugins []string, onchainKeys []collections.Pair[sdk.ConsAddress, string]) bool {

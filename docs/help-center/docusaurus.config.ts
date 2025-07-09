@@ -72,12 +72,18 @@ const config: Config = {
                 srcDark: "img/logo-dark.svg",
             },
             items: [
-                // {
-                //     type: "docSidebar",
-                //     sidebarId: "spaceward",
-                //     label: "SpaceWard",
-                //     position: "left",
-                // },
+                        {
+                            type: "docSidebar",
+                            sidebarId: "spaceward",
+                            label: "SpaceWard",
+                            position: "left",
+                        },
+                        {
+                         type: "docSidebar",
+                         sidebarId: "wardenapp",
+                         label: "Warden App",
+                         position: "left",
+                        },
                 {
                     href: "https://discord.com/invite/warden",
                     label: "Discord",

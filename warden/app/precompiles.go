@@ -84,6 +84,7 @@ func NewAvailableStaticPrecompiles(
 	}
 
 	ibcTransferPrecompile, err := ics20precompile.NewPrecompile(
+		bankKeeper,
 		stakingKeeper,
 		transferKeeper,
 		channelKeeper,
@@ -132,6 +133,7 @@ func NewAvailableStaticPrecompiles(
 		*oracleKeeper,
 		asyncKeeper,
 		schedKeeper,
+		evmKeeper,
 	)
 	if err != nil {
 		panic(err)

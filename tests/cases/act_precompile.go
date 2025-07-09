@@ -5,7 +5,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
 
@@ -31,26 +30,24 @@ func (c *Test_ActPrecompile) Setup(t *testing.T, f *framework.F) {
 }
 
 func (c *Test_ActPrecompile) Run(t *testing.T, _ *framework.F) {
-	alice := exec.NewWardend(c.w, "alice")
-	bob := exec.NewWardend(c.w, "bob")
-	dave := exec.NewWardend(c.w, "dave")
+	alice := exec.NewWardendEth(t, c.w, "alice")
+	bob := exec.NewWardendEth(t, c.w, "bob")
+	dave := exec.NewWardendEth(t, c.w, "dave")
 
 	client := TestGRPCClient(*c.w.GRPCClient(t))
-	evmClient := c.w.EthClient(t)
-	iActClient, err := act.NewIAct(common.HexToAddress(act.PrecompileAddress), evmClient)
+	iActClient, err := act.NewIAct(common.HexToAddress(act.PrecompileAddress), alice.Client)
 	require.NoError(t, err)
-	iWardenClient, err := warden.NewIWarden(common.HexToAddress(warden.PrecompileAddress), evmClient)
+	iWardenClient, err := warden.NewIWarden(common.HexToAddress(warden.PrecompileAddress), alice.Client)
 	require.NoError(t, err)
 
 	t.Run("work with templates", func(t *testing.T) {
 		createTemplateTx, err := iActClient.NewTemplate(
-			alice.TransactOps(t, evmClient),
+			alice.TransactOps(t),
 			"evm rule #1",
 			"any(2, warden.space.owners)")
 		require.NoError(t, err)
 
-		createTemplateReceipt, err := bind.WaitMined(t.Context(), evmClient, createTemplateTx)
-		require.NoError(t, err)
+		createTemplateReceipt := alice.Client.WaitMinedSuccess(t, createTemplateTx)
 
 		createTemplateEvents, err := checks.GetParsedEventsOnly(createTemplateReceipt, iActClient.ParseCreateTemplate)
 		require.NoError(t, err)
@@ -61,14 +58,13 @@ func (c *Test_ActPrecompile) Run(t *testing.T, _ *framework.F) {
 		require.Equal(t, "evm rule #1", templateById.Template.Name)
 
 		updateTemplateTx, err := iActClient.UpdateTemplate(
-			alice.TransactOps(t, evmClient),
+			alice.TransactOps(t),
 			1,
 			"evm rule #1 modified",
 			"any(2, warden.space.owners)")
 		require.NoError(t, err)
 
-		updateTemplateReceipt, err := bind.WaitMined(t.Context(), evmClient, updateTemplateTx)
-		require.NoError(t, err)
+		updateTemplateReceipt := alice.Client.WaitMinedSuccess(t, updateTemplateTx)
 
 		updateTemplateEvents, err := checks.GetParsedEventsOnly(updateTemplateReceipt, iActClient.ParseUpdateTemplate)
 		require.NoError(t, err)
@@ -93,27 +89,27 @@ func (c *Test_ActPrecompile) Run(t *testing.T, _ *framework.F) {
 		require.NotEmpty(t, actions)
 		require.Len(t, actions.Actions, 1)
 		require.Equal(t, actions.Actions[0].Id, uint64(1))
-		require.Equal(t, actions.Actions[0].Creator, alice.EthAddress(t))
+		require.Equal(t, actions.Actions[0].Creator, alice.From)
 		require.Equal(t, actions.Actions[0].Status, uint8(v1beta1.ActionStatus_ACTION_STATUS_COMPLETED))
 		require.NotNil(t, actions.Actions[0].UpdatedAt)
 		require.NotNil(t, actions.Actions[0].Result)
 		require.Len(t, actions.Actions[0].Votes, 1)
 		require.Equal(t, actions.Actions[0].Votes[0].VoteType, uint8(v1beta1.ActionVoteType_VOTE_TYPE_APPROVED))
-		require.Equal(t, actions.Actions[0].Votes[0].Participant, alice.EthAddress(t))
+		require.Equal(t, actions.Actions[0].Votes[0].Participant, alice.From)
 		require.NotNil(t, actions.Actions[0].RejectExpression)
 		require.NotNil(t, actions.Actions[0].ApproveExpression)
 		require.NotNil(t, actions.Actions[0].CreatedAt)
 		require.Len(t, actions.Actions[0].Mentions, 1)
-		require.Equal(t, actions.Actions[0].Mentions[0], alice.EthAddress(t))
+		require.Equal(t, actions.Actions[0].Mentions[0], alice.From)
 
 		actionById, err := iActClient.ActionById(alice.CallOps(t), 1)
 		require.NoError(t, err)
-		require.Equal(t, actionById.Action.Creator, alice.EthAddress(t))
+		require.Equal(t, actionById.Action.Creator, alice.From)
 
 		actionsByAddress, err := iActClient.ActionsByAddress(
 			alice.CallOps(t),
 			act.TypesPageRequest{},
-			alice.EthAddress(t),
+			alice.From,
 			uint8(actv1beta1.ActionStatus_ACTION_STATUS_COMPLETED))
 		require.NoError(t, err)
 		require.Len(t, actionsByAddress.Actions, 1)
@@ -131,11 +127,10 @@ func (c *Test_ActPrecompile) Run(t *testing.T, _ *framework.F) {
 
 		client.EnsureSpaceAmount(t, dave.Address(t), 0)
 
-		revokeTx, err := iActClient.RevokeAction(alice.TransactOps(t, evmClient), 3)
+		revokeTx, err := iActClient.RevokeAction(alice.TransactOps(t), 3)
 		require.NoError(t, err)
 
-		actionRevokeReceipt, err := bind.WaitMined(t.Context(), evmClient, revokeTx)
-		require.NoError(t, err)
+		actionRevokeReceipt := alice.Client.WaitMinedSuccess(t, revokeTx)
 
 		actionStateChangeEvents, err := checks.GetParsedEventsOnly(actionRevokeReceipt, iActClient.ParseActionStateChange)
 		require.NoError(t, err)
@@ -154,18 +149,17 @@ func (c *Test_ActPrecompile) Run(t *testing.T, _ *framework.F) {
 
 		client.EnsureSpaceAmount(t, dave.Address(t), 0)
 
-		voteTx, err := iActClient.VoteForAction(bob.TransactOps(t, evmClient), 4, 1)
+		voteTx, err := iActClient.VoteForAction(bob.TransactOps(t), 4, 1)
 		require.NoError(t, err)
 
-		actionVotedReceipt, err := bind.WaitMined(t.Context(), evmClient, voteTx)
-		require.NoError(t, err)
+		actionVotedReceipt := bob.Client.WaitMinedSuccess(t, voteTx)
 
 		client.EnsureSpaceAmount(t, dave.Address(t), 1)
 
 		actionVotedEvents, err := checks.GetParsedEventsOnly(actionVotedReceipt, iActClient.ParseActionVoted)
 		require.NoError(t, err)
 		require.Len(t, actionVotedEvents, 1)
-		require.Equal(t, actionVotedEvents[0].Participant, bob.EthAddress(t))
+		require.Equal(t, actionVotedEvents[0].Participant, bob.From)
 		require.Equal(t, actionVotedEvents[0].VoteType, uint8(actv1beta1.ActionVoteType_VOTE_TYPE_APPROVED))
 		require.Equal(t, actionVotedEvents[0].ActionId, uint64(4))
 
@@ -173,7 +167,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, _ *framework.F) {
 		require.NoError(t, err)
 		require.Len(t, addSpaceOwnerEvents, 1)
 		require.Equal(t, addSpaceOwnerEvents[0].SpaceId, uint64(1))
-		require.Equal(t, addSpaceOwnerEvents[0].NewOwner, dave.EthAddress(t))
+		require.Equal(t, addSpaceOwnerEvents[0].NewOwner, dave.From)
 
 		actionStateChangeEvents, err = checks.GetParsedEventsOnly(actionVotedReceipt, iActClient.ParseActionStateChange)
 		require.NoError(t, err)

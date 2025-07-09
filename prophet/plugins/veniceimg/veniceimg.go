@@ -66,6 +66,8 @@ type generatePayload struct {
 	Prompt        string `json:"prompt"`
 	Steps         int    `json:"steps"`
 	StylePreset   string `json:"style_preset"`
+	Height        int    `json:"height"`
+	Width         int    `json:"width"`
 }
 
 type timing struct {
@@ -90,6 +92,8 @@ func (c *veniceimgClient) generate(ctx context.Context, model string, prompt str
 		Prompt:        prompt,
 		Steps:         steps,
 		StylePreset:   stylePreset,
+		Height:        256,
+		Width:         256,
 	})
 	if err != nil {
 		return generateResponse{}, err

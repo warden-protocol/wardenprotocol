@@ -177,7 +177,7 @@ func newMsgNewKeychain(method *abi.Method, args []interface{}, origin common.Add
 	return &types.MsgNewKeychain{
 		Creator:      creator,
 		Name:         input.Name,
-		KeychainFees: input.KeychainFees,
+		KeychainFees: mapEthKeychainFees(input.KeychainFees),
 		Description:  input.Description,
 		Url:          input.Url,
 		KeybaseId:    input.KeybaseId,
@@ -186,7 +186,7 @@ func newMsgNewKeychain(method *abi.Method, args []interface{}, origin common.Add
 
 type newKeyChainInput struct {
 	Name         string
-	KeychainFees types.KeychainFees
+	KeychainFees KeychainFees
 	Description  string
 	Url          string
 	KeybaseId    string

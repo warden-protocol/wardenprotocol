@@ -25,7 +25,7 @@ func (p *Precompile) GetCreateTaskEvent(ctx sdk.Context, writerAddress *ethcmn.A
 	topics[0] = event.ID
 
 	typedEvent := v1beta1.EventCreateTask{}
-	if err = common.ParseSdkEvent(sdkEvent, typedEvent.XXX_Merge); err != nil {
+	if err = common.ParseSdkEventDeprecated(sdkEvent, typedEvent.XXX_Merge); err != nil {
 		return nil, err
 	}
 

@@ -1,11 +1,13 @@
 package v1beta3_test
 
 import (
+	"fmt"
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
+
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
@@ -14,13 +16,27 @@ func init() {
 	config.SetBech32PrefixForAccount("warden", "wardenpub")
 }
 
-func TestCosmosAddressEthCollision(t *testing.T) {
-	t.Run("cosmos_addresses_eth_address_collision", func(t *testing.T) {
-		k := types.Keychain{Id: 1}
-		addr1 := k.AccAddress()
-		addr2, err := sdk.AccAddressFromBech32("warden1qqqqq6m9093ksctfdcksqqqqqqqqqqqp73dme3")
-		require.NoError(t, err)
-		require.NotEqual(t, sdk.AccAddress(addr1).String(), addr2.String())
-		require.Equal(t, common.BytesToAddress(addr1), common.BytesToAddress(addr2))
-	})
+func TestKeychainAddressCanBeConvertedToEthereumAddress(t *testing.T) {
+	ids := []uint64{
+		0,
+		1,
+		0xFFFFFFFFFFFFFFFF, // max uint64
+	}
+
+	for _, id := range ids {
+		t.Run(fmt.Sprintf("id=%d", id), func(t *testing.T) {
+			k := types.Keychain{Id: id}
+			addr := k.AccAddress()
+			got := common.Address(addr)
+			require.NotEmpty(t, got)
+			require.NotZero(t, got)
+		})
+	}
+}
+
+func TestKeychainAddress(t *testing.T) {
+	k := types.Keychain{Id: 1}
+	addr1 := k.AccAddress()
+	expected := common.HexToAddress("0xd14Bb409Ccf9DCc22a3153996Ee689D75FF1B582")
+	require.Equal(t, expected, common.Address(addr1))
 }

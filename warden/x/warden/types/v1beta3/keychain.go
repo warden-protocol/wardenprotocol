@@ -4,36 +4,29 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"slices"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/crypto"
 )
 
 func (k *Keychain) AccAddress() sdk.AccAddress {
 	bz := make([]byte, 8)
 	binary.BigEndian.PutUint64(bz, k.Id)
-	addr := append([]byte("keychain-"), bz...)
+
+	h := crypto.Keccak256Hash([]byte("keychain-"), bz)
+	addr := h[len(h)-common.AddressLength:]
 
 	return addr
 }
 
 func (k *Keychain) IsWriter(address string) bool {
-	for _, w := range k.Writers {
-		if w == address {
-			return true
-		}
-	}
-
-	return false
+	return slices.Contains(k.Writers, address)
 }
 
 func (k *Keychain) IsAdmin(address string) bool {
-	for _, admin := range k.Admins {
-		if admin == address {
-			return true
-		}
-	}
-
-	return false
+	return slices.Contains(k.Admins, address)
 }
 
 func (k *Keychain) AddWriter(address string) {

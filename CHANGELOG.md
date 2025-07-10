@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Consensus Breaking Changes
 
 - (x/warden) Change the way Keychain's addresses are generated. They now are 20-bytes long to be compatible with EVM.
+- (precompiles) Fix panics when dealing with NewKeychainEvent and UpdateKeychainEvent from the x/warden precompiled contract.
 
 ### Features (non-breaking)
 

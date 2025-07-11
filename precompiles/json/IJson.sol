@@ -20,6 +20,11 @@ struct ReadKeyValue {
     int64 decimals;
 }
 
+struct FixedPoint {
+    int256 mantissa;
+    int8 exponent;
+}
+
 /**
  * @author Warden Team
  * @title x/json Interface
@@ -38,6 +43,8 @@ interface IJson {
      * @return json A bytes array containing the UTF-8 encoded JSON string.
      */
     function build(JsonOp[] memory ops, bytes[] memory data) external pure returns (bytes memory json);
+
+    function parse(bytes memory jsonBytes, bytes memory schema) external view returns (bytes memory abiEncodedData);
 
     /**
      * @dev Defines a method to create empty JSON object.
@@ -509,7 +516,7 @@ library JsonUtils {
      * @dev Initializes a new JsonBuilder in memory with the specified
      * capacity.
      */
-    function newBuilderWithCapacity(capacity uint256) internal pure returns (JsonBuilder memory builder) {
+    function newBuilderWithCapacity(uint256 capacity) internal pure returns (JsonBuilder memory builder) {
         builder.ops = new JsonOp[](capacity);
         builder.data = new bytes[](capacity);
         // builder.count is initialized to 0 by default.

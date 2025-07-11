@@ -45,6 +45,14 @@ interface IJson {
     function build(JsonOp[] memory ops, bytes[] memory data) external pure returns (bytes memory json);
 
     /**
+     * @dev Parses JSON data according to a schema and returns ABI-encoded data.
+     * @param jsonBytes The JSON data to parse as UTF-8 encoded bytes.
+     * @param schema The schema defining the structure and types to extract from the JSON.
+     * @return abiEncodedData The extracted data encoded according to the provided schema.
+     */
+    function parse(bytes memory jsonBytes, bytes memory schema) external view returns (bytes memory abiEncodedData);
+
+    /**
      * @dev Defines a method to create empty JSON object.
      * @return The created JSON as bytes.
      */
@@ -514,7 +522,7 @@ library JsonUtils {
      * @dev Initializes a new JsonBuilder in memory with the specified
      * capacity.
      */
-    function newBuilderWithCapacity(capacity uint256) internal pure returns (JsonBuilder memory builder) {
+    function newBuilderWithCapacity(uint256 capacity) internal pure returns (JsonBuilder memory builder) {
         builder.ops = new JsonOp[](capacity);
         builder.data = new bytes[](capacity);
         // builder.count is initialized to 0 by default.

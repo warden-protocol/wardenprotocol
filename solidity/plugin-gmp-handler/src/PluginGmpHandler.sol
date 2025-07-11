@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
-import "@warden-protocol/precompiled/json/IJson.sol" as json;
+import {IJSON_CONTRACT, JsonOp, JsonUtils, SetKeyValue, FixedPoint} from "@warden-protocol/precompiled/json/IJson.sol";
 import "@warden-protocol/precompiled/async/IAsync.sol";
 import "@warden-protocol/precompiled/common/Types.sol";
 
 contract PluginGmpHandler {
+    using JsonUtils for JsonUtils.JsonBuilder;
+
     bytes32 public constant Echo = keccak256(abi.encodePacked("echo"));
     bytes32 public constant Http = keccak256(abi.encodePacked("http"));
     bytes32 public constant Pfp = keccak256(abi.encodePacked("pfp"));
@@ -25,6 +27,12 @@ contract PluginGmpHandler {
         string beginTimestamp;
         string endTimestamp;
         string horizonTimestamp;
+    }
+
+    struct QuantkitOrder {
+        string src;
+        string dst;
+        FixedPoint amount;
     }
 
     struct VeniceInput {
@@ -55,7 +63,7 @@ contract PluginGmpHandler {
         mailbox = IMailbox(_mailbox);
     }
 
-    function decodeAndProcessPluginInput(string memory plugin, bytes memory pluginPayload)
+    function decodePluginInput(string memory plugin, bytes memory pluginPayload)
         public
         view
         returns (bytes memory)
@@ -66,63 +74,84 @@ contract PluginGmpHandler {
             return pluginPayload;
         } else if (p == Venice) {
             VeniceInput memory inp = abi.decode(pluginPayload, (VeniceInput));
-            bytes memory j = json.IJSON_CONTRACT.newJson();
-            json.SetKeyValue[] memory setKeyValuePairs = new json.SetKeyValue[](4);
-            setKeyValuePairs[0] = json.SetKeyValue("model", "string", abi.encode(inp.model), 0);
-            setKeyValuePairs[1] = json.SetKeyValue("message", "string", abi.encode(inp.message), 0);
-            setKeyValuePairs[2] = json.SetKeyValue("top_p", "float", abi.encode(inp.top_p), 1);
-            setKeyValuePairs[3] = json.SetKeyValue("temperature", "float", abi.encode(inp.temperature), 1);
-            return json.IJSON_CONTRACT.write(j, setKeyValuePairs);
+            bytes memory j = IJSON_CONTRACT.newJson();
+            SetKeyValue[] memory setKeyValuePairs = new SetKeyValue[](4);
+            setKeyValuePairs[0] = SetKeyValue("model", "string", abi.encode(inp.model), 0);
+            setKeyValuePairs[1] = SetKeyValue("message", "string", abi.encode(inp.message), 0);
+            setKeyValuePairs[2] = SetKeyValue("top_p", "float", abi.encode(inp.top_p), 1);
+            setKeyValuePairs[3] = SetKeyValue("temperature", "float", abi.encode(inp.temperature), 1);
+            return IJSON_CONTRACT.write(j, setKeyValuePairs);
         } else if (p == VeniceImg) {
             VeniceImgInput memory inp = abi.decode(pluginPayload, (VeniceImgInput));
-            bytes memory j = json.IJSON_CONTRACT.newJson();
-            json.SetKeyValue[] memory setKeyValuePairs = new json.SetKeyValue[](4);
-            setKeyValuePairs[0] = json.SetKeyValue("model", "string", abi.encode(inp.model), 0);
-            setKeyValuePairs[1] = json.SetKeyValue("prompt", "string", abi.encode(inp.prompt), 0);
-            setKeyValuePairs[2] = json.SetKeyValue("steps", "uint256", abi.encode(inp.steps), 0);
-            setKeyValuePairs[3] = json.SetKeyValue("style_preset", "string", abi.encode(inp.style_preset), 0);
-            return json.IJSON_CONTRACT.write(j, setKeyValuePairs);
-            // } else if (p == Quantkit) {
-            // TODO: currently hitting a cosmos/evm limit:
-            // https://github.com/cosmos/evm/issues/135
-            //
-            //     QuantkitInput memory inp = abi.decode(pluginPayload, (QuantkitInput));
-            //
-            //     bytes[] memory assetsJson = new bytes[](inp.assets.length);
-            //     for (uint i = 0; i < inp.assets.length; i++) {
-            //         bytes memory assetJ = json.IJSON_CONTRACT.newJson();
-            //         assetJ = json.IJSON_CONTRACT.setString(assetJ, "coin_id", inp.assets[i].coinId);
-            //         assetJ = json.IJSON_CONTRACT.setUint256(assetJ, "amount", inp.assets[i].amount);
-            //         assetsJson[i] = assetJ;
-            //     }
-            //
-            //     bytes memory state = json.IJSON_CONTRACT.newJson();
-            //     state = json.IJSON_CONTRACT.setObjectsArray(state, "assets", assetsJson);
-            //
-            //     bytes memory j = json.IJSON_CONTRACT.newJson();
-            //     json.SetKeyValue[] memory setKeyValuePairs = new json.SetKeyValue[](5);
-            //     setKeyValuePairs[0] = json.SetKeyValue("begin", "string", abi.encode(inp.beginTimestamp), 0);
-            //     setKeyValuePairs[1] = json.SetKeyValue("end", "string", abi.encode(inp.endTimestamp), 0);
-            //     setKeyValuePairs[2] = json.SetKeyValue("horizon", "string", abi.encode(inp.horizonTimestamp), 0);
-            //     setKeyValuePairs[3] = json.SetKeyValue("strategy_name", "string", abi.encode(inp.strategyName), 0);
-            //     j = json.IJSON_CONTRACT.write(j, setKeyValuePairs);
-            //     j = json.IJSON_CONTRACT.setObject(j, "state", state);
-            //
-            //     pluginInput = j;
+            bytes memory j = IJSON_CONTRACT.newJson();
+            SetKeyValue[] memory setKeyValuePairs = new SetKeyValue[](4);
+            setKeyValuePairs[0] = SetKeyValue("model", "string", abi.encode(inp.model), 0);
+            setKeyValuePairs[1] = SetKeyValue("prompt", "string", abi.encode(inp.prompt), 0);
+            setKeyValuePairs[2] = SetKeyValue("steps", "uint256", abi.encode(inp.steps), 0);
+            setKeyValuePairs[3] = SetKeyValue("style_preset", "string", abi.encode(inp.style_preset), 0);
+            return IJSON_CONTRACT.write(j, setKeyValuePairs);
+        } else if (p == Quantkit) {
+            QuantkitInput memory inp = abi.decode(pluginPayload, (QuantkitInput));
+            JsonUtils.JsonBuilder memory metadataBuilder = JsonUtils.newBuilder();
+
+            metadataBuilder.startObject();
+            metadataBuilder.pair("begin", inp.beginTimestamp);
+            metadataBuilder.pair("end", inp.endTimestamp);
+            metadataBuilder.pair("horizon", inp.horizonTimestamp);
+            metadataBuilder.pair("strategy_name", inp.strategyName);
+            metadataBuilder.key("state");
+            metadataBuilder.startObject();
+            metadataBuilder.key("assets");
+            metadataBuilder.startArray();
+            for (uint256 i = 0; i < inp.assets.length; i++) {
+                metadataBuilder.startObject();
+                metadataBuilder.pair("coin_id", inp.assets[i].coinId);
+                metadataBuilder.pair("amount", inp.assets[i].amount);
+                metadataBuilder.endObject();
+            }
+            metadataBuilder.endArray();
+            metadataBuilder.endObject();
+            metadataBuilder.endObject();
+            return metadataBuilder.build();
         }
 
         revert("unsupported plugin");
+    }
+
+    function encodePluginOutput(string memory plugin, bytes memory pluginPayload)
+        public
+        view
+        returns (bytes memory)
+    {
+        bytes32 p = keccak256(abi.encodePacked(plugin));
+        if (p == Quantkit) {
+            string memory schema = 'orders:(src:string,dst:string,amount:fp)[]';
+            bytes[] memory ordersEnc = abi.decode(IJSON_CONTRACT.parse(pluginPayload, bytes(schema)), (bytes[]));
+            QuantkitOrder[] memory orders = new QuantkitOrder[](ordersEnc.length);
+            for (uint256 i = 0; i < orders.length; i++) {
+                (string memory src, string memory dst, FixedPoint memory fp) = abi.decode(ordersEnc[i], (string, string, FixedPoint));
+                orders[i] = QuantkitOrder(src, dst, fp);
+            }
+            return abi.encode(orders);
+        }
+
+        return pluginPayload;
     }
 
     function Run(bytes calldata payload) public {
         Types.Coin[] memory maxFee;
         (string memory plugin, bytes memory pluginPayload) = abi.decode(payload, (string, bytes));
 
-        bytes memory pluginInput = decodeAndProcessPluginInput(plugin, pluginPayload);
+        bytes memory pluginInput = decodePluginInput(plugin, pluginPayload);
         lastTaskId = IASYNC_CONTRACT.addTask(plugin, pluginInput, maxFee, CallbackParams(address(this), 100000000));
 
         TaskByIdResponse memory taskResponse = IASYNC_CONTRACT.taskById(lastTaskId);
         lastCbId = taskResponse.taskResponse.task.callbackId;
+    }
+
+    struct PluginResponse {
+        uint64 task_id;
+        bytes data;
     }
 
     function cb(uint64 id, bytes calldata o) external returns (bytes memory) {
@@ -135,10 +164,14 @@ contract PluginGmpHandler {
 
             if (task.taskResponse.result.id == 0) revert NotReady();
 
-            output = task.taskResponse.result.output;
+            output = encodePluginOutput(task.taskResponse.task.plugin, task.taskResponse.result.output);
         }
 
-        bytes memory data = abi.encode(output, id);
+        PluginResponse memory response = PluginResponse(
+            lastTaskId,
+            output
+        );
+        bytes memory data = abi.encode(response);
         uint256 fees = mailbox.quoteDispatch(origin, sender, data);
         msgId = mailbox.dispatch{value: fees}(origin, sender, data);
         return o;

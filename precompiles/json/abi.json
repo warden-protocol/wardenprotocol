@@ -3,6 +3,30 @@
     {
       "inputs": [
         {
+          "internalType": "enum JsonOp[]",
+          "name": "ops",
+          "type": "uint8[]"
+        },
+        {
+          "internalType": "bytes[]",
+          "name": "data",
+          "type": "bytes[]"
+        }
+      ],
+      "name": "build",
+      "outputs": [
+        {
+          "internalType": "bytes",
+          "name": "json",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "bytes",
           "name": "input",
           "type": "bytes"

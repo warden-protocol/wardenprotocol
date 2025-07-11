@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - (x/warden) Change the way Keychain's addresses are generated. They now are 20-bytes long to be compatible with EVM.
 - (precompiles) Fix panics when dealing with NewKeychainEvent and UpdateKeychainEvent from the x/warden precompiled contract.
 - (precompiles/json) Add a new API (`build()`) that allows to build an entire json object with a single function call.
+- (precompiles/json) Add a new API (`parse()`) that allows to parse a json object into a schema with a single function call.
 
 ### Features (non-breaking)
 

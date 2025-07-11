@@ -20,6 +20,11 @@ struct ReadKeyValue {
     int64 decimals;
 }
 
+struct FixedPoint {
+    int256 mantissa;
+    int8 exponent;
+}
+
 /**
  * @author Warden Team
  * @title x/json Interface
@@ -38,6 +43,8 @@ interface IJson {
      * @return json A bytes array containing the UTF-8 encoded JSON string.
      */
     function build(JsonOp[] memory ops, bytes[] memory data) external pure returns (bytes memory json);
+
+    function parse(bytes memory jsonBytes, bytes memory schema) external view returns (bytes memory abiEncodedData);
 
     /**
      * @dev Defines a method to create empty JSON object.
@@ -509,7 +516,7 @@ library JsonUtils {
      * @dev Initializes a new JsonBuilder in memory with the specified
      * capacity.
      */
-    function newBuilderWithCapacity(capacity uint256) internal pure returns (JsonBuilder memory builder) {
+    function newBuilderWithCapacity(uint256 capacity) internal pure returns (JsonBuilder memory builder) {
         builder.ops = new JsonOp[](capacity);
         builder.data = new bytes[](capacity);
         // builder.count is initialized to 0 by default.
@@ -585,8 +592,12 @@ library JsonUtils {
         _push(builder, JsonOp.BytesValue, _val);
     }
     
-    function fixedPointValue(JsonBuilder memory builder, int256 mantissa, uint8 decimals) internal pure {
-        _push(builder, JsonOp.FixedPointValue, abi.encode(mantissa, decimals));
+    function fixedPointValue(JsonBuilder memory builder, int256 mantissa, uint8 exponent) internal pure {
+        _push(builder, JsonOp.FixedPointValue, abi.encode(mantissa, exponent));
+    }
+
+    function fixedPointValue(JsonBuilder memory builder, FixedPoint memory fp) internal pure {
+        _push(builder, JsonOp.FixedPointValue, abi.encode(fp.mantissa, fp.exponent));
     }
 
     function rawJsonNumber(JsonBuilder memory builder, string memory numString) internal pure {

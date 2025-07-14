@@ -47,6 +47,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features (non-breaking)
 
+- (plugin/veniceimg) Generate large image and resize it afterwards, locally. This leads to a much higher image quality.
+
 ### Bug Fixes
 
 ## [v0.6.4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.4) - 2025-07-07

@@ -6,7 +6,12 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"image"
 	"net/http"
+
+	"github.com/gen2brain/webp"
+	"github.com/nfnt/resize"
+	_ "golang.org/x/image/webp"
 )
 
 type Plugin struct {
@@ -47,7 +52,20 @@ func (p Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {
 		return nil, err
 	}
 
-	return imgBytes, nil
+	img, _, err := image.Decode(bytes.NewReader(imgBytes))
+	if err != nil {
+		return nil, err
+	}
+
+	newImage := resize.Resize(256, 0, img, resize.Lanczos3)
+
+	buf := new(bytes.Buffer)
+	options := webp.Options{Lossless: false, Quality: 80}
+	if err := webp.Encode(buf, newImage, options); err != nil {
+		return nil, err
+	}
+
+	return buf.Bytes(), nil
 }
 
 func (p Plugin) Verify(ctx context.Context, input, output []byte) error {
@@ -92,8 +110,8 @@ func (c *veniceimgClient) generate(ctx context.Context, model string, prompt str
 		Prompt:        prompt,
 		Steps:         steps,
 		StylePreset:   stylePreset,
-		Height:        256,
-		Width:         256,
+		Height:        1024,
+		Width:         1024,
 	})
 	if err != nil {
 		return generateResponse{}, err

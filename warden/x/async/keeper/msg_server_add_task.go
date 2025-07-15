@@ -70,6 +70,17 @@ func (k msgServer) AddTask(ctx context.Context, msg *types.MsgAddTask) (*types.M
 		return nil, err
 	}
 
+	pluginMetrics, err := k.GetPluginMetrics(ctx, msg.Plugin)
+	if err != nil {
+		return nil, errorsmod.Wrapf(types.ErrInvalidPlugin, "failed get metrics for plugin %s", msg.Plugin)
+	}
+
+	pluginMetrics.UpdateUsageMetrics(len(msg.Input))
+
+	if err := k.pluginMetrics.Set(ctx, msg.Plugin, pluginMetrics); err != nil {
+		return nil, errorsmod.Wrapf(err, "failed to update metrics for plugin %s", msg.Plugin)
+	}
+
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	now := sdkCtx.BlockTime()
 

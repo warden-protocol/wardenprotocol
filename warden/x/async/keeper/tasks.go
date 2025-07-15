@@ -162,11 +162,8 @@ func (k *TaskKeeper) AllPendingTasks(ctx context.Context) ([]types.Task, error) 
 	return tasks, nil
 }
 
-func (k *TaskKeeper) pruneTask(ctx context.Context, id uint64) error {
-	t, err := k.tasks.Get(ctx, id)
-	if err != nil {
-		return err
-	}
+func (k *TaskKeeper) pruneTask(ctx context.Context, t types.Task) error {
+	id := t.Id
 	creator := sdk.MustAccAddressFromBech32(t.Creator)
 	solver := t.Solver
 

@@ -15,20 +15,10 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 
 func (k *Keeper) GetPluginMetrics(ctx context.Context, plugin string) (types.PluginMetrics, error) {
-	if exists, _ := k.pluginMetrics.Has(ctx, plugin); exists {
-		return k.pluginMetrics.Get(ctx, plugin)
-	}
-
-	pluginMetrics := types.NewPluginMetrics(plugin)
-	if err := k.pluginMetrics.Set(ctx, plugin, pluginMetrics); err != nil {
-		return types.PluginMetrics{}, fmt.Errorf("failed to set plugin metrics for %s: %w", plugin, err)
-	}
-
-	return pluginMetrics, nil
+	return k.pluginMetrics.Get(ctx, plugin)
 }

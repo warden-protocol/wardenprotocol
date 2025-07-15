@@ -264,7 +264,15 @@ func (k *Keeper) AddPlugin(ctx context.Context, p types.Plugin) error {
 		return fmt.Errorf("invalid plugin fees: %s", p.Fee)
 	}
 
-	return k.plugins.Set(ctx, id, p)
+	if err := k.plugins.Set(ctx, id, p); err != nil {
+		return err
+	}
+
+	if err := k.pluginMetrics.Set(ctx, id, types.NewPluginMetrics(id)); err != nil {
+		return fmt.Errorf("failed to set plugin metrics for %s: %w", id, err)
+	}
+
+	return nil
 }
 
 func (k *Keeper) GetPlugin(ctx context.Context, id string) (types.Plugin, error) {

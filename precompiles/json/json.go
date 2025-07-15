@@ -96,6 +96,10 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 
 	switch method.Name {
 	// queries
+	case BuildMethod:
+		bz, err = p.Build(ctx, method, args)
+	case ParseMethod:
+		bz, err = p.Parse(ctx, method, args)
 	case NewJsonMethod:
 		bz, err = p.NewJson(ctx, method, args)
 	case RemoveMethod:
@@ -182,7 +186,9 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 func (p *Precompile) IsTransaction(method *abi.Method) bool {
 	switch method.Name {
 	// queries
-	case SetStringMethod,
+	case BuildMethod,
+		ParseMethod,
+		SetStringMethod,
 		SetBoolMethod,
 		SetAddressMethod,
 		SetInt256Method,

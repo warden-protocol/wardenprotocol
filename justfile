@@ -32,32 +32,62 @@ deploy-contract contract from="shulgin" label="":
 wasmvm_version := `go list -m -f '{{ .Version }}' github.com/CosmWasm/wasmvm/v2`
 wasmvm_amd64_checksum := 'a7f6f5a79f41c756f87e4e3de86439a18fec07238c2521ac21ac2e5655751460'
 wasmvm_arm64_checksum := '3a6f1a2448cb88c6a00faf9a2c72262d8b2d6b65a3a1dd3c969e5df42534bb0d'
-wasmvm_muslc_amd64_checksum := '70c989684d2b48ca17bbd55bb694bbb136d75c393c067ef3bdbca31d2b23b578'
-wasmvm_muslc_arm64_checksum := '27fb13821dbc519119f4f98c30a42cb32429b111b0fdc883686c34a41777488f'
-wasmvm_static_darwin_checksum := '43f1341015143c626b634a709872efe848e45ad24444c091496f9c648fd71a67'
-goreleaser_cross_version := 'v1.24.1'
-release := env("RELEASE", "false")
-github_token := env("GITHUB_TOKEN", "")
-skip := env("SKIP", "")
-current_dir := `pwd`
+commit := `git rev-parse HEAD`
+short_commit := `git rev-parse --short HEAD`
+date := `date -u +"%Y-%m-%dT%H:%M:%SZ"`
+version := `git describe --tags --dirty --always`
 
-# build binaries for a release and publish images
-release binary="wardend":
-    @docker run \
-        --rm \
-        -e CGO_ENABLED=1 \
-        -e WASMVM_VERSION={{ wasmvm_version }} \
-        -e WASMVM_AMD64_CHECKSUM={{ wasmvm_amd64_checksum }} \
-        -e WASMVM_ARM64_CHECKSUM={{ wasmvm_arm64_checksum }} \
-        -e WASMVM_MUSLC_AMD64_CHECKSUM={{ wasmvm_muslc_amd64_checksum }} \
-        -e WASMVM_MUSLC_ARM64_CHECKSUM={{ wasmvm_muslc_arm64_checksum }} \
-        -e WASMVM_STATIC_DARWIN_CHECKSUM={{ wasmvm_static_darwin_checksum }} \
-        -e RELEASE={{ release }} \
-        -e GITHUB_TOKEN={{ github_token }} \
-        -v /var/run/docker.sock:/var/run/docker.sock \
-        -v {{ current_dir }}:/go/src/{{ binary }} \
-        -w /go/src/{{ binary }} \
-        ghcr.io/goreleaser/goreleaser-cross:{{ goreleaser_cross_version }} \
-        -f "cmd/{{ binary }}/.goreleaser.yaml" \
-        --clean \
-        {{ skip }}
+release-wardend push="true": release-wardend-binaries (release-publish-docker "wardend" push)
+
+# Build the "dist/" folder with the wardend binaries for different architectures.
+release-wardend-binaries:
+    rm -rf dist
+
+    # build the wardend binaries
+    docker buildx build \
+        --platform linux/amd64,linux/arm64 \
+        --target binary \
+        -t wardend-multi-platform \
+        --build-arg WASMVM_VERSION={{ wasmvm_version }} \
+        --build-arg WASMVM_AMD64_CHECKSUM={{ wasmvm_amd64_checksum }} \
+        --build-arg WASMVM_ARM64_CHECKSUM={{ wasmvm_arm64_checksum }} \
+        -f ./cmd/wardend/Dockerfile \
+        --output dist .
+
+    mv dist/linux_amd64/wardend dist/wardend-{{version}}-linux-amd64
+    mv dist/linux_arm64/wardend dist/wardend-{{version}}-linux-arm64
+    rm -rf dist/linux_amd64 dist/linux_arm64
+
+    tar caf dist/wardend-{{version}}-linux-amd64.tar.gz dist/wardend-{{version}}-linux-amd64
+    tar caf dist/wardend-{{version}}-linux-arm64.tar.gz dist/wardend-{{version}}-linux-arm64
+
+    cd dist && sha256sum * > sha256sum.txt
+
+    @echo "Binary files written to dist/:"
+    ls -alh dist/
+
+release-faucet push="true": (release-publish-docker "faucet" push)
+
+release-wardenkms push="true": (release-publish-docker "wardenkms" push)
+
+release-publish-docker project-name push="true":
+    # build the published docker image
+    docker buildx build \
+        --platform linux/amd64,linux/arm64 \
+        -t ghcr.io/warden-protocol/wardenprotocol/{{ project-name }}:{{ version }} \
+        -t ghcr.io/warden-protocol/wardenprotocol/{{ project-name }}:{{ commit }} \
+        -t ghcr.io/warden-protocol/wardenprotocol/{{ project-name }}:{{ short_commit }} \
+        --build-arg WASMVM_VERSION={{ wasmvm_version }} \
+        --build-arg WASMVM_AMD64_CHECKSUM={{ wasmvm_amd64_checksum }} \
+        --build-arg WASMVM_ARM64_CHECKSUM={{ wasmvm_arm64_checksum }} \
+        --label=org.opencontainers.image.created={{ date }} \
+        --label=org.opencontainers.image.title={{ project-name }} \
+        --label=org.opencontainers.image.description={{ project-name }} \
+        --label=org.opencontainers.image.revision={{ commit }} \
+        --label=org.opencontainers.image.version={{ version }} \
+        --label=org.opencontainers.image.url=https://wardenprotocol.org \
+        --label=org.opencontainers.image.source=https://github.com/warden-protocol/wardenprotocol \
+        --label=org.opencontainers.image.licenses=Apache-2.0 \
+        --push={{push}} \
+        -f ./cmd/{{ project-name }}/Dockerfile \
+        .

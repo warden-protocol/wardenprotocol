@@ -100,70 +100,6 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 		bz, err = p.Build(ctx, method, args)
 	case ParseMethod:
 		bz, err = p.Parse(ctx, method, args)
-	case NewJsonMethod:
-		bz, err = p.NewJson(ctx, method, args)
-	case RemoveMethod:
-		bz, err = p.Remove(ctx, method, args)
-	case SetStringMethod:
-		bz, err = p.SetString(ctx, method, args)
-	case SetBoolMethod:
-		bz, err = p.SetBool(ctx, method, args)
-	case SetAddressMethod:
-		bz, err = p.SetAddressValue(ctx, method, args)
-	case SetInt256Method:
-		bz, err = p.SetInt256(ctx, method, args)
-	case SetUint256Method:
-		bz, err = p.SetUint256(ctx, method, args)
-	case SetFloatMethod:
-		bz, err = p.SetFloat(ctx, method, args)
-	case SetObjectMethod:
-		bz, err = p.SetObject(ctx, method, args)
-	case SetStringArrayMethod:
-		bz, err = p.SetStringArray(ctx, method, args)
-	case SetUintArrayMethod:
-		bz, err = p.SetUintArray(ctx, method, args)
-	case SetIntArrayMethod:
-		bz, err = p.SetIntArray(ctx, method, args)
-	case SetFloatArrayMethod:
-		bz, err = p.SetFloatArray(ctx, method, args)
-	case SetBoolArrayMethod:
-		bz, err = p.SetBoolArray(ctx, method, args)
-	case SetAddressArrayMethod:
-		bz, err = p.SetAddressArray(ctx, method, args)
-	case SetObjectsArrayMethod:
-		bz, err = p.SetObjectsArray(ctx, method, args)
-	case GetMethod:
-		bz, err = p.Get(ctx, method, args)
-	case GetStringMethod:
-		bz, err = p.GetString(ctx, method, args)
-	case GetBoolMethod:
-		bz, err = p.GetBool(ctx, method, args)
-	case GetAddressMethod:
-		bz, err = p.GetAddressValue(ctx, method, args)
-	case GetInt256Method:
-		bz, err = p.GetInt256(ctx, method, args)
-	case GetUint256Method:
-		bz, err = p.GetUint256(ctx, method, args)
-	case GetFloatMethod:
-		bz, err = p.GetFloat(ctx, method, args)
-	case GetStringArrayMethod:
-		bz, err = p.GetStringArray(ctx, method, args)
-	case GetUintArrayMethod:
-		bz, err = p.GetUintArray(ctx, method, args)
-	case GetIntArrayMethod:
-		bz, err = p.GetIntArray(ctx, method, args)
-	case GetFloatArrayMethod:
-		bz, err = p.GetFloatArray(ctx, method, args)
-	case GetBoolArrayMethod:
-		bz, err = p.GetBoolArray(ctx, method, args)
-	case GetAddressArrayMethod:
-		bz, err = p.GetAddressArray(ctx, method, args)
-	case GetObjectsArrayMethod:
-		bz, err = p.GetObjectsArray(ctx, method, args)
-	case ReadMethod:
-		bz, err = p.Read(ctx, method, args)
-	case WriteMethod:
-		bz, err = p.Write(ctx, method, args)
 	}
 
 	if err != nil {
@@ -186,40 +122,7 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 func (p *Precompile) IsTransaction(method *abi.Method) bool {
 	switch method.Name {
 	// queries
-	case BuildMethod,
-		ParseMethod,
-		SetStringMethod,
-		SetBoolMethod,
-		SetAddressMethod,
-		SetInt256Method,
-		SetUint256Method,
-		SetFloatMethod,
-		SetStringArrayMethod,
-		SetUintArrayMethod,
-		SetIntArrayMethod,
-		SetFloatArrayMethod,
-		SetBoolArrayMethod,
-		SetAddressArrayMethod,
-		SetObjectsArrayMethod,
-		SetObjectMethod,
-		GetMethod,
-		GetStringMethod,
-		GetBoolMethod,
-		GetAddressMethod,
-		GetInt256Method,
-		GetUint256Method,
-		GetFloatMethod,
-		GetStringArrayMethod,
-		GetUintArrayMethod,
-		GetIntArrayMethod,
-		GetFloatArrayMethod,
-		GetBoolArrayMethod,
-		GetAddressArrayMethod,
-		GetObjectsArrayMethod,
-		RemoveMethod,
-		NewJsonMethod,
-		ReadMethod,
-		WriteMethod:
+	case BuildMethod, ParseMethod:
 		return false
 	}
 

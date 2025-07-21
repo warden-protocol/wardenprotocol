@@ -1,3 +1,0 @@
-precompile-json/=../../../../precompiles/json/
-precompile-act/=../../../../precompiles/act/
-precompile-common/=../../../../precompiles/common/

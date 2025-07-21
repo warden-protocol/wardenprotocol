@@ -198,7 +198,7 @@ library JsonUtils {
         key(builder, _key);
         value(builder, _val);
     }
-    
+
     function pair(JsonBuilder memory builder, string memory _key, bool _val) internal pure {
         key(builder, _key);
         value(builder, _val);

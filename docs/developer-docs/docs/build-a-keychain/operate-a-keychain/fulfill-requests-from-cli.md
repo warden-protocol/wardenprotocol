@@ -25,7 +25,7 @@ Learn more:
 If you wish to operate a Keychain locally, complete the following prerequisites:
 
 1. [Set up an account on a local chain](/build-an-app/set-up-a-warden-account#set-up-an-account-on-a-local-chain). Your default **key name** is `shulgin`.
-2. [Create a Keychain](create-a-keychain) or skip this step to use use the default one.
+2. [Create a Keychain](create-a-keychain) or skip this step to use the default one.
 
 To operate a Keychain on a testnet, complete these prerequisites:
 

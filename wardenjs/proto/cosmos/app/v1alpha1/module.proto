@@ -20,7 +20,7 @@ message ModuleDescriptor {
   // go_import names the package that should be imported by an app to load the
   // module in the runtime module registry. Either go_import must be defined here
   // or the go_package option must be defined at the file level to indicate
-  // to users where to location the module implementation. go_import takes
+  // to users where to locate the module implementation. go_import takes
   // precedence over go_package when both are defined.
   string go_import = 1;
 

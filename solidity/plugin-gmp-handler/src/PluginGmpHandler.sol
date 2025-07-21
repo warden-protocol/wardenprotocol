@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
-import {IJSON_CONTRACT, JsonOp, JsonUtils, SetKeyValue, FixedPoint} from "@warden-protocol/precompiled/json/IJson.sol";
+import {IJSON_CONTRACT, JsonOp, JsonUtils, FixedPoint} from "@warden-protocol/precompiled/json/IJson.sol";
 import "@warden-protocol/precompiled/async/IAsync.sol";
 import "@warden-protocol/precompiled/common/Types.sol";
 
@@ -38,8 +38,8 @@ contract PluginGmpHandler {
     struct VeniceInput {
         string model;
         string message;
-        uint256 top_p;
-        uint256 temperature;
+        int256 top_p;
+        int256 temperature;
     }
 
     struct VeniceImgInput {
@@ -63,33 +63,31 @@ contract PluginGmpHandler {
         mailbox = IMailbox(_mailbox);
     }
 
-    function decodePluginInput(string memory plugin, bytes memory pluginPayload)
-        public
-        view
-        returns (bytes memory)
-    {
+    function decodePluginInput(string memory plugin, bytes memory pluginPayload) public pure returns (bytes memory) {
         bytes32 p = keccak256(abi.encodePacked(plugin));
 
         if (p == Echo || p == Http || p == Pfp || p == PricePred) {
             return pluginPayload;
         } else if (p == Venice) {
             VeniceInput memory inp = abi.decode(pluginPayload, (VeniceInput));
-            bytes memory j = IJSON_CONTRACT.newJson();
-            SetKeyValue[] memory setKeyValuePairs = new SetKeyValue[](4);
-            setKeyValuePairs[0] = SetKeyValue("model", "string", abi.encode(inp.model), 0);
-            setKeyValuePairs[1] = SetKeyValue("message", "string", abi.encode(inp.message), 0);
-            setKeyValuePairs[2] = SetKeyValue("top_p", "float", abi.encode(inp.top_p), 1);
-            setKeyValuePairs[3] = SetKeyValue("temperature", "float", abi.encode(inp.temperature), 1);
-            return IJSON_CONTRACT.write(j, setKeyValuePairs);
+            JsonUtils.JsonBuilder memory metadataBuilder = JsonUtils.newBuilder();
+            metadataBuilder.startObject();
+            metadataBuilder.pair("model", inp.model);
+            metadataBuilder.pair("message", inp.message);
+            metadataBuilder.pair("top_p", FixedPoint(inp.top_p, 1));
+            metadataBuilder.pair("temperature", FixedPoint(inp.temperature, 1));
+            metadataBuilder.endObject();
+            return metadataBuilder.build();
         } else if (p == VeniceImg) {
             VeniceImgInput memory inp = abi.decode(pluginPayload, (VeniceImgInput));
-            bytes memory j = IJSON_CONTRACT.newJson();
-            SetKeyValue[] memory setKeyValuePairs = new SetKeyValue[](4);
-            setKeyValuePairs[0] = SetKeyValue("model", "string", abi.encode(inp.model), 0);
-            setKeyValuePairs[1] = SetKeyValue("prompt", "string", abi.encode(inp.prompt), 0);
-            setKeyValuePairs[2] = SetKeyValue("steps", "uint256", abi.encode(inp.steps), 0);
-            setKeyValuePairs[3] = SetKeyValue("style_preset", "string", abi.encode(inp.style_preset), 0);
-            return IJSON_CONTRACT.write(j, setKeyValuePairs);
+            JsonUtils.JsonBuilder memory metadataBuilder = JsonUtils.newBuilder();
+            metadataBuilder.startObject();
+            metadataBuilder.pair("model", inp.model);
+            metadataBuilder.pair("prompt", inp.prompt);
+            metadataBuilder.pair("steps", inp.steps);
+            metadataBuilder.pair("style_preset", inp.style_preset);
+            metadataBuilder.endObject();
+            return metadataBuilder.build();
         } else if (p == Quantkit) {
             QuantkitInput memory inp = abi.decode(pluginPayload, (QuantkitInput));
             JsonUtils.JsonBuilder memory metadataBuilder = JsonUtils.newBuilder();
@@ -118,18 +116,15 @@ contract PluginGmpHandler {
         revert("unsupported plugin");
     }
 
-    function encodePluginOutput(string memory plugin, bytes memory pluginPayload)
-        public
-        view
-        returns (bytes memory)
-    {
+    function encodePluginOutput(string memory plugin, bytes memory pluginPayload) public view returns (bytes memory) {
         bytes32 p = keccak256(abi.encodePacked(plugin));
         if (p == Quantkit) {
-            string memory schema = 'orders:(src:string,dst:string,amount:fp)[]';
+            string memory schema = "orders:(src:string,dst:string,amount:fp)[]";
             bytes[] memory ordersEnc = abi.decode(IJSON_CONTRACT.parse(pluginPayload, bytes(schema)), (bytes[]));
             QuantkitOrder[] memory orders = new QuantkitOrder[](ordersEnc.length);
             for (uint256 i = 0; i < orders.length; i++) {
-                (string memory src, string memory dst, FixedPoint memory fp) = abi.decode(ordersEnc[i], (string, string, FixedPoint));
+                (string memory src, string memory dst, FixedPoint memory fp) =
+                    abi.decode(ordersEnc[i], (string, string, FixedPoint));
                 orders[i] = QuantkitOrder(src, dst, fp);
             }
             return abi.encode(orders);
@@ -167,10 +162,7 @@ contract PluginGmpHandler {
             output = encodePluginOutput(task.taskResponse.task.plugin, task.taskResponse.result.output);
         }
 
-        PluginResponse memory response = PluginResponse(
-            lastTaskId,
-            output
-        );
+        PluginResponse memory response = PluginResponse(lastTaskId, output);
         bytes memory data = abi.encode(response);
         uint256 fees = mailbox.quoteDispatch(origin, sender, data);
         msgId = mailbox.dispatch{value: fees}(origin, sender, data);

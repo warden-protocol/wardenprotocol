@@ -53,7 +53,8 @@ func New(
 }
 
 func (w *W) Start(ctx context.Context, flushErrors chan error) error {
-	w.Logger.Info("starting tx writer")
+	w.Logger.InfoContext(ctx, "starting tx writer")
+
 	for {
 		select {
 		case <-ctx.Done():
@@ -63,9 +64,11 @@ func (w *W) Start(ctx context.Context, flushErrors chan error) error {
 			if w.TxTimeout > 0 {
 				ctx, cancel = context.WithTimeout(ctx, w.TxTimeout)
 			}
+
 			if err := w.Flush(ctx); err != nil {
 				flushErrors <- err
 			}
+
 			cancel()
 			time.Sleep(w.BatchInterval)
 		}
@@ -79,29 +82,15 @@ func (w *W) Write(ctx context.Context, msg client.Msger) error {
 	}
 	count := w.batch.Append(item)
 
-	w.Logger.Info("adding to batch", "count", count)
+	w.Logger.InfoContext(ctx, "adding to batch", "count", count)
 
 	return <-item.Done
-}
-
-func (w *W) gasLimit() uint64 {
-	if w.GasLimit == 0 {
-		return client.DefaultGasLimit
-	}
-	return w.GasLimit
-}
-
-func (w *W) fees() sdk.Coins {
-	if w.Fees == nil {
-		return client.DefaultFees
-	}
-	return w.Fees
 }
 
 func (w *W) Flush(ctx context.Context) error {
 	msgs := w.batch.Clear()
 	if len(msgs) == 0 {
-		w.Logger.Debug("flushing batch", "empty", true)
+		w.Logger.DebugContext(ctx, "flushing batch", "empty", true)
 		return nil
 	}
 
@@ -120,17 +109,34 @@ func (w *W) Flush(ctx context.Context) error {
 		for _, item := range msgs {
 			item.Done <- err
 		}
+
 		return err
 	}
 
 	return nil
 }
 
+func (w *W) gasLimit() uint64 {
+	if w.GasLimit == 0 {
+		return client.DefaultGasLimit
+	}
+
+	return w.GasLimit
+}
+
+func (w *W) fees() sdk.Coins {
+	if w.Fees == nil {
+		return client.DefaultFees
+	}
+
+	return w.Fees
+}
+
 func (w *W) sendWaitTx(ctx context.Context, msgs ...client.Msger) error {
 	w.sendTxLock.Lock()
 	defer w.sendTxLock.Unlock()
 
-	w.Logger.Info("flushing batch", "count", len(msgs))
+	w.Logger.InfoContext(ctx, "flushing batch", "count", len(msgs))
 
 	tx, err := w.Client.BuildTx(ctx, w.gasLimit(), w.fees(), msgs...)
 	if err != nil {
@@ -142,7 +148,7 @@ func (w *W) sendWaitTx(ctx context.Context, msgs ...client.Msger) error {
 		return err
 	}
 
-	w.Logger.Info("flush complete", "tx_hash", hash)
+	w.Logger.InfoContext(ctx, "flush complete", "tx_hash", hash)
 
 	return nil
 }
@@ -154,6 +160,7 @@ type Batch struct {
 
 type BatchItem struct {
 	client.Msger
+
 	Done chan error
 }
 
@@ -171,7 +178,7 @@ func (b *Batch) Clear() []BatchItem {
 	defer b.clearMutex.Unlock()
 
 	items := make([]BatchItem, len(b.messages))
-	for i := 0; i < len(items); i++ {
+	for i := range items {
 		items[i] = <-b.messages
 	}
 

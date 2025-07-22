@@ -47,9 +47,11 @@ func (k *Keeper) registerGenesisPlugins(ctx sdk.Context, activePlugins []types.G
 		if p.Timeout != nil {
 			timeout = *p.Timeout
 		}
+
 		if timeout == 0 {
 			return fmt.Errorf("timeout must be greater than zero, for plugin: %s", p.Name)
 		}
+
 		if timeout > maxTaskTimeout {
 			return fmt.Errorf("maximum timeout allowed for plugins: %s, got %s for %s", maxTaskTimeout, timeout, p.Name)
 		}

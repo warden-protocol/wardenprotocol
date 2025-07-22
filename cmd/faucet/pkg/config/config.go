@@ -54,7 +54,6 @@ func LoadConfig() (Config, error) {
 	cfg := Config{}
 
 	var err error
-
 	if err = env.Parse(&cfg); err != nil {
 		return Config{}, configError(err.Error())
 	}

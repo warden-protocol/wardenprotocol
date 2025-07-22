@@ -75,17 +75,6 @@ func (k ActionKeeper) New(ctx context.Context, action *types.Action) (uint64, er
 	return id, nil
 }
 
-func (k *ActionKeeper) updateMentions(ctx context.Context, action *types.Action, id uint64) error {
-	for _, addr := range action.Mentions {
-		key := collections.Join(sdk.MustAccAddressFromBech32(addr), id)
-		if err := k.actionByAddress.Set(ctx, key, id); err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
 func (k ActionKeeper) ActionsByAddress() collections.Map[collections.Pair[sdk.AccAddress, uint64], uint64] {
 	return k.actionByAddress
 }
@@ -109,31 +98,6 @@ func (k ActionKeeper) Import(ctx sdk.Context, actions []types.Action) error {
 
 func (k ActionKeeper) Coll() repo.SeqCollection[types.Action] {
 	return k.actions
-}
-
-func (k ActionKeeper) pruneAction(ctx context.Context, action types.Action, blockHeight int64) error {
-	if err := k.actions.Remove(ctx, action.Id); err != nil {
-		return err
-	}
-
-	for _, addr := range action.Mentions {
-		key := collections.Join(sdk.MustAccAddressFromBech32(addr), action.Id)
-		if err := k.actionByAddress.Remove(ctx, key); err != nil {
-			return err
-		}
-	}
-
-	if err := k.previousPruneBlockHeight.Set(ctx, blockHeight); err != nil {
-		return err
-	}
-
-	sdkCtx := sdk.UnwrapSDKContext(ctx)
-
-	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventActionPruned{Id: action.Id}); err != nil {
-		return err
-	}
-
-	return nil
 }
 
 func (k ActionKeeper) GetLatestPruneHeight(ctx context.Context) (int64, error) {
@@ -166,6 +130,42 @@ func (k ActionKeeper) ExpiredActions(ctx context.Context, blockTime time.Time, p
 	}
 
 	return actions, nil
+}
+
+func (k ActionKeeper) pruneAction(ctx context.Context, action types.Action, blockHeight int64) error {
+	if err := k.actions.Remove(ctx, action.Id); err != nil {
+		return err
+	}
+
+	for _, addr := range action.Mentions {
+		key := collections.Join(sdk.MustAccAddressFromBech32(addr), action.Id)
+		if err := k.actionByAddress.Remove(ctx, key); err != nil {
+			return err
+		}
+	}
+
+	if err := k.previousPruneBlockHeight.Set(ctx, blockHeight); err != nil {
+		return err
+	}
+
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+
+	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventActionPruned{Id: action.Id}); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (k *ActionKeeper) updateMentions(ctx context.Context, action *types.Action, id uint64) error {
+	for _, addr := range action.Mentions {
+		key := collections.Join(sdk.MustAccAddressFromBech32(addr), id)
+		if err := k.actionByAddress.Set(ctx, key, id); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func isExpired(action types.Action, blockTime time.Time, pendingTimeout, completedTimeout time.Duration) bool {

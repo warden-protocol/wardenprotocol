@@ -38,6 +38,7 @@ func TestPlugin_Execute(t *testing.T) {
 	require.NoError(t, err, "decodeOutput should not fail")
 
 	var expected generated.StoicQuoteResponse
+
 	err = json.Unmarshal([]byte(jsonResponse), &expected)
 	require.NoError(t, err, "Should unmarshal the mock server JSON")
 

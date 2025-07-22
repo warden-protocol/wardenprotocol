@@ -12,7 +12,9 @@ func ValidateEncryptionKey(pub []byte) error {
 	if len(pub) == 0 {
 		return nil
 	}
+
 	_, err := parseECDSAPublicKey(pub)
+
 	return err
 }
 
@@ -23,6 +25,7 @@ func Encrypt(pub []byte, data []byte) ([]byte, error) {
 	}
 
 	encKey := ecies.ImportECDSAPublic(pubKey)
+
 	encryptedPayload, err := ecies.Encrypt(rand.Reader, encKey, data, nil, nil)
 	if err != nil {
 		return nil, err

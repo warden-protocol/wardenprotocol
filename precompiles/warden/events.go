@@ -148,6 +148,7 @@ func (p Precompile) GetNewKeyEvent(ctx sdk.Context, _ *common.Address, eventNewK
 	if err != nil {
 		return nil, err
 	}
+
 	typedEvent := protoEvent.(*wardentypes.EventNewKey)
 
 	packed, err := event.Inputs.NonIndexed().Pack(
@@ -191,6 +192,7 @@ func (p Precompile) GetRejectKeyRequestEvent(ctx sdk.Context, _ *common.Address,
 	}
 
 	var err error
+
 	topics[1], err = evmcmn.MakeTopic(typedEvent.GetId())
 	if err != nil {
 		return nil, err
@@ -221,6 +223,7 @@ func (p Precompile) GetFulfilSignRequestEvent(ctx sdk.Context, _ *common.Address
 	}
 
 	var err error
+
 	topics[1], err = evmcmn.MakeTopic(typedEvent.GetId())
 	if err != nil {
 		return nil, err
@@ -251,6 +254,7 @@ func (p Precompile) GetRejectSignRequestEvent(ctx sdk.Context, _ *common.Address
 	}
 
 	var err error
+
 	topics[1], err = evmcmn.MakeTopic(typedEvent.GetId())
 	if err != nil {
 		return nil, err
@@ -286,6 +290,7 @@ func (p Precompile) GetNewKeychainEvent(ctx sdk.Context, creator *common.Address
 	if err != nil {
 		return nil, err
 	}
+
 	typedEvent := protoEvent.(*wardentypes.EventNewKeychain)
 
 	b.Write(append(make([]byte, 12), creator.Bytes()...))
@@ -410,6 +415,7 @@ func (p Precompile) GetUpdateKeychainEvent(ctx sdk.Context, _ *common.Address, e
 	if err != nil {
 		return nil, err
 	}
+
 	typedEvent := protoEvent.(*wardentypes.EventUpdateKeychain)
 
 	topics[1], err = evmcmn.MakeTopic(typedEvent.GetId())
@@ -571,6 +577,7 @@ func (p Precompile) GetNewSignRequestEvent(ctx sdk.Context, _ *common.Address, n
 	b.Write(evmcmn.PackNum(reflect.ValueOf(typedEvent.GetKeyId())))
 	b.Write(append(make([]byte, 12), creatorAddress.Bytes()...))
 	b.Write(evmcmn.PackNum(reflect.ValueOf(typedEvent.GetBroadcastType())))
+
 	topics[1], err = evmcmn.MakeTopic(typedEvent.GetId())
 	if err != nil {
 		return nil, err

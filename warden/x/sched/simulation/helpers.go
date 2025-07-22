@@ -11,5 +11,6 @@ func FindAccount(accs []simtypes.Account, address string) (simtypes.Account, boo
 	if err != nil {
 		panic(err)
 	}
+
 	return simtypes.FindAccount(accs, creator)
 }

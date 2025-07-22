@@ -46,6 +46,7 @@ func (app *App) setupEVM() error {
 	chainID := app.ChainID()
 	from := strings.LastIndexByte(chainID, '_')
 	to := strings.LastIndexByte(chainID, '-')
+
 	evmChainID, err := strconv.ParseUint(chainID[from+1:to], 10, 64)
 	if err != nil {
 		return fmt.Errorf("can't parse evm chain id from %s: %w", chainID, err)

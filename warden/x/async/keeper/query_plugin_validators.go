@@ -36,6 +36,7 @@ func (k Keeper) PluginValidators(ctx context.Context, req *types.QueryPluginVali
 	if errors.Is(err, collections.ErrNotFound) {
 		return nil, status.Error(codes.NotFound, "queue not found")
 	}
+
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
@@ -46,15 +47,18 @@ func (k Keeper) PluginValidators(ctx context.Context, req *types.QueryPluginVali
 	}
 
 	var priorities []types.QueuePriority
+
 	for ; it.Valid(); it.Next() {
 		key, err := it.Key()
 		if err != nil {
 			return nil, status.Error(codes.Internal, err.Error())
 		}
+
 		v, err := it.Value()
 		if err != nil {
 			return nil, status.Error(codes.Internal, err.Error())
 		}
+
 		priorities = append(priorities, types.QueuePriority{
 			Validator: key.K2(),
 			Priority:  int64(v),
@@ -71,15 +75,18 @@ func (k Keeper) PluginValidators(ctx context.Context, req *types.QueryPluginVali
 	}
 
 	var weights []types.QueueWeight
+
 	for ; it2.Valid(); it2.Next() {
 		key, err := it2.Key()
 		if err != nil {
 			return nil, status.Error(codes.Internal, err.Error())
 		}
+
 		v, err := it2.Value()
 		if err != nil {
 			return nil, status.Error(codes.Internal, err.Error())
 		}
+
 		weights = append(weights, types.QueueWeight{
 			Validator: key.K2(),
 			Weight:    int64(v),

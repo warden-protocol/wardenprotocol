@@ -37,6 +37,7 @@ func (c *Test_CreateSpace) Run(t *testing.T, f *framework.F) {
 		defer cancel()
 
 		res, err := client.Warden.Spaces(ctx, &types.QuerySpacesRequest{})
+
 		return err == nil && len(res.Spaces) == 1 && res.Spaces[0].Nonce == 0
 	}, 10*time.Second, 10*time.Millisecond)
 }

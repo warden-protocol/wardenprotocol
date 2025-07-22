@@ -36,6 +36,7 @@ func (p Precompile) Build(
 	}
 
 	jb := builder{ops: ops, vals: data}
+
 	j, err := jb.build()
 	if err != nil {
 		return nil, fmt.Errorf("invalid json ops: %w", err)
@@ -64,6 +65,7 @@ func (p Precompile) Parse(
 	}
 
 	pr := parser{json: jsonBz, schema: schema}
+
 	res, err := pr.parse()
 	if err != nil {
 		return nil, fmt.Errorf("invalid json: %w", err)

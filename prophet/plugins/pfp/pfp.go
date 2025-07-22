@@ -179,6 +179,7 @@ func (p *Plugin) UploadToBucket(ctx context.Context, image []byte, prompt string
 	if err != nil {
 		return "", err
 	}
+
 	metaFilename := imgName + ".json"
 
 	// Upload the meta file

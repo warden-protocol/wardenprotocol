@@ -16,6 +16,7 @@ var ErrInvalidID = errors.New("invalid ID")
 // for example when marshalling data as JSON default values are omitted by default.
 type SeqCollection[V any] struct {
 	collections.Map[uint64, V]
+
 	seq   collections.Sequence
 	setId func(*V, uint64)
 }
@@ -67,6 +68,7 @@ func (c SeqCollection[V]) next(ctx context.Context) (uint64, error) {
 func (c SeqCollection[V]) Import(ctx context.Context, values []V, getIDFn func(V) uint64) error {
 	for _, v := range values {
 		id := getIDFn(v)
+
 		actualID, err := c.Append(ctx, &v)
 		if err != nil {
 			return fmt.Errorf("ID mismatch: expected %d, got %d: cannot import this list of values", id, actualID)

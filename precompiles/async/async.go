@@ -30,6 +30,7 @@ var f embed.FS
 // Precompile defines the precompiled contract for x/async.
 type Precompile struct {
 	evmcmn.Precompile
+
 	asyncmodulekeeper asyncmodulekeeper.Keeper
 	eventsRegistry    *common.EthEventsRegistry
 	queryServer       types.QueryServer

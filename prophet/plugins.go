@@ -33,11 +33,12 @@ func Execute(ctx context.Context, f Task) (res TaskResult, err error) {
 	}
 
 	log := slog.With("task", "Execute", "task", f.ID, "plugin", f.Plugin)
-	log.Debug("start")
+	log.DebugContext(ctx, "start")
 
 	start := time.Now()
+
 	defer func() {
-		log.Debug("end", "took", time.Since(start))
+		log.DebugContext(ctx, "end", "took", time.Since(start))
 	}()
 
 	output, err := s.Execute(ctx, f.Input)
@@ -68,7 +69,7 @@ func Verify(ctx context.Context, f TaskResult) (err error) {
 	}
 
 	log := slog.With("task", "Verify", "task", f.ID, "plugin", f.Plugin)
-	log.Debug("start")
+	log.DebugContext(ctx, "start")
 
 	start := time.Now()
 
@@ -76,7 +77,7 @@ func Verify(ctx context.Context, f TaskResult) (err error) {
 		return err
 	}
 
-	log.Debug("end", "took", time.Since(start))
+	log.DebugContext(ctx, "end", "took", time.Since(start))
 
 	return nil
 }

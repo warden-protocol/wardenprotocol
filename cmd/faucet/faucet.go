@@ -9,6 +9,7 @@ import (
 	"math/big"
 	"net/http"
 	"os/exec"
+	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -27,6 +28,8 @@ type Out struct {
 }
 
 type Faucet struct {
+	*sync.Mutex
+
 	log             zerolog.Logger
 	config          config.Config
 	DailySupply     float64
@@ -35,7 +38,6 @@ type Faucet struct {
 	Batch           []string
 	LatestTXHash    string
 	DisplayTokens   bool
-	*sync.Mutex
 }
 
 const (
@@ -44,9 +46,9 @@ const (
 	dailyHours  = 24
 )
 
-func execute(cmdString string) (Out, error) {
+func execute(ctx context.Context, cmdString string) (Out, error) {
 	// Create the command
-	cmd := exec.Command("sh", "-c", cmdString)
+	cmd := exec.CommandContext(ctx, "sh", "-c", cmdString)
 
 	// Get the output pipes
 	stdout, err := cmd.StdoutPipe()
@@ -124,7 +126,7 @@ func validAddress(addr string) error {
 	return nil
 }
 
-func InitFaucet(logger zerolog.Logger) (Faucet, error) {
+func InitFaucet(ctx context.Context, logger zerolog.Logger) (Faucet, error) {
 	var err error
 
 	cfg, err := config.LoadConfig()
@@ -146,7 +148,7 @@ func InitFaucet(logger zerolog.Logger) (Faucet, error) {
 	dailySupply.Set(f.DailySupply)
 
 	if f.config.Mnemonic != "" {
-		if err = f.setupNewAccount(); err != nil {
+		if err = f.setupNewAccount(ctx); err != nil {
 			return Faucet{}, err
 		}
 	}
@@ -155,13 +157,7 @@ func InitFaucet(logger zerolog.Logger) (Faucet, error) {
 }
 
 func addressInBatch(batch []string, addr string) bool {
-	for _, a := range batch {
-		if a == addr {
-			return true
-		}
-	}
-
-	return false
+	return slices.Contains(batch, addr)
 }
 
 func convertHexToBech32(hexAddr string) (string, error) {
@@ -182,7 +178,7 @@ func convertHexToBech32(hexAddr string) (string, error) {
 	return "", errors.New("error converting hex address to bech32: address is not hex")
 }
 
-func (f *Faucet) Send(addr string, force bool) (string, int, error) {
+func (f *Faucet) Send(ctx context.Context, addr string, force bool) (string, int, error) {
 	var err error
 
 	f.Lock()
@@ -273,7 +269,7 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 	}, " ")
 	f.log.Debug().Msg(cmd)
 
-	out, err := execute(cmd)
+	out, err := execute(ctx, cmd)
 	if err != nil {
 		return "", http.StatusInternalServerError, err
 	}
@@ -324,7 +320,7 @@ func (f *Faucet) DailyRefresh() {
 	}
 }
 
-func (f *Faucet) setupNewAccount() error {
+func (f *Faucet) setupNewAccount(ctx context.Context) error {
 	cmd := strings.Join([]string{
 		"echo",
 		f.config.Mnemonic,
@@ -338,7 +334,7 @@ func (f *Faucet) setupNewAccount() error {
 		"--recover",
 	}, " ")
 
-	_, err := execute(cmd)
+	_, err := execute(ctx, cmd)
 	if err != nil {
 		return err
 	}
@@ -361,7 +357,7 @@ func (f *Faucet) batchProcessInterval() {
 			return
 		case <-ticker.C:
 			if len(f.Batch) > 0 {
-				if txHash, _, err := f.Send("", true); err != nil {
+				if txHash, _, err := f.Send(ctx, "", true); err != nil {
 					reqErrorCount.Inc()
 					f.log.Error().Msgf("error sending batch: %s", err)
 				} else {

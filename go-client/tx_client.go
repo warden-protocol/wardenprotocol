@@ -12,6 +12,7 @@ type TxClient struct {
 // NewTxClient returns a TxClient.
 func NewTxClient(id Identity, chainID string, c *grpc.ClientConn, accountFetcher AccountFetcher) *TxClient {
 	raw := NewRawTxClient(id, chainID, c, accountFetcher)
+
 	return &TxClient{
 		RawTxClient: raw,
 	}

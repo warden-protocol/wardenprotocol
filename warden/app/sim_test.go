@@ -176,6 +176,7 @@ func TestAppImportExport(t *testing.T) {
 	require.Equal(t, app.Name, newApp.Name())
 
 	var genesisState app.GenesisState
+
 	err = json.Unmarshal(exported.AppState, &genesisState)
 	require.NoError(t, err)
 

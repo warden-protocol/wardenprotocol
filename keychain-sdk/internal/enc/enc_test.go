@@ -12,6 +12,7 @@ func TestEncrypt(t *testing.T) {
 	// generate a new key pair
 	privKey, err := ethcrypto.GenerateKey()
 	require.NoError(t, err)
+
 	pk := ethcrypto.CompressPubkey(&privKey.PublicKey)
 
 	// encrypt a message

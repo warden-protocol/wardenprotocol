@@ -21,6 +21,7 @@ type TaskReader interface {
 // TaskResult is the result of the computation of a task.
 type TaskResult struct {
 	Task
+
 	Output []byte
 	Error  error
 }

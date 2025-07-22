@@ -9,5 +9,6 @@ func LookupIdent(ident string) Type {
 	if tok, ok := keywords[ident]; ok {
 		return tok
 	}
+
 	return Type_IDENT
 }

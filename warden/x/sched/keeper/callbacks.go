@@ -56,6 +56,18 @@ func (k *CallbackKeeper) SetResult(ctx context.Context, id uint64, result types.
 	return k.results.Set(ctx, id, result)
 }
 
+func (k *CallbackKeeper) GetResult(ctx context.Context, id uint64) (types.CallbackResult, error) {
+	return k.results.Get(ctx, id)
+}
+
+func (k *CallbackKeeper) Enqueue(ctx context.Context, id uint64, output []byte) error {
+	return k.queue.Set(ctx, id, output)
+}
+
+func (k *CallbackKeeper) Queue() collections.Map[uint64, []byte] {
+	return k.queue
+}
+
 func (k *CallbackKeeper) setSucceed(ctx context.Context, id uint64, output []byte) error {
 	return k.SetResult(ctx, id, types.CallbackResult{
 		Status: types.CallbackStatus_CALLBACK_STATUS_SUCCEED,
@@ -72,16 +84,4 @@ func (k *CallbackKeeper) setFailed(ctx context.Context, id uint64, reason string
 			FailReason: reason,
 		},
 	})
-}
-
-func (k *CallbackKeeper) GetResult(ctx context.Context, id uint64) (types.CallbackResult, error) {
-	return k.results.Get(ctx, id)
-}
-
-func (k *CallbackKeeper) Enqueue(ctx context.Context, id uint64, output []byte) error {
-	return k.queue.Set(ctx, id, output)
-}
-
-func (k *CallbackKeeper) Queue() collections.Map[uint64, []byte] {
-	return k.queue
 }

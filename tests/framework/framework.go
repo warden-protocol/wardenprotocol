@@ -61,9 +61,12 @@ func (f *F) GetWardenNode() *exec.WardenNode {
 
 func (f *F) StartNodeFromSnapshot(t *testing.T, opts snapshots.BuildOptions) *exec.WardenNode {
 	node := f.GetWardenNode()
+
 	snap := f.GetSnapshot(opts)
 	go node.Start(t, snap) // use t instead of f.t here so we stop the node when the caller is done
+
 	node.WaitRunning(t)
+
 	return node
 }
 
@@ -95,10 +98,12 @@ func goModRoot(t *testing.T) string {
 
 	for path != "/" && path != "" {
 		testPath := filepath.Join(path, "go.mod")
+
 		_, err := os.Stat(testPath)
 		if err == nil {
 			return path
 		}
+
 		path = filepath.Dir(path)
 	}
 

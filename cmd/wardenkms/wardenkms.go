@@ -42,6 +42,8 @@ type Config struct {
 }
 
 func main() {
+	ctx := context.Background()
+
 	var cfg Config
 	if err := envconfig.Process(context.Background(), &cfg); err != nil {
 		log.Fatal(err)
@@ -53,7 +55,7 @@ func main() {
 
 	bip44, err := FromSeedPhrase(cfg.KeyringMnemonic, cfg.KeyringPassword)
 	if err != nil {
-		logger.Error("failed to initialize bip44 keychain", "error", err)
+		logger.ErrorContext(ctx, "failed to initialize bip44 keychain", "error", err)
 		return
 	}
 
@@ -79,47 +81,55 @@ func main() {
 
 		id, err := bigEndianBytesFromUint32(req.Id)
 		if err != nil {
-			logger.Error("failed to convert key id to big endian bytes", "error", err)
+			logger.ErrorContext(ctx, "failed to convert key id to big endian bytes", "error", err)
+
 			_ = w.Reject(ctx, "request ID is too large")
+
 			return
 		}
 
 		pubKey, err := bip44.PublicKey(id)
 		if err != nil {
-			logger.Error("failed to get public key", "error", err)
+			logger.ErrorContext(ctx, "failed to get public key", "error", err)
+
 			_ = w.Reject(ctx, "failed to get public key")
+
 			return
 		}
 
 		err = w.Fulfil(ctx, pubKey)
 		if err != nil {
-			logger.Error("failed to fulfil key request", "error", err)
+			logger.ErrorContext(ctx, "failed to fulfil key request", "error", err)
 		}
 	})
 
 	app.SetSignRequestHandler(func(ctx context.Context, w keychain.Writer, req *keychain.SignRequest) {
 		keyID, err := bigEndianBytesFromUint32(req.KeyId)
 		if err != nil {
-			logger.Error("failed to convert Key ID to big endian bytes", "error", err)
+			logger.ErrorContext(ctx, "failed to convert Key ID to big endian bytes", "error", err)
+
 			_ = w.Reject(ctx, "Key ID is too large")
+
 			return
 		}
 
 		signature, err := bip44.Sign(keyID, req.DataForSigning)
 		if err != nil {
-			logger.Error("failed to sign message", "error", err)
+			logger.ErrorContext(ctx, "failed to sign message", "error", err)
+
 			_ = w.Reject(ctx, "failed to sign message")
+
 			return
 		}
 
 		err = w.Fulfil(ctx, signature)
 		if err != nil {
-			logger.Error("failed to fulfil sign request", "error", err)
+			logger.ErrorContext(ctx, "failed to fulfil sign request", "error", err)
 		}
 	})
 
 	if cfg.HttpAddr != "" {
-		logger.Info("starting HTTP server", "addr", cfg.HttpAddr)
+		logger.InfoContext(ctx, "starting HTTP server", "addr", cfg.HttpAddr)
 		http.HandleFunc("/healthcheck", func(w http.ResponseWriter, r *http.Request) {
 			if app.ConnectionState() == connectivity.Ready {
 				w.WriteHeader(http.StatusOK)
@@ -127,12 +137,13 @@ func main() {
 				w.WriteHeader(http.StatusServiceUnavailable)
 			}
 		})
+
 		go func() { _ = http.ListenAndServe(cfg.HttpAddr, nil) }()
 	}
 
-	err = app.Start(context.TODO())
+	err = app.Start(ctx)
 	if err != nil {
-		logger.Error("failed to start keychain app", "error", err)
+		logger.ErrorContext(ctx, "failed to start keychain app", "error", err)
 	}
 }
 
@@ -143,5 +154,6 @@ func bigEndianBytesFromUint32(n uint64) ([4]byte, error) {
 
 	b := make([]byte, 4)
 	binary.BigEndian.PutUint32(b, uint32(n))
+
 	return [4]byte(b), nil
 }

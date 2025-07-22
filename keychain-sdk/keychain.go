@@ -9,7 +9,6 @@ package keychain
 import (
 	"context"
 	"fmt"
-	"io"
 	"log/slog"
 
 	"google.golang.org/grpc/connectivity"
@@ -43,14 +42,6 @@ func NewApp(config Config) *App {
 	}
 }
 
-func (a *App) logger() *slog.Logger {
-	if a.config.Logger == nil {
-		a.config.Logger = slog.New(slog.NewTextHandler(io.Discard, &slog.HandlerOptions{}))
-	}
-
-	return a.config.Logger
-}
-
 // SetKeyRequestHandler sets the handler for key requests.
 func (a *App) SetKeyRequestHandler(handler KeyRequestHandler) {
 	a.keyRequestHandler = handler
@@ -63,26 +54,29 @@ func (a *App) SetSignRequestHandler(handler SignRequestHandler) {
 
 // Start starts the Keychain application and blocks until the context is done.
 func (a *App) Start(ctx context.Context) error {
-	a.logger().Info("starting keychain", "keychain_id", a.config.KeychainID)
+	a.logger().InfoContext(ctx, "starting keychain", "keychain_id", a.config.KeychainID)
 
-	err := a.initConnections()
+	err := a.initConnections(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to init connections: %w", err)
 	}
 
 	keyRequestsCh := make(chan *wardentypes.KeyRequest)
 	defer close(keyRequestsCh)
+
 	go a.ingestKeyRequests(ctx, keyRequestsCh)
 
 	signRequestsCh := make(chan *wardentypes.SignRequest)
 	defer close(signRequestsCh)
+
 	go a.ingestSignRequests(ctx, signRequestsCh)
 
 	flushErrors := make(chan error)
 	defer close(flushErrors)
+
 	go func() {
 		if err := a.txWriter.Start(ctx, flushErrors); err != nil {
-			a.logger().Error("tx writer exited with error", "error", err)
+			a.logger().ErrorContext(ctx, "tx writer exited with error", "error", err)
 		}
 	}()
 
@@ -91,7 +85,7 @@ func (a *App) Start(ctx context.Context) error {
 		case <-ctx.Done():
 			return ctx.Err()
 		case err := <-flushErrors:
-			a.logger().Error("tx writer flush error", "error", err)
+			a.logger().ErrorContext(ctx, "tx writer flush error", "error", err)
 		case keyRequest := <-keyRequestsCh:
 			go a.handleKeyRequest(ctx, keyRequest)
 		case signRequest := <-signRequestsCh:
@@ -105,12 +99,22 @@ func (a *App) ConnectionState() connectivity.State {
 	return a.query.Conn().GetState()
 }
 
-func (a *App) initConnections() error {
-	a.logger().Info("connecting to Warden Protocol using gRPC", "url", a.config.GRPCURL, "insecure", a.config.GRPCInsecure)
+func (a *App) logger() *slog.Logger {
+	if a.config.Logger == nil {
+		a.config.Logger = slog.New(slog.DiscardHandler)
+	}
+
+	return a.config.Logger
+}
+
+func (a *App) initConnections(ctx context.Context) error {
+	a.logger().InfoContext(ctx, "connecting to Warden Protocol using gRPC", "url", a.config.GRPCURL, "insecure", a.config.GRPCInsecure)
+
 	query, err := client.NewQueryClient(a.config.GRPCURL, a.config.GRPCInsecure)
 	if err != nil {
 		return fmt.Errorf("failed to create query client: %w", err)
 	}
+
 	a.query = query
 
 	conn := query.Conn()
@@ -120,7 +124,7 @@ func (a *App) initConnections() error {
 		return fmt.Errorf("failed to create identity: %w", err)
 	}
 
-	a.logger().Info("keychain writer identity", "address", identity.Address.String())
+	a.logger().InfoContext(ctx, "keychain writer identity", "address", identity.Address.String())
 
 	txClient := client.NewTxClient(identity, a.config.ChainID, conn, query)
 	a.txWriter = writer.New(txClient, a.config.BatchSize, a.config.BatchInterval, a.config.TxTimeout, a.logger())

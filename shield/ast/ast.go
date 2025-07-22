@@ -62,6 +62,7 @@ func UnwrapIdentifier(expr *Expression) (*Identifier, bool) {
 	if ident, ok := expr.Value.(*Expression_Identifier); ok {
 		return ident.Identifier, true
 	}
+
 	return nil, false
 }
 
@@ -69,6 +70,7 @@ func UnwrapIntegerLiteral(expr *Expression) (*IntegerLiteral, bool) {
 	if ident, ok := expr.Value.(*Expression_IntegerLiteral); ok {
 		return ident.IntegerLiteral, true
 	}
+
 	return nil, false
 }
 
@@ -76,6 +78,7 @@ func UnwrapBooleanLiteral(expr *Expression) (*BooleanLiteral, bool) {
 	if ident, ok := expr.Value.(*Expression_BooleanLiteral); ok {
 		return ident.BooleanLiteral, true
 	}
+
 	return nil, false
 }
 
@@ -83,6 +86,7 @@ func UnwrapStringLiteral(expr *Expression) (*StringLiteral, bool) {
 	if v, ok := expr.Value.(*Expression_StringLiteral); ok {
 		return v.StringLiteral, true
 	}
+
 	return nil, false
 }
 
@@ -90,6 +94,7 @@ func UnwrapArrayLiteral(expr *Expression) (*ArrayLiteral, bool) {
 	if ident, ok := expr.Value.(*Expression_ArrayLiteral); ok {
 		return ident.ArrayLiteral, true
 	}
+
 	return nil, false
 }
 
@@ -97,6 +102,7 @@ func UnwrapPrefixExpression(expr *Expression) (*PrefixExpression, bool) {
 	if ident, ok := expr.Value.(*Expression_PrefixExpression); ok {
 		return ident.PrefixExpression, true
 	}
+
 	return nil, false
 }
 
@@ -104,6 +110,7 @@ func UnwrapInfixExpression(expr *Expression) (*InfixExpression, bool) {
 	if ident, ok := expr.Value.(*Expression_InfixExpression); ok {
 		return ident.InfixExpression, true
 	}
+
 	return nil, false
 }
 
@@ -111,6 +118,7 @@ func UnwrapCallExpression(expr *Expression) (*CallExpression, bool) {
 	if ident, ok := expr.Value.(*Expression_CallExpression); ok {
 		return ident.CallExpression, true
 	}
+
 	return nil, false
 }
 

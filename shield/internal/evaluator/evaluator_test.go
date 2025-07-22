@@ -116,10 +116,12 @@ func TestNilEnv(t *testing.T) {
 func testEval(input string, envMap map[string]bool) object.Object {
 	l := lexer.New(input)
 	p := parser.New(l)
+
 	env := object.NewEnvironment()
 	for k, v := range envMap {
 		env.Set(k, &object.Boolean{Value: v})
 	}
+
 	return Eval(p.Parse(), env)
 }
 

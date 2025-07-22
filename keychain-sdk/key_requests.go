@@ -25,24 +25,26 @@ type keyResponseWriter struct {
 }
 
 func (w *keyResponseWriter) Fulfil(ctx context.Context, publicKey []byte) error {
-	w.logger.Debug("fulfilling key request", "id", w.keyRequestID, "public_key", hex.EncodeToString(publicKey))
+	w.logger.DebugContext(ctx, "fulfilling key request", "id", w.keyRequestID, "public_key", hex.EncodeToString(publicKey))
 	err := w.txWriter.Write(ctx, client.KeyRequestFulfilment{
 		RequestID: w.keyRequestID,
 		PublicKey: publicKey,
 	})
 	w.onComplete()
-	w.logger.Debug("fulfilled key request", "id", w.keyRequestID, "error", err)
+	w.logger.DebugContext(ctx, "fulfilled key request", "id", w.keyRequestID, "error", err)
+
 	return err
 }
 
 func (w *keyResponseWriter) Reject(ctx context.Context, reason string) error {
-	w.logger.Debug("rejecting key request", "id", w.keyRequestID, "reason", reason)
+	w.logger.DebugContext(ctx, "rejecting key request", "id", w.keyRequestID, "reason", reason)
 	err := w.txWriter.Write(ctx, client.KeyRequestRejection{
 		RequestID: w.keyRequestID,
 		Reason:    reason,
 	})
 	w.onComplete()
-	w.logger.Debug("rejected key request", "id", w.keyRequestID, "error", err)
+	w.logger.DebugContext(ctx, "rejected key request", "id", w.keyRequestID, "error", err)
+
 	return err
 }
 
@@ -50,18 +52,21 @@ func (a *App) ingestKeyRequests(ctx context.Context, keyRequestsCh chan *wardent
 	for {
 		reqCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
 		keyRequests, err := a.keyRequests(reqCtx)
+
 		cancel()
+
 		if err != nil {
-			a.logger().Error("failed to get key requests", "error", err)
+			a.logger().ErrorContext(reqCtx, "failed to get key requests", "error", err)
 		} else {
 			for _, keyRequest := range keyRequests {
 				if !a.keyRequestTracker.IsNew(keyRequest.Id) {
-					a.logger().Debug("skipping key request", "id", keyRequest.Id)
+					a.logger().DebugContext(reqCtx, "skipping key request", "id", keyRequest.Id)
 					continue
 				}
 
-				a.logger().Info("got key request", "id", keyRequest.Id)
+				a.logger().InfoContext(reqCtx, "got key request", "id", keyRequest.Id)
 				a.keyRequestTracker.Ingested(keyRequest.Id)
+
 				keyRequestsCh <- keyRequest
 			}
 		}
@@ -72,7 +77,7 @@ func (a *App) ingestKeyRequests(ctx context.Context, keyRequestsCh chan *wardent
 
 func (a *App) handleKeyRequest(ctx context.Context, keyRequest *wardentypes.KeyRequest) {
 	if a.keyRequestHandler == nil {
-		a.logger().Error("key request handler not set")
+		a.logger().ErrorContext(ctx, "key request handler not set")
 		return
 	}
 
@@ -85,10 +90,13 @@ func (a *App) handleKeyRequest(ctx context.Context, keyRequest *wardentypes.KeyR
 				a.keyRequestTracker.Done(keyRequest.Id)
 			},
 		}
+
 		defer func() {
 			if r := recover(); r != nil {
-				a.logger().Error("panic in key request handler", "error", r)
+				a.logger().ErrorContext(ctx, "panic in key request handler", "error", r)
+
 				_ = w.Reject(ctx, "internal error")
+
 				return
 			}
 		}()

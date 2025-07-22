@@ -31,6 +31,7 @@ const PrecompileAddress = "0x0000000000000000000000000000000000000902"
 // Precompile defines the precompiled contract for slinky.
 type Precompile struct {
 	cmn.Precompile
+
 	oraclekeeper   oraclekeeper.Keeper
 	eventsRegistry *precommon.EthEventsRegistry
 	queryServer    types.QueryServer

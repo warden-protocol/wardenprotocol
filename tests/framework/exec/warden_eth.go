@@ -15,6 +15,7 @@ import (
 
 type WardendEth struct {
 	*Wardend
+
 	Client     EthClient
 	From       common.Address
 	PrivateKey *ecdsa.PrivateKey
@@ -77,6 +78,7 @@ type EthClient struct {
 func (c EthClient) WaitDeployed(t *testing.T, tx *types.Transaction) common.Address {
 	addr, err := bind.WaitDeployed(t.Context(), c.Client, tx)
 	require.NoError(t, err)
+
 	return addr
 }
 
@@ -84,6 +86,7 @@ func (c EthClient) WaitMined(t *testing.T, tx *types.Transaction, status uint64)
 	receipt, err := bind.WaitMined(t.Context(), c.Client, tx)
 	require.NoError(t, err)
 	require.Equal(t, status, receipt.Status)
+
 	return receipt
 }
 

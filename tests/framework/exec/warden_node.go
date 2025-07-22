@@ -37,6 +37,7 @@ type WardenNode struct {
 
 func NewWardenNode(t *testing.T, binPath string) *WardenNode {
 	home := t.TempDir()
+
 	return &WardenNode{
 		BinPath: binPath,
 		Home:    home,
@@ -103,6 +104,7 @@ func (w *WardenNode) PrintLogsAtTheEnd(t *testing.T, filters []string) {
 		logs := strings.Split(w.Stdout.String(), "\n")
 		// Filter out lines that contain filter
 		var filteredLogs []string
+
 		for _, line := range logs {
 			for _, filter := range filters {
 				if strings.Contains(line, filter) {
@@ -146,6 +148,7 @@ func (w *WardenNode) run(ctx context.Context, args ...string) error {
 		Stdout: w.Stdout,
 		Stderr: w.Stderr,
 	}
+
 	return cmd.Run(ctx)
 }
 

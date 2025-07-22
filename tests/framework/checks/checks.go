@@ -11,13 +11,17 @@ import (
 
 func Eventually[T any](t *testing.T, f func(ctx context.Context) (T, bool)) T {
 	var result T
+
 	require.Eventually(t, func() bool {
 		ctx, cancel := context.WithTimeout(t.Context(), 10*time.Millisecond)
 		defer cancel()
+
 		r, ok := f(ctx)
 		result = r
+
 		return ok
 	}, 10*time.Second, time.Second)
+
 	return result
 }
 

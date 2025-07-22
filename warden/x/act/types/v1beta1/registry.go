@@ -36,6 +36,7 @@ type registry interface {
 // correct type.
 func Register[T sdk.Msg](reg registry, fn ProviderFnG[T]) {
 	var msg T
+
 	typeUrl := sdk.MsgTypeURL(msg)
 	reg.Register(typeUrl, func(ctx context.Context, m sdk.Msg) (Template, Template, error) {
 		return fn(ctx, m.(T))
@@ -51,6 +52,7 @@ type registryWithCtx interface {
 // correct type.
 func RegisterCtx[T sdk.Msg](reg registryWithCtx, fn ProviderFnWithCtxG[T]) {
 	var msg T
+
 	typeUrl := sdk.MsgTypeURL(msg)
 	reg.RegisterCtx(typeUrl, func(ctx context.Context, m sdk.Msg) (context.Context, Template, Template, error) {
 		return fn(ctx, m.(T))

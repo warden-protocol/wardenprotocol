@@ -50,6 +50,7 @@ func (c *Test_RejectAny3Action) Run(t *testing.T, _ *framework.F) {
 	newRejectTemplateDefinition := "\"any(3, warden.space.owners)\""
 	resNewTemplate := alice.Tx(t, "act new-template --name reject_requires_three --definition "+newRejectTemplateDefinition)
 	checks.SuccessTx(t, resNewTemplate)
+
 	newApproveTemplateDefinition := "\"any(2, warden.space.owners)\""
 	resNewTemplate2 := alice.Tx(t, "act new-template --name approve_requires_two --definition "+newApproveTemplateDefinition)
 	checks.SuccessTx(t, resNewTemplate2)

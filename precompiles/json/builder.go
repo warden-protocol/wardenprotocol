@@ -59,6 +59,7 @@ func (j jsonBool) serialize() string {
 	if j.val {
 		return "true"
 	}
+
 	return "false"
 }
 
@@ -77,6 +78,7 @@ func (j jsonArray) serialize() string {
 	for i, el := range j.elements {
 		serEls[i] = el.serialize()
 	}
+
 	return "[" + strings.Join(serEls, ",") + "]"
 }
 
@@ -89,6 +91,7 @@ func (j jsonObject) serialize() string {
 	for i, el := range j.elements {
 		serEls[i] = fmt.Sprintf(`"%s":%s`, el.key, el.value.serialize())
 	}
+
 	return "{" + strings.Join(serEls, ",") + "}"
 }
 
@@ -155,6 +158,7 @@ func (b *builder) nextValue() (jsonValue, error) {
 
 func (b *builder) nextJsonObject() (jsonValue, error) {
 	b.cur++ // startObject
+
 	var obj jsonObject
 
 	for b.cur < len(b.ops) && b.ops[b.cur] != EndObject {
@@ -174,9 +178,11 @@ func (b *builder) nextJsonObject() (jsonValue, error) {
 	if b.cur >= len(b.ops) {
 		return nil, errors.New("unexpected end of operations while parsing object")
 	}
+
 	if b.ops[b.cur] != EndObject {
 		return nil, fmt.Errorf("expected object end, got: %d", b.ops[b.cur])
 	}
+
 	b.cur++
 
 	return obj, nil
@@ -186,13 +192,16 @@ func (b *builder) nextKey() (string, error) {
 	if b.ops[b.cur] != Key {
 		return "", fmt.Errorf("expected json key, got op: %d (with data: %x)", b.ops[b.cur], b.vals[b.cur])
 	}
+
 	val := string(b.vals[b.cur])
 	b.cur++
+
 	return val, nil
 }
 
 func (b *builder) nextJsonArray() (jsonValue, error) {
 	b.cur++ // startArray
+
 	var array jsonArray
 
 	for b.cur < len(b.ops) && b.ops[b.cur] != EndArray {
@@ -200,15 +209,18 @@ func (b *builder) nextJsonArray() (jsonValue, error) {
 		if err != nil {
 			return nil, err
 		}
+
 		array.elements = append(array.elements, val)
 	}
 
 	if b.cur >= len(b.ops) {
 		return nil, errors.New("unexpected end of operations while parsing array")
 	}
+
 	if b.ops[b.cur] != EndArray {
 		return nil, fmt.Errorf("expected array end, got: %d", b.ops[b.cur])
 	}
+
 	b.cur++
 
 	return array, nil
@@ -217,6 +229,7 @@ func (b *builder) nextJsonArray() (jsonValue, error) {
 func (b *builder) nextJsonString() (jsonValue, error) {
 	val := string(b.vals[b.cur])
 	b.cur++
+
 	return jsonString{val}, nil
 }
 
@@ -225,7 +238,9 @@ func (b *builder) nextJsonUint() (jsonValue, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	n := arg.(*big.Int)
+
 	return jsonNumber{n.String()}, nil
 }
 
@@ -234,7 +249,9 @@ func (b *builder) nextJsonInt() (jsonValue, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	n := arg.(*big.Int)
+
 	return jsonNumber{n.String()}, nil
 }
 
@@ -243,6 +260,7 @@ func (b *builder) nextJsonBool() (jsonValue, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return jsonBool{arg.(bool)}, nil
 }
 
@@ -251,7 +269,9 @@ func (b *builder) nextJsonAddress() (jsonValue, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	hexStr := arg.(common.Address).Hex()
+
 	return jsonString{hexStr}, nil
 }
 
@@ -262,6 +282,7 @@ func (b *builder) nextJsonBytes() (jsonValue, error) {
 	}
 
 	hexStr := "0x" + hex.EncodeToString(arg.([]byte))
+
 	return jsonString{hexStr}, nil
 }
 
@@ -275,10 +296,12 @@ func (b *builder) nextJsonFixedPointNumber() (jsonValue, error) {
 		{Type: abiTypes["int256"]},
 		{Type: abiTypes["uint8"]},
 	}
+
 	args, err := arguments.Unpack(b.vals[b.cur])
 	if err != nil {
 		return nil, fmt.Errorf("unpack JsonFixedPointNumber: %w", err)
 	}
+
 	b.cur++
 
 	mantissa := args[0].(*big.Int)
@@ -323,17 +346,21 @@ func (b *builder) nextJsonRawNumber() (jsonValue, error) {
 	}
 
 	b.cur++
+
 	return jsonNumber{val}, nil
 }
 
 func (b *builder) decodeAbi(typ string) (any, error) {
 	abiType := abiTypes[typ]
 	arguments := abi.Arguments{{Type: abiType}}
+
 	args, err := arguments.Unpack(b.vals[b.cur])
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", typ, err)
 	}
+
 	b.cur++
+
 	return args[0], nil
 }
 
@@ -356,6 +383,7 @@ func init() {
 		if err != nil {
 			panic(fmt.Errorf("%s: %w", t, err))
 		}
+
 		abiTypes[t] = abiType
 	}
 }

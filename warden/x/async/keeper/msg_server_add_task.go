@@ -25,6 +25,7 @@ import (
 
 func (k msgServer) AddTask(ctx context.Context, msg *types.MsgAddTask) (*types.MsgAddTaskResponse, error) {
 	var err error
+
 	if msg.Plugin == "" {
 		return nil, errorsmod.Wrapf(types.ErrInvalidPlugin, "cannot be empty")
 	}

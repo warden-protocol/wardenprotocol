@@ -59,6 +59,7 @@ func bech32Address(prefix string, key Key) (string, error) {
 	}
 
 	var pubkey secp256k1.PubKey
+
 	pubkey.Key = crypto.CompressPubkey(k)
 	bech32Address := sdk.MustBech32ifyAddressBytes(prefix, pubkey.Address())
 

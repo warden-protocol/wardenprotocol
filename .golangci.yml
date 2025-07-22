@@ -16,6 +16,7 @@ linters:
     - gochecknoglobals
     - gochecknoinits
     - gocognit
+    - goconst
     - gocritic
     - gocyclo
     - godox
@@ -31,6 +32,7 @@ linters:
     - nestif
     - nilerr
     - nilnil
+    - noinlineerr
     - nolintlint
     - nonamedreturns
     - paralleltest

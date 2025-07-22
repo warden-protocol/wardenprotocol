@@ -80,20 +80,20 @@ const config: Config = {
                 },
                 {
                     type: "docSidebar",
-                    sidebarId: "buildApp",
-                    label: "Build an app",
+                    sidebarId: "buildOnAnyChain",
+                    label: "Build on any chain",
                     position: "left",
                 },
                 {
                     type: "docSidebar",
-                    sidebarId: "buildAgent",
-                    label: "Build an Agent",
+                    sidebarId: "buildOnWarden",
+                    label: "Build on Warden",
                     position: "left",
                 },
                 {
                     type: "docSidebar",
                     sidebarId: "buildKeychain",
-                    label: "Build a Keychain",
+                    label: "Operate a Keychain",
                     position: "left",
                 },
                 {

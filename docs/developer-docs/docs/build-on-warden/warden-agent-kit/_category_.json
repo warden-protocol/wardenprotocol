@@ -1,0 +1,11 @@
+{
+  "position": 7,
+  "label": "Build an AI Agent with the Warden Agent Kit",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Build an AI Agent with the Warden Agent Kit"
+  },
+  "customProps": {}
+}

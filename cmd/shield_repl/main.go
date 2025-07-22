@@ -16,6 +16,7 @@ func main() {
 
 	for {
 		fmt.Print("> ") //nolint:forbidigo
+
 		sn := scanner.Scan()
 		if !sn {
 			return

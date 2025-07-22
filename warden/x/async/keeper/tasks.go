@@ -107,6 +107,7 @@ func (k *TaskKeeper) Tasks() repo.SeqCollection[types.Task] {
 
 func (k *TaskKeeper) PendingTasks(ctx context.Context, solverAddr sdk.ConsAddress, limit int) ([]types.Task, error) {
 	ranger := collections.NewPrefixedPairRange[sdk.ConsAddress, uint64](solverAddr)
+
 	it, err := k.pendingTasks.Iterate(ctx, ranger)
 	if err != nil {
 		return nil, err

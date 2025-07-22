@@ -33,6 +33,7 @@ const PrecompileAddress = "0x0000000000000000000000000000000000000900"
 // Precompile defines the precompiled contract for x/warden.
 type Precompile struct {
 	cmn.Precompile
+
 	wardenkeeper   wardenmodulekeeper.Keeper
 	actkeeper      actmodulekeeper.Keeper
 	eventsRegistry *precommon.EthEventsRegistry

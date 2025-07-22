@@ -60,6 +60,7 @@ func (p Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {
 	newImage := resize.Resize(256, 0, img, resize.Lanczos3)
 
 	buf := new(bytes.Buffer)
+
 	options := webp.Options{Lossless: false, Quality: 80}
 	if err := webp.Encode(buf, newImage, options); err != nil {
 		return nil, err

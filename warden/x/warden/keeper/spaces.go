@@ -57,6 +57,32 @@ func (k SpacesKeeper) Set(ctx context.Context, space types.Space) error {
 	return k.spaces.Set(ctx, space.Id, space)
 }
 
+func (k SpacesKeeper) Coll() repo.SeqCollection[types.Space] {
+	return k.spaces
+}
+
+func (k SpacesKeeper) ByOwner() collections.KeySet[collections.Pair[sdk.AccAddress, uint64]] {
+	return k.spacesByOwner
+}
+
+func (k SpacesKeeper) Import(ctx context.Context, spaces []types.Space) error {
+	err := k.spaces.Import(ctx, spaces, func(k types.Space) uint64 {
+		return k.Id
+	})
+	if err != nil {
+		return err
+	}
+
+	for _, key := range spaces {
+		err := k.updateSpaceOwners(ctx, key, nil)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 func (k SpacesKeeper) updateSpaceOwners(ctx context.Context, space types.Space, oldOwners []string) error {
 	id := space.Id
 	if id == 0 {
@@ -83,32 +109,6 @@ func (k SpacesKeeper) updateSpaceOwners(ctx context.Context, space types.Space, 
 		}
 
 		if err := k.spacesByOwner.Set(ctx, collections.Join(ownerAddr, space.Id)); err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
-func (k SpacesKeeper) Coll() repo.SeqCollection[types.Space] {
-	return k.spaces
-}
-
-func (k SpacesKeeper) ByOwner() collections.KeySet[collections.Pair[sdk.AccAddress, uint64]] {
-	return k.spacesByOwner
-}
-
-func (k SpacesKeeper) Import(ctx context.Context, spaces []types.Space) error {
-	err := k.spaces.Import(ctx, spaces, func(k types.Space) uint64 {
-		return k.Id
-	})
-	if err != nil {
-		return err
-	}
-
-	for _, key := range spaces {
-		err := k.updateSpaceOwners(ctx, key, nil)
-		if err != nil {
 			return err
 		}
 	}

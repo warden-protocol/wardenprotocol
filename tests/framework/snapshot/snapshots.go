@@ -68,10 +68,12 @@ func Build(t *testing.T, wardendPath, savePath string, opts BuildOptions) {
 	for _, account := range opts.Accounts {
 		b.AddKeys(account.Name)
 		b.AddGenesisAccount(account.Name, account.Amount)
+
 		if account.StakedAmount != "" {
 			b.GenTx(account.Name, account.StakedAmount)
 		}
 	}
+
 	b.CollectGenTxs()
 
 	for _, s := range opts.Spaces {
@@ -89,9 +91,11 @@ func Build(t *testing.T, wardendPath, savePath string, opts BuildOptions) {
 	genesis := b.Genesis()
 	genesis.Set("app_state.evm.params.active_static_precompiles", opts.Precompiles)
 	genesis.Set("consensus.params.abci.vote_extensions_enable_height", "2")
+
 	if opts.EditGenesis != nil {
 		opts.EditGenesis(genesis)
 	}
+
 	genesis.Save()
 
 	b.SetConfig("app", "minimum-gas-prices", "0"+b.denom)
@@ -147,6 +151,7 @@ func (s *wardend) execStdout(t *testing.T, args ...string) string {
 		Stderr: nil,
 	}
 	require.NoError(t, e.Run(t.Context()))
+
 	return strings.TrimSpace(stdout.String())
 }
 
@@ -252,6 +257,7 @@ func (b *Builder) Replace(path, old, new string) {
 	fullPath := filepath.Join(b.home, path)
 	content, err := os.ReadFile(fullPath)
 	require.NoError(b.t, err)
+
 	content = bytes.ReplaceAll(content, []byte(old), []byte(new))
 	require.NoError(b.t, os.WriteFile(fullPath, content, 0o644))
 }
@@ -266,6 +272,7 @@ func (b *Builder) Genesis() *GenesisBuilder {
 	genesisPath := filepath.Join(b.home, "config/genesis.json")
 	c, err := gabs.ParseJSONFile(genesisPath)
 	require.NoError(b.t, err)
+
 	return &GenesisBuilder{
 		t:    b.t,
 		path: genesisPath,

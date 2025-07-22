@@ -39,6 +39,7 @@ func newDedup[T getIDer](ch <-chan T) (*dedup[T], error) {
 			}
 
 			c.Add(req.getID(), struct{}{})
+
 			out <- req
 		}
 	}()

@@ -37,6 +37,7 @@ func TestPreprocess(t *testing.T) {
 	ctx := t.Context()
 	expression := parseExpression(t, "foo1(foo2(), false || true, [false, [10, 11, 12]])")
 	expander := NoopExpander{}
+
 	proc, err := Preprocess(ctx, expression, expander)
 	if err != nil {
 		t.Error(err)
@@ -61,6 +62,7 @@ func TestPreprocess(t *testing.T) {
 
 	arr2 := arr1.Elements[1].GetArrayLiteral()
 	require.Len(t, arr2.Elements, 3)
+
 	for i, arrElem := range arr2.Elements {
 		intVal := arrElem.GetIntegerLiteral()
 		require.NotNil(t, intVal)
@@ -108,6 +110,7 @@ func TestPreprocessInfixExpression(t *testing.T) {
 
 	inf2Left := inf2.Left.GetBooleanLiteral()
 	require.Equal(t, inf2Left.Value, true)
+
 	inf2Right := inf2.Right.GetBooleanLiteral()
 	require.Equal(t, inf2Right.Value, false)
 }

@@ -74,6 +74,7 @@ func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees sdk.Coi
 	if err != nil {
 		return nil, fmt.Errorf("fetch account: %w", err)
 	}
+
 	accSeq := account.GetSequence()
 	accNum := account.GetAccountNumber()
 
@@ -103,6 +104,7 @@ func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees sdk.Coi
 		},
 		Sequence: accSeq,
 	}
+
 	err = txBuilder.SetSignatures(sigV2)
 	if err != nil {
 		return nil, fmt.Errorf("set empty signature: %w", err)

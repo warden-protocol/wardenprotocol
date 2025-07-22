@@ -104,6 +104,7 @@ func (h *Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {
 	}
 
 	var responseData interface{}
+
 	contentType := resp.Header.Get("Content-Type")
 	if strings.Contains(contentType, "application/json") {
 		if err := json.Unmarshal(bodyBytes, &responseData); err != nil {

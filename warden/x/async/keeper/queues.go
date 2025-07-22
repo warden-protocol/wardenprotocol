@@ -80,7 +80,6 @@ func (k *Keeper) QueueNext(ctx context.Context, id QueueID) (sdk.ConsAddress, er
 	// - slide
 	// after this, the participant with the highest priority value will be
 	// returned, and pushed at the end of the queue
-
 	totalWeight, err := k.queueTotalWeights.Get(ctx, id)
 	if err != nil {
 		return nil, err
@@ -92,14 +91,17 @@ func (k *Keeper) QueueNext(ctx context.Context, id QueueID) (sdk.ConsAddress, er
 
 	// load queuePriorities for QueueID into memory
 	rng := collections.NewPrefixedPairRange[QueueID, sdk.ConsAddress](id)
+
 	it, err := k.queuePriorities.Iterate(ctx, rng)
 	if err != nil {
 		return nil, err
 	}
+
 	m, err := it.KeyValues()
 	if err != nil {
 		return nil, err
 	}
+
 	if err := it.Close(); err != nil {
 		return nil, err
 	}
@@ -120,6 +122,7 @@ func (k *Keeper) QueueNext(ctx context.Context, id QueueID) (sdk.ConsAddress, er
 	}
 
 	diff := maxP - minP
+
 	threshold := 2 * totalWeight
 	if diff > threshold {
 		scale := diff / threshold
@@ -146,6 +149,7 @@ func (k *Keeper) QueueNext(ctx context.Context, id QueueID) (sdk.ConsAddress, er
 		nextP Priority = math.MinInt64
 		next  collections.Pair[QueueID, sdk.ConsAddress]
 	)
+
 	for i, kv := range m {
 		weight, err := k.queueWeights.Get(ctx, kv.Key)
 		if err != nil {

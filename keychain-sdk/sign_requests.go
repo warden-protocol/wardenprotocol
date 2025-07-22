@@ -27,11 +27,13 @@ type signResponseWriter struct {
 }
 
 func (w *signResponseWriter) Fulfil(ctx context.Context, signature []byte) error {
-	w.logger.Debug("fulfilling sign request", "id", w.signRequestID, "signature", hex.EncodeToString(signature))
+	w.logger.DebugContext(ctx, "fulfilling sign request", "id", w.signRequestID, "signature", hex.EncodeToString(signature))
 
 	result := signature
+
 	if w.encryptionKey != nil {
 		var err error
+
 		result, err = enc.Encrypt(w.encryptionKey, result)
 		if err != nil {
 			return err
@@ -43,19 +45,20 @@ func (w *signResponseWriter) Fulfil(ctx context.Context, signature []byte) error
 		Signature: result,
 	})
 	w.onComplete()
-	w.logger.Debug("fulfilled sign request", "id", w.signRequestID, "error", err)
+	w.logger.DebugContext(ctx, "fulfilled sign request", "id", w.signRequestID, "error", err)
 
 	return err
 }
 
 func (w *signResponseWriter) Reject(ctx context.Context, reason string) error {
-	w.logger.Debug("rejecting sign request", "id", w.signRequestID, "reason", reason)
+	w.logger.DebugContext(ctx, "rejecting sign request", "id", w.signRequestID, "reason", reason)
 	err := w.txWriter.Write(ctx, client.SignRequestRejection{
 		RequestID: w.signRequestID,
 		Reason:    reason,
 	})
 	w.onComplete()
-	w.logger.Debug("rejected sign request", "id", w.signRequestID, "error", err)
+	w.logger.DebugContext(ctx, "rejected sign request", "id", w.signRequestID, "error", err)
+
 	return err
 }
 
@@ -63,18 +66,21 @@ func (a *App) ingestSignRequests(ctx context.Context, signRequestsCh chan *warde
 	for {
 		reqCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
 		signRequests, err := a.signRequests(reqCtx)
+
 		cancel()
+
 		if err != nil {
-			a.logger().Error("failed to get sign requests", "error", err)
+			a.logger().ErrorContext(ctx, "failed to get sign requests", "error", err)
 		} else {
 			for _, signRequest := range signRequests {
 				if !a.signRequestTracker.IsNew(signRequest.Id) {
-					a.logger().Debug("skipping sign request", "id", signRequest.Id)
+					a.logger().DebugContext(ctx, "skipping sign request", "id", signRequest.Id)
 					continue
 				}
 
-				a.logger().Info("got sign request", "id", signRequest.Id)
+				a.logger().InfoContext(ctx, "got sign request", "id", signRequest.Id)
 				a.signRequestTracker.Ingested(signRequest.Id)
+
 				signRequestsCh <- signRequest
 			}
 		}
@@ -85,12 +91,12 @@ func (a *App) ingestSignRequests(ctx context.Context, signRequestsCh chan *warde
 
 func (a *App) handleSignRequest(ctx context.Context, signRequest *wardentypes.SignRequest) {
 	if a.signRequestHandler == nil {
-		a.logger().Error("sign request handler not set")
+		a.logger().ErrorContext(ctx, "sign request handler not set")
 		return
 	}
 
 	go func() {
-		a.logger().Debug("handling sign request", "id", signRequest.Id, "data_for_signing", hex.EncodeToString(signRequest.DataForSigning))
+		a.logger().DebugContext(ctx, "handling sign request", "id", signRequest.Id, "data_for_signing", hex.EncodeToString(signRequest.DataForSigning))
 		w := &signResponseWriter{
 			txWriter:      a.txWriter,
 			signRequestID: signRequest.Id,
@@ -100,17 +106,22 @@ func (a *App) handleSignRequest(ctx context.Context, signRequest *wardentypes.Si
 				a.signRequestTracker.Done(signRequest.Id)
 			},
 		}
+
 		defer func() {
 			if r := recover(); r != nil {
-				a.logger().Error("panic in sign request handler", "error", r)
+				a.logger().ErrorContext(ctx, "panic in sign request handler", "error", r)
+
 				_ = w.Reject(ctx, "internal error")
+
 				return
 			}
 		}()
 
 		if err := enc.ValidateEncryptionKey(signRequest.EncryptionKey); err != nil {
-			a.logger().Error("invalid sign request encryption key", "id", signRequest.Id, "error", err)
+			a.logger().ErrorContext(ctx, "invalid sign request encryption key", "id", signRequest.Id, "error", err)
+
 			_ = w.Reject(ctx, "invalid encryption key")
+
 			return
 		}
 

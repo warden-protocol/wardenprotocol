@@ -74,6 +74,7 @@ func TestPlugin_Execute_WithCborBody(t *testing.T) {
 		require.Equal(t, "application/json", r.Header.Get("Content-Type"), "Plugin should send JSON")
 
 		var received testPayload
+
 		err := json.NewDecoder(r.Body).Decode(&received)
 		require.NoError(t, err, "Server should decode JSON body")
 		require.Equal(t, originalPayload.Foo, received.Foo, "Foo should match")

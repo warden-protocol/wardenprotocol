@@ -109,6 +109,7 @@ func (app *App) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAddrs []str
 		if err != nil {
 			panic(err)
 		}
+
 		delAddr := sdk.MustAccAddressFromBech32(del.DelegatorAddress)
 
 		if err := app.DistrKeeper.Hooks().BeforeDelegationCreated(ctx, delAddr, valAddr); err != nil {

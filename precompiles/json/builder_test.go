@@ -20,6 +20,7 @@ func newOpsBuilder() *opsBuilder { return &opsBuilder{} }
 func (ob *opsBuilder) push(o op, v []byte) *opsBuilder {
 	ob.ops = append(ob.ops, o)
 	ob.vals = append(ob.vals, v)
+
 	return ob
 }
 
@@ -35,6 +36,7 @@ func (ob *opsBuilder) uint(v uint64) *opsBuilder {
 	uint256Type, _ := abi.NewType("uint256", "", nil)
 	arguments := abi.Arguments{{Type: uint256Type}}
 	b, _ := arguments.Pack(new(big.Int).SetUint64(v))
+
 	return ob.push(UintValue, b)
 }
 
@@ -42,6 +44,7 @@ func (ob *opsBuilder) int(v int64) *opsBuilder {
 	int256Type, _ := abi.NewType("int256", "", nil)
 	arguments := abi.Arguments{{Type: int256Type}}
 	b, _ := arguments.Pack(new(big.Int).SetInt64(v))
+
 	return ob.push(IntValue, b)
 }
 
@@ -49,6 +52,7 @@ func (ob *opsBuilder) bool(v bool) *opsBuilder {
 	boolType, _ := abi.NewType("bool", "", nil)
 	arguments := abi.Arguments{{Type: boolType}}
 	b, _ := arguments.Pack(v)
+
 	return ob.push(BoolValue, b)
 }
 
@@ -56,6 +60,7 @@ func (ob *opsBuilder) address(addr common.Address) *opsBuilder {
 	addressType, _ := abi.NewType("address", "", nil)
 	arguments := abi.Arguments{{Type: addressType}}
 	b, _ := arguments.Pack(addr)
+
 	return ob.push(AddressValue, b)
 }
 
@@ -64,11 +69,14 @@ func (ob *opsBuilder) bytes(data []byte) *opsBuilder {
 	if err != nil {
 		panic(err)
 	}
+
 	arguments := abi.Arguments{{Type: bytesType}}
+
 	b, err := arguments.Pack(data)
 	if err != nil {
 		panic(err)
 	}
+
 	return ob.push(BytesValue, b)
 }
 
@@ -83,6 +91,7 @@ func (ob *opsBuilder) fixedPoint(mantissa int64, decimals uint8) *opsBuilder {
 		{Type: int256Type},
 		{Type: uint8Type},
 	}
+
 	b, err := arguments.Pack(new(big.Int).SetInt64(mantissa), decimals)
 	if err != nil {
 		panic(err)
@@ -262,16 +271,20 @@ func TestBuild(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(cmp.Or(tt.name, tt.want), func(t *testing.T) {
 			b := builder{ops: tt.builder.ops, vals: tt.builder.vals}
+
 			got, gotErr := b.build()
 			if gotErr != nil {
 				if !tt.wantErr {
 					require.NoError(t, gotErr)
 				}
+
 				return
 			}
+
 			if tt.wantErr {
 				require.Error(t, gotErr, "output: %s", got)
 			}
+
 			require.Equal(t, tt.want, got)
 		})
 	}

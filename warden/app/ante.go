@@ -177,6 +177,7 @@ func NewAnteHandler(options HandlerOptions) sdk.AnteHandler {
 						if err != nil {
 							return ctx, err
 						}
+
 						txIdx := uint64(i) //nolint:gosec // G115
 						evmante.EmitTxHashEvent(ctx, ethMsg, decUtils.BlockTxIndex, txIdx)
 					}

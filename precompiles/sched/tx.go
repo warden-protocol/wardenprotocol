@@ -30,6 +30,7 @@ func (p *Precompile) ExecuteCallbacksMethod(
 	ctx = ctx.WithGasMeter(types.NewInfiniteGasMeter())
 
 	queue := p.schedKeeper.CallbacksQueue(ctx)
+
 	it, err := queue.Iterate(ctx, nil)
 	if err != nil {
 		return nil, err
@@ -85,18 +86,22 @@ func (p *Precompile) ExecuteCallbacksMethod(
 			if err := p.schedKeeper.SetFailed(ctx, id, fmt.Errorf("executing callback: %w", err)); err != nil {
 				return nil, err
 			}
+
 			continue
 		}
 
 		// deduct callback cost from cbAddress balance
 		params := p.evmKeeper.GetParams(ctx)
 		feeAmt := new(big.Int).Mul(evm.GasPrice, new(big.Int).SetUint64(cb.GasLimit-leftOverGas))
+
 		fees := sdk.NewCoins(sdk.NewCoin(params.EvmDenom, math.NewIntFromBigInt(feeAmt)))
 		if err := p.evmKeeper.DeductTxCostsFromUserBalance(ctx, fees, cbAddress); err != nil {
 			stateDB.RevertToSnapshot(snapshot)
+
 			if err := p.schedKeeper.SetFailed(ctx, id, fmt.Errorf("paying callback gas cost: %w", err)); err != nil {
 				return nil, err
 			}
+
 			continue
 		}
 
@@ -104,6 +109,7 @@ func (p *Precompile) ExecuteCallbacksMethod(
 			return nil, err
 		}
 	}
+
 	if err := it.Close(); err != nil {
 		return nil, err
 	}

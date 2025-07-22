@@ -27,6 +27,7 @@ func (p *Precompile) AddTaskMethod(
 	args []interface{},
 ) ([]byte, error) {
 	msgServer := actmodulekeeper.NewMsgServerImpl(p.asyncmodulekeeper)
+
 	message, err := newMsgAddTask(args, origin, method)
 	if err != nil {
 		return nil, err

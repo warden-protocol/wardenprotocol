@@ -12,6 +12,7 @@ func GetParsedEventsOnly[T any](txReceipt *types.Receipt, eventParser func(types
 	}
 
 	result := make([]T, 0)
+
 	for _, log := range txReceipt.Logs {
 		if log == nil {
 			continue

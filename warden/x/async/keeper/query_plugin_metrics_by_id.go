@@ -51,6 +51,7 @@ func (k Keeper) PluginMetricsById(ctx context.Context, req *types.QueryPluginMet
 	}
 
 	precision := int64(6)
+
 	successTaskRatio := cosmosmath.LegacyNewDec(0)
 	if metrics.TasksCount > 0 {
 		successfulTasksCount := cosmosmath.LegacyNewDecFromIntWithPrec(cosmosmath.NewIntFromUint64(metrics.ResultsCount*uint64(math.Pow10(int(precision)))), precision)
@@ -59,6 +60,7 @@ func (k Keeper) PluginMetricsById(ctx context.Context, req *types.QueryPluginMet
 	}
 
 	avgFee := []cosmos_types.DecCoin{}
+
 	for _, v := range metrics.TotalFees {
 		decAmount := cosmosmath.LegacyNewDecFromIntWithPrec(
 			v.Amount.Mul(cosmosmath.NewIntFromUint64(uint64(precision))),

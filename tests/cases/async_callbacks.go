@@ -55,6 +55,7 @@ func (c *Test_AsyncCallbacks) Run(t *testing.T, f *framework.F) {
 	checks.Eventually(t, func(ctx context.Context) (bool, bool) {
 		got1, err := instance.Got1(aliceCallEvm)
 		require.NoError(t, err)
+
 		return got1, got1
 	})
 
@@ -75,6 +76,7 @@ func (c *Test_AsyncCallbacks) Run(t *testing.T, f *framework.F) {
 	checks.Eventually(t, func(ctx context.Context) (bool, bool) {
 		got2, err := instance.Got2(aliceCallEvm)
 		require.NoError(t, err)
+
 		return got2, got2
 	})
 

@@ -44,6 +44,7 @@ func (k Keeper) BeginBlocker(ctx context.Context) error {
 		defer iterator.Close()
 
 		var oldTaskIDs []uint64
+
 		for ; iterator.Valid(); iterator.Next() {
 			v, err := iterator.Value()
 			if err != nil {
@@ -74,6 +75,7 @@ func (k Keeper) BeginBlocker(ctx context.Context) error {
 		}
 
 		var timeoutTasks []types.Task
+
 		for _, t := range pendingTasks {
 			plugin, err := k.plugins.Get(ctx, t.Plugin)
 			if err != nil {
@@ -145,6 +147,7 @@ func (k Keeper) ExtendVoteHandler() sdk.ExtendVoteHandler {
 			if r.Error != nil {
 				errorReason = r.Error.Error()
 			}
+
 			results[i] = &types.VEResultItem{
 				TaskId:      r.ID,
 				Output:      r.Output,
@@ -243,6 +246,7 @@ func (k Keeper) PrepareProposalHandler() sdk.PrepareProposalHandler {
 		if err != nil {
 			return 0, nil, err
 		}
+
 		return 1, asyncTx, nil
 	})
 }
@@ -351,18 +355,22 @@ func (k Keeper) processVE(ctx sdk.Context, fromAddr sdk.ConsAddress, ve types.As
 	}
 
 	ranger := collections.NewPrefixedPairRange[sdk.ConsAddress, string](fromAddr)
+
 	it, err := k.pluginsByValidator.Iterate(ctx, ranger)
 	if err != nil {
 		return fmt.Errorf("building iterator over registered plugins for %s", fromAddr.String())
 	}
+
 	keys, err := it.Keys()
 	if err != nil {
 		return fmt.Errorf("iterating over registered plugins for %s: %w", fromAddr.String(), err)
 	}
+
 	oldPlugins := make([]string, 0, len(keys))
 	for _, k := range keys {
 		oldPlugins = append(oldPlugins, k.K2())
 	}
+
 	if err := it.Close(); err != nil {
 		return fmt.Errorf("close iterator: %w", err)
 	}
@@ -388,6 +396,7 @@ func (k Keeper) processVE(ctx sdk.Context, fromAddr sdk.ConsAddress, ve types.As
 			if err := k.removeQueueParticipant(ctx, QueueID(r), fromAddr); err != nil {
 				return fmt.Errorf("remove %s from %s queue: %w", fromAddr.String(), r, err)
 			}
+
 			if err := k.pluginsByValidator.Remove(ctx, collections.Join(fromAddr, r)); err != nil {
 				return fmt.Errorf("remove %s from %s validators: %w", fromAddr.String(), r, err)
 			}
@@ -397,6 +406,7 @@ func (k Keeper) processVE(ctx sdk.Context, fromAddr sdk.ConsAddress, ve types.As
 			if err := k.newQueueParticipant(ctx, QueueID(r), fromAddr, weight); err != nil {
 				return fmt.Errorf("add %s to %s queue: %w", fromAddr.String(), r, err)
 			}
+
 			if err := k.pluginsByValidator.Set(ctx, collections.Join(fromAddr, r)); err != nil {
 				return fmt.Errorf("add %s to %s validators: %w", fromAddr.String(), r, err)
 			}
@@ -428,18 +438,21 @@ func diffSortedSlice[T cmp.Ordered](a, b []T) (onlyB, onlyA, both []T) {
 			both = append(both, a[i])
 			i++
 			j++
+
 			continue
 		}
 
 		if a[i] < b[j] {
 			onlyA = append(onlyA, a[i])
 			i++
+
 			continue
 		}
 
 		if a[i] > b[j] {
 			onlyB = append(onlyB, b[j])
 			j++
+
 			continue
 		}
 	}
@@ -447,6 +460,7 @@ func diffSortedSlice[T cmp.Ordered](a, b []T) (onlyB, onlyA, both []T) {
 	for ; i < len(a); i++ {
 		onlyA = append(onlyA, a[i])
 	}
+
 	for ; j < len(b); j++ {
 		onlyB = append(onlyB, b[j])
 	}

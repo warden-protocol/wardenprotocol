@@ -30,6 +30,7 @@ var f embed.FS
 // Precompile defines the precompiled contract for x/sched.
 type Precompile struct {
 	evmcmn.Precompile
+
 	schedKeeper    schedkeeper.Keeper
 	evmKeeper      *evmkeeper.Keeper
 	eventsRegistry *common.EthEventsRegistry

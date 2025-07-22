@@ -29,6 +29,7 @@ func main() {
 	if *contractName == "" || *solOutputPath == "" {
 		usageAndExit("You must provide --contractName and --output")
 	}
+
 	if *outputFile == "" || *outputName == "" {
 		usageAndExit("You must provide --outputFile and --outputName (output is required)")
 	}
@@ -37,13 +38,17 @@ func main() {
 	if *inputFile != "" && *inputName == "" {
 		usageAndExit("If you pass --inputFile, you must pass --inputName")
 	}
+
 	if *inputName != "" && *inputFile == "" {
 		usageAndExit("If you pass --inputName, you must pass --inputFile")
 	}
 
 	// 1) Read optional input JSON (if provided)
-	var inJSON []byte
-	var err error
+	var (
+		inJSON []byte
+		err    error
+	)
+
 	if *inputFile != "" {
 		inJSON, err = readAllOrStdin(*inputFile)
 		if err != nil {
@@ -72,6 +77,7 @@ func main() {
 		if os.IsPermission(err) {
 			log.Fatalf("Permission denied: Cannot write to %s", *solOutputPath)
 		}
+
 		log.Fatalf("Failed writing Solidity file: %v", err)
 	}
 
@@ -106,5 +112,6 @@ func readAllOrStdin(filePath string) ([]byte, error) {
 	if filePath == "-" {
 		return io.ReadAll(os.Stdin)
 	}
+
 	return os.ReadFile(filePath)
 }

@@ -68,6 +68,7 @@ func (p *parser) parse() ([]byte, error) {
 
 func (p *parser) parseContainer(ins []instruction, c *gabs.Container) ([]byte, error) {
 	var results []any
+
 	for _, in := range ins {
 		j := c.Path(in.path)
 		data := j.Data()
@@ -75,41 +76,50 @@ func (p *parser) parseContainer(ins []instruction, c *gabs.Container) ([]byte, e
 		if in.abiType != "" {
 			// single abi type
 			var err error
+
 			switch d := data.(type) {
 			case (float64):
 				data, err = makeGoNumber(in.abiType, d)
 			case ([]any):
 				data, err = makeGoArray(in.abiType, d)
 			}
+
 			if err != nil {
 				return nil, err
 			}
+
 			results = append(results, data)
 		} else {
 			// tuple type
 			if in.isArray {
 				// array of tuple
 				children := j.Children()
+
 				var arr [][]byte
+
 				for _, child := range children {
 					r, err := p.parseContainer(in.tuple, child)
 					if err != nil {
 						return nil, err
 					}
+
 					arr = append(arr, r)
 				}
+
 				results = append(results, arr)
 			} else {
 				r, err := p.parseContainer(in.tuple, j)
 				if err != nil {
 					return nil, err
 				}
+
 				results = append(results, r)
 			}
 		}
 	}
 
 	abiArgs := abi.Arguments{}
+
 	for _, in := range ins {
 		if in.abiType == "fp" {
 			abiType, err := abi.NewType("tuple", "FixedPoint", []abi.ArgumentMarshaling{
@@ -119,12 +129,14 @@ func (p *parser) parseContainer(ins []instruction, c *gabs.Container) ([]byte, e
 			if err != nil {
 				return nil, fmt.Errorf("invalid abi type: %w", err)
 			}
+
 			abiArgs = append(abiArgs, abi.Argument{Type: abiType})
 		} else if in.abiType != "" {
 			abiType, err := abi.NewType(in.abiType, "", nil)
 			if err != nil {
 				return nil, fmt.Errorf("invalid abi type: %w", err)
 			}
+
 			abiArgs = append(abiArgs, abi.Argument{Type: abiType})
 		} else {
 			// tuple type
@@ -132,10 +144,12 @@ func (p *parser) parseContainer(ins []instruction, c *gabs.Container) ([]byte, e
 			if in.isArray {
 				typ = "bytes[]"
 			}
+
 			abiType, err := abi.NewType(typ, "", nil)
 			if err != nil {
 				return nil, fmt.Errorf("invalid abi type: %w", err)
 			}
+
 			abiArgs = append(abiArgs, abi.Argument{Type: abiType})
 		}
 	}
@@ -169,6 +183,7 @@ func parseInstructions(schema []byte) ([]instruction, error) {
 		for pos < len(schema) && schema[pos] != ':' {
 			pos++
 		}
+
 		path := schema[pathStart:pos]
 
 		pos++ // :
@@ -178,15 +193,19 @@ func parseInstructions(schema []byte) ([]instruction, error) {
 
 		// parse type
 		instr := instruction{path: string(path)}
+
 		if schema[pos] == '(' {
 			pos++ // (
+
 			sectionStart := pos
 			for pos < len(schema) && schema[pos] != ')' {
 				pos++
 			}
+
 			if pos == len(schema) || schema[pos] != ')' {
 				return nil, fmt.Errorf("expected ')', got %s", string(schema[pos]))
 			}
+
 			section := schema[sectionStart:pos]
 			pos++
 
@@ -207,9 +226,11 @@ func parseInstructions(schema []byte) ([]instruction, error) {
 			for pos < len(schema) && schema[pos] != ',' {
 				pos++
 			}
+
 			abiType := schema[typeStart:pos]
 			instr.abiType = string(abiType)
 		}
+
 		res = append(res, instr)
 
 		pos++ // ,
@@ -235,26 +256,31 @@ func makeGoArray(abiType string, s []any) (any, error) {
 	switch abiType {
 	case "int256[]", "uint256[]":
 		var res []*big.Int
+
 		for _, arg := range s {
 			argFloat, ok := arg.(float64)
 			if !ok {
 				return nil, fmt.Errorf("array item is not a number: %v", arg)
 			}
+
 			i, _ := new(big.Float).SetFloat64(argFloat).Int(nil)
 			res = append(res, i)
 		}
+
 		return res, nil
 	case "bool[]":
 		var res []bool
 		for _, arg := range s {
 			res = append(res, arg.(bool))
 		}
+
 		return res, nil
 	case "string[]":
 		var res []string
 		for _, arg := range s {
 			res = append(res, arg.(string))
 		}
+
 		return res, nil
 	}
 

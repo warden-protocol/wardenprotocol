@@ -115,6 +115,7 @@ var (
 // capabilities aren't needed for testing.
 type App struct {
 	*runtime.App
+
 	legacyAmino       *codec.LegacyAmino
 	appCodec          codec.Codec
 	txConfig          client.TxConfig
@@ -205,6 +206,7 @@ func registerProphetHandlers(appOpts servertypes.AppOptions) {
 
 	if cast.ToBool(appOpts.Get("pricepred.enabled")) {
 		u := cast.ToString(appOpts.Get("pricepred.url"))
+
 		url, err := url.Parse(u)
 		if err != nil {
 			panic(fmt.Errorf("invalid pricepred url: %s", u))

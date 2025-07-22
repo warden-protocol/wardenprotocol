@@ -31,6 +31,7 @@ func NewIdentityFromSeed(seedPhrase string) (Identity, error) {
 
 	// Create a master key and derive the desired key
 	masterKey, ch := hd.ComputeMastersFromSeed(seedBytes)
+
 	derivedKey, err := hd.DerivePrivateKeyForPath(masterKey, ch, DefaultDerivationPath)
 	if err != nil {
 		return Identity{}, fmt.Errorf("failed to derive private key: %w", err)

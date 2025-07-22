@@ -131,15 +131,15 @@ func (k Keeper) GetActAuthority() string {
 	return k.actAuthority
 }
 
+// Logger returns a module-specific logger.
+func (k Keeper) Logger() log.Logger {
+	return k.logger.With("module", "x/"+v1beta3.ModuleName)
+}
+
 func (k Keeper) assertActAuthority(addr string) error {
 	if k.GetActAuthority() != addr {
 		return errorsmod.Wrapf(v1beta3.ErrInvalidActionSigner, "invalid authority; expected %s, got %s", k.GetAuthority(), addr)
 	}
 
 	return nil
-}
-
-// Logger returns a module-specific logger.
-func (k Keeper) Logger() log.Logger {
-	return k.logger.With("module", "x/"+v1beta3.ModuleName)
 }

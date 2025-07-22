@@ -24,11 +24,14 @@ func TestMain(m *testing.M) {
 //nolint:forbidigo
 func TestIntegration(t *testing.T) {
 	casesToRun := cases.List()
+
 	if list {
 		fmt.Println("Available test cases:")
+
 		for _, c := range casesToRun {
 			fmt.Println("*", getName(c))
 		}
+
 		return
 	}
 

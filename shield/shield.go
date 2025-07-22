@@ -22,6 +22,7 @@ type Environment = env.Environment
 func Parse(input string) (*ast.Expression, error) {
 	l := lexer.New(input)
 	p := parser.New(l)
+
 	root := p.Parse()
 	if len(p.Errors()) > 0 {
 		return nil, fmt.Errorf("parser errors: %v", p.Errors())

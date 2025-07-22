@@ -26,6 +26,7 @@ func (m *Metadata) AddFunction(identifier string) {
 func ExtractMetadata(expr *ast.Expression) Metadata {
 	var metadata Metadata
 	processNode(expr, &metadata)
+
 	return metadata
 }
 
@@ -40,6 +41,7 @@ func processNode(node *ast.Expression, metadata *Metadata) {
 		processNode(n.InfixExpression.Right, metadata)
 	case *ast.Expression_CallExpression:
 		metadata.AddFunction(n.CallExpression.Function.Value)
+
 		for _, arg := range n.CallExpression.Arguments {
 			processNode(arg, metadata)
 		}

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"html/template"
 	"io"
@@ -22,7 +23,7 @@ type Templates struct {
 	templates *template.Template
 }
 
-func (t *Templates) Render(w io.Writer, name string, data interface{}, _ echo.Context) error {
+func (t *Templates) Render(w io.Writer, name string, data any, _ echo.Context) error {
 	return t.templates.ExecuteTemplate(w, name, data)
 }
 
@@ -81,6 +82,7 @@ func newPage() Page {
 }
 
 func main() {
+	ctx := context.Background()
 	e := echo.New()
 
 	logLevel, err := log.ParseLevel(config.GetLogLevel())
@@ -105,7 +107,7 @@ func main() {
 	page := newPage()
 	e.Renderer = newTemplate()
 
-	f, err := InitFaucet(logger)
+	f, err := InitFaucet(ctx, logger)
 	if err != nil {
 		e.Logger.Fatal(err)
 	}
@@ -169,7 +171,7 @@ func main() {
 
 		reqCount.Inc()
 
-		txHash, httpStatusCode, err = f.Send(c.FormValue("address"), false)
+		txHash, httpStatusCode, err = f.Send(c.Request().Context(), c.FormValue("address"), false)
 		if err != nil {
 			logger.Error().Msgf("error sending tokens: %s", err)
 

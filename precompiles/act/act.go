@@ -30,6 +30,7 @@ var f embed.FS
 // Precompile defines the precompiled contract for x/act.
 type Precompile struct {
 	evmcmn.Precompile
+
 	actmodulekeeper actmodulekeeper.Keeper
 	eventsRegistry  *common.EthEventsRegistry
 	queryServer     types.QueryServer

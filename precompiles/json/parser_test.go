@@ -21,8 +21,10 @@ func (f *abiTupleBuilder) push(expected any, abiName string) *abiTupleBuilder {
 	if err != nil {
 		panic(err)
 	}
+
 	f.abiArgs = append(f.abiArgs, abi.Argument{Type: abiType})
 	f.values = append(f.values, expected)
+
 	return f
 }
 
@@ -47,6 +49,7 @@ func (f *abiTupleBuilder) uintArray(expected ...uint64) *abiTupleBuilder {
 	for _, e := range expected {
 		uints = append(uints, new(big.Int).SetUint64(e))
 	}
+
 	return f.push(uints, "uint256[]")
 }
 
@@ -55,6 +58,7 @@ func (f *abiTupleBuilder) intArray(expected ...int64) *abiTupleBuilder {
 	for _, e := range expected {
 		ints = append(ints, new(big.Int).SetInt64(e))
 	}
+
 	return f.push(ints, "int256[]")
 }
 
@@ -89,6 +93,7 @@ func (f *abiTupleBuilder) build() []byte {
 	if err != nil {
 		panic(err)
 	}
+
 	return res
 }
 
@@ -230,16 +235,20 @@ func TestParse(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(cmp.Or(tt.name, tt.schema), func(t *testing.T) {
 			p := parser{json: []byte(tt.json), schema: []byte(tt.schema)}
+
 			got, gotErr := p.parse()
 			if gotErr != nil {
 				if !tt.wantErr {
 					require.NoError(t, gotErr)
 				}
+
 				return
 			}
+
 			if tt.wantErr {
 				require.Error(t, gotErr, "output: %x", got)
 			}
+
 			require.Equal(t, tt.want, got)
 		})
 	}

@@ -42,6 +42,7 @@ func (k Keeper) PrepareProposalHandler(txConfig client.TxConfig) sdk.PrepareProp
 		if err != nil {
 			return 0, nil, err
 		}
+
 		return schedTxTriggerPosition, ethtx, nil
 	})
 }
@@ -64,15 +65,18 @@ func (k Keeper) ProcessProposalHandler(txConfig client.TxConfig) sdk.ProcessProp
 
 			if hasExtOptsTx, ok := tx.(authante.HasExtensionOptionsTx); ok {
 				opts := hasExtOptsTx.GetExtensionOptions()
+
 				typeURL := "/" + proto.MessageName(&types.ExtensionOptionsCallbacks{})
 				if len(opts) > 0 && opts[0].TypeUrl == typeURL {
 					if found {
 						// found a second transaction with the extensions
 						ctx.Logger().Error("invalid proposal: only one transaction per block can have the extension " + typeURL)
+
 						return &cometabci.ResponseProcessProposal{
 							Status: cometabci.ResponseProcessProposal_REJECT,
 						}, nil
 					}
+
 					position = i
 					found = true
 				}
@@ -89,6 +93,7 @@ func (k Keeper) ProcessProposalHandler(txConfig client.TxConfig) sdk.ProcessProp
 		// expect the tx to be at the block position [schedTxTriggerPosition]
 		if position != schedTxTriggerPosition {
 			ctx.Logger().Error("found x/sched injected transaction at the wrong position in block", "expected", schedTxTriggerPosition, "found", position)
+
 			return &cometabci.ResponseProcessProposal{
 				Status: cometabci.ResponseProcessProposal_REJECT,
 			}, nil
@@ -164,6 +169,7 @@ func buildCosmosWrappedTx(builder client.TxBuilder, signedEthTx *ethtypes.Transa
 	}
 
 	denom := vmtypes.GetEVMCoinDenom()
+
 	cosmosTx, err := tx.BuildTx(builder, denom)
 	if err != nil {
 		return nil, fmt.Errorf("BuildTx: %w", err)

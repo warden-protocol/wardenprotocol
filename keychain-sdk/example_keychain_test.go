@@ -38,14 +38,14 @@ func Main() {
 	app.SetKeyRequestHandler(func(ctx context.Context, w keychain.Writer, req *keychain.KeyRequest) {
 		// handle key request
 		if err := w.Fulfil(ctx, []byte("public key data")); err != nil {
-			logger.Error("could not fulfill key request", "error", err)
+			logger.ErrorContext(ctx, "could not fulfill key request", "error", err)
 		}
 	})
 
 	app.SetSignRequestHandler(func(ctx context.Context, w keychain.Writer, req *keychain.SignRequest) {
 		// handle sign request
 		if err := w.Fulfil(ctx, []byte("signature data")); err != nil {
-			logger.Error("could not fulfill sign request", "error", err)
+			logger.ErrorContext(ctx, "could not fulfill sign request", "error", err)
 		}
 	})
 

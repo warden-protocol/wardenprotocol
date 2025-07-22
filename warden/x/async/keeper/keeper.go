@@ -244,36 +244,6 @@ func (k Keeper) GetTaskVotes(ctx context.Context, taskId uint64) ([]types.TaskVo
 	return votes, nil
 }
 
-func (k *Keeper) addPlugin(ctx context.Context, p types.Plugin) error {
-	id := p.GetId()
-
-	if id == "" {
-		return errors.New("plugin ID cannot be empty")
-	}
-
-	found, err := k.plugins.Has(ctx, id)
-	if err != nil {
-		return err
-	}
-	if found {
-		return fmt.Errorf("duplicate plugin: %s", p.GetId())
-	}
-
-	if !p.Fee.IsValid() {
-		return fmt.Errorf("invalid plugin fees: %s", p.Fee)
-	}
-
-	if err := k.plugins.Set(ctx, id, p); err != nil {
-		return err
-	}
-
-	if err := k.pluginMetrics.Set(ctx, id, types.NewPluginMetrics(id)); err != nil {
-		return fmt.Errorf("failed to set plugin metrics for %s: %w", id, err)
-	}
-
-	return nil
-}
-
 func (k *Keeper) GetPlugin(ctx context.Context, id string) (types.Plugin, error) {
 	return k.plugins.Get(ctx, id)
 }
@@ -294,6 +264,37 @@ func (k Keeper) taskReadyCallback(
 	}
 
 	return k.schedKeeper.ExecuteCallback(ctx, task.CallbackId, output)
+}
+
+func (k *Keeper) addPlugin(ctx context.Context, p types.Plugin) error {
+	id := p.GetId()
+
+	if id == "" {
+		return errors.New("plugin ID cannot be empty")
+	}
+
+	found, err := k.plugins.Has(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	if found {
+		return fmt.Errorf("duplicate plugin: %s", p.GetId())
+	}
+
+	if !p.Fee.IsValid() {
+		return fmt.Errorf("invalid plugin fees: %s", p.Fee)
+	}
+
+	if err := k.plugins.Set(ctx, id, p); err != nil {
+		return err
+	}
+
+	if err := k.pluginMetrics.Set(ctx, id, types.NewPluginMetrics(id)); err != nil {
+		return fmt.Errorf("failed to set plugin metrics for %s: %w", id, err)
+	}
+
+	return nil
 }
 
 func (k Keeper) getCompletedTasksWithoutValidatorVote(ctx context.Context, valAddress sdk.ConsAddress, limit int) ([]prophet.TaskResult, error) {
@@ -384,6 +385,7 @@ func (k Keeper) getValidatorAddress(
 	}
 
 	valAddr := val.GetOperator()
+
 	addr, err := sdk.ValAddressFromBech32(valAddr)
 	if err != nil {
 		return nil, err

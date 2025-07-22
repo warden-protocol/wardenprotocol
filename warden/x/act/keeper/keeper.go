@@ -104,10 +104,10 @@ func (k Keeper) Logger() log.Logger {
 	return k.logger.With("module", "x/"+types.ModuleName)
 }
 
-func (k Keeper) getBlockTime(ctx context.Context) time.Time {
-	return sdk.UnwrapSDKContext(ctx).HeaderInfo().Time
-}
-
 func (k Keeper) TemplatesRegistry() *types.TemplatesRegistry {
 	return k.templatesRegistry
+}
+
+func (k Keeper) getBlockTime(ctx context.Context) time.Time {
+	return sdk.UnwrapSDKContext(ctx).HeaderInfo().Time
 }

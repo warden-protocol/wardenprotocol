@@ -20,18 +20,19 @@ func ExecTasks(r TaskReader, w TaskResultWriter) error {
 	go func() {
 		for task := range r.Read() {
 			log := log.With("task", task.ID)
+			ctx := context.TODO()
 
-			log.Debug("running task")
+			log.DebugContext(ctx, "running task")
 
-			output, err := Execute(context.TODO(), task)
+			output, err := Execute(ctx, task)
 			if err != nil {
-				log.Error("failed to run task", "err", err)
+				log.ErrorContext(ctx, "failed to run task", "err", err)
 				continue
 			}
 
 			err = w.Write(output)
 			if err != nil {
-				log.Error("failed to write task result", "err", err)
+				log.ErrorContext(ctx, "failed to write task result", "err", err)
 				continue
 			}
 		}
@@ -55,15 +56,16 @@ func ExecVotes(r TaskResultReader, w VoteWriter) error {
 	go func() {
 		for proposal := range r.Read() {
 			plog := log.With("task", proposal.ID)
+			ctx := context.TODO()
 
-			plog.Debug("verifying task proposal")
+			plog.DebugContext(ctx, "verifying task proposal")
 
-			err := Verify(context.TODO(), proposal)
+			err := Verify(ctx, proposal)
 			if err := w.Write(Vote{
 				ID:  proposal.ID,
 				Err: err,
 			}); err != nil {
-				plog.Error("failed to write vote", "err", err)
+				plog.ErrorContext(ctx, "failed to write vote", "err", err)
 				continue
 			}
 		}

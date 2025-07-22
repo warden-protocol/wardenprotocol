@@ -94,6 +94,7 @@ func (p *P) Run(tendermintRpc string) error {
 
 			p.selfAddressRwLock.Lock()
 			defer p.selfAddressRwLock.Unlock()
+
 			p.selfAddress = status.ValidatorInfo.Address
 
 			return
@@ -166,7 +167,7 @@ func (q *q[T]) Add(item T) {
 	select {
 	case q.ch <- item:
 	default:
-		slog.Warn("q.Add: queue is full, dropped item", "item", item)
+		slog.Warn("q.Add: queue is full, dropped item", "item", item) //nolint:noctx
 	}
 }
 

@@ -16,11 +16,13 @@ func Eval(exp *ast.Expression, env env.Environment) object.Object {
 		if !success {
 			return newError("invalid IntegerLiteral value: %s", exp.IntegerLiteral.Value)
 		}
+
 		return &object.Integer{Value: value}
 	case *ast.Expression_BooleanLiteral:
 		if exp.BooleanLiteral.Value {
 			return object.TRUE
 		}
+
 		return object.FALSE
 	case *ast.Expression_StringLiteral:
 		return &object.String{Value: exp.StringLiteral.Value}
@@ -29,6 +31,7 @@ func Eval(exp *ast.Expression, env env.Environment) object.Object {
 		for _, el := range exp.ArrayLiteral.Elements {
 			elements = append(elements, Eval(el, env))
 		}
+
 		return &object.Array{Elements: elements}
 	case *ast.Expression_Identifier:
 		if v, ok := builtins[exp.Identifier.Value]; ok {
@@ -51,6 +54,7 @@ func Eval(exp *ast.Expression, env env.Environment) object.Object {
 	case *ast.Expression_CallExpression:
 		fn := Eval(ast.NewIdentifier(exp.CallExpression.Function), env)
 		args := evalExpressions(exp.CallExpression.Arguments, env)
+
 		return applyFunction(fn, args)
 	}
 
@@ -63,6 +67,7 @@ func evalExpressions(exps []*ast.Expression, env env.Environment) []object.Objec
 		evaluated := Eval(e, env)
 		result = append(result, evaluated)
 	}
+
 	return result
 }
 
@@ -100,6 +105,7 @@ func evalPrefixSubOperator(right object.Object) object.Object {
 	}
 
 	v := right.(*object.Integer).Value
+
 	return &object.Integer{Value: new(big.Int).Neg(v)}
 }
 
@@ -175,24 +181,28 @@ func evalInfixExpression(exp *ast.InfixExpression, env env.Environment) object.O
 		if err != nil {
 			return err
 		}
+
 		return nativeBoolToBooleanObject(sign > 0)
 	case left.Type() == object.STRING_OBJ && right.Type() == object.STRING_OBJ && exp.Operator == "<":
 		sign, err := cmpBigInt(left, right)
 		if err != nil {
 			return err
 		}
+
 		return nativeBoolToBooleanObject(sign < 0)
 	case left.Type() == object.STRING_OBJ && right.Type() == object.STRING_OBJ && exp.Operator == ">=":
 		sign, err := cmpBigInt(left, right)
 		if err != nil {
 			return err
 		}
+
 		return nativeBoolToBooleanObject(sign >= 0)
 	case left.Type() == object.STRING_OBJ && right.Type() == object.STRING_OBJ && exp.Operator == "<=":
 		sign, err := cmpBigInt(left, right)
 		if err != nil {
 			return err
 		}
+
 		return nativeBoolToBooleanObject(sign <= 0)
 
 	// arithmetic operators
@@ -217,15 +227,18 @@ func nativeBoolToBooleanObject(input bool) *object.Boolean {
 	if input {
 		return object.TRUE
 	}
+
 	return object.FALSE
 }
 
 func parseBigInt(s string) (*big.Int, *object.Error) {
 	bigInt := new(big.Int)
+
 	bigInt, ok := bigInt.SetString(s, 10)
 	if !ok {
 		return nil, newError("invalid string number: %s", s)
 	}
+
 	return bigInt, nil
 }
 

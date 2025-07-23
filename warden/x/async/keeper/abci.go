@@ -56,7 +56,12 @@ func (k Keeper) BeginBlocker(ctx context.Context) error {
 		}
 
 		for _, id := range oldTaskIDs {
-			if err := k.tasks.pruneTask(ctx, id); err != nil {
+			t, err := k.tasks.Get(ctx, id)
+			if err != nil {
+				return err
+			}
+
+			if err := k.tasks.pruneTask(ctx, t); err != nil {
 				return err
 			}
 		}

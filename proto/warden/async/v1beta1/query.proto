@@ -16,10 +16,12 @@ package warden.async.v1beta1;
 
 import "amino/amino.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
+import "cosmos/base/v1beta1/coin.proto";
 import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/any.proto";
+import "warden/async/v1beta1/metrics.proto";
 import "warden/async/v1beta1/params.proto";
 import "warden/async/v1beta1/plugin.proto";
 import "warden/async/v1beta1/task.proto";
@@ -59,6 +61,10 @@ service Query {
   // Queries Plugins by validator.
   rpc PluginsByValidator(QueryPluginsByValidatorRequest) returns (QueryPluginsByValidatorResponse) {
     option (google.api.http).get = "/warden/async/plugins_by_validator/{validator}";
+  }
+
+  rpc PluginMetricsById(QueryPluginMetricsByIdRequest) returns (QueryPluginMetricsByIdResponse) {
+    option (google.api.http).get = "/warden/async/plugin_metrics/{id}";
   }
 }
 
@@ -145,4 +151,46 @@ message QueryPluginValidatorsResponse {
   int64 queue_total_weight = 1;
   repeated QueuePriority queue_priorities = 2 [(gogoproto.nullable) = false];
   repeated QueueWeight queue_weights = 3 [(gogoproto.nullable) = false];
+}
+
+message QueryPluginMetricsByIdRequest {
+  string id = 1;
+}
+
+message QueryPluginMetricsByIdResponse {
+  string plugin = 1;
+
+  string average_time_to_get_result_msec = 2 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "cosmossdk.io/math.Int",
+    (gogoproto.nullable) = false
+  ];
+
+  string average_input_size_bytes = 3 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "cosmossdk.io/math.Int",
+    (gogoproto.nullable) = false
+  ];
+
+  string average_output_size_bytes = 4 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "cosmossdk.io/math.Int",
+    (gogoproto.nullable) = false
+  ];
+
+  uint64 tasks_count = 5;
+  uint64 results_count = 6;
+
+  string success_task_ratio = 7 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+
+  repeated cosmos.base.v1beta1.DecCoin average_fee_paid = 8 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.DecCoins",
+    (amino.dont_omitempty) = true,
+    (amino.encoding) = "legacy_coins"
+  ];
 }

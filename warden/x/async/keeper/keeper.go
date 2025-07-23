@@ -20,6 +20,7 @@ import (
 
 	"cosmossdk.io/collections"
 	"cosmossdk.io/core/store"
+	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/log"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -52,6 +53,8 @@ type (
 		tasks              *TaskKeeper
 		votes              collections.Map[collections.Pair[uint64, sdk.ConsAddress], int32]
 
+		pluginMetrics collections.Map[string, types.PluginMetrics]
+
 		p *prophet.P
 
 		schedKeeper types.SchedKeeper
@@ -70,6 +73,7 @@ var (
 	QueueWeightPrefix      = collections.NewPrefix(8)
 	QueueTotalWeightPrefix = collections.NewPrefix(9)
 	QueuePriorityPrefix    = collections.NewPrefix(10)
+	PluginMetricsPrefix    = collections.NewPrefix(11)
 )
 
 func NewKeeper(
@@ -105,6 +109,7 @@ func NewKeeper(
 	queueWeights := collections.NewMap(sb, QueueWeightPrefix, "queue_weights", collections.PairKeyCodec(QueueIDKey, sdk.ConsAddressKey), WeightValue)
 	queueTotalWeights := collections.NewMap(sb, QueueTotalWeightPrefix, "queue_total_weight", QueueIDKey, WeightValue)
 	queuePriorities := collections.NewMap(sb, QueuePriorityPrefix, "queue_priorities", collections.PairKeyCodec(QueueIDKey, sdk.ConsAddressKey), PriorityValue)
+	pluginMetrics := collections.NewMap(sb, PluginMetricsPrefix, "plugin_metrics", collections.StringKey, codec.CollValue[types.PluginMetrics](cdc))
 
 	_, err := sb.Build()
 	if err != nil {
@@ -130,6 +135,8 @@ func NewKeeper(
 		queueWeights:       queueWeights,
 		tasks:              tasks,
 		votes:              votes,
+
+		pluginMetrics: pluginMetrics,
 
 		p: p,
 
@@ -178,6 +185,17 @@ func (k Keeper) AddTaskResult(ctx context.Context, id uint64, submitter sdk.Cons
 	if errorReason == "" {
 		if err := k.releaseFee(ctx, task, submitter); err != nil {
 			return err
+		}
+
+		pluginMetrics, err := k.GetPluginMetrics(ctx, task.Plugin)
+		if err != nil {
+			return fmt.Errorf("get plugin metrics for %s: %w", task.Plugin, err)
+		}
+
+		pluginMetrics.UpdateResultMetrics(len(output), now.Sub(task.CreatedAt), task.Fee.Total())
+
+		if err := k.pluginMetrics.Set(ctx, task.Plugin, pluginMetrics); err != nil {
+			return errorsmod.Wrapf(err, "failed to update metrics for plugin %s", task.Plugin)
 		}
 	} else {
 		if err := k.refundPluginFees(ctx, sdk.MustAccAddressFromBech32(task.Creator), task.Fee); err != nil {
@@ -245,7 +263,15 @@ func (k *Keeper) addPlugin(ctx context.Context, p types.Plugin) error {
 		return fmt.Errorf("invalid plugin fees: %s", p.Fee)
 	}
 
-	return k.plugins.Set(ctx, id, p)
+	if err := k.plugins.Set(ctx, id, p); err != nil {
+		return err
+	}
+
+	if err := k.pluginMetrics.Set(ctx, id, types.NewPluginMetrics(id)); err != nil {
+		return fmt.Errorf("failed to set plugin metrics for %s: %w", id, err)
+	}
+
+	return nil
 }
 
 func (k *Keeper) GetPlugin(ctx context.Context, id string) (types.Plugin, error) {

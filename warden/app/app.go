@@ -1,6 +1,7 @@
 package app
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -16,6 +17,7 @@ import (
 	evidencekeeper "cosmossdk.io/x/evidence/keeper"
 	feegrantkeeper "cosmossdk.io/x/feegrant/keeper"
 	upgradekeeper "cosmossdk.io/x/upgrade/keeper"
+	upgradetypes "cosmossdk.io/x/upgrade/types"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	abci "github.com/cometbft/cometbft/abci/types"
@@ -540,6 +542,10 @@ func New(
 	maxGasWanted := cast.ToUint64(appOpts.Get(srvflags.EVMMaxTxGasWanted))
 
 	app.setAnteHandler(app.txConfig, wasmConfig, app.GetKey(wasmtypes.StoreKey), maxGasWanted)
+
+	app.UpgradeKeeper.SetUpgradeHandler("v0.6.5", func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+		return app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
+	})
 
 	if err := app.Load(loadLatest); err != nil {
 		return nil, err

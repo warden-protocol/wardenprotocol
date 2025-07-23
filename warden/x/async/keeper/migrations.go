@@ -13,6 +13,12 @@
 
 package keeper
 
+import (
+	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	"github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
+)
+
 // Migrator is a struct for handling in-place store migrations.
 type Migrator struct {
 	keeper Keeper
@@ -21,4 +27,15 @@ type Migrator struct {
 // NewMigrator returns a new Migrator.
 func NewMigrator(keeper Keeper) Migrator {
 	return Migrator{keeper: keeper}
+}
+
+func (m *Migrator) Migrate3to4(ctx sdk.Context) error {
+	return m.keeper.plugins.Walk(ctx, nil, func(key string, p v1beta1.Plugin) (bool, error) {
+		err := m.keeper.pluginMetrics.Set(ctx, p.Id, v1beta1.NewPluginMetrics(p.Id))
+		if err != nil {
+			return true, err
+		}
+
+		return false, nil
+	})
 }

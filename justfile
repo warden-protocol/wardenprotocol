@@ -36,7 +36,6 @@ commit := `git rev-parse HEAD`
 short_commit := `git rev-parse --short HEAD`
 date := `date -u +"%Y-%m-%dT%H:%M:%SZ"`
 version := `git describe --tags --dirty --always`
-buildx_cache_flags := if env("GITHUB_ACTIONS", "") == "true" { "--cache-from type=gha --cache-to type=gha,mode=max" } else { "" }
 
 release-wardend push="true": release-wardend-binaries (release-publish-docker "wardend" push)
 
@@ -89,7 +88,7 @@ release-publish-docker project-name push="true":
         --label=org.opencontainers.image.url=https://wardenprotocol.org \
         --label=org.opencontainers.image.source=https://github.com/warden-protocol/wardenprotocol \
         --label=org.opencontainers.image.licenses=Apache-2.0 \
-        {{ buildx_cache_flags }} \
+        {{ if env("GITHUB_ACTIONS", "") == "true" { "--cache-from type=registry,ref=ghcr.io/warden-protocol/wardenprotocol/" + project-name + ":buildcache --cache-to type=registry,ref=ghcr.io/warden-protocol/wardenprotocol/" + project-name + ":buildcache,mode=max" } else { "" } }} \
         --push={{push}} \
         -f ./cmd/{{ project-name }}/Dockerfile \
         .

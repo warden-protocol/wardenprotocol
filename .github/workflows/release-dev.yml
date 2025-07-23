@@ -7,6 +7,16 @@ on:
       app_name:
         required: true
         type: string
+  workflow_dispatch:
+    inputs:
+      service_name:
+        description: "Service"
+        required: true
+        type: choice
+        options:
+          - wardend
+          - faucet
+          - wardenkms
 
 jobs:
   release-dev:

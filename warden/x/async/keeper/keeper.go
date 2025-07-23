@@ -74,7 +74,6 @@ var (
 	QueueTotalWeightPrefix = collections.NewPrefix(9)
 	QueuePriorityPrefix    = collections.NewPrefix(10)
 	PluginMetricsPrefix    = collections.NewPrefix(11)
-	PluginScoresPrefix     = collections.NewPrefix(12)
 )
 
 func NewKeeper(

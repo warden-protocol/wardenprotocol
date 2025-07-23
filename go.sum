@@ -939,8 +939,8 @@ github.com/cosmos/cosmos-db v1.1.3 h1:7QNT77+vkefostcKkhrzDK9uoIEryzFrU9eoMeaQOP
 github.com/cosmos/cosmos-db v1.1.3/go.mod h1:kN+wGsnwUJZYn8Sy5Q2O0vCYA99MJllkKASbs6Unb9U=
 github.com/cosmos/cosmos-proto v1.0.0-beta.5 h1:eNcayDLpip+zVLRLYafhzLvQlSmyab+RC5W7ZfmxJLA=
 github.com/cosmos/cosmos-proto v1.0.0-beta.5/go.mod h1:hQGLpiIUloJBMdQMMWb/4wRApmI9hjHH05nefC0Ojec=
-github.com/cosmos/cosmos-sdk v0.53.2 h1:QUok0dUzdxZedwunZ7N1GgJrctaGGGO8DUnKqkVRf1k=
-github.com/cosmos/cosmos-sdk v0.53.2/go.mod h1:90S054hIbadFB1MlXVZVC5w0QbKfd1P4b79zT+vvJxw=
+github.com/cosmos/cosmos-sdk v0.53.3 h1:GbDJNUP9OD0gGDVnjecZVZr0ZReD1BtIIxmtgrAsWiw=
+github.com/cosmos/cosmos-sdk v0.53.3/go.mod h1:90S054hIbadFB1MlXVZVC5w0QbKfd1P4b79zT+vvJxw=
 github.com/cosmos/evm v1.0.0-rc2.0.20250707012801-af6f8d436a41 h1:fUHKxX2UYHFNVWdUqkZEM7DUuUrvbsv7Q5qeg09C3Us=
 github.com/cosmos/evm v1.0.0-rc2.0.20250707012801-af6f8d436a41/go.mod h1:ZIHdhiKJkmYumuAVTlqc5Gb7csy+9SU+khYcjXg8J3g=
 github.com/cosmos/go-bip39 v1.0.0 h1:pcomnQdrdH22njcAatO0yWojsUnCO3y2tNoV1cb6hHY=

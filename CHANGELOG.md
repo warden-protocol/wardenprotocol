@@ -42,16 +42,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Consensus Breaking Changes
 
+### Features (non-breaking)
+
+### Bug Fixes
+
+## [v0.6.5](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.5) - 2025-07-23
+
+### Consensus Breaking Changes
+
 - (x/warden) Change the way Keychain's addresses are generated. They now are 20-bytes long to be compatible with EVM.
 - (precompiles) Fix panics when dealing with NewKeychainEvent and UpdateKeychainEvent from the x/warden precompiled contract.
 - (precompiles/json) Add a new API (`build()`) that allows to build an entire json object with a single function call.
 - (precompiles/json) Add a new API (`parse()`) that allows to parse a json object into a schema with a single function call.
+- (x/async) Add metrics for Plugins (usage counter, bytes in, bytes out, task average time, total fees paid, success ratio).
+- Bump to Cosmos SDK v0.53.3.
 
 ### Features (non-breaking)
 
 - (plugin/veniceimg) Generate large image and resize it afterwards, locally. This leads to a much higher image quality.
-
-### Bug Fixes
 
 ## [v0.6.4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.4) - 2025-07-07
 

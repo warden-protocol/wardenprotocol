@@ -52,6 +52,7 @@ release-wardend-binaries:
         --build-arg WASMVM_AMD64_CHECKSUM={{ wasmvm_amd64_checksum }} \
         --build-arg WASMVM_ARM64_CHECKSUM={{ wasmvm_arm64_checksum }} \
         -f ./cmd/wardend/Dockerfile \
+        {{ if env("GITHUB_ACTIONS", "") == "true" { "--cache-from type=registry,ref=ghcr.io/warden-protocol/wardenprotocol/wardend:buildcache --cache-to type=registry,ref=ghcr.io/warden-protocol/wardenprotocol/wardend:buildcache,mode=max" } else { "" } }} \
         --output dist .
 
     mv dist/linux_amd64/wardend dist/wardend-{{version}}-linux-amd64

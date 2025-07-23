@@ -9,8 +9,8 @@ on:
         type: string
   workflow_dispatch:
     inputs:
-      service_name:
-        description: "Service"
+      app_name:
+        description: "App"
         required: true
         type: choice
         options:

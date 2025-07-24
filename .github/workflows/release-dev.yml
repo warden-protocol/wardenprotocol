@@ -51,15 +51,22 @@ jobs:
         id: cache
         with:
           path: cache-mount
-          key: docker-cache-mount-${{ hashFiles('**/Dockerfile*') }}
+          key: docker-cache-mount-${{ hashFiles('**/Dockerfile*') }}-${{ github.run_id }}
+          restore-keys: |
+            docker-cache-mount-${{ hashFiles('**/Dockerfile*') }}
 
       - name: Restore Docker cache mounts
         uses: reproducible-containers/buildkit-cache-dance@v3
         with:
           builder: ${{ steps.setup-buildx.outputs.name }}
           cache-dir: cache-mount
-          dockerfile: Dockerfile
-          skip-extraction: ${{ steps.cache.outputs.cache-hit }}
+          cache-map: |
+            {
+              "cache-mount/go-build": "/root/.cache/go-build",
+              "cache-mount/go-mod": "/go/pkg/mod",
+              "cache-mount/var-cache-apt": "/var/cache/apt",
+              "cache-mount/var-lib-apt": "/var/lib/apt"
+            }
 
       - name: Setup just
         uses: extractions/setup-just@v2

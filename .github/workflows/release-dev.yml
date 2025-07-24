@@ -46,6 +46,21 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Cache
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: cache-mount
+          key: docker-cache-mount-${{ hashFiles('**/Dockerfile*') }}
+
+      - name: Restore Docker cache mounts
+        uses: reproducible-containers/buildkit-cache-dance@v3
+        with:
+          builder: ${{ steps.setup-buildx.outputs.name }}
+          cache-dir: cache-mount
+          dockerfile: Dockerfile
+          skip-extraction: ${{ steps.cache.outputs.cache-hit }}
+
       - name: Setup just
         uses: extractions/setup-just@v2
         with:

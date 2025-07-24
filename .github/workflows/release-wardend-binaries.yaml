@@ -1,0 +1,95 @@
+---
+name: Build and upload wardend binaries to GitHub release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-amd64:
+    name: Build for linux/amd64
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Expose GitHub Runtime
+        uses: crazy-max/ghaction-github-runtime@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Setup just
+        uses: extractions/setup-just@v2
+        with:
+          just-version: 1.40.0
+
+      - name: Build wardend
+        run: just release-wardend-binary
+
+      - name: Upload amd64 binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-amd64
+          path: dist/*
+
+  build-arm64:
+    name: Build for linux/arm64
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Expose GitHub Runtime
+        uses: crazy-max/ghaction-github-runtime@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Setup just
+        uses: extractions/setup-just@v2
+        with:
+          just-version: 1.40.0
+
+      - name: Build wardend
+        run: just release-wardend-binary
+
+      - name: Upload arm64 binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-arm64
+          path: dist/*
+
+  publish:
+    needs: [build-amd64, build-arm64]
+    name: Publish Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Generate checksums
+        run: |
+          cd artifacts/binary-amd64
+          sha256sum * > ../sha256sum.txt
+          cd ../binary-arm64
+          sha256sum * >> ../sha256sum.txt
+          cd ..
+
+      - name: Upload Release Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            artifacts/sha256sum.txt
+            artifacts/binary-amd64/*
+            artifacts/binary-arm64/*

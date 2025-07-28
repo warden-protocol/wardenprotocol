@@ -37,35 +37,7 @@ short_commit := `git rev-parse --short HEAD`
 date := `date -u +"%Y-%m-%dT%H:%M:%SZ"`
 version := `git describe --tags --dirty --always`
 
-release-wardend push="true": release-wardend-binaries (release-publish-docker "wardend" push)
-
-# Build the "dist/" folder with the wardend binaries for different architectures.
-release-wardend-binaries:
-    rm -rf dist
-
-    # build the wardend binaries
-    docker buildx build \
-        --platform linux/amd64 \
-        --target binary \
-        -t wardend-multi-platform \
-        --build-arg WASMVM_VERSION={{ wasmvm_version }} \
-        --build-arg WASMVM_AMD64_CHECKSUM={{ wasmvm_amd64_checksum }} \
-        --build-arg WASMVM_ARM64_CHECKSUM={{ wasmvm_arm64_checksum }} \
-        -f ./cmd/wardend/Dockerfile \
-        --output dist .
-
-    # mv dist/linux_amd64/wardend dist/wardend-{{version}}-linux-amd64
-    # mv dist/linux_arm64/wardend dist/wardend-{{version}}-linux-arm64
-    mv dist/wardend dist/wardend-{{version}}-linux-amd64
-    rm -rf dist/linux_amd64 dist/linux_arm64
-
-    tar caf dist/wardend-{{version}}-linux-amd64.tar.gz dist/wardend-{{version}}-linux-amd64
-    # tar caf dist/wardend-{{version}}-linux-arm64.tar.gz dist/wardend-{{version}}-linux-arm64
-
-    cd dist && sha256sum * > sha256sum.txt
-
-    @echo "Binary files written to dist/:"
-    ls -alh dist/
+release-wardend push="true": (release-publish-docker "wardend" push)
 
 release-faucet push="true": (release-publish-docker "faucet" push)
 
@@ -92,3 +64,31 @@ release-publish-docker project-name push="true":
         --push={{push}} \
         -f ./cmd/{{ project-name }}/Dockerfile \
         .
+
+# Build the "dist/" folder with the wardend binaries for different architectures.
+release-wardend-binaries:
+    rm -rf dist
+
+    # build the wardend binaries
+    docker buildx build \
+        --platform linux/amd64,linux/arm64 \
+        --target binary \
+        -t wardend-multi-platform \
+        --build-arg WASMVM_VERSION={{ wasmvm_version }} \
+        --build-arg WASMVM_AMD64_CHECKSUM={{ wasmvm_amd64_checksum }} \
+        --build-arg WASMVM_ARM64_CHECKSUM={{ wasmvm_arm64_checksum }} \
+        -f ./cmd/wardend/Dockerfile \
+        --output dist .
+
+    mv dist/linux_amd64/wardend dist/wardend-{{version}}-linux-amd64
+    mv dist/linux_arm64/wardend dist/wardend-{{version}}-linux-arm64
+    rm -rf dist/linux_amd64 dist/linux_arm64
+
+    tar caf dist/wardend-{{version}}-linux-amd64.tar.gz dist/wardend-{{version}}-linux-amd64
+    tar caf dist/wardend-{{version}}-linux-arm64.tar.gz dist/wardend-{{version}}-linux-arm64
+
+    cd dist && sha256sum * > sha256sum.txt
+
+    @echo "Binary files written to dist/:"
+    ls -alh dist/
+

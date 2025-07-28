@@ -19,7 +19,7 @@ on:
           - wardenkms
 
 jobs:
-  release-dev:
+  release-dev-amd64:
     name: release-dev ${{ inputs.app_name }}
     runs-on: ubuntu-latest
     permissions:
@@ -33,9 +33,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -46,33 +43,37 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Cache /go/pkg/mod
-        uses: actions/cache@v4
+      - name: Setup just
+        uses: extractions/setup-just@v2
         with:
-          path: go-pkg-mod
-          key: docker-go-pkg-mod-${{ github.run_id }}
-          restore-keys: |
-            docker-go-pkg-mod
+          just-version: 1.40.0
 
-      - name: Cache /root/.cache/go-build
-        uses: actions/cache@v4
-        with:
-          path: go-build
-          key: docker-go-build-${{ github.run_id }}
-          restore-keys: |
-            docker-go-build
+      - name: Release
+        run: just release-${{ inputs.app_name }}
 
-      - name: Docker cache mount /go/pkg/mod
-        uses: reproducible-containers/buildkit-cache-dance@v2.1.4
-        with:
-          cache-source: go-pkg-mod
-          cache-target: /go/pkg/mod
+  release-dev-arm64:
+    name: release-dev ${{ inputs.app_name }}
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      actions: read
+      contents: write
+      packages: write
 
-      - name: Docker cache mount /root/.cache/go-build
-        uses: reproducible-containers/buildkit-cache-dance@v2.1.4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          cache-source: go-build
-          cache-target: /root/.cache/go-build
+          fetch-depth: 0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup just
         uses: extractions/setup-just@v2

@@ -46,20 +46,33 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Cache
+      - name: Cache /go/pkg/mod
         uses: actions/cache@v4
-        id: cache
         with:
           path: go-pkg-mod
-          key: docker-cache-mount-${{ hashFiles('**/Dockerfile*') }}-${{ github.run_id }}
+          key: docker-go-pkg-mod-${{ github.run_id }}
           restore-keys: |
-            docker-cache-mount-${{ hashFiles('**/Dockerfile*') }}
+            docker-go-pkg-mod
 
-      - name: Inject go pkg mod cache
+      - name: Cache /root/.cache/go-build
+        uses: actions/cache@v4
+        with:
+          path: go-build
+          key: docker-go-build-${{ github.run_id }}
+          restore-keys: |
+            docker-go-build
+
+      - name: Docker cache mount /go/pkg/mod
         uses: reproducible-containers/buildkit-cache-dance@v2.1.4
         with:
           cache-source: go-pkg-mod
           cache-target: /go/pkg/mod
+
+      - name: Docker cache mount /root/.cache/go-build
+        uses: reproducible-containers/buildkit-cache-dance@v2.1.4
+        with:
+          cache-source: go-build
+          cache-target: /root/.cache/go-build
 
       - name: Setup just
         uses: extractions/setup-just@v2

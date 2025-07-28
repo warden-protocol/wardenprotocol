@@ -45,7 +45,7 @@ release-wardend-binaries:
 
     # build the wardend binaries
     docker buildx build \
-        --platform linux/amd64,linux/arm64 \
+        --platform linux/amd64 \
         --target binary \
         -t wardend-multi-platform \
         --build-arg WASMVM_VERSION={{ wasmvm_version }} \
@@ -54,12 +54,13 @@ release-wardend-binaries:
         -f ./cmd/wardend/Dockerfile \
         --output dist .
 
-    mv dist/linux_amd64/wardend dist/wardend-{{version}}-linux-amd64
-    mv dist/linux_arm64/wardend dist/wardend-{{version}}-linux-arm64
+    # mv dist/linux_amd64/wardend dist/wardend-{{version}}-linux-amd64
+    # mv dist/linux_arm64/wardend dist/wardend-{{version}}-linux-arm64
+    mv dist/wardend dist/wardend-{{version}}-linux-amd64
     rm -rf dist/linux_amd64 dist/linux_arm64
 
     tar caf dist/wardend-{{version}}-linux-amd64.tar.gz dist/wardend-{{version}}-linux-amd64
-    tar caf dist/wardend-{{version}}-linux-arm64.tar.gz dist/wardend-{{version}}-linux-arm64
+    # tar caf dist/wardend-{{version}}-linux-arm64.tar.gz dist/wardend-{{version}}-linux-arm64
 
     cd dist && sha256sum * > sha256sum.txt
 
@@ -73,7 +74,7 @@ release-wardenkms push="true": (release-publish-docker "wardenkms" push)
 release-publish-docker project-name push="true":
     # build the published docker image
     docker buildx build \
-        --platform linux/amd64,linux/arm64 \
+        --platform linux/amd64 \
         -t ghcr.io/warden-protocol/wardenprotocol/{{ project-name }}:{{ version }} \
         -t ghcr.io/warden-protocol/wardenprotocol/{{ project-name }}:{{ commit }} \
         -t ghcr.io/warden-protocol/wardenprotocol/{{ project-name }}:{{ short_commit }} \

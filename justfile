@@ -46,7 +46,6 @@ release-wardenkms push="true": (release-publish-docker "wardenkms" push)
 release-publish-docker project-name push="true":
     # build the published docker image
     docker buildx build \
-        --platform linux/amd64 \
         -t ghcr.io/warden-protocol/wardenprotocol/{{ project-name }}:{{ version }} \
         -t ghcr.io/warden-protocol/wardenprotocol/{{ project-name }}:{{ commit }} \
         -t ghcr.io/warden-protocol/wardenprotocol/{{ project-name }}:{{ short_commit }} \

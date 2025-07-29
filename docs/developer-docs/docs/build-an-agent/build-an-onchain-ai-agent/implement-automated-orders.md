@@ -38,7 +38,7 @@ In our example, the core logic of Orders resides in the `BasicOrder` contract.
 [`src/orders/BasicOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/v0.6.3/solidity/orders/src/orders/BasicOrder.sol)
 :::
 
-This contract implements the logic for price monitoring and trade execution using the [Slinky and Warden precompiles](build-the-infrastructure#4-create-mock-precompiles). Once the price threshold is met, the Order will construct a swap transaction, send it for signing, and record the transaction the [registry](build-the-infrastructure#3-implement-the-registry).
+This contract implements the logic for price monitoring and trade execution using the [Slinky and Warden precompiles](build-the-infrastructure#4-create-mock-precompiles). Once the price threshold is met, the Order will construct a swap transaction, send it for signing, and record the transaction in the [registry](build-the-infrastructure#3-implement-the-registry).
 
 To create this logic, add `BasicOrder` to the `src/orders` directory and take these steps:
 

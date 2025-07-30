@@ -108,7 +108,7 @@ func main() {
         // setup throughput for batching responses
         GasLimit:            400000,
         AutoEstimateGas:     true,
-		GasAdjustmentFactor: 1.2,
+        GasAdjustmentFactor: 1.2,
         BatchTimeout:        8 * time.Second,
         BatchSize:           10,
     })

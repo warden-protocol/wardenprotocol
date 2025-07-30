@@ -11,8 +11,11 @@ RUN --mount=type=bind,source=.,target=.,readonly\
     OUTPUT_DIR=/dist just wardend build
 
 FROM scratch AS binary
-COPY --from=build /dist/wardend /
-ENTRYPOINT ["/wardend"]
+ARG TARGETOS
+ARG TARGETARCH
+ARG WARDEND_VERSION="unknown"
+COPY --from=build /dist/wardend /wardend-$WARDEND_VERSION-$TARGETOS-$TARGETARCH
+ENTRYPOINT ["/wardend-$WARDEND_VERSION-$TARGETOS-$TARGETARCH"]
 
 FROM debian:bookworm-slim AS runtime
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \

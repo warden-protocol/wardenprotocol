@@ -65,30 +65,15 @@ release-publish-docker project-name push="true":
         -f ./cmd/{{ project-name }}/Dockerfile \
         .
 
-# Build the "dist/" folder with the wardend binaries for different architectures.
-release-wardend-binaries:
+release-wardend-binary:
     rm -rf dist
-
-    # build the wardend binaries
     docker buildx build \
-        --platform linux/amd64,linux/arm64 \
         --target binary \
-        -t wardend-multi-platform \
         --build-arg WASMVM_VERSION={{ wasmvm_version }} \
         --build-arg WASMVM_AMD64_CHECKSUM={{ wasmvm_amd64_checksum }} \
         --build-arg WASMVM_ARM64_CHECKSUM={{ wasmvm_arm64_checksum }} \
+        --build-arg WARDEND_VERSION={{ version }} \
         -f ./cmd/wardend/Dockerfile \
         --output dist .
-
-    mv dist/linux_amd64/wardend dist/wardend-{{version}}-linux-amd64
-    mv dist/linux_arm64/wardend dist/wardend-{{version}}-linux-arm64
-    rm -rf dist/linux_amd64 dist/linux_arm64
-
-    tar caf dist/wardend-{{version}}-linux-amd64.tar.gz dist/wardend-{{version}}-linux-amd64
-    tar caf dist/wardend-{{version}}-linux-arm64.tar.gz dist/wardend-{{version}}-linux-arm64
-
-    cd dist && sha256sum * > sha256sum.txt
-
-    @echo "Binary files written to dist/:"
-    ls -alh dist/
+    ls -alh dist
 

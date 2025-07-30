@@ -1,0 +1,59 @@
+---
+name: Build and upload wardend binaries to GitHub release
+
+on:
+  workflow_dispatch:
+  release:
+    types: [created]
+
+permissions:
+  contents: write
+
+jobs:
+  build-amd64:
+    if: github.event.release.draft == true
+    name: Build for linux/amd64
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup just
+        uses: extractions/setup-just@v2
+        with:
+          just-version: 1.40.0
+
+      - name: Build wardend
+        run: just release-wardend-binary
+
+      - name: Upload amd64 binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-amd64
+          path: dist/*
+
+  build-arm64:
+    if: github.event.release.draft == true
+    name: Build for linux/arm64
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup just
+        uses: extractions/setup-just@v2
+        with:
+          just-version: 1.40.0
+
+      - name: Build wardend
+        run: just release-wardend-binary
+
+      - name: Upload arm64 binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-arm64
+          path: dist/*

@@ -8,7 +8,7 @@ sidebar_position: 2
 
 Before you start, set up the development environment:
 
-1. [Install Foundry](https://book.getfoundry.sh/getting-started/installation) by running the following command:
+1. [Install Foundry](https://getfoundry.sh/introduction/installation/) by running the following command:
 
    ```bash
    curl -L https://foundry.paradigm.xyz | bash \ 

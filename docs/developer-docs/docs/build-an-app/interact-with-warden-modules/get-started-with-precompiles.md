@@ -19,7 +19,7 @@ To learn the basics of deploying contracts on Warden, refer to [Deploy an EVM co
 
 Before you start, complete the following prerequisites:
 
-- [Install Foundry](https://book.getfoundry.sh/getting-started/installation) by running this command:
+- [Install Foundry](https://getfoundry.sh/introduction/installation/) by running this command:
 
    ```bash
    curl -L https://foundry.paradigm.xyz | bash \ 

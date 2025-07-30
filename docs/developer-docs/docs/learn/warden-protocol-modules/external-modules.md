@@ -10,7 +10,7 @@ In this section, you'll find descriptions of external [Cosmos SDK](https://docs.
 
 ## x/evm
 
-The `x/evm` module is a Cosmos SDK module by **Evmos** that allows for the deployment of smart contracts, interaction with the Ethereum Virtual Machine (EVM), and the use of EVM tooling.
+The `x/evm` module is a Cosmos SDK module by **Cosmos EVM** (former **Evmos**) that allows for the deployment of smart contracts, interaction with the Ethereum Virtual Machine (EVM), and the use of EVM tooling.
 
 To start using `x/evm`, follow this guide:
 
@@ -18,7 +18,7 @@ To start using `x/evm`, follow this guide:
 
 Learn more:
 
-- [`x/evm` in Evmos documentation](https://docs.evmos.org/protocol/modules/evm)
+- [Cosmos EVM](https://evm.cosmos.network)
 - [`x/evm` on GitHub](https://github.com/evmos/ethermint/tree/v0.22.0/x/evm)
 
 ## x/wasm

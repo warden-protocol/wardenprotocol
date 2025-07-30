@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## Overview
 
-The `x/warden` module is a [Cosmos SDK](https://docs.cosmos.network/) module allowing users to create and manage their Spaces and request Keychains to sign payloads.
+The `x/warden` module is a [Cosmos SDK](https://docs.cosmos.network) module allowing users to create and manage their Spaces and request Keychains to sign payloads.
 
 This module implements Warden's core concepts:
 

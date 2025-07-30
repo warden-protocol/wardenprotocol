@@ -6,7 +6,7 @@ sidebar_position: 4
 
 ## Overview
 
-The `x/async` module is a [Cosmos SDK](https://docs.cosmos.network/) module for running offchain heavyweight computations asynchronously and storing the results onchain. It uses the [ABCI 2.0](https://docs.cometbft.com/v1.0/spec/abci/) framework
+The `x/async` module is a [Cosmos SDK](https://docs.cosmos.network) module for running offchain heavyweight computations asynchronously and storing the results onchain. It uses the [ABCI 2.0](https://docs.cometbft.com/v1.0/spec/abci/) framework
 and its [vote extensions](https://docs.cosmos.network/main/build/abci/vote-extensions).
 
 This module implements the following concepts:

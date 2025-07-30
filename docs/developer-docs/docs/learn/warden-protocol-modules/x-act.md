@@ -6,7 +6,7 @@ sidebar_position: 3
 
 ## Overview
 
-The `x/act` module is a [Cosmos SDK](https://docs.cosmos.network/) module executing messages (called Actions) under certain conditions, or Rules, defined by users.
+The `x/act` module is a [Cosmos SDK](https://docs.cosmos.network) module executing messages (called Actions) under certain conditions, or Rules, defined by users.
 
 This module implements the following concepts:
 

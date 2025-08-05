@@ -20,7 +20,7 @@ You'll take these steps:
 3. Deploy an Order: specify the Order input, including the price pair and threshold, and  monitor the result
 
 :::note
-This Order type serves as a foundation for building more advanced [Orders with price prediction](implement-orders-with-price-prediction). When implementing them, you'll add such features as mupltiple price sources (predicted and oracle), strict inequality comparisons (`<`, `>`), and a 24-hour execution time window. In addition to the Warden and Slinky precompiles, you'll also use Async.
+This Order type serves as a foundation for building more advanced [Orders with price prediction](implement-orders-with-price-prediction). When implementing them, you'll add such features as multiple price sources (predicted and oracle), strict inequality comparisons (`<`, `>`), and a 24-hour execution time window. In addition to the Warden and Slinky precompiles, you'll also use Async.
 :::
 
 ## Prerequisites

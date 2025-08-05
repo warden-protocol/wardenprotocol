@@ -1,5 +1,7 @@
 ![Warden Protocol](./docs/developer-docs/logo.svg)
 
+[![Twitter](https://img.shields.io/twitter/follow/wardenprotocol)](https://x.com/wardenprotocol)
+
 ## Overview
 
 This is a monorepo for Warden Protocol and its services.

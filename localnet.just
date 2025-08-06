@@ -7,7 +7,7 @@ val2_mnemonic := "door blast other element embark noodle maple agent drastic bun
 warden-precompiles := '["0x0000000000000000000000000000000000000100","0x0000000000000000000000000000000000000400","0x0000000000000000000000000000000000000800","0x0000000000000000000000000000000000000801","0x0000000000000000000000000000000000000802","0x0000000000000000000000000000000000000803","0x0000000000000000000000000000000000000804","0x0000000000000000000000000000000000000805","0x0000000000000000000000000000000000000900", "0x0000000000000000000000000000000000000901", "0x0000000000000000000000000000000000000902", "0x0000000000000000000000000000000000000903", "0x0000000000000000000000000000000000000904", "0x0000000000000000000000000000000000000905"]'
 
 # run a single-node chain locally, use "bin" to specify the binary name
-start bin="wardend" install="true":
+start bin="wardend" install="true" deploy-contracts="false":
     #!/usr/bin/env bash
     set -euxo pipefail
 
@@ -65,8 +65,14 @@ start bin="wardend" install="true":
     edit_genesis '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}'
     edit_genesis '.consensus["params"]["abci"]["vote_extensions_enable_height"] = "2"'
     edit_genesis '.app_state["evm"]["params"]["evm_denom"]="award"'
+    edit_genesis '.app_state["gov"]["params"]["voting_period"]="30s"'
+    edit_genesis '.app_state["gov"]["params"]["expedited_voting_period"]="15s"'
 
     post_start () {
+      if [[ "{{deploy-contracts}}" == "false" ]]; then
+        return
+      fi
+
       sleep 3
 
       ethereum_analyzer_wasm="./contracts/artifacts/ethereum_analyzer.wasm"

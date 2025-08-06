@@ -14,9 +14,9 @@ See also: [Connect documentation](https://docs.skip.build/connect/introduction)
 
 ## 1. Download
 
-Download the Connect binary from the [Connect releases](https://github.com/skip-mev/slinky/releases) page on GitHub. The initial version required for Warden is [v1.0.3](https://github.com/skip-mev/slinky/releases/tag/v1.0.3) or higher.
+Download the Connect binary from the [Connect releases](https://github.com/warden-protocol/connect/releases) page on GitHub. The initial version required for Warden is [v1.0.3](https://github.com/warden-protocol/connect/releases/tag/v1.0.3) or higher.
 
-You can also use a container image including the binary at [slinky-sidecar](https://github.com/skip-mev/slinky/pkgs/container/slinky-sidecar).
+You can also use a container image including the binary at [slinky-sidecar](https://github.com/warden-protocol/connect/pkgs/container/slinky-sidecar).
 
 ## 2. Run Connect sidecar
 

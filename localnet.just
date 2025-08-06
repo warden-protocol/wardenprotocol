@@ -117,4 +117,4 @@ deploy-contract contract from="shulgin" label="":
 
 # run the slinky sidecar
 slinky:
-    go run github.com/skip-mev/slinky/cmd/slinky
+    go run github.com/warden-protocol/connect/cmd/slinky

@@ -26,7 +26,8 @@ import (
 	channelkeeper "github.com/cosmos/ibc-go/v10/modules/core/04-channel/keeper"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
-	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
+
+	oraclekeeper "github.com/warden-protocol/connect/x/oracle/keeper"
 
 	wardenprecompiles "github.com/warden-protocol/wardenprotocol/precompiles"
 	actkeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"

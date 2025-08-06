@@ -22,8 +22,6 @@ replace (
 	github.com/gin-gonic/gin => github.com/gin-gonic/gin v1.7.0
 	github.com/mattn/go-sqlite3 => github.com/mattn/go-sqlite3 v1.14.24
 
-	github.com/skip-mev/slinky v1.2.2 => github.com/warden-protocol/connect v1.2.2
-
 	// replace broken goleveldb
 	github.com/syndtr/goleveldb => github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7
 )
@@ -74,12 +72,12 @@ require (
 	github.com/prometheus/client_golang v1.23.0
 	github.com/rs/zerolog v1.34.0
 	github.com/sethvargo/go-envconfig v1.3.0
-	github.com/skip-mev/slinky v1.2.2
 	github.com/spf13/cast v1.9.2
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/pflag v1.0.7
 	github.com/spf13/viper v1.20.1
 	github.com/stretchr/testify v1.10.0
+	github.com/warden-protocol/connect v1.3.0
 	golang.org/x/image v0.29.0
 	golang.org/x/tools v0.36.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20250728155136-f173205681a0

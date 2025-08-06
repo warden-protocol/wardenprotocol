@@ -40,4 +40,4 @@ The data provided by Connect is [validated](glossary#validator) by Warden's netw
 
 ## Available data feeds
 
-**Skip:Connect** can support over 2,000 currencies—see the available [data feeds on GitHub](https://github.com/skip-mev/slinky/blob/30bf58f5ad6dcf417a3747b7cfffdc637ae3c70f/cmd/constants/markets.go#L1615). Please note that this list may change over the course of time.
+**Skip:Connect** can support over 2,000 currencies—see the available [data feeds on GitHub](https://github.com/warden-protocol/connect/blob/30bf58f5ad6dcf417a3747b7cfffdc637ae3c70f/cmd/constants/markets.go#L1615). Please note that this list may change over the course of time.

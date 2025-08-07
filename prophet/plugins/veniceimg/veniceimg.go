@@ -6,25 +6,27 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"image"
+	"io"
+	"mime/multipart"
 	"net/http"
-
-	"github.com/gen2brain/webp"
-	"github.com/nfnt/resize"
-	_ "golang.org/x/image/webp"
 )
 
 type Plugin struct {
 	veniceimg veniceimgClient
+	storage   storageClient
 }
 
-func New(apiKey string) Plugin {
+func New(veniceKey, storageKey string) Plugin {
 	c := &http.Client{}
 
 	return Plugin{
 		veniceimg: veniceimgClient{
-			c:      c,
-			apiKey: apiKey,
+			c:         c,
+			veniceKey: veniceKey,
+		},
+		storage: storageClient{
+			c:          c,
+			storageKey: storageKey,
 		},
 	}
 }
@@ -52,21 +54,18 @@ func (p Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {
 		return nil, err
 	}
 
-	img, _, err := image.Decode(bytes.NewReader(imgBytes))
+	cid, err := p.storage.uploadToFilebase(ctx, "image.webp", imgBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	newImage := resize.Resize(256, 0, img, resize.Lanczos3)
-
-	buf := new(bytes.Buffer)
-
-	options := webp.Options{Lossless: false, Quality: 80}
-	if err := webp.Encode(buf, newImage, options); err != nil {
-		return nil, err
+	urls := map[string]string{
+		"filebase": "https://ipfs.filebase.io/ipfs/" + cid,
+		"ipfs":     "https://ipfs.io/ipfs/" + cid,
+		"pinata":   "https://gateway.pinata.cloud/ipfs/" + cid,
 	}
 
-	return buf.Bytes(), nil
+	return json.Marshal(urls)
 }
 
 func (p Plugin) Verify(ctx context.Context, input, output []byte) error {
@@ -74,8 +73,13 @@ func (p Plugin) Verify(ctx context.Context, input, output []byte) error {
 }
 
 type veniceimgClient struct {
-	c      *http.Client
-	apiKey string
+	c         *http.Client
+	veniceKey string
+}
+
+type storageClient struct {
+	c          *http.Client
+	storageKey string
 }
 
 type generatePayload struct {
@@ -85,8 +89,6 @@ type generatePayload struct {
 	Prompt        string `json:"prompt"`
 	Steps         int    `json:"steps"`
 	StylePreset   string `json:"style_preset"`
-	Height        int    `json:"height"`
-	Width         int    `json:"width"`
 }
 
 type timing struct {
@@ -111,8 +113,6 @@ func (c *veniceimgClient) generate(ctx context.Context, model string, prompt str
 		Prompt:        prompt,
 		Steps:         steps,
 		StylePreset:   stylePreset,
-		Height:        1024,
-		Width:         1024,
 	})
 	if err != nil {
 		return generateResponse{}, err
@@ -126,7 +126,7 @@ func (c *veniceimgClient) generate(ctx context.Context, model string, prompt str
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", "Bearer "+c.apiKey)
+	req.Header.Set("Authorization", "Bearer "+c.veniceKey)
 
 	httpRes, err := c.c.Do(req)
 	if err != nil {
@@ -144,4 +144,52 @@ func (c *veniceimgClient) generate(ctx context.Context, model string, prompt str
 	}
 
 	return res, nil
+}
+
+type filebaseAddResponse struct {
+	Name string `json:"Name"`
+	Hash string `json:"Hash"`
+	Size string `json:"Size"`
+}
+
+func (c *storageClient) uploadToFilebase(ctx context.Context, filename string, fileBytes []byte) (string, error) {
+	body := &bytes.Buffer{}
+	writer := multipart.NewWriter(body)
+
+	part, err := writer.CreateFormFile("file", filename)
+	if err != nil {
+		return "", err
+	}
+	if _, err := io.Copy(part, bytes.NewReader(fileBytes)); err != nil {
+		return "", err
+	}
+	if err := writer.Close(); err != nil {
+		return "", err
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, "https://rpc.filebase.io/api/v0/add", body)
+	if err != nil {
+		return "", err
+	}
+
+	req.Header.Set("Content-Type", writer.FormDataContentType())
+	req.Header.Set("Authorization", "Bearer "+c.storageKey)
+
+	client := http.DefaultClient
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("filebase upload failed: %s", resp.Status)
+	}
+
+	var res filebaseAddResponse
+	if err := json.NewDecoder(resp.Body).Decode(&res); err != nil {
+		return "", err
+	}
+
+	return res.Hash, nil
 }

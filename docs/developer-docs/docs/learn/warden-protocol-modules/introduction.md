@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Warden Protocol modules
 
-**Warden Protocol modules** are [Cosmos SDK](https://docs.cosmos.network/) modules containing most of Warden Protocol's logic.
+**Warden Protocol modules** are [Cosmos SDK](https://docs.cosmos.network) modules containing most of Warden Protocol's logic.
 
 Users can interact with modules by sending transactions or querying [nodes](../glossary#node). We also provide [precompiles](/build-an-app/interact-with-warden-modules/introduction) that allow calling certain modules in EVM smart contracts.
 

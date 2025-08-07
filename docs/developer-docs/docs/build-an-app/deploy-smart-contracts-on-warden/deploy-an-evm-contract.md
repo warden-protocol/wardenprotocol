@@ -9,9 +9,9 @@ import TabItem from '@theme/TabItem';
 
 ## Overview
 
-The [`x/evm` Warden module](/learn/warden-protocol-modules/external-modules#xevm) allows executing **Ethereum Virtual Machine (EVM)** contracts charged by [Evmos](https://docs.evmos.org/protocol/modules/evm) and written in **Solidity**.
+The [`x/evm` Warden module](/learn/warden-protocol-modules/external-modules#xevm) allows executing **Ethereum Virtual Machine (EVM)** contracts charged by [Cosmos EVM](https://evm.cosmos.network) (former Evmos) and written in **Solidity**.
 
-This guide explains how to create and deploy a Solidity smart contract on a Warden local chain or on a testnet. You'll deploy a simple counter contract using [Foundry](https://book.getfoundry.sh)'s toolset.
+This guide explains how to create and deploy a Solidity smart contract on a Warden local chain or on a testnet. You'll deploy a simple counter contract using [Foundry](https://getfoundry.sh)'s toolset.
 
 :::tip
 Existing Solidity contracts are easy to deploy on Warden, so you can seamlessly port applications from any EVM-compatible chain to Warden and reach new users. You can call [Warden precompiles](../precompiles/introduction) to [interact with Warden modules](../interact-with-warden-modules/introduction), accessing all core features of Warden Protocol. For advanced usage of EVM contracts with AI Agents, refer to [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction).
@@ -21,7 +21,7 @@ Existing Solidity contracts are easy to deploy on Warden, so you can seamlessly 
 
 Before you start, complete the following prerequisites:
 
-- [Install Foundry](https://book.getfoundry.sh/getting-started/installation) by running the following command:
+- [Install Foundry](https://getfoundry.sh/introduction/installation/) by running the following command:
 
   ```bash
   curl -L https://foundry.paradigm.xyz | bash \ 
@@ -128,7 +128,7 @@ cast code $CONTRACT_ADDRESS --rpc-url $RPC_URL
 ```
 
 :::note
-The [`cast code` Foundry command](https://book.getfoundry.sh/reference/cast/cast-code) allows you to get the bytecode of a contract.
+The [`cast code` Foundry command](https://getfoundry.sh/cast/reference/code/) allows you to get the bytecode of a contract.
 :::
 
 You'll see an output similar to the following:
@@ -148,7 +148,7 @@ Now you can interact with the contract: adjust and increment the counter number.
    ```
    
    :::note
-   The [`cast call` Foundry command](https://book.getfoundry.sh/reference/cast/cast-call) allows you to read data from the chain. In this example, it calls the `number()` getter function: the Solidity compiler automatically generated it from the `number` variable in the sample contract.
+   The [`cast call` Foundry command](https://getfoundry.sh/cast/reference/call/) allows you to read data from the chain. In this example, it calls the `number()` getter function: the Solidity compiler automatically generated it from the `number` variable in the sample contract.
    :::
 
    This will return a hex value representing 0:
@@ -166,7 +166,7 @@ Now you can interact with the contract: adjust and increment the counter number.
    ```
 
    :::note
-   The [`cast send` Foundry command](https://book.getfoundry.sh/reference/cast/cast-send) allows you to send transactions. Note that it requires signing a transaction with your private key. In this example, `cast send` calls the `setNumber()` function of the sample contract.
+   The [`cast send` Foundry command](https://getfoundry.sh/cast/reference/send/) allows you to send transactions. Note that it requires signing a transaction with your private key. In this example, `cast send` calls the `setNumber()` function of the sample contract.
    :::    
 
    The output will include `status: 1 (success)` indicating that the transaction was successful. You'll also see the block number and hash, the gas used, the transaction hash, and other details:

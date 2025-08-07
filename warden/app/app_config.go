@@ -74,13 +74,14 @@ import (
 	ibcexported "github.com/cosmos/ibc-go/v10/modules/core/exported"
 	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
 	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
-	marketmapmodulev1 "github.com/skip-mev/slinky/api/slinky/marketmap/module/v1"
-	oraclemodulev1 "github.com/skip-mev/slinky/api/slinky/oracle/module/v1"
-	_ "github.com/skip-mev/slinky/x/marketmap" // import for side-effects
-	marketmaptypes "github.com/skip-mev/slinky/x/marketmap/types"
-	_ "github.com/skip-mev/slinky/x/oracle" // import for side-effects
-	oracletypes "github.com/skip-mev/slinky/x/oracle/types"
 	"google.golang.org/protobuf/types/known/durationpb"
+
+	marketmapmodulev1 "github.com/warden-protocol/connect/api/slinky/marketmap/module/v1"
+	oraclemodulev1 "github.com/warden-protocol/connect/api/slinky/oracle/module/v1"
+	_ "github.com/warden-protocol/connect/x/marketmap" // import for side-effects
+	marketmaptypes "github.com/warden-protocol/connect/x/marketmap/types"
+	_ "github.com/warden-protocol/connect/x/oracle" // import for side-effects
+	oracletypes "github.com/warden-protocol/connect/x/oracle/types"
 
 	actmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/act/module"
 	asyncmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/async/module"

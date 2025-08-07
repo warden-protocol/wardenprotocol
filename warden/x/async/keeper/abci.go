@@ -23,7 +23,8 @@ import (
 	"cosmossdk.io/collections"
 	cometabci "github.com/cometbft/cometbft/abci/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/skip-mev/slinky/abci/ve"
+
+	"github.com/warden-protocol/connect/abci/ve"
 
 	"github.com/warden-protocol/wardenprotocol/prophet"
 	"github.com/warden-protocol/wardenprotocol/warden/abciutil"

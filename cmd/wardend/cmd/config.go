@@ -6,7 +6,8 @@ import (
 	cmtcfg "github.com/cometbft/cometbft/config"
 	serverconfig "github.com/cosmos/cosmos-sdk/server/config"
 	evmservercfg "github.com/cosmos/evm/server/config"
-	oracleconfig "github.com/skip-mev/slinky/oracle/config"
+
+	oracleconfig "github.com/warden-protocol/connect/oracle/config"
 
 	httpconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/http/config"
 	pfpconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/pfp/config"

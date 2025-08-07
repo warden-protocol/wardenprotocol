@@ -78,9 +78,10 @@ import (
 	corevm "github.com/ethereum/go-ethereum/core/vm"
 	_ "github.com/ethereum/go-ethereum/eth/tracers/js" // Force-load the tracer engines to trigger registration due to Go-Ethereum v1.10.15 changes
 	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
-	marketmapkeeper "github.com/skip-mev/slinky/x/marketmap/keeper"
-	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
 	"github.com/spf13/cast"
+
+	marketmapkeeper "github.com/warden-protocol/connect/x/marketmap/keeper"
+	oraclekeeper "github.com/warden-protocol/connect/x/oracle/keeper"
 
 	"github.com/warden-protocol/wardenprotocol/precompiles"
 	"github.com/warden-protocol/wardenprotocol/prophet"

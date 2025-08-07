@@ -4,7 +4,8 @@ package abciutil
 import (
 	cometabci "github.com/cometbft/cometbft/abci/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/skip-mev/slinky/abci/ve"
+
+	"github.com/warden-protocol/connect/abci/ve"
 )
 
 // InjectTxPrepareProposalHandler returns a PrepareProposalHandler that uses

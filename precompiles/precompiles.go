@@ -4,7 +4,8 @@ import (
 	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
 	ethcmn "github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
-	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
+
+	oraclekeeper "github.com/warden-protocol/connect/x/oracle/keeper"
 
 	actprecompile "github.com/warden-protocol/wardenprotocol/precompiles/act"
 	asyncprecompile "github.com/warden-protocol/wardenprotocol/precompiles/async"

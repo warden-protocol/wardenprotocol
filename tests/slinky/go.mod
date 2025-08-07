@@ -20,8 +20,8 @@ replace (
 
 require (
 	github.com/cosmos/cosmos-sdk v0.50.9
-	github.com/skip-mev/slinky v1.0.10
-	github.com/skip-mev/slinky/tests/integration v1.1.0
+	github.com/warden-protocol/connect v1.0.10
+	github.com/warden-protocol/connect/tests/integration v1.1.0
 	github.com/strangelove-ventures/interchaintest/v8 v8.4.0
 	github.com/stretchr/testify v1.9.0
 )

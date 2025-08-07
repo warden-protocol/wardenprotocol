@@ -21,7 +21,7 @@ We think AI will be integrated into every application. It's an inevitability. Bu
 
 We believe AI will power this new design space. It will change what crypto applications are capable of—not just at the smart contract level, it will also simplify front-ends, interpret complex data, and adapt the user experience in real time. Every major blockchain application will use AI, and we are here to lead this transformation.
 
-However, current crypto infrastructure focusses not on the user, or builder—but on niche (yes, cool) problems, like distributing model training. At Warden, we are thinking much bigger—taking AI onchain, and building with AI, is a complex deep tech challenge, and building a truly intelligent crypto app today is almost impossible. Most attempts have been surface-level—driven by buzzwords, not breakthroughs. The result? Truly intelligent crypto apps remain nearly impossible to build.
+However, current crypto infrastructure focuses not on the user, or builder—but on niche (yes, cool) problems, like distributing model training. At Warden, we are thinking much bigger—taking AI onchain, and building with AI, is a complex deep tech challenge, and building a truly intelligent crypto app today is almost impossible. Most attempts have been surface-level—driven by buzzwords, not breakthroughs. The result? Truly intelligent crypto apps remain nearly impossible to build.
 
 ### Mission: Expand Blockchain Capabilities
 

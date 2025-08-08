@@ -47,8 +47,6 @@ service Query {
   rpc ActionById(QueryActionByIdRequest) returns (QueryActionByIdResponse) {
     option (google.api.http).get = "/wardenprotocol/warden/act/action_by_id";
   }
-
-  // this line is used by starport scaffolding # 1
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.

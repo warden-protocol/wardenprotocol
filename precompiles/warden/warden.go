@@ -7,7 +7,7 @@ import (
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	cmn "github.com/cosmos/evm/precompiles/common"
+	evmcmn "github.com/cosmos/evm/precompiles/common"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/tracing"
@@ -32,7 +32,7 @@ const PrecompileAddress = "0x0000000000000000000000000000000000000900"
 
 // Precompile defines the precompiled contract for x/warden.
 type Precompile struct {
-	cmn.Precompile
+	evmcmn.Precompile
 
 	wardenkeeper   wardenmodulekeeper.Keeper
 	actkeeper      actmodulekeeper.Keeper
@@ -44,12 +44,13 @@ type Precompile struct {
 // LoadABI loads the x/warden ABI from the embedded abi.json file
 // for the x/warden precompile.
 func LoadABI() (abi.ABI, error) {
-	return cmn.LoadABI(f, "abi.json")
+	return evmcmn.LoadABI(f, "abi.json")
 }
 
 func NewPrecompile(
 	wardenkeeper wardenmodulekeeper.Keeper,
 	actkeeper actmodulekeeper.Keeper,
+	bankKeeper evmcmn.BankKeeper,
 	e *precommon.EthEventsRegistry,
 ) (*Precompile, error) {
 	abi, err := LoadABI()
@@ -58,7 +59,7 @@ func NewPrecompile(
 	}
 
 	p := Precompile{
-		Precompile: cmn.Precompile{
+		Precompile: evmcmn.Precompile{
 			ABI:                  abi,
 			KvGasConfig:          storetypes.KVGasConfig(),
 			TransientKVGasConfig: storetypes.TransientGasConfig(),
@@ -71,6 +72,7 @@ func NewPrecompile(
 	}
 
 	p.SetAddress(common.HexToAddress(PrecompileAddress))
+	p.SetBalanceHandler(bankKeeper)
 
 	return &p, nil
 }
@@ -110,7 +112,7 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz 
 
 	// This handles any out of gas errors that may occur during the execution of a precompile tx or query.
 	// It avoids panics and returns the out of gas error so the EVM can continue gracefully.
-	defer cmn.HandleGasError(ctx, contract, initialGas, &err)()
+	defer evmcmn.HandleGasError(ctx, contract, initialGas, &err)()
 
 	switch method.Name {
 	// transactions

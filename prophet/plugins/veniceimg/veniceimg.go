@@ -160,9 +160,11 @@ func (c *storageClient) uploadToFilebase(ctx context.Context, filename string, f
 	if err != nil {
 		return "", err
 	}
+
 	if _, err := io.Copy(part, bytes.NewReader(fileBytes)); err != nil {
 		return "", err
 	}
+
 	if err := writer.Close(); err != nil {
 		return "", err
 	}
@@ -176,6 +178,7 @@ func (c *storageClient) uploadToFilebase(ctx context.Context, filename string, f
 	req.Header.Set("Authorization", "Bearer "+c.storageKey)
 
 	client := http.DefaultClient
+
 	resp, err := client.Do(req)
 	if err != nil {
 		return "", err

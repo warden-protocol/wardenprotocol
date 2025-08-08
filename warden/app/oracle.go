@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"math/big"
+	"runtime/debug"
 	"time"
 
 	"cosmossdk.io/log"
@@ -10,8 +11,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/server/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/types/mempool"
+	sdkmempool "github.com/cosmos/cosmos-sdk/types/mempool"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
+	evmmempool "github.com/cosmos/evm/mempool"
 
 	oraclepreblock "github.com/warden-protocol/connect/abci/preblock/oracle"
 	"github.com/warden-protocol/connect/abci/proposals"
@@ -33,19 +35,12 @@ import (
 )
 
 func (app *App) initializeOracles(appOpts types.AppOptions) {
-	app.setupMempool()
 	baseProposalHandler := app.baseProposalHandler()
 	app.setupSlinkyClient(appOpts)
 	app.setupABCILifecycle(
 		baseProposalHandler.PrepareProposalHandler(),
 		baseProposalHandler.ProcessProposalHandler(),
 	)
-}
-
-func (app *App) setupMempool() {
-	// force NoOpMempool as required by x/evm
-	noopMempool := mempool.NoOpMempool{}
-	app.SetMempool(noopMempool)
 }
 
 func (app *App) setupSlinkyClient(appOpts types.AppOptions) {
@@ -60,8 +55,10 @@ func (app *App) setupSlinkyClient(appOpts types.AppOptions) {
 }
 
 func (app *App) baseProposalHandler() *baseapp.DefaultProposalHandler {
-	mempool := app.Mempool()
-	return baseapp.NewDefaultProposalHandler(mempool, app)
+	abciProposalHandler := baseapp.NewDefaultProposalHandler(nil, app)
+	abciProposalHandler.SetSignerExtractionAdapter(evmmempool.NewEthSignerExtractionAdapter(sdkmempool.NewDefaultSignerExtractionAdapter()))
+
+	return abciProposalHandler
 }
 
 type SlinkyClient struct {
@@ -259,6 +256,13 @@ func (app *App) setupABCILifecycle(
 
 func combinePreBlocker(a, b sdk.PreBlocker) sdk.PreBlocker {
 	return func(ctx sdk.Context, req *cometabci.RequestFinalizeBlock) (*sdk.ResponsePreBlock, error) {
+		defer func() {
+			if err := recover(); err != nil {
+				debug.PrintStack()
+				panic(err)
+			}
+		}()
+
 		respA, err := a(ctx, req)
 		if err != nil {
 			return respA, err

@@ -42,7 +42,11 @@ func LoadABI() (abi.ABI, error) {
 	return evmcmn.LoadABI(f, "abi.json")
 }
 
-func NewPrecompile(asynckeeper asyncmodulekeeper.Keeper, er *common.EthEventsRegistry) (*Precompile, error) {
+func NewPrecompile(
+	asynckeeper asyncmodulekeeper.Keeper,
+	bankKeeper evmcmn.BankKeeper,
+	er *common.EthEventsRegistry,
+) (*Precompile, error) {
 	abi, err := LoadABI()
 	if err != nil {
 		return nil, err
@@ -60,6 +64,7 @@ func NewPrecompile(asynckeeper asyncmodulekeeper.Keeper, er *common.EthEventsReg
 	}
 
 	p.SetAddress(p.Address())
+	p.SetBalanceHandler(bankKeeper)
 
 	return &p, nil
 }

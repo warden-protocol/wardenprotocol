@@ -17,7 +17,6 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Use:       "params",
 					Short:     "Shows the parameters of the module",
 				},
-				// this line is used by ignite scaffolding # autocli/query
 			},
 		},
 		Tx: &autocliv1.ServiceCommandDescriptor{
@@ -60,7 +59,6 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod: "FulfilSignRequest",
 					Skip:      true, // skipped in favor of the two separate commands for fulfilling or rejecting the request
 				},
-				// this line is used by ignite scaffolding # autocli/tx
 			},
 		},
 	}

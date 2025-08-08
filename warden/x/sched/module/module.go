@@ -6,20 +6,13 @@ import (
 	"fmt"
 
 	"cosmossdk.io/core/appmodule"
-	"cosmossdk.io/core/store"
-	"cosmossdk.io/depinject"
-	"cosmossdk.io/log"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
-	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 
-	modulev1 "github.com/warden-protocol/wardenprotocol/api/warden/sched/module"
 	"github.com/warden-protocol/wardenprotocol/warden/x/sched/keeper"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1"
 )
@@ -156,62 +149,3 @@ func (am AppModule) IsOnePerModuleType() {}
 
 // IsAppModule implements the appmodule.AppModule interface.
 func (am AppModule) IsAppModule() {}
-
-// ----------------------------------------------------------------------------
-// App Wiring Setup
-// ----------------------------------------------------------------------------
-
-func init() {
-	appmodule.Register(
-		&modulev1.Module{},
-		appmodule.Provide(ProvideModule),
-	)
-}
-
-type ModuleInputs struct {
-	depinject.In
-
-	StoreService store.KVStoreService
-	Cdc          codec.Codec
-	Config       *modulev1.Module
-	Logger       log.Logger
-
-	AccountKeeper types.AccountKeeper
-	BankKeeper    types.BankKeeper
-	GetEvmKeeper  func(_placeHolder int16) *evmkeeper.Keeper `optional:"true"`
-}
-
-type ModuleOutputs struct {
-	depinject.Out
-
-	SchedKeeper keeper.Keeper
-	Module      appmodule.AppModule
-}
-
-func ProvideModule(in ModuleInputs) ModuleOutputs {
-	// default to governance authority if not provided
-	authority := authtypes.NewModuleAddress(govtypes.ModuleName)
-	if in.Config.Authority != "" {
-		authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
-	}
-
-	schedModuleAddress := authtypes.NewModuleAddress(types.ModuleName)
-
-	k := keeper.NewKeeper(
-		in.Cdc,
-		in.StoreService,
-		in.Logger,
-		authority.String(),
-		schedModuleAddress,
-		in.AccountKeeper,
-		in.GetEvmKeeper,
-	)
-	m := NewAppModule(
-		in.Cdc,
-		k,
-		in.AccountKeeper,
-		in.BankKeeper,
-	)
-
-	return ModuleOutputs{SchedKeeper: k, Module: m}
-}

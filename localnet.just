@@ -1,5 +1,4 @@
 chain_id := "warden_1337-1"
-evm_chain_id := "1337"
 shulgin := "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5"
 shulgin_mnemonic := "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
 val2 := "warden194j3dx4t7u80765k2puu3082vc39yfqnvrxqu7"
@@ -35,9 +34,9 @@ start bin="wardend" install="true" deploy-contracts="false":
     }
 
     rm -rf $WARDEN_HOME
+    {{bin}} init localnet --chain-id {{chain_id}} --default-denom award > /dev/null
     {{bin}} config set client chain-id {{chain_id}}
     {{bin}} config set client keyring-backend test
-    {{bin}} init localnet --chain-id {{chain_id}} --default-denom award > /dev/null
     {{bin}} config set app minimum-gas-prices 0award
     {{bin}} config set app api.enable true
     {{bin}} config set app api.enabled-unsafe-cors true
@@ -67,13 +66,14 @@ start bin="wardend" install="true" deploy-contracts="false":
     edit_genesis '.app_state["evm"]["params"]["evm_denom"]="award"'
     edit_genesis '.app_state["gov"]["params"]["voting_period"]="30s"'
     edit_genesis '.app_state["gov"]["params"]["expedited_voting_period"]="15s"'
+    edit_genesis '.app_state["feemarket"]["params"]["no_base_fee"]=true'
 
     post_start () {
       if [[ "{{deploy-contracts}}" == "false" ]]; then
         return
       fi
 
-      sleep 3
+      sleep 5
 
       ethereum_analyzer_wasm="./contracts/artifacts/ethereum_analyzer.wasm"
       if [ -f $ethereum_analyzer_wasm ]; then
@@ -106,14 +106,7 @@ start bin="wardend" install="true" deploy-contracts="false":
       fi
     }
 
-    (post_start &) && {{bin}} start --evm.evm-chain-id {{evm_chain_id}}
-
-# deploy a .wasm binary to the chain and return the contract address
-deploy-contract contract from="shulgin" label="":
-    #!/usr/bin/env bash
-    CODE_ID=$(wardend tx wasm store {{contract}} --from {{from}} -y --gas auto --gas-adjustment 1.3 | wardend q wait-tx -o json | jq '.events[] | select(.type == "store_code") | .attributes[] | select(.key == "code_id") | .value | tonumber')
-    ADDR=$(wardend tx wasm instantiate $CODE_ID '{}' --from {{from}} --label "{{if label == "" { "default" } else { label } }}" --no-admin -y | wardend q wait-tx -o json | jq '.events[] | select(.type == "instantiate") | .attributes[] | select(.key == "_contract_address") | .value')
-    echo {{contract}} deployed at $ADDR
+    (post_start &) && {{bin}} start
 
 # run the slinky sidecar
 slinky:

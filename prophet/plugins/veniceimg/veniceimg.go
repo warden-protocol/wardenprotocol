@@ -17,15 +17,13 @@ type Plugin struct {
 }
 
 func New(veniceKey, storageKey string) Plugin {
-	c := &http.Client{}
-
 	return Plugin{
 		veniceimg: veniceimgClient{
-			c:         c,
+			c:         &http.Client{},
 			veniceKey: veniceKey,
 		},
 		storage: storageClient{
-			c:          c,
+			c:          &http.Client{},
 			storageKey: storageKey,
 		},
 	}

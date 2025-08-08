@@ -5,8 +5,6 @@ import (
 
 	corestoretypes "cosmossdk.io/core/store"
 	errorsmod "cosmossdk.io/errors"
-	circuitante "cosmossdk.io/x/circuit/ante"
-	circuitkeeper "cosmossdk.io/x/circuit/keeper"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmTypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -33,7 +31,6 @@ type HandlerOptions struct {
 	WasmConfig            *wasmTypes.NodeConfig
 	WasmKeeper            *wasmkeeper.Keeper
 	TXCounterStoreService corestoretypes.KVStoreService
-	CircuitKeeper         *circuitkeeper.Keeper
 
 	// evm
 	FeeMarketKeeper anteinterfaces.FeeMarketKeeper
@@ -55,7 +52,6 @@ func newCosmosAnteHandler(options HandlerOptions) sdk.AnteHandler {
 		wasmkeeper.NewLimitSimulationGasDecorator(options.WasmConfig.SimulationGasLimit), // after setup context to enforce limits early
 		wasmkeeper.NewCountTXDecorator(options.TXCounterStoreService),
 		wasmkeeper.NewGasRegisterDecorator(options.WasmKeeper.GetGasRegister()),
-		circuitante.NewCircuitBreakerDecorator(options.CircuitKeeper),
 		authante.NewExtensionOptionsDecorator(options.ExtensionOptionChecker),
 		authante.NewValidateBasicDecorator(),
 		authante.NewTxTimeoutHeightDecorator(),
@@ -105,10 +101,6 @@ func (options HandlerOptions) Validate() error {
 
 	if options.TXCounterStoreService == nil {
 		return errors.New("wasm store service is required for ante builder")
-	}
-
-	if options.CircuitKeeper == nil {
-		return errors.New("circuit keeper is required for ante builder")
 	}
 
 	if options.EVMKeeper == nil {

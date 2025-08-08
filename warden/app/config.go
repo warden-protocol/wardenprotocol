@@ -1,19 +1,8 @@
 package app
 
 import (
-	"errors"
-	"fmt"
-	"strconv"
-	"strings"
-
 	"cosmossdk.io/math"
-	"github.com/cosmos/cosmos-sdk/codec"
-	"github.com/cosmos/cosmos-sdk/codec/legacy"
-	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/x/auth/migrations/legacytx"
-	"github.com/cosmos/evm/crypto/ethsecp256k1"
-	evmcodec "github.com/cosmos/evm/encoding/codec"
 	"github.com/cosmos/evm/ethereum/eip712"
 	evmtypes "github.com/cosmos/evm/x/vm/types"
 )
@@ -27,29 +16,9 @@ var coinInfo = evmtypes.EvmCoinInfo{
 	Decimals:      evmtypes.EighteenDecimals,
 }
 
-func RegisterEVMCodec(legacyAmino *codec.LegacyAmino, interfaceRegistry codectypes.InterfaceRegistry) {
-	legacyAmino.RegisterConcrete(&ethsecp256k1.PubKey{},
-		ethsecp256k1.PubKeyName, nil)
-	legacyAmino.RegisterConcrete(&ethsecp256k1.PrivKey{},
-		ethsecp256k1.PrivKeyName, nil)
-	legacy.Cdc = legacyAmino
-	legacytx.RegressionTestingAminoCodec = legacyAmino
-
-	evmcodec.RegisterInterfaces(interfaceRegistry)
-}
-
-func (app *App) setupEVM() error {
+func (app *App) setupEVM(evmChainID uint64) error {
 	if sealed {
-		return errors.New("setupEVM called twice")
-	}
-
-	chainID := app.ChainID()
-	from := strings.LastIndexByte(chainID, '_')
-	to := strings.LastIndexByte(chainID, '-')
-
-	evmChainID, err := strconv.ParseUint(chainID[from+1:to], 10, 64)
-	if err != nil {
-		return fmt.Errorf("can't parse evm chain id from %s: %w", chainID, err)
+		return nil
 	}
 
 	eip712.SetEncodingConfig(app.legacyAmino, app.interfaceRegistry, evmChainID)

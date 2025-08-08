@@ -257,7 +257,7 @@ client_timeout = "2s"
 # MetricsEnabled determines whether oracle metrics are enabled. Specifically
 # this enables instrumentation of the oracle client and the interaction between
 # the oracle and the app.
-metrics_enabled = "false"
+metrics_enabled = "true"
 
 # PriceTTL is the maximum age of the latest price response before it is considered stale.
 # The recommended max age is 10 seconds (10s). If this is greater than 1 minute (1m), the app
@@ -296,13 +296,17 @@ evm-chain-id = 1337
 [json-rpc]
 
 # Enable defines if the JSONRPC server should be enabled.
-enable = true
+enable = false
 
 # Address defines the EVM RPC HTTP server address to bind to.
 address = "127.0.0.1:{{ .JSONRPCPort }}"
 
 # Address defines the EVM WebSocket server address to bind to.
 ws-address = "127.0.0.1:{{ .JSONRPCWSPort }}"
+
+# WSOrigins defines the allowed origins for WebSocket connections.
+# Example: ["localhost", "127.0.0.1", "myapp.example.com"]
+ws-origins = ["127.0.0.1", "localhost"]
 
 # API defines a list of JSON-RPC namespaces that should be enabled
 # Example: "eth,txpool,personal,net,debug,web3"
@@ -356,6 +360,9 @@ metrics-address = "127.0.0.1:6065"
 # Upgrade height for fix of revert gas refund logic when transaction reverted.
 fix-revert-gas-refund-height = 0
 
+# Enabled profiling in the debug namespace
+enable-profiling = false
+
 ###############################################################################
 ###                             TLS Configuration                           ###
 ###############################################################################
@@ -367,90 +374,3 @@ certificate-path = ""
 
 # Key path defines the key.pem file path for the TLS configuration.
 key-path = ""
-
-###############################################################################
-###                      Price prediction configuration                     ###
-###############################################################################
-[pricepred]
-
-# Is price prediction enabled
-enabled = "true"
-
-# URL used for price prediction plugin
-url = "https://tpc.devnet.wardenprotocol.org"
-
-###############################################################################
-###                      HTTP configuration                                 ###
-###############################################################################
-[http]
-
-# Is HTTP plugin enabled
-enabled = "true"
-
-# URLs used for HTTP plugin
-urls = ["https://api.coingecko.com"]
-
-# Timeout in seconds for the HTTP client
-timeout_sec = 5
-
-###############################################################################
-###                      PFP configuration                                  ###
-###############################################################################
-[pfp]
-
-# Is PFP plugin enabled
-enabled = false
-
-# API Key used when making PFP API requests
-api-key = ""
-
-# API URL used when making PFP API requests
-api-url = ""
-
-# Bucket Key used when storing PFP data on S3
-bucket-key = ""
-
-# Bucket Secret Key used when storing PFP data on S3
-bucket-secret-key = ""
-
-# Bucket name used when storing PFP data on S3
-bucket-name = ""
-
-# Bucket region for S3
-bucket-region = ""
-
-###############################################################################
-###                      Quantkit configuration                             ###
-###############################################################################
-[quantkit]
-
-# Is QuantKit plugin enabled
-enabled = false
-
-# API Key used when making Quantkit API requests
-api-key = ""
-
-# API URL used when making Quantkit API requests
-api-url = ""
-
-###############################################################################
-###                      Venice configuration                               ###
-###############################################################################
-[venice]
-
-# Is Venice plugin enabled
-enabled = "false"
-
-# API Key used when making Venice API requests
-api-key = ""
-
-###############################################################################
-###                       VeniceImg  configuration                          ###
-###############################################################################
-[veniceimg]
-
-# Is VeniceImg plugin enabled
-enabled = "false"
-
-# API Key used when making VeniceImg API requests
-api-key = ""

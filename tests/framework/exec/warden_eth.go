@@ -1,9 +1,11 @@
 package exec
 
 import (
+	"context"
 	"crypto/ecdsa"
 	"math/big"
 	"testing"
+	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -83,7 +85,10 @@ func (c EthClient) WaitDeployed(t *testing.T, tx *types.Transaction) common.Addr
 }
 
 func (c EthClient) WaitMined(t *testing.T, tx *types.Transaction, status uint64) *types.Receipt {
-	receipt, err := bind.WaitMined(t.Context(), c.Client, tx)
+	ctx, cancel := context.WithTimeout(t.Context(), 5*time.Second)
+	defer cancel()
+
+	receipt, err := bind.WaitMined(ctx, c.Client, tx)
 	require.NoError(t, err)
 	require.Equal(t, status, receipt.Status)
 

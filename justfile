@@ -24,14 +24,15 @@ mod solidity
 # deploy a .wasm binary to the chain and return the contract address
 deploy-contract contract from="shulgin" label="":
     #!/usr/bin/env bash
-    CODE_ID=$(wardend tx wasm store {{contract}} --from {{from}} -y --gas auto --gas-adjustment 1.3 | wardend q wait-tx -o json | jq '.events[] | select(.type == "store_code") | .attributes[] | select(.key == "code_id") | .value | tonumber')
-    ADDR=$(wardend tx wasm instantiate $CODE_ID '{}' --from {{from}} --label "{{if label == "" { "default" } else { label } }}" --no-admin -y | wardend q wait-tx -o json | jq '.events[] | select(.type == "instantiate") | .attributes[] | select(.key == "_contract_address") | .value')
+    set -euxo pipefail
+    CODE_ID=$(wardend tx wasm store {{contract}} --from {{from}} -y --gas 10000000 --fees 1award | wardend q wait-tx -o json | jq '.events[] | select(.type == "store_code") | .attributes[] | select(.key == "code_id") | .value | tonumber')
+    ADDR=$(wardend tx wasm instantiate $CODE_ID '{}' --from {{from}} --label "{{if label == "" { "default" } else { label } }}" --no-admin --fees 1award -y | wardend q wait-tx -o json | jq '.events[] | select(.type == "instantiate") | .attributes[] | select(.key == "_contract_address") | .value')
     echo {{contract}} deployed at $ADDR
 
 # variables for building and releasing
-wasmvm_version := `go list -m -f '{{ .Version }}' github.com/CosmWasm/wasmvm/v2`
-wasmvm_amd64_checksum := 'a7f6f5a79f41c756f87e4e3de86439a18fec07238c2521ac21ac2e5655751460'
-wasmvm_arm64_checksum := '3a6f1a2448cb88c6a00faf9a2c72262d8b2d6b65a3a1dd3c969e5df42534bb0d'
+wasmvm_version := `go list -m -f '{{ .Version }}' github.com/CosmWasm/wasmvm/v3`
+wasmvm_amd64_checksum := '4bd105706594ae63b6a24d9043adf5f6c4c8e366e8e10f4efbe75b05732cf4ea'
+wasmvm_arm64_checksum := '7de57bd0bc7a3301a62930c8aca355f36d2ee8bf17de576235dc1ed58d19e265'
 commit := `git rev-parse HEAD`
 short_commit := `git rev-parse --short HEAD`
 date := `date -u +"%Y-%m-%dT%H:%M:%SZ"`

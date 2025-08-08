@@ -8,7 +8,6 @@ import (
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 
-	"github.com/warden-protocol/wardenprotocol/warden/testutil/sample"
 	actsimulation "github.com/warden-protocol/wardenprotocol/warden/x/act/simulation"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
@@ -17,7 +16,6 @@ import (
 var (
 	_ = actsimulation.FindAccount
 	_ = rand.Rand{}
-	_ = sample.AccAddress
 	_ = sdk.AccAddress{}
 	_ = simulation.MsgEntryKind
 )

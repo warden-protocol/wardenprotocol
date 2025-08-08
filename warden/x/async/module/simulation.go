@@ -21,7 +21,6 @@ import (
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 
-	"github.com/warden-protocol/wardenprotocol/warden/testutil/sample"
 	asyncsimulation "github.com/warden-protocol/wardenprotocol/warden/x/async/simulation"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
@@ -30,7 +29,6 @@ import (
 var (
 	_ = asyncsimulation.FindAccount
 	_ = rand.Rand{}
-	_ = sample.AccAddress
 	_ = sdk.AccAddress{}
 	_ = simulation.MsgEntryKind
 )

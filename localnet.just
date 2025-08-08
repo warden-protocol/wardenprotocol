@@ -65,9 +65,10 @@ start bin="wardend" install="true":
     edit_genesis '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}'
     edit_genesis '.consensus["params"]["abci"]["vote_extensions_enable_height"] = "2"'
     edit_genesis '.app_state["evm"]["params"]["evm_denom"]="award"'
+    edit_genesis '.app_state["feemarket"]["params"]["no_base_fee"]=true'
 
     post_start () {
-      sleep 3
+      sleep 5
 
       ethereum_analyzer_wasm="./contracts/artifacts/ethereum_analyzer.wasm"
       if [ -f $ethereum_analyzer_wasm ]; then
@@ -101,13 +102,6 @@ start bin="wardend" install="true":
     }
 
     (post_start &) && {{bin}} start --evm.evm-chain-id {{evm_chain_id}}
-
-# deploy a .wasm binary to the chain and return the contract address
-deploy-contract contract from="shulgin" label="":
-    #!/usr/bin/env bash
-    CODE_ID=$(wardend tx wasm store {{contract}} --from {{from}} -y --gas auto --gas-adjustment 1.3 | wardend q wait-tx -o json | jq '.events[] | select(.type == "store_code") | .attributes[] | select(.key == "code_id") | .value | tonumber')
-    ADDR=$(wardend tx wasm instantiate $CODE_ID '{}' --from {{from}} --label "{{if label == "" { "default" } else { label } }}" --no-admin -y | wardend q wait-tx -o json | jq '.events[] | select(.type == "instantiate") | .attributes[] | select(.key == "_contract_address") | .value')
-    echo {{contract}} deployed at $ADDR
 
 # run the slinky sidecar
 slinky:

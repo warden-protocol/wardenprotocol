@@ -90,6 +90,7 @@ func Build(t *testing.T, wardendPath, savePath string, opts BuildOptions) {
 
 	genesis := b.Genesis()
 	genesis.Set("app_state.evm.params.active_static_precompiles", opts.Precompiles)
+	genesis.Set("app_state.feemarket.params.no_base_fee", true)
 	genesis.Set("consensus.params.abci.vote_extensions_enable_height", "2")
 
 	if opts.EditGenesis != nil {

@@ -6,6 +6,7 @@ package vemanager
 
 import (
 	"errors"
+	"runtime/debug"
 
 	cometabci "github.com/cometbft/cometbft/abci/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -40,6 +41,13 @@ func (m *VoteExtensionManager) Register(
 // registered ExtendVoteHandlers.
 func (m *VoteExtensionManager) ExtendVoteHandler() sdk.ExtendVoteHandler {
 	return func(ctx sdk.Context, req *cometabci.RequestExtendVote) (*cometabci.ResponseExtendVote, error) {
+		defer func() {
+			if err := recover(); err != nil {
+				debug.PrintStack()
+				panic(err)
+			}
+		}()
+
 		w := VoteExtensions{
 			Extensions: make([][]byte, len(m.extendVoteHandler)),
 		}

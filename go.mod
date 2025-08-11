@@ -80,7 +80,7 @@ require (
 	github.com/spf13/pflag v1.0.7
 	github.com/spf13/viper v1.20.1
 	github.com/stretchr/testify v1.10.0
-	golang.org/x/image v0.29.0
+	golang.org/x/image v0.30.0
 	golang.org/x/tools v0.35.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20250728155136-f173205681a0
 	google.golang.org/grpc v1.74.2
@@ -394,7 +394,7 @@ require (
 	golang.org/x/sync v0.16.0 // indirect
 	golang.org/x/sys v0.34.0 // indirect
 	golang.org/x/term v0.33.0 // indirect
-	golang.org/x/text v0.27.0 // indirect
+	golang.org/x/text v0.28.0 // indirect
 	golang.org/x/time v0.11.0 // indirect
 	google.golang.org/api v0.222.0 // indirect
 	google.golang.org/genproto v0.0.0-20241118233622-e639e219e697 // indirect

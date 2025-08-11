@@ -176,16 +176,16 @@ For running the script, make the following adjustments:
 After making the required adjustments, you can leave the rest of values untouched or modify them if needed:
 
 - `price_condition`: The condition for executing the Order based on the comparison of the current (oracle) price and the predicted price.
-  - `0`: Execute if the oracle price is `<=` than the predicted price.
-  - `1`: Execute if the oracle price is `<` than the predicted price.
-  - `2`: Execute if the oracle price is `>=` than the predicted price.
-  - `3`: Execute if the oracle price is `>` than the predicted price.
-- `confidence_limit`: The minimum prediction confidence required for executing the Order. It's a percentage, divided by `10^16`.
-- `oracle_price_pair`: The oracle price pair—for example, `"ETH","USD"`.
-- `predict_price_token`: The token for which you need a price prediction. It must match the token in the oracle price pair—for example, `ethereum`.
-- `space_nonce`: The nonce of the [Space](/learn/glossary#space) that is expected at the moment when the Order is being executed. If you've never updated the [Rules](/learn/glossary#approval-rule) of your Space, you can use the default value: `0`.
-- `action_timeout_height`: The block after which the [Action](/learn/glossary#action) will be cancelled if it's not signed with the [Keychain](/learn/glossary#keychain).
-- `expected_approve_expression`, `expected_reject_expression`: The expected approve and reject expressions in your Space, provided in HEX format. If you've never updated the Rules of your Space, just keep the default values.
+  - `0` - Execute if the oracle price is `<=` than the predicted price.
+  - `1` - Execute if the oracle price is `<` than the predicted price.
+  - `2` - Execute if the oracle price is `>=` than the predicted price.
+  - `3` - Execute if the oracle price is `>` than the predicted price.
+- `confidence_limit` - The minimum prediction confidence required for executing the Order. It's a percentage, divided by `10^16`.
+- `oracle_price_pair` - The oracle price pair—for example, `"ETH","USD"`.
+- `predict_price_token` - The token for which you need a price prediction. It must match the token in the oracle price pair—for example, `ethereum`.
+- `space_nonce` - The nonce of the [Space](/learn/glossary#space) that is expected at the moment when the Order is being executed. If you've never updated the [Rules](/learn/glossary#approval-rule) of your Space, you can use the default value: `0`.
+- `action_timeout_height` - The block after which the [Action](/learn/glossary#action) will be cancelled if it's not signed with the [Keychain](/learn/glossary#keychain).
+- `expected_approve_expression`, `expected_reject_expression` - The expected approve and reject expressions in your Space, provided in HEX format. If you've never updated the Rules of your Space, just keep the default values.
 
 ### Example
 

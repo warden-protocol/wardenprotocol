@@ -390,7 +390,7 @@ Validators enter this state either when they decide to stop participating in [st
 
 ## WARD token
 
-$WARD is the native utility token integral to the Warden Protocol ecosystem. It facilitates various operations—such as [governance](#governance), [staking](#staking), protocol fees—and serves as a medium of payment for operators, such as [Keychain](#keychain) operators.
+**$WARD** is the native utility token for the Warden ecosystem, sitting at the heart of both the Warden Protocol and the [Warden App](#warden-app). $WARD facilitates various operations—such as [governance](#governance), [staking](#staking), rewards—and serves as a medium of payment for any developer publishing an [Agent](#ai-agent) on Warden. For the Warden App, it'll act as a gas abstraction token and unlock gated functionality. 
 
 Learn more: [$WARD](/tokens/ward-token/ward).
 

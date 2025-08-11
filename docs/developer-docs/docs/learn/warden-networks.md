@@ -48,7 +48,7 @@ For more detailed information, refer to our validator guides in [Operate a node]
   </tr>
   <tr>
     <td>**Faucet**</td>
-    <td>[Chiado faucet](https://faucet.chiado.wardenprotocol.org/)</td>
+    <td>[Chiado faucet](https://faucet.chiado.wardenprotocol.org)</td>
   </tr>
   <tr>
     <td>**Validator guides**</td>

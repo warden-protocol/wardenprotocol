@@ -176,7 +176,7 @@ We plan to launch mainnet in Q3 2025. Before mainnet we have four engineering ob
    - Unlock gate-kept functionality on the Warden App (in Q3)
    - Payment and incentives for builders
 
-   Tokenomics overview [here](https://docs.wardenprotocol.org/tokens/ward-token/ward).
+   Tokenomics overview [here](/tokens/ward-token/ward).
 
 10. **What other net-new applications can be built on Warden?**
 

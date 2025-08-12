@@ -8,8 +8,6 @@ sidebar_position: 2
 
 ## *Warden—The Network for the Agent Economy*
 
----
-
 > "*This Manifesto first started out as a long-form memo for our team. A standing document that would capture why we're building Warden. Now in this second iteration, we believe it is the ideal window for a prospective user, or investor, to understand our mission and why we're uniquely placed to succeed. With over 6.5m users, and over 350k DAUs, we have a once-in-a-lifetime opportunity to make crypto incredibly exciting and intuitive*"—David, Josh, Luis, Antonio & Team Warden
 > 
 

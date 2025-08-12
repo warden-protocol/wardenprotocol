@@ -35,7 +35,7 @@ Warden's developer platform features two smart contract platforms: [EVM and Cosm
 
 ## Intelligent Applications
 
-An **Intelligent Application** is a smart contract integrating AI or any offchain logic. Unlike traditional contracts bound by static logic, Intelligent Apps unlock more dynamic user experiences: they are able to reason, adapt, and interact across onchain and offchain environments.
+An **Intelligent Application** is a smart contract integrating AI or any offchain logic. Unlike traditional contracts bound by static logic, Intelligent Apps unlock more dynamic user experiences: they're able to reason, adapt, and interact across onchain and offchain environments.
 
 Warden allows integrating Intelligent Apps with AI, which will simplify front-ends, interpret complex data sets, adapt to environments, and reach intelligent decisions. At the same time, blockchain-enabled backends ensure high integrity data, decentralization, and automated execution.
 

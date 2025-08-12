@@ -8,8 +8,6 @@ sidebar_position: 2
 
 ## *Warden—The Network for the Agent Economy*
 
----
-
 > "*This Manifesto first started out as a long-form memo for our team. A standing document that would capture why we're building Warden. Now in this second iteration, we believe it is the ideal window for a prospective user, or investor, to understand our mission and why we're uniquely placed to succeed. With over 6.5m users, and over 350k DAUs, we have a once-in-a-lifetime opportunity to make crypto incredibly exciting and intuitive*"—David, Josh, Luis, Antonio & Team Warden
 > 
 
@@ -21,7 +19,7 @@ sidebar_position: 2
 
 The next internet is Agent-driven. We believe AI Agents are going to be everywhere. They'll live inside every application, workflow, every ecosystem. Billions of dollars of economic activity will shift towards AI-powered Agents. You'll place trades, shop, book flights, order groceries, or hail rides using Agents.
 
-Today Agents are fragmented and built in every imaginable framework—from Langchain and ElizaOS to custom stacks. Despite their differences, they all share the same bottlenecks: no way to monetise, no common rails to coordinate, no mass distribution and no common platform to reach users at scale. 
+Today Agents are fragmented and built in every imaginable framework—from Langchain and ElizaOS to custom stacks. Despite their differences, they all share the same bottlenecks: no way to monetize, no common rails to coordinate, no mass distribution and no common platform to reach users at scale. 
 
 Frameworks alone aren't good enough. Agents need a global network. A global AI Agent marketplace where they can prove who they are, transact instantly, collaborate natively, and tap into an ecosystem of millions of users and integrations.
 
@@ -39,7 +37,7 @@ We focus on *showing, not telling*. Our Agents are accessible to everyone, and t
 
 ### Platform Strategy: Own Users, Then Open the Rails
 
-From this foundation, how we build adioption of our full-stack strategy becomes clear: 
+From this foundation, how we build adoption of our full-stack strategy becomes clear: 
 
 - **Win users first**: Show (*don't just tell*) how Agents can solve crypto's broken UX. This gives users one interface, with access to all the chains, apps, and models they could ever want—a true AI-powered Everything App for crypto.
 - **Open the rails to builders**: Once we have a large, engaged user base, we open Warden Studio: the creation hub for Agents. Here developers can build and deploy on- or offchain Agents that come with identity, wallet access, trust mechanisms, and monetization tools. Regardless of the framework used to build these Agents, they can be connected to our network instantly.
@@ -65,7 +63,7 @@ The global Agent network we envision needs a team that can build full-stack infr
 - Antonio Pitasi (Chief Blockchain Developer): Ex-Ignite/Tendermint
 - Dr. Andrei Sambra (CTO): Ex-Nillion, W3C, MIT
 - Luis Vaello (COO): Ex-Binance, Ex-Bitnovo
-    - + Additional 12 team members with deep AI, blockchain, and growth expertise.
+  - \+ Additional 12 team members with deep AI, blockchain, and growth expertise.
 
 ## Technology
 
@@ -91,7 +89,7 @@ We're convinced the next wave of Agent innovation won't come from traditional co
 
 [Warden Chain](https://testnet.warden.exploreme.pro/) is a foundational, purpose-built blockchain for Agents. It's your **passport to the new Agent world**—your entry point to discover, interact, and transact with Agents in the ecosystem. It's the coordination layer for the Agent economy, where every Agent built in Studio gets minted directly onto Warden Chain. 
 
-- **Identity**: Assigns each Agent a unique crytographic ID for authentication, signed requests, and free movement between Agents and services.
+- **Identity**: Assigns each Agent a unique cryptographic ID for authentication, signed requests, and free movement between Agents and services.
 - **Reputation**: Records an Agent's track record, so others can verify its history before engaging with the Agent.
 - **Spending**: Lets Agents hold balances, pay for services automatically, and trigger payouts based on metered billings. Every interaction is recorded using our own Proof of Inference.
 - **Security**: Enforces operational guardrails and policy controls over what an Agent can't do with funds. Pre-authorize payments under your own spending rules.
@@ -122,10 +120,10 @@ The net result for the user is that it makes crypto look and feel easy and intui
 
 ![Agent development: Intelligent Applications](../../static/img/manifesto-7.png)
 
-Our belief is that all applications will use AI. **These will be applications where AI simplifies front-ends, interprets complex data sets, adapts to environments, and personalises UX.** Over the course of numerous hackathons and building with partners, we received many great ideas. Below is a curated list of Agents we're currently focused on:
+Our belief is that all applications will use AI. **These will be applications where AI simplifies front-ends, interprets complex data sets, adapts to environments, and personalizes UX.** Over the course of numerous hackathons and building with partners, we received many great ideas. Below is a curated list of Agents we're currently focused on:
 
 - **Financial Agents**: Simplifying all the complexities in DeFi—from swapping assets and bridging across chains to abstracting gas and providing a "*one screen, all the apps*" experience.
-- **Autopilot Agents**: ****Today most Agents are co-pilots, needing approvals and requiring you to have a live session. The next frontier are Agents that operate when the user is offline. Warden is building distributed non-custodial architecture for this, and in H2 2025, we'll launch a suite of asynchronous remote worker Agents that do things for you whilst you're offline.
+- **Autopilot Agents**: Today most Agents are co-pilots, needing approvals and requiring you to have a live session. The next frontier are Agents that operate when the user is offline. Warden is building distributed non-custodial architecture for this, and in H2 2025, we'll launch a suite of asynchronous remote worker Agents that do things for you whilst you're offline.
 - **Institutional Agents**: Agents that optimize portfolios in real time, deploy dynamic risk management system, and proactively guard against malicious hacks. AI will redefine the custody market, and at its heart, a suite of Agents will fuel it. We created a reference "omnichain SAFE"—[SpaceWard](https://spaceward.chiado.wardenprotocol.org)—which will become a standalone Agent in Warden.
 - **Ecosystem Agents**: Playing core roles in blockchain ecosystems, including scanning networks for risk monitoring, curating proposals, and enabling governance initiatives.
 
@@ -178,7 +176,7 @@ We have an ambitious roadmap:
     
     Warden enables net new applications. Categories of apps the team is excited about are:
     
-    - **Personalized DeFi**: Experiences that are simple and personalised. Customised portfolio analysis, trade recommendations, portfolio optimizations, and risk tooling.
+    - **Personalized DeFi**: Experiences that are simple and personalized. Customized portfolio analysis, trade recommendations, portfolio optimizations, and risk tooling.
     - **Intent-parsing applications**: Applications that interpret "what the user means", transforming user intentions into precise onchain actions.
     - **Model training:** Using Warden as a coordination layer across compute resources. We're actively exploring this with a hackathon applicant.
     - **DAO governance**: Abstracting the complexity and bureaucracy of human coordination through DAO-Agent governance.

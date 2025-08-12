@@ -119,7 +119,7 @@ The voting power depends on the [validator's weight](#validators-weight) or the 
 
 ## Intelligent Application
 
-An Intelligent Application is a smart contract integrating AI or any offchain logic. Unlike traditional contracts bound by static logic, Intelligent Apps unlock more dynamic user experiences: they are able to reason, adapt, and interact across onchain and offchain environments.
+An Intelligent Application is a smart contract integrating AI or any offchain logic. Unlike traditional contracts bound by static logic, Intelligent Apps unlock more dynamic user experiences: they're able to reason, adapt, and interact across onchain and offchain environments.
 
 With Warden, you can build crypto super apps, smart [AI Agents](#ai-agent), and intelligent custody solutions. For example, see [SpaceWard](#spaceward) and the [Warden App](https://app.wardenprotocol.org/).
 

@@ -63,7 +63,7 @@ The global Agent network we envision needs a team that can build full-stack infr
 - Antonio Pitasi (Chief Blockchain Developer): Ex-Ignite/Tendermint
 - Dr. Andrei Sambra (CTO): Ex-Nillion, W3C, MIT
 - Luis Vaello (COO): Ex-Binance, Ex-Bitnovo
-    - + Additional 12 team members with deep AI, blockchain, and growth expertise.
+  - \+ Additional 12 team members with deep AI, blockchain, and growth expertise.
 
 ## Technology
 

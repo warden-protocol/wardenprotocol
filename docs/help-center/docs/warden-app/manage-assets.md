@@ -23,7 +23,8 @@ To deposit an asset, take the following steps:
 1. Log in: 👉 [Warden App](https://app.wardenprotocol.org)
 2. Click the wallet icon in the top-right corner.
 3. Select **Deposit**.
-4. Select one of these options:
+4. Select the desired network.
+5. Select one of these options:
    - **Pay with card**: Pay through MoonPay.
    - **Transfer from wallet**: Link a Web3 wallet and deposit funds from it. 
    - **Receive funds**: Copy your wallet address or scan the QR code.

@@ -35,7 +35,7 @@ To configure your account, take the following steps:
 2. Click the gear icon and configure the following options:
    - **Linked Wallets**: View and unlink Web3 wallets you've [deposited assets](manage-assets#deposit-assets) from.
    - **Favorite Addresses**: Whitelist addresses to reference them by name in the [AI chat](use-the-ai-assistant).
-   - **Passkeys**: Secure your account with Touch ID, Face ID, or security key.
+   - **Security** Manage your private keys and passkeys.
    - **Login**: Add an authentication method: **Email**, **Google**, **Twitter**, or **Telegram**.
 
 ![Configure your wallet in the Warden App](../../static/img/warden-app/manage-your-wallet-3.png)
@@ -51,7 +51,8 @@ To copy your wallet address, take these steps:
 To get your private key, do this:
 
 1. Click the gear icon to open Settings.
-2. Select **Show Private Key** and copy your key.
+2. In the **Security** section, click your private key on the desired network.
+3. Click **Copy key**.
 
 :::warning
 Never share your private key with anyone. It grants full access to your assets.

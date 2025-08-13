@@ -9,7 +9,7 @@ In the Warden App, you can create and grow **your own coin** to compete in the *
 To get started, click the coin icon in the top right, then create and name your coin. There are multiple things you can do to increase its value:
 
 - Complete daily and weekly tasks
-- Play Agentic Snake and other games
+- Play Flappy Yapy and other games
 - Invite your friends
 
 ![Create and grow your coin in the Warden App](../../static/img/warden-app/create-your-coin.png)

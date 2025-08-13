@@ -1,4 +1,4 @@
-![Warden Protocol](./docs/developer-docs/logo.svg)
+![Warden Protocol](./docs/developer-docs/warden-logo.png)
 
 [![Twitter](https://img.shields.io/twitter/follow/wardenprotocol)](https://x.com/wardenprotocol)
 

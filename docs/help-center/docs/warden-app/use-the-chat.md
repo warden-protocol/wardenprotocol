@@ -35,7 +35,7 @@ In addition to the Warden assistant, you can use the various **AI Agents** avail
 
 Explore Agents in the [Agent Hub](use-ai-agents#access-agents) or switch quickly between the Warden assistant and Agents directly from the chat screen. Simply select an Agent from the drop-down menu at the top:
 
-![Manage AI chats Warden](../../static/img/warden-app/use-the-chat-3.png)
+![Manage AI chats in Warden](../../static/img/warden-app/use-the-chat-3.png)
 
 ## Explore the dashboard
 

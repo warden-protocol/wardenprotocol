@@ -10,7 +10,7 @@ The following is a brief overview explaining how to get started and experience t
 
 1. Sign in: 👉 [Warden](https://app.wardenprotocol.org). Use your email or other available options.
 
-2. 👉 [Deposit assets](manage-assets#deposit-assets): Click the wallet icon at the top right, select **Deposit**, then **Solana**, and fund your wallet with **SOL**. Alternatively, use any other [supported chain](introduction#supported-networks).
+2. 👉 [Deposit assets](manage-assets#deposit-assets): Click the wallet icon at the top right, select **Deposit**, then **Solana**, and fund your wallet with **SOL**. Alternatively, use any other [supported chain](#supported-networks).
 
 ![Access your wallet in Warden](../../static/img/warden-app/manage-your-wallet-1.png)
 

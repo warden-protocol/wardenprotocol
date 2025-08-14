@@ -54,7 +54,7 @@ The **Messari Deep Research** Agent integrates with [Messari](https://messari.io
 
 Use this Agent to research any blockchain project with detailed, real-time insight: discover trending tokens on a specific chain, generate meme coin reports, analyze NFT market dynamics, and much more.
 
-Fees: **0.25 USD** per query, charged in **USDC** or **ETH** on any of the [networks supported by Warden](#supported-networks).
+Fees: **0.25 USD** per query, charged in **USDC** or **ETH** on any of the [networks supported by Warden](/#supported-networks).
 
 ### Jupiter Agent
 

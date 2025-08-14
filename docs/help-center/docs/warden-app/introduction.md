@@ -32,11 +32,11 @@ These components work together to create a powerful tool for you to navigate the
 
 Within Warden, you can do the following:
 
-- [Use the chat](use-the-chat)
-- [Manage your wallet](manage-your-wallet)
-- [Manage assets](manage-assets)
-- [Use AI agents](use-ai-agents)
-- [Create your coin](create-your-coin)
+- [Use the chat](warden-app/use-the-chat)
+- [Manage your wallet](warden-app/manage-your-wallet)
+- [Manage assets](warden-app/manage-assets)
+- [Use AI agents](warden-app/use-ai-agents)
+- [Create your coin](warden-app/create-your-coin)
 
 ## Supported networks
 
@@ -49,5 +49,5 @@ At the moment, Warden supports the following chains:
 More networks are coming soon—stay tuned!
 
 :::tip
-To start transacting on a chain [fund your wallet](manage-assets#deposit-assets) with its native coin—for example, **SOL** on **Solana**. Then you can receive other tokens available on the network.
+To start transacting on a chain [fund your wallet](warden-app/manage-assets#deposit-assets) with its native coin—for example, **SOL** on **Solana**. Then you can receive other tokens available on the network.
 :::

@@ -101,6 +101,7 @@
         {"source":"/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/implement-the-creation-of-orders","destination":"/build-an-onchain-ai-agent/implement-orders-with-price-prediction#2-implement-order-creation", "statusCode": 301},
         {"source":"/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/deploy-an-order","destination":"/build-an-onchain-ai-agent/implement-orders-with-price-prediction#3-deploy-an-order", "statusCode": 301},
         {"source":"/learn/bridging","destination":"/learn/interoperability", "statusCode": 301},
-        {"source":"/build-an-app/deploy-smart-contracts-on-warden/deploy-a-cross-chain-app","destination":"/learn/interoperability", "statusCode": 301}
+        {"source":"/build-an-app/deploy-smart-contracts-on-warden/deploy-a-cross-chain-app","destination":"/learn/interoperability", "statusCode": 301},
+        {"source":"/learn/warden-app/use-the-ai-assistant","destination":"https://help.wardenprotocol.org/warden-app/use-the-chat", "statusCode": 301}
     ]
 }

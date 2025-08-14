@@ -7,8 +7,8 @@
         {"source":"/learn/how-does-warden-protocol-work","destination":"/", "statusCode": 301},
         {"source":"/learn/keychains","destination":"/learn/glossary#keychain", "statusCode": 301},
         {"source":"/learn/keychains/Keychain%20Onboarding","destination":"/build-a-keychain/operate-a-keychain/create-a-keychain", "statusCode": 301},
-        {"source":"/category/spaceward","destination":"https://help.wardenprotocol.org", "statusCode": 301},
-        {"source":"/learn/spaceward/spaceward-intro","destination":"https://help.wardenprotocol.org", "statusCode": 301},
+        {"source":"/category/spaceward","destination":"https://help.wardenprotocol.org/spaceward/introduction", "statusCode": 301},
+        {"source":"/learn/spaceward/spaceward-intro","destination":"https://help.wardenprotocol.org/spaceward/introduction", "statusCode": 301},
         {"source":"/learn/spaceward/connect-your-cosmos-wallet","destination":"https://help.wardenprotocol.org/spaceward/connect-your-wallet", "statusCode": 301},
         {"source":"/learn/spaceward/ward-faucet","destination":"https://help.wardenprotocol.org/spaceward/get-test-ward", "statusCode": 301},
         {"source":"/learn/spaceward/new-space-creation","destination":"https://help.wardenprotocol.org/spaceward/create-a-space", "statusCode": 301},
@@ -101,7 +101,6 @@
         {"source":"/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/implement-the-creation-of-orders","destination":"/build-an-onchain-ai-agent/implement-orders-with-price-prediction#2-implement-order-creation", "statusCode": 301},
         {"source":"/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/deploy-an-order","destination":"/build-an-onchain-ai-agent/implement-orders-with-price-prediction#3-deploy-an-order", "statusCode": 301},
         {"source":"/learn/bridging","destination":"/learn/interoperability", "statusCode": 301},
-        {"source":"/build-an-app/deploy-smart-contracts-on-warden/deploy-a-cross-chain-app","destination":"/learn/interoperability", "statusCode": 301},
-        {"source":"/learn/warden-app/use-the-ai-assistant","destination":"https://help.wardenprotocol.org/warden-app/use-the-chat", "statusCode": 301}
+        {"source":"/build-an-app/deploy-smart-contracts-on-warden/deploy-a-cross-chain-app","destination":"/learn/interoperability", "statusCode": 301}
     ]
 }

@@ -6,17 +6,17 @@ sidebar_position: 7
 
 ## Overview
 
-In the Warden App, you can create and grow **your own coin** to compete in the **PUMP Leaderboard** and **earn rewards**.
+In Warden, you can create and grow **your own coin** to compete in the **PUMP Leaderboard** and **earn rewards**.
 
 ## Name your coin
 
 To get started, click the **Rewards** icon in the top right:
 
-![Create and grow your coin in the Warden App](../../static/img/warden-app/create-your-coin-1.png)
+![Create and grow your coin in Warden](../../static/img/warden-app/create-your-coin-1.png)
 
 Then simply name your coin. Congratulations! Now you can start earning rewards.
 
-![Grow your coin in the Warden App](../../static/img/warden-app/create-your-coin-2.png)
+![Grow your coin in Warden](../../static/img/warden-app/create-your-coin-2.png)
 
 ## Pump your coin
 

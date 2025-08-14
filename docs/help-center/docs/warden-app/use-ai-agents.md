@@ -14,35 +14,54 @@ In the sections below, you'll find the list of available Agents—and more are c
 
 You can explore and select Agents in the **Agent Hub**:
 
-1. Log in: 👉 [Warden App](https://app.wardenprotocol.org)
+1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. Click the **Agent Hub** icon in the top-right corner of the screen.
-3. If needed, review and accept the legal terms.
+3. [Fund your wallet](manage-assets#deposit-assets) on any of the chains supported by the preferred Agent.
+3. Select an Agent. If required, review and accept the legal terms.
 4. After selecting an Agent, you'll be forwarded to the chat.
 
-![The Agent Hub in the Warden App](../../static/img/warden-app/use-ai-agents-1.png)
+![The Agent Hub in Warden](../../static/img/warden-app/use-ai-agents-1.png)
 
 Alternatively, you access Agents directly from the [chat screen](use-the-chat). Use the drop-down menu at the top to switch quickly between Agents and the default Warden AI assistant:
 
-![Manage AI chats the Warden App](../../static/img/warden-app/use-the-chat-2.png)
+![Manage AI chats in Warden](../../static/img/warden-app/use-the-chat-2.png)
 
 ## Available Agents
 
 ### Uniswap Trading API
 
-The **Uniswap Trading API** allows swapping any token through Uniswap—fast and secure. Swaps are fully non-custodial: they're handled directly from your wallet without any third party holding your assets.
+The **Uniswap Trading API** allows swapping tokens on the supported chains through [Uniswap](https://app.uniswap.org)—a decentralized crypto exchange built on Ethereum. Swaps are fully non-custodial: they're handled directly from your wallet without any third party holding your assets.
+
+You can either swap **ETH** for **any token** or exchange tokens for each other. Just specify a currency pair and amount in the chat, and the Agent will do the rest.
 
 Supported networks:
 
 - **Ethereum**
 - **Base**
 
+Fees: **0.3%**.
+
+:::note
+To start using this Agent, you need to read and agree to the Uniswap Labs terms of service and privacy policy.
+:::
+
 ### Messari Deep Research
 
-Use **Messari Deep Research** to research any blockchain project with very detailed real-time insight.
+The **Messari Deep Research** Agent integrates with [Messari](https://messari.io)—the leading provider of crypto market intelligence products that help professionals navigate the Web3 space.
+
+Use this Agent to research any blockchain project with detailed, real-time insight: discover trending tokens on a specific chain, generate meme coin reports, analyze NFT market dynamics, and much more.
+
+Fees: **0.25 USD** per query, charged in **USDC** or **ETH** on any of the [networks supported by Warden](introduction#supported-networks).
 
 ### Jupiter Agent
 
-**Jupiter** is the only Agent you need to swap any **Solana** tokens.
+The **Jupiter Agent** integrates with the [Jupiter Exchange](https://jup.ag)—a decentralized exchange (DEX) aggregator built on the Solana blockchain. It's the only Agent you need to swap Solana tokens.
+
+You can either swap **SOL** for **any Solana token** or exchange tokens for each other. Just specify a currency pair and amount in the chat, and the Agent will do the rest.
+
+Supported networks: **Solana**.
+
+Fees: **0.06%**.
 
 ### Coming soon
 

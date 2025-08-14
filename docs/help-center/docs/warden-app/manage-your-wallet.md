@@ -34,7 +34,7 @@ To configure your account, take the following steps:
 1. Click the wallet icon in the top-right corner.
 2. Click the gear icon and configure the following options:
    - **Linked Wallets**: View and unlink Web3 wallets you've [deposited assets](manage-assets#deposit-assets) from.
-   - **Favorite Addresses**: Whitelist addresses to reference them by name in the [AI chat](use-the-ai-assistant).
+   - **Addresses**: Whitelist addresses to reference them by name in the [AI chat](use-the-chat).
    - **Security** Manage your private keys and passkeys.
    - **Login**: Add an authentication method: **Email**, **Google**, **Twitter**, or **Telegram**.
 

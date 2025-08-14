@@ -30,7 +30,7 @@ These components work together to create a powerful tool for you to navigate the
 
 Within the Warden App, you can do the following:
 
-- [Use the AI assistant](use-the-ai-assistant)
+- [Use the chat](use-the-chat)
 - [Manage your wallet](manage-your-wallet)
 - [Manage assets](manage-assets)
 - [Use AI agents](use-ai-agents)
@@ -38,8 +38,14 @@ Within the Warden App, you can do the following:
 
 ## Supported networks
 
-At the moment, the Warden App supports the **Solana** network.
+At the moment, the Warden App supports the following chains:
 
-You can fund your wallet with **SOL** and receive other tokens available on Solana.
+- **Ethereum**
+- **Solana**
+- **Base**
 
 More networks are coming soon—stay tuned!
+
+:::tip
+To start transacting on a chain [fund your wallet](manage-assets#deposit-assets) with its native coin—for example, **SOL** on **Solana**. Then you can receive other tokens available on the network.
+:::

@@ -2,6 +2,6 @@
     "redirects": [
         {"source":"/warden-app/use-the-ai-assistant","destination":"/warden-app/use-the-chat", "statusCode": 301},
         {"source":"/warden-app/introduction","destination":"/", "statusCode": 301},
-        {"source":"/","destination":"/spaceward/introduction", "statusCode": 301},
+        {"source":"/","destination":"/spaceward/introduction", "statusCode": 301}
     ]
 }

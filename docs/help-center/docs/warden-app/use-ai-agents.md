@@ -32,7 +32,10 @@ Alternatively, you access Agents directly from the [chat screen](use-the-chat). 
 
 The **Uniswap Trading API** allows swapping tokens on the supported chains through [Uniswap](https://app.uniswap.org)—a decentralized crypto exchange built on Ethereum. Swaps are fully non-custodial: they're handled directly from your wallet without any third party holding your assets.
 
-You can either swap **ETH** for **any token** or exchange tokens for each other. Just specify a currency pair and amount in the chat, and the Agent will do the rest.
+Just specify the network, currency pair, and amount in the chat, and the Agent will do the rest:
+
+- Swap ETH for any token
+- Exchange tokens for each other
 
 Supported networks:
 
@@ -55,13 +58,17 @@ Fees: **0.25 USD** per query, charged in **USDC** or **ETH** on any of the [netw
 
 ### Jupiter Agent
 
-The **Jupiter Agent** integrates with the [Jupiter Exchange](https://jup.ag)—a decentralized exchange (DEX) aggregator built on the Solana blockchain. It's the only Agent you need to swap Solana tokens.
+The **Jupiter Agent** integrates with the [Jupiter Exchange](https://jup.ag)—a decentralized exchange (DEX) aggregator built on the Solana blockchain. This is the only Agent you need to send and swap any Solana tokens.
 
-You can either swap **SOL** for **any Solana token** or exchange tokens for each other. Just specify a currency pair and amount in the chat, and the Agent will do the rest.
+Just specify the amount and other details in the chat, and the Agent will do the rest:
+
+- Swap SOL for any Solana token
+- Swap tokens for each other
+- Send SOL or any token to a destination address
 
 Supported networks: **Solana**.
 
-Fees: **0.06%**.
+Fees: **0.85%** per swap or send.
 
 ### Coming soon
 

@@ -52,7 +52,7 @@ Make sure your [wallet is funded](#deposit-assets) and follow these steps:
 5. The assistant will share the transaction details with you. You can also find them anytime in your [activity history](manage-your-wallet#view-the-balance--activity).
 
 :::tip
-When specifying the recipient, you can refer to your [whitelisted addresses](manage-your-wallet#configure-the-wallet) by name.
+When specifying the recipient, you can refer to your [favorite addresses](manage-your-wallet#configure-the-wallet) by name.
 :::
 
 ![Send assets in Warden](../../static/img/warden-app/manage-assets-3.png)

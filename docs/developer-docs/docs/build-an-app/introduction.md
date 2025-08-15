@@ -8,7 +8,7 @@ sidebar_position: 1
 
 **Intelligent Applications** are smart contracts integrating AI or any offchain logic. Unlike traditional contracts bound by static logic, Intelligent Apps unlock more dynamic user experiences: they're able to reason, adapt, and interact across onchain and offchain environments.
 
-With Warden, you can build crypto super apps, smart [AI Agents](/build-an-agent/introduction), and intelligent custody solutions. For example, see [SpaceWard](https://help.wardenprotocol.org) and the [Warden App](/learn/glossary#warden-app).
+With Warden, you can build crypto super apps, smart [AI Agents](/build-an-agent/introduction), and intelligent custody solutions. For example, see [SpaceWard](https://help.wardenprotocol.org/spaceward) and [Warden](/learn/glossary#warden).
 
 ## Smart contracts
 

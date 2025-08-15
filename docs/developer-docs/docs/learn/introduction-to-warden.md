@@ -42,7 +42,7 @@ Warden allows integrating Intelligent Apps with AI, which will simplify front-en
 Currently, we're focused on the following Intelligent Applications:
 
 - **Crypto super apps**  
-  To demonstrate how powerful AI will be for crypto UX, we built the [Warden App](https://app.wardenprotocol.org). It lets users perform complex Web3 actions—like swaps and transfers—through simple chat or voice commands. The Warden App does all the thinking and problem solving for the user, making complex work like cross-chain transactions, portfolio management, or risk assessments easy.
+  To demonstrate how powerful AI will be for crypto UX, we built [Warden](https://app.wardenprotocol.org). It lets users perform complex Web3 actions—like swaps and transfers—through simple chat or voice commands. Warden does all the thinking and problem solving for the user, making complex work like cross-chain transactions, portfolio management, or risk assessments easy.
 
 - **Smart Agents**  
   Warden Agents are smart contracts managed onchain. This makes them defensibly sovereign, autonomous, and non-custodial. In H2 2025, we'll launch **Warden Buffett**—a reference trading agent made with our own Agent Kit. It'll be the first truly autonomous, profit-generating entity that lives onchain.
@@ -92,7 +92,8 @@ Use the top menu to navigate across the main sections of the docs and learn how 
 - [Build a Keychain](/build-a-keychain/introduction): Guides for Keychain operators
 - [Operate a Node](/operate-a-node/introduction): Guides for node operators
 - [Tokens](/tokens/introduction): A detailed overview of Warden tokenomics
-- [SpaceWard](https://help.wardenprotocol.org): User guides for SpaceWard, our front-end Intelligent Application
+- [Ward](https://help.wardenprotocol.org): An AI-powered co-pilot for crypto, built on Warden Protocol
+- [SpaceWard](https://help.wardenprotocol.org/spaceward): User guides for SpaceWard, our front-end Intelligent Application
 
 ## Contribute
 

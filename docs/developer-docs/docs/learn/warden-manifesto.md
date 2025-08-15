@@ -140,9 +140,9 @@ We have an ambitious roadmap:
 
 ## Links
 
-- [Warden](https://app.wardenprotocol.org/)
-- [Docs](https://docs.wardenprotocol.org/)
-- [Website](https://wardenprotocol.org/)
+- [Warden](https://app.wardenprotocol.org)
+- [Docs](https://docs.wardenprotocol.org)
+- [Website](https://wardenprotocol.org)
 - [GitHub](https://github.com/warden-protocol/wardenprotocol)
 - [SPEX whitepaper](https://arxiv.org/abs/2503.18899)
 - [SPEX on GitHub](https://github.com/warden-protocol/warden-spex)

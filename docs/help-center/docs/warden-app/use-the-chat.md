@@ -10,15 +10,15 @@ The **AI-powered chat** is the primary way to interact with Warden.
 
 Use simple chat commands to send and swap your assets, check your balance, and ask anything about the app, Warden Protocol, or the crypto market.
 
-You can either start chatting with the default **Warden AI assistant** or select one of the various available [AI Agents](use-ai-agents).
+You can either start chatting with the default **Warden AMA Agent** or choose another available [AI Agent](explore-ai-agents).
 
-## Chat with Warden
+## Start chatting
 
-Once you log in to [Warden](https://app.wardenprotocol.org), you'll see a chat with the **Warden AI assistant**.
+Once you log in to [Warden](https://app.wardenprotocol.org), you'll see a chat with the AI-powered [Warden AMA Agent](explore-ai-agents#warden-ama-agent). 
 
-Just type your request in the chat box. For example, to perform a transaction, [fund your wallet](manage-assets#deposit-assets) and ask Warden to [send or swap an asset](manage-assets#send-or-swap-assets):
+To start interacting, just type your request in the chat box. For example, to perform a transaction, [fund your wallet](manage-assets#deposit-assets) and ask Warden to [send or swap an asset](manage-assets#send-or-swap-assets):
 
-![Ask the Warden AI assistant to swap an asset](../../static/img/warden-app/use-the-chat-1.png)
+![Ask the Warden AMA Agent to swap an asset](../../static/img/warden-app/use-the-chat-1.png)
 
 ## Manage chats
 
@@ -31,9 +31,9 @@ You can easily manage your chats:
 
 ## Select an AI Agent
 
-In addition to the Warden assistant, you can use the various **AI Agents** available in the app. Learn more: [Use AI Agents](use-ai-agents).
+In addition to the Warden AMA Agent, you can interact with [other AI Agents](explore-ai-agents#uniswap-trading-api) available in the app.
 
-Explore Agents in the [Agent Hub](use-ai-agents#access-agents) or switch quickly between the Warden assistant and Agents directly from the chat screen. Simply select an Agent from the drop-down menu at the top:
+Explore Agents in the [Agent Hub](explore-ai-agents#access-agents) or switch between them directly using the drop-down menu at the top:
 
 ![Manage AI chats in Warden](../../static/img/warden-app/use-the-chat-3.png)
 

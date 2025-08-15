@@ -6,25 +6,18 @@ sidebar_position: 4
 
 ## Overview
 
-This guide explains how to manage your **wallet (account)** in Warden.
+The **wallet** represents your account on Warden. Here you can [manage your assets](manage-assets): view your balance and activity and initiate transactions.
 
-In the wallet, you can view your balance and activity, whitelist addresses, manage authentication methods, and more.
+This guide explains how to access and configure your wallet: whitelist addresses, manage authentication methods, and more.
 
-## View the balance & activity
+## Access your wallet
 
-To view your balance and activity, take these steps:
+To access your wallet, simply do this:
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
-2. Click the wallet icon in the top-right corner of the screen.
+2. Click the wallet icon in the top-right corner.
 
 ![Access your wallet in Warden](../../static/img/warden-app/manage-your-wallet-1.png)
-
-Here you can do the following:
-
-- View your balance and [manage your assets](manage-assets)
-- See a breakdown of your assets in the **Assets** tab
-- Review your activity and transaction details in the the **Activity** tab
-
 ![View your balance and activity in Warden](../../static/img/warden-app/manage-your-wallet-2.png)
 
 ## Configure the wallet

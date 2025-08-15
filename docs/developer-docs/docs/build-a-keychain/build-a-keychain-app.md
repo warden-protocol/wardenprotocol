@@ -139,7 +139,7 @@ If everything is set up correctly, you'll see the app connecting to the Warden P
 
 ```bash
 time=2024-03-26T12:01:38.020+01:00 level=INFO msg="starting keychain" keychain_id=1
-time=2024-03-26T12:01:38.020+01:00 level=INFO msg="connecting to the Warden Protocol using gRPC" url=localhost:9090 insecure=true
+time=2024-03-26T12:01:38.020+01:00 level=INFO msg="connecting to Warden Protocol using gRPC" url=localhost:9090 insecure=true
 time=2024-03-26T12:01:38.027+01:00 level=INFO msg="keychain writer identity" address=warden18my6wqsrf5ek85znp8x202wwyg8rw4fqhy54k2
 time=2024-03-26T12:01:38.027+01:00 level=INFO msg="starting tx writer"
 ```

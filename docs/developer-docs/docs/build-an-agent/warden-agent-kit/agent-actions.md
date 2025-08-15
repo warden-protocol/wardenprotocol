@@ -6,7 +6,7 @@ sidebar_position: 3
 
 ## Actions on Warden
 
-An [Action](/learn/glossary#action) is any transaction on Warden Protocol. To perform an Action, one can use the [SpaceWard](https://help.wardenprotocol.org) application, run [node commands](/operate-a-node/node-commands), or prompt a Warden Agent.
+An [Action](/learn/glossary#action) is any transaction on Warden Protocol. To perform an Action, one can use the [SpaceWard](https://help.wardenprotocol.org/spaceward) application, run [node commands](/operate-a-node/node-commands), or prompt a Warden Agent.
 
 Each new user needs to perform the following Actions: get test [WARD tokens](/learn/glossary#ward-token), create a [Space](/learn/glossary#space), and request a [key](/learn/glossary#key) from a [Keychain](/learn/glossary#keychain). After doing it, the user will be able to send tokens, create [Orders](/learn/glossary#order), and initiate other Actions.
 

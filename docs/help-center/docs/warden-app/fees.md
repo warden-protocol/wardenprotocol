@@ -6,7 +6,7 @@ sidebar_position: 8
 
 ## Overview
 
-In this article, you'll find a detailed breakdown of fees applied to [swaps & transfers](manage-assets#send-or-swap-assets) and other interactions on Warden. Please note that some fees may vary depending on the [AI Agent](#explore-ai-agents) and the [network](/#supported-networks).
+In this article, you'll find a detailed breakdown of fees applied to [swaps & transfers](manage-assets#send-or-swap-assets) and other interactions on Warden. Please note that some fees may vary depending on the [AI Agent](explore-ai-agents) and the [network](/#supported-networks).
 
 ## Transfer fees
 

@@ -20,7 +20,7 @@ You can access your balances and activity in the [wallet](manage-your-wallet):
 Alternatively, you can ask the default [Warden AMA Agent](explore-ai-agents#warden-ama-agent) about your balances.
 
 ![Access your wallet in Warden](../../static/img/warden-app/manage-your-wallet-1.png)
-![Access your wallet in Warden](../../static/img/warden-app/manage-your-wallet-2.png)
+![View your balance and activity in Warden](../../static/img/warden-app/manage-your-wallet-2.png)
 
 ## Deposit assets
 
@@ -61,4 +61,4 @@ Before you start, keep in mind this:
 - All swaps and transfers incur fees: see the [Fees](fees) section for details.
 
 
-![Send assets using the Warden AMA Agent](../../static/img/warden-app/manage-assets-3.png)
+![Send assets using the Warden AMA Agent](../../static/img/warden-app/manage-assets-2.png)

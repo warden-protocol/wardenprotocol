@@ -20,11 +20,14 @@ All transfers incur this fee:
 
 All swaps incur these fees:
 
-| Fee type      | Amount | Currency    | Description                                              |
-| ------------- | -------|-------------| -------------------------------------------------------- |
-| Gas fee       | varies | native coin | A fee paid to the network for processing the transaction |
-| Swap fee      | varies | input token | A percentage taken by the liquidity pool                 |
-| Platform fee  | 0.85%  | input token | A percentage charged by Warden                            |
+| Fee type      | Amount | Currency           | Description                                              |
+| ------------- | -------|--------------------| -------------------------------------------------------- |
+| Gas fee       | varies | native coin        | A fee paid to the network for processing the transaction |
+| Platform fee  | 0.85%  | input/output token | A percentage charged by Warden                           |
+
+Warden charges fees
+
+When charging the platform fee, Warden prioritizes USDC/SOL for Solana swaps. If the input of output token isn't one of those, the fee is charged in the input token.
 
 ## Other
 

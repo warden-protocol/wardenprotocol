@@ -121,7 +121,7 @@ The voting power depends on the [validator's weight](#validators-weight) or the 
 
 An Intelligent Application is a smart contract integrating AI or any offchain logic. Unlike traditional contracts bound by static logic, Intelligent Apps unlock more dynamic user experiences: they're able to reason, adapt, and interact across onchain and offchain environments.
 
-With Warden, you can build crypto super apps, smart [AI Agents](#ai-agent), and intelligent custody solutions. For example, see [SpaceWard](#spaceward) and the [Warden App](https://app.wardenprotocol.org/).
+With Warden, you can build crypto super apps, smart [AI Agents](#ai-agent), and intelligent custody solutions. For example, see [SpaceWard](#spaceward) and [Warden](https://app.wardenprotocol.org).
 
 We support two smart contract platforms: EVM and CosmWasm. In contracts, you can interact with our [modules](#module) and [AVR Plugins](#avr-plugin) to access all Warden's core features from any chain. For advanced usage of smart contracts, refer to [Order](#order).
 
@@ -312,7 +312,7 @@ This concept is implemented in the `x/warden` [module](#module). Learn more: [`x
 
 SpaceWard is an [Intelligent Application](#intelligent-application) functioning as the front-end interface for Warden. It provides a user-friendly platform where you can create [Spaces](#space), manage wallets and [Intents](#intent), and interact with decentralized applications (dApps) and other components of the Web3 ecosystem.
 
-Learn more: [SpaceWard documentation](https://help.wardenprotocol.org).  
+Learn more: [SpaceWard documentation](https://help.wardenprotocol.org/spaceward).  
 Try it out: [SpaceWard](https://spaceward.chiado.wardenprotocol.org).
 
 ---
@@ -390,7 +390,7 @@ Validators enter this state either when they decide to stop participating in [st
 
 ## WARD token
 
-**$WARD** is the native utility token for the Warden ecosystem, sitting at the heart of both the Warden Protocol and the [Warden App](#warden-app). $WARD facilitates various operations—such as [governance](#governance), [staking](#staking), rewards—and serves as a medium of payment for any developer publishing an [Agent](#ai-agent) on Warden. For the Warden App, it'll act as a gas abstraction token and unlock gated functionality. 
+**$WARD** is the native utility token for the Warden ecosystem, sitting at the heart of both Warden Protocol and [Warden](#warden). $WARD facilitates various operations—such as [governance](#governance), [staking](#staking), rewards—and serves as a medium of payment for any developer publishing an [Agent](#ai-agent) on Warden. For Warden, it'll act as a gas abstraction token and unlock gated functionality. 
 
 Learn more: [$WARD](/tokens/ward-token/ward).
 
@@ -404,9 +404,9 @@ Learn more: [Warden Agent Kit](/build-an-agent/warden-agent-kit/introduction).
 
 ---
 
-## Warden App
+## Warden
 
-The Warden App is an AI-driven [Intelligent Application](#intelligent-application) that lets users perform complex Web3 actions—like swaps and transfers—through simple chat or voice commands. The Warden App does all the thinking and problem solving for the user, making complex work like cross-chain transactions, portfolio management, or risk assessments easy.
+Warden is an AI-driven [Intelligent Application](#intelligent-application) that lets users perform complex Web3 actions—like swaps and transfers—through simple chat or voice commands. Warden does all the thinking and problem solving for the user, making complex work like cross-chain transactions, portfolio management, or risk assessments easy.
 
-Learn more: [Warden App documentation](https://help.wardenprotocol.org/warden-app/introduction).  
-Try it out: [Warden App](https://app.wardenprotocol.org/).
+Learn more: [Warden documentation](https://help.wardenprotocol.org).  
+Try it out: [Warden](https://app.wardenprotocol.org).

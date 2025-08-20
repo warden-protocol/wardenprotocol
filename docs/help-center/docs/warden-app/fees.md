@@ -25,10 +25,6 @@ All swaps incur these fees:
 | Gas fee       | varies | native coin        | A fee paid to the network for processing the transaction |
 | Platform fee  | 0.85%  | input/output token | A percentage charged by Warden                           |
 
-Warden charges fees
-
-When charging the platform fee, Warden prioritizes USDC/SOL for Solana swaps. If the input of output token isn't one of those, the fee is charged in the input token.
-
 ## Other
 
 ### Messari fees

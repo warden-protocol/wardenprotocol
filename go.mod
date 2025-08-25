@@ -35,7 +35,7 @@ require (
 	cosmossdk.io/core v0.11.3
 	cosmossdk.io/depinject v1.2.1
 	cosmossdk.io/errors v1.0.2
-	cosmossdk.io/log v1.6.0
+	cosmossdk.io/log v1.6.1
 	cosmossdk.io/math v1.5.3
 	cosmossdk.io/store v1.1.2
 	cosmossdk.io/tools/confix v0.1.2
@@ -102,8 +102,8 @@ require (
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.48.1 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.48.1 // indirect
 	github.com/bufbuild/protoplugin v0.0.0-20250218205857-750e09ce93e1 // indirect
-	github.com/bytedance/sonic v1.13.2 // indirect
-	github.com/bytedance/sonic/loader v0.2.4 // indirect
+	github.com/bytedance/sonic v1.14.0 // indirect
+	github.com/bytedance/sonic/loader v0.3.0 // indirect
 	github.com/cloudwego/base64x v0.1.5 // indirect
 	github.com/cncf/xds/go v0.0.0-20250501225837-2ac532fd4443 // indirect
 	github.com/envoyproxy/go-control-plane/envoy v1.32.4 // indirect
@@ -128,7 +128,7 @@ require (
 	go.opentelemetry.io/contrib/detectors/gcp v1.36.0 // indirect
 	go.opentelemetry.io/otel/sdk/metric v1.37.0 // indirect
 	go.uber.org/mock v0.5.2 // indirect
-	golang.org/x/arch v0.15.0 // indirect
+	golang.org/x/arch v0.17.0 // indirect
 	pluginrpc.com/pluginrpc v0.5.0 // indirect
 )
 

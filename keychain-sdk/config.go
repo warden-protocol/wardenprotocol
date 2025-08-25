@@ -33,7 +33,7 @@ type Config struct {
 	Mnemonic string
 
 	// BatchInterval is the time to wait before sending a batch of requests to
-	// the blockchain. Tipically, this interval should be set to the average
+	// the blockchain. Typically, this interval should be set to the average
 	// block time of the chain.
 	BatchInterval time.Duration
 

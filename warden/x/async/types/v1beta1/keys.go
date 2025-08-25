@@ -16,6 +16,9 @@ package v1beta1
 const (
 	// ModuleName defines the module name.
 	ModuleName = "async"
+
+	// StoreKey defines the primary module store key.
+	StoreKey = ModuleName
 )
 
 var ParamsKey = []byte("p_async")

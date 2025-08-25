@@ -1,6 +1,7 @@
 package precompiles
 
 import (
+	evmcmn "github.com/cosmos/evm/precompiles/common"
 	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
 	ethcmn "github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
@@ -33,6 +34,7 @@ func WardenPrecompilesAddresses() []string {
 
 // Single point of all wardenprotocol precompiles initialization, including precompiles and events registry.
 func NewWardenPrecompiles(
+	bankKeeper evmcmn.BankKeeper,
 	wardenkeeper wardenkeeper.Keeper,
 	actkeeper actkeeper.Keeper,
 	oraclekeeper oraclekeeper.Keeper,
@@ -43,7 +45,11 @@ func NewWardenPrecompiles(
 	precompiles := make(map[ethcmn.Address]vm.PrecompiledContract)
 	eventsRegistry := cmn.NewEthEventsRegistry()
 
-	newActPrecompile, err := actprecompile.NewPrecompile(actkeeper, eventsRegistry)
+	newActPrecompile, err := actprecompile.NewPrecompile(
+		actkeeper,
+		bankKeeper,
+		eventsRegistry,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +62,12 @@ func NewWardenPrecompiles(
 	eventsRegistry.RegisterEvent("warden.act.v1beta1.EventUpdateTemplate", newActPrecompile.GetUpdateTemplateEvent)
 	eventsRegistry.RegisterEvent("warden.act.v1beta1.EventCreateAction", newActPrecompile.GetCreateActionEvent)
 
-	newWardenPrecompile, err := wardenprecompile.NewPrecompile(wardenkeeper, actkeeper, eventsRegistry)
+	newWardenPrecompile, err := wardenprecompile.NewPrecompile(
+		wardenkeeper,
+		actkeeper,
+		bankKeeper,
+		eventsRegistry,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -87,7 +98,11 @@ func NewWardenPrecompiles(
 
 	precompiles[newSlinkyPrecompile.Address()] = newSlinkyPrecompile
 
-	newAsyncPrecompile, err := asyncprecompile.NewPrecompile(asynckeeper, eventsRegistry)
+	newAsyncPrecompile, err := asyncprecompile.NewPrecompile(
+		asynckeeper,
+		bankKeeper,
+		eventsRegistry,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +118,7 @@ func NewWardenPrecompiles(
 
 	precompiles[newJsonPrecompile.Address()] = newJsonPrecompile
 
-	newSchedPrecompile, err := schedprecompile.NewPrecompile(schedkeeper, evmKeeper, eventsRegistry)
+	newSchedPrecompile, err := schedprecompile.NewPrecompile(schedkeeper, evmKeeper, bankKeeper, eventsRegistry)
 	if err != nil {
 		return nil, err
 	}

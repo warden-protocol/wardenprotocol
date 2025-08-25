@@ -18,6 +18,7 @@ import (
 	"github.com/cosmos/gogoproto/proto"
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/crypto"
 
 	"github.com/warden-protocol/wardenprotocol/warden/abciutil"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1"
@@ -164,9 +165,8 @@ func (k Keeper) buildEthTx(txConfig client.TxConfig) ([]byte, error) {
 
 func buildCosmosWrappedTx(builder client.TxBuilder, signedEthTx *ethtypes.Transaction) (signing.Tx, error) {
 	tx := &vmtypes.MsgEthereumTx{}
-	if err := tx.FromEthereumTx(signedEthTx); err != nil {
-		return nil, fmt.Errorf("FromEthereumTx: %w", err)
-	}
+	tx.FromEthereumTx(signedEthTx)
+	tx.From = crypto.PubkeyToAddress(privkey.PublicKey).Bytes()
 
 	denom := vmtypes.GetEVMCoinDenom()
 

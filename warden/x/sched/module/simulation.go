@@ -8,7 +8,6 @@ import (
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 
-	"github.com/warden-protocol/wardenprotocol/warden/testutil/sample"
 	schedsimulation "github.com/warden-protocol/wardenprotocol/warden/x/sched/simulation"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1"
 )
@@ -17,13 +16,8 @@ import (
 var (
 	_ = schedsimulation.FindAccount
 	_ = rand.Rand{}
-	_ = sample.AccAddress
 	_ = sdk.AccAddress{}
 	_ = simulation.MsgEntryKind
-)
-
-const (
-// this line is used by starport scaffolding # simapp/module/const
 )
 
 // GenerateGenesisState creates a randomized GenState of the module.
@@ -35,7 +29,6 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 
 	schedGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
-		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&schedGenesis)
 }
@@ -47,14 +40,10 @@ func (am AppModule) RegisterStoreDecoder(_ simtypes.StoreDecoderRegistry) {}
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
 
-	// this line is used by starport scaffolding # simapp/module/operation
-
 	return operations
 }
 
 // ProposalMsgs returns msgs used for governance proposals for simulations.
 func (am AppModule) ProposalMsgs(simState module.SimulationState) []simtypes.WeightedProposalMsg {
-	return []simtypes.WeightedProposalMsg{
-		// this line is used by starport scaffolding # simapp/module/OpMsg
-	}
+	return []simtypes.WeightedProposalMsg{}
 }

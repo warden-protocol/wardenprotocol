@@ -257,7 +257,7 @@ client_timeout = "2s"
 # MetricsEnabled determines whether oracle metrics are enabled. Specifically
 # this enables instrumentation of the oracle client and the interaction between
 # the oracle and the app.
-metrics_enabled = "false"
+metrics_enabled = "true"
 
 # PriceTTL is the maximum age of the latest price response before it is considered stale.
 # The recommended max age is 10 seconds (10s). If this is greater than 1 minute (1m), the app
@@ -303,6 +303,10 @@ address = "127.0.0.1:{{ .JSONRPCPort }}"
 
 # Address defines the EVM WebSocket server address to bind to.
 ws-address = "127.0.0.1:{{ .JSONRPCWSPort }}"
+
+# WSOrigins defines the allowed origins for WebSocket connections.
+# Example: ["localhost", "127.0.0.1", "myapp.example.com"]
+ws-origins = ["127.0.0.1", "localhost"]
 
 # API defines a list of JSON-RPC namespaces that should be enabled
 # Example: "eth,txpool,personal,net,debug,web3"
@@ -355,6 +359,15 @@ metrics-address = "127.0.0.1:6065"
 
 # Upgrade height for fix of revert gas refund logic when transaction reverted.
 fix-revert-gas-refund-height = 0
+
+# Maximum number of requests in a batch.
+batch-request-limit = 1000
+
+# Maximum number of bytes returned from a batched call.
+batch-response-max-size = 25000000
+
+# Enabled profiling in the debug namespace
+enable-profiling = false
 
 ###############################################################################
 ###                             TLS Configuration                           ###

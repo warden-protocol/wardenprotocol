@@ -44,6 +44,7 @@ Supported networks:
 - **Ethereum**
 - **Solana**
 - **Base**
+- **Binance Smart Chain**
 
 Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees).
 
@@ -61,6 +62,7 @@ Supported networks:
 
 - **Ethereum**
 - **Base**
+- **Binance Smart Chain**
 
 Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees).
 

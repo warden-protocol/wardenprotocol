@@ -145,7 +145,7 @@ func NewAnteHandler(options HandlerOptions) sdk.AnteHandler {
 					// This check prevents any external user to submit a transaction using the
 					// ExtensionOptionsCallbacks.
 					// If a validator still builds a proposal containing an invalid transaction,
-					// the rest of the validators should reject such proposal during
+					// the rest of the validators should reject such a proposal during
 					// ProcessProposal.
 					if ctx.IsCheckTx() {
 						return ctx, errorsmod.Wrapf(

@@ -12,8 +12,9 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/tracing"
 	"github.com/ethereum/go-ethereum/core/vm"
-	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
-	types "github.com/skip-mev/slinky/x/oracle/types"
+
+	oraclekeeper "github.com/warden-protocol/connect/x/oracle/keeper"
+	types "github.com/warden-protocol/connect/x/oracle/types"
 
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 )

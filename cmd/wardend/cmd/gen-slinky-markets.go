@@ -5,10 +5,11 @@ import (
 	"fmt"
 
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/skip-mev/slinky/cmd/constants/marketmaps"
-	marketmaptypes "github.com/skip-mev/slinky/x/marketmap/types"
-	oracletypes "github.com/skip-mev/slinky/x/oracle/types"
 	"github.com/spf13/cobra"
+
+	"github.com/warden-protocol/connect/cmd/constants/marketmaps"
+	marketmaptypes "github.com/warden-protocol/connect/x/marketmap/types"
+	oracletypes "github.com/warden-protocol/connect/x/oracle/types"
 )
 
 func AddGenesisSlinkyMarketsCmd(defaultNodeHome string) *cobra.Command {

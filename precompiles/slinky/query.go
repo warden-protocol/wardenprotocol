@@ -9,8 +9,9 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
-	slinkytypes "github.com/skip-mev/slinky/pkg/types"
-	oracletypes "github.com/skip-mev/slinky/x/oracle/types"
+
+	slinkytypes "github.com/warden-protocol/connect/pkg/types"
+	oracletypes "github.com/warden-protocol/connect/x/oracle/types"
 
 	wardencommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 )

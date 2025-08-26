@@ -420,7 +420,7 @@ Try it out: [Warden](https://app.wardenprotocol.org).
 
 ## Warden Agent Hub
 
-Warden Agent Hub is a marketplace in [Warden](#warden) where users discover AI Agents operating across Web2 and Web3 ecosystems. By putting Agents in front of engaged user base, the Hub solves the toughest challenge in tech: distribution. Moreover, Agents listed here can collaborate to solve complex problems.
+Warden Agent Hub is a marketplace in [Warden](#warden) where users discover AI Agents operating across Web2 and Web3 ecosystems. By putting Agents in front of an engaged user base, the Hub solves the toughest challenge in tech: distribution. Moreover, Agents listed here can collaborate to solve complex problems.
 
 Learn more: [Warden documentation](https://help.wardenprotocol.org/warden-app/explore-ai-agents).  
 
@@ -436,9 +436,9 @@ Learn more: [Warden Agent Kit](/build-an-agent/warden-agent-kit/introduction).
 
 ## Warden Chain
 
-Warden Chain serves as an entry point to discover, interact with, and transact with [AI Agents](#ai-agent) in our ecosystem. Once an Agent is built, it gets minted directly onto the chain, where it signs requests, collects fees, and pays for services.
+Warden Chain serves as an entry point to discover, interact , and transact with [AI Agents](#ai-agent) in our ecosystem. Once an Agent is built, it gets minted directly onto the chain, where it signs requests, collects fees, and pays for services.
 
-Learn more: [Warden networks](/learn/warden-networks)
+Learn more: [Warden networks](/learn/warden-networks).
 
 ---
 

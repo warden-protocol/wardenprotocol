@@ -8,7 +8,7 @@ slug: /
 
 ## Warden Protocol
 
-**Warden Protocol** is a foundational, purpose-built L1 blockchain designed for **AI Agents**. It serves as an entry point to discover, interact with, and transact with Agents in our ecosystem.
+**Warden Protocol** is a foundational, purpose-built L1 blockchain designed for **AI Agents**. It serves as an entry point to discover, interact, and transact with Agents in our ecosystem.
 
 Agents today are fragmented across frameworks and custom stacks, all facing the same limits: no monetization, no shared infrastructure, and no scalable way to reach users. Warden addresses this by enabling a **global Agent network**—the full-stack foundation for the Agent economy.
 
@@ -52,7 +52,7 @@ Once an Agent is built, it gets minted directly onto [Warden Chain](/learn/warde
 
 ### Warden Agent Hub
 
-[Warden Agent Hub ](https://help.wardenprotocol.org/warden-app/explore-ai-agents) is a marketplace where users discover AI Agents operating across Web2 and Web3 ecosystems. By putting Agents in front of engaged user base, the Hub solves the toughest challenge in tech: distribution. Moreover, Agents listed here can collaborate to solve complex problems.
+[Warden Agent Hub](https://help.wardenprotocol.org/warden-app/explore-ai-agents) is a marketplace where users discover AI Agents operating across Web2 and Web3 ecosystems. By putting Agents in front of an engaged user base, the Hub solves one of the toughest challenges in tech: distribution. Moreover, Agents listed here can collaborate to solve complex problems.
 
 Here's how the Agent Hub helps you get the most from your Agents:
 

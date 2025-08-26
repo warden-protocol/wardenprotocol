@@ -1,4 +1,4 @@
-FROM golang:1.24-bookworm
+FROM golang:1.25-trixie
 
 # Install dependencies
 RUN apt-get update && \

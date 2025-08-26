@@ -28,17 +28,19 @@ This concept is implemented in the `x/act` [module](#module). Learn more: [`x/ac
 
 ---
 
+## Agent network
+
+The Agent network is the infrastructure that supports the entire lifecycle of [AI Agents](#ai-agent). It provides the full-stack foundation for the Agent economy, unifying Agents that would otherwise remain fragmented across frameworks and custom stacks without reaching users.
+
+The core elements of the Agent network are [Warden Studio](#warden-studio), [Warden Chain](#warden-chain), [Warden Agent Hub](#warden-agent-hub), and [Warden](#warden).
+
+---
+
 ## AI Agent
 
-A Warden AI Agent is an AI-driven program that supports both offchain and onchain operations. Thanks to their native integration with Warden Protocol, Warden Agents can perform onchain [Actions](#action), such as creating [Spaces](#space), generating [keys](#key), executing transactions, and so on. You can easily build Warden Agents with the [Warden Agent Kit](#warden-agent-kit).
+An AI Agent is an AI-driven program that supports both offchain and onchain operations. Agents perform complex [Actions](#action) through simple chat commands—for example, bridging, minting, trading, staking, deep research. At the moment, we focus on financial, autopilot, institutional (custodial), and ecosystem Agents.
 
-Warden Agents' integration with AI is ensured by three components:
-
-- [Orders](#order): EVM smart contracts performing onchain [Actions](#action) at any destination chain
-- `x/async`: a [Warden module](#module) implementing [Tasks](#task), [AVR Plugins](#avr-plugin), and [Prophets](#prophet)
-- [SPEX](#spex): Statistical Proof of Execution
-
-Learn more: [Build an Agent](/build-an-agent/introduction).
+We capture the entire life cycle of Agents in our [Agent network](#agent-network) through these core elements: [Warden Studio](#warden-studio), [Warden Chain](#warden-chain), [Warden Agent Hub](#warden-agent-hub), [Warden](#warden).
 
 ---
 
@@ -78,6 +80,18 @@ Developers can create their own Plugins or use the existing ones. Currently, we 
 - HTTP requests to external services, such as blockchain APIs
 
 AVR Plugins provide a universal and standard way for smart contracts to access any resource or operate offchain systems. This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
+
+---
+
+## Big Brain
+
+Big Brain (under development) is a protocol-enabled, domain-specific LLM trained on 1T tokens, catalyzing [AI Agent](#ai-agent) performance as the evolving hive mind. Big Brain learns from every [Warden](#warden) interaction and rewards contributors who help it improve.
+
+---
+
+## Blockchain layer
+
+The blockchain layer provides the core infrastructure for [AI Agents](#ai-agent): identity, coordination, and provenance. Agents are deployed directly onto [Warden Chain](#warden-chain).
 
 ---
 
@@ -363,7 +377,6 @@ A validator’s commission is the percentage of [staking](#staking) rewards earn
 
 ---
 
-
 ## Validator's weight
 
 Each [validator](#validator) has its own [WARD tokens](#ward-token) and tokens bonded by its [delegators](#delegator). The total amount of tokens determines the validator's weight.
@@ -396,6 +409,23 @@ Learn more: [$WARD](/tokens/ward-token/ward).
 
 ---
 
+## Warden
+
+Warden is an AI-driven [Intelligent Application](#intelligent-application) built on Warden Protocol. In Warden, users access all [AI Agents](#ai-agent), models, and chains through a single interface, performing advanced workflows in natural language. Agents are available in [Warden Agent Hub](#warden-agent-hub).
+
+Learn more: [Warden documentation](https://help.wardenprotocol.org).  
+Try it out: [Warden](https://app.wardenprotocol.org).
+
+---
+
+## Warden Agent Hub
+
+Warden Agent Hub is a marketplace in [Warden](#warden) where users discover AI Agents operating across Web2 and Web3 ecosystems. By putting Agents in front of engaged user base, the Hub solves the toughest challenge in tech: distribution. Moreover, Agents listed here can collaborate to solve complex problems.
+
+Learn more: [Warden documentation](https://help.wardenprotocol.org/warden-app/explore-ai-agents).  
+
+---
+
 ## Warden Agent Kit
 
 The Warden Agent Kit allows creating [AI Agents](#ai-agent) that are able to access both offchain and onchain functionalities. The kit offers native integration with Warden Protocol for onchain [Actions](#action) and supports compatibility with Typescript, any AI Agent framework, and [LangChain](https://js.langchain.com/docs/introduction/) tools.
@@ -404,9 +434,14 @@ Learn more: [Warden Agent Kit](/build-an-agent/warden-agent-kit/introduction).
 
 ---
 
-## Warden
+## Warden Chain
 
-Warden is an AI-driven [Intelligent Application](#intelligent-application) that lets users perform complex Web3 actions—like swaps and transfers—through simple chat or voice commands. Warden does all the thinking and problem solving for the user, making complex work like cross-chain transactions, portfolio management, or risk assessments easy.
+Warden Chain serves as an entry point to discover, interact with, and transact with [AI Agents](#ai-agent) in our ecosystem. Once an Agent is built, it gets minted directly onto the chain, where it signs requests, collects fees, and pays for services.
 
-Learn more: [Warden documentation](https://help.wardenprotocol.org).  
-Try it out: [Warden](https://app.wardenprotocol.org).
+Learn more: [Warden networks](/learn/warden-networks)
+
+---
+
+## Warden Studio
+
+Warden Studio (now in Alpha) is a toolkit giving builders everything they need to develop, test, and publish [AI Agents](#ai-agent) directly to [Warden](#warden) users—from decentralized, verifiable inference to domain-specific language models, verification systems, and core primitives. This toolkit is built for for Web3 developers, no-code creators, and Web2 builders.

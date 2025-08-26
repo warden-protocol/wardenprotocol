@@ -444,4 +444,4 @@ Learn more: [Warden networks](/learn/warden-networks)
 
 ## Warden Studio
 
-Warden Studio (now in Alpha) is a toolkit giving builders everything they need to develop, test, and publish [AI Agents](#ai-agent) directly to [Warden](#warden) users—from decentralized, verifiable inference to domain-specific language models, verification systems, and core primitives. This toolkit is built for for Web3 developers, no-code creators, and Web2 builders.
+Warden Studio (now in Alpha) is a toolkit giving builders everything they need to develop, test, and publish [AI Agents](#ai-agent) directly to [Warden](#warden) users—from decentralized, verifiable inference to domain-specific language models, verification systems, and core primitives. This toolkit is built for Web3 developers, no-code creators, and Web2 builders.

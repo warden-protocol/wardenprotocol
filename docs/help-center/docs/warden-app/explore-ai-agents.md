@@ -62,7 +62,7 @@ Supported networks:
 
 - **Ethereum**
 - **Base**
-- **Binance Smart Chain**
+- **BNB Smart Chain**
 
 Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees).
 

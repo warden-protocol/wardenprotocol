@@ -45,6 +45,7 @@ At the moment, Warden supports the following networks:
 - **Ethereum**
 - **Solana**
 - **Base**
+- **BNB Smart Chain (BSC)**
 
 More chains are coming soon—stay tuned!
 

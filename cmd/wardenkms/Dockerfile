@@ -1,4 +1,4 @@
-FROM golang:1.24 AS build
+FROM golang:1.25-trixie AS build
 
 # Install just
 RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /usr/bin

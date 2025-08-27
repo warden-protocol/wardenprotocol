@@ -1,4 +1,4 @@
-FROM golang:1.24 AS build
+FROM golang:1.25-trixie AS build
 
 # Install just
 RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /usr/bin
@@ -15,7 +15,7 @@ RUN --mount=type=bind,source=.,target=.,readonly\
     --mount=type=cache,target=/go/pkg/mod,sharing=locked \
     OUTPUT_DIR=/dist just wardend build faucet
 
-FROM debian:bookworm-slim AS runtime
+FROM debian:trixie-slim AS runtime
 RUN apt update && \
     apt install ca-certificates curl -y && \
     rm -rf /var/lib/apt/lists/*

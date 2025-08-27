@@ -44,6 +44,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features (non-breaking)
 
+- Update to Go 1.25
+
 ### Bug Fixes
 
 ## [v0.6.5](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.5) - 2025-07-23

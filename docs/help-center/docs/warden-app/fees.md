@@ -23,7 +23,16 @@ All swaps incur these fees:
 | Fee type      | Amount | Currency           | Description                                              |
 | ------------- | -------|--------------------| -------------------------------------------------------- |
 | Gas fee       | varies | native coin        | A fee paid to the network for processing the transaction |
-| Platform fee  | 0.85%  | input/output token | A percentage charged by Warden                           |
+| Platform fee  | 0.85%  | input/output token | A percentage charged by Warden     
+
+## Bridge fees
+
+All bridge transactions incur these fees:
+
+| Fee type      | Amount | Currency           | Description                                              |
+| ------------- | -------|--------------------| -------------------------------------------------------- |
+| Gas fee       | varies | native coin        | A fee paid to the network for processing the transaction |
+| Platform fee  | 0.85%  | input/output token | A percentage charged by Warden                          |
 
 ## Other
 

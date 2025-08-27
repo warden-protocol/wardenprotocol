@@ -28,9 +28,9 @@ Alternatively, you can access Agents directly from the chat screen. Use the drop
 
 ## Available Agents
 
-### Warden AMA Agent
+### Warden AMA
 
-The **Warden AMA Agent** is the default Agent you see when logging in to Warden. It's not displayed in the Agent Hub, but you can always switch to it in the [chat](use-the-chat).
+The **Warden AMA** Agent is the default Agent you see when logging in to Warden. It's not displayed in the Agent Hub, but you can always switch to it in the [chat](use-the-chat).
 
 This Agent performs all your Web3 transactions and handles other tasks:
 
@@ -39,7 +39,7 @@ This Agent performs all your Web3 transactions and handles other tasks:
 - Generates an image based on a text description
 - Answers any questions about Warden and the [Warden Protocol](https://docs.wardenprotocol.org)
 
-Supported networks:
+Networks:
 
 - **Ethereum**
 - **Solana**
@@ -58,7 +58,7 @@ Just specify the network, currency pair, and amount in the chat, and the Agent w
 - Exchange tokens for each other
 - Send ETH or any token to a destination address
 
-Supported networks:
+Networks:
 
 - **Ethereum**
 - **Base**
@@ -78,9 +78,9 @@ Use this Agent to research any blockchain project with detailed, real-time insig
 
 Fees: [Messari fees](fees#messari-fees).
 
-### Jupiter Agent
+### Jupiter
 
-The **Jupiter Agent** integrates with the [Jupiter Exchange](https://jup.ag)—a decentralized exchange (DEX) aggregator built on the Solana blockchain. This is the only Agent you need to send and swap any Solana tokens.
+The **Jupiter** Agent integrates with the [Jupiter Exchange](https://jup.ag)—a decentralized exchange (DEX) aggregator built on the Solana blockchain. This is the only Agent you need to send and swap any Solana tokens.
 
 Just specify the amount and other details in the chat, and the Agent will do the rest:
 
@@ -88,9 +88,29 @@ Just specify the amount and other details in the chat, and the Agent will do the
 - Swap tokens for each other
 - Send SOL or any token to a destination address
 
-Supported networks: **Solana**.
+Networks: **Solana**.
 
 Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees).
+
+### deBridge
+
+The **deBridge** Agent facilitates secure and precise cross-chain token transfers. You can bridge tokens (native or USDC) between any of the supported networks. All transactions require confirmation.
+
+Networks:
+
+- **Ethereum**
+- **Base**
+- **Solana**
+- **BNB Smart Chain (BSC)**
+
+Tokens:
+
+- **ETH**
+- **SOL**
+- **BNB**
+- **USDC**
+
+Fees: [bridge fees](fees#bridge-fees).
 
 ### Coming soon
 

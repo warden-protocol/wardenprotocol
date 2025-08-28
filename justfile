@@ -30,6 +30,9 @@ deploy-contract contract from="shulgin" label="":
     echo {{contract}} deployed at $ADDR
 
 # variables for building and releasing
+wasmvm_version := `go list -m -f '{{ .Version }}' github.com/CosmWasm/wasmvm/v3`
+wasmvm_amd64_checksum := 'f2fab51ec2b393ffe6912ff31497c6f8a14c04ad2490a1a3a9fa11a37cb4ce33'
+wasmvm_arm64_checksum := 'f82e608707be7b193a78f5a7f7c6163b633a94ca6a0017a7fa3501cc8e9fbff5'
 commit := `git rev-parse HEAD`
 short_commit := `git rev-parse --short HEAD`
 date := `date -u +"%Y-%m-%dT%H:%M:%SZ"`
@@ -47,6 +50,9 @@ release-publish-docker project-name push="true":
         -t ghcr.io/warden-protocol/wardenprotocol/{{ project-name }}:{{ version }} \
         -t ghcr.io/warden-protocol/wardenprotocol/{{ project-name }}:{{ commit }} \
         -t ghcr.io/warden-protocol/wardenprotocol/{{ project-name }}:{{ short_commit }} \
+        --build-arg WASMVM_VERSION={{ wasmvm_version }} \
+        --build-arg WASMVM_AMD64_CHECKSUM={{ wasmvm_amd64_checksum }} \
+        --build-arg WASMVM_ARM64_CHECKSUM={{ wasmvm_arm64_checksum }} \
         --label=org.opencontainers.image.created={{ date }} \
         --label=org.opencontainers.image.title={{ project-name }} \
         --label=org.opencontainers.image.description={{ project-name }} \
@@ -65,6 +71,9 @@ release-wardend-binary:
     rm -rf dist
     docker buildx build \
         --target binary \
+        --build-arg WASMVM_VERSION={{ wasmvm_version }} \
+        --build-arg WASMVM_AMD64_CHECKSUM={{ wasmvm_amd64_checksum }} \
+        --build-arg WASMVM_ARM64_CHECKSUM={{ wasmvm_arm64_checksum }} \
         --build-arg WARDEND_VERSION={{ version }} \
         -f ./cmd/wardend/Dockerfile \
         {{ if env("GITHUB_ACTIONS", "") == "true" { "--cache-from type=gha --cache-to type=gha,mode=max" } else { "" } }} \

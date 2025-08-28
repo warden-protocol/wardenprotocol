@@ -219,15 +219,10 @@ func (app *App) setupABCILifecycle(
 	processProposalHandlers := append(
 		abciutil.ProcessProposalHandlers{},
 		slinkyProposalHandler.ProcessProposalHandler(),
-		app.AsyncKeeper.ProcessProposalHandler(),
-		app.SchedKeeper.ProcessProposalHandler(app.txConfig),
 	)
 	app.SetProcessProposal(processProposalHandlers.ProcessProposalHandler())
 
-	app.SetPreBlocker(combinePreBlocker(
-		slinkyPreBlockHandler.WrappedPreBlocker(app.ModuleManager),
-		app.AsyncKeeper.PreBlocker(),
-	))
+	app.SetPreBlocker(slinkyPreBlockHandler.WrappedPreBlocker(app.ModuleManager))
 
 	veManager := vemanager.NewVoteExtensionManager()
 
@@ -238,15 +233,8 @@ func (app *App) setupABCILifecycle(
 	)
 
 	// register x/async handlers
-	veManager.Register(
-		app.AsyncKeeper.ExtendVoteHandler(),
-		app.AsyncKeeper.VerifyVoteExtensionHandler(),
-	)
-
 	prepareProposalHandlers := append(abciutil.PrepareProposalHandlers{},
 		slinkyProposalHandler.PrepareProposalHandler(),
-		app.AsyncKeeper.PrepareProposalHandler(),
-		app.SchedKeeper.PrepareProposalHandler(app.txConfig),
 	)
 	app.SetPrepareProposal(prepareProposalHandlers.PrepareProposalHandler())
 
@@ -254,7 +242,7 @@ func (app *App) setupABCILifecycle(
 	app.SetVerifyVoteExtensionHandler(veManager.VerifyVoteExtensionHandler())
 }
 
-func combinePreBlocker(a, b sdk.PreBlocker) sdk.PreBlocker {
+func combinePreBlocker(a, b sdk.PreBlocker) sdk.PreBlocker { //nolint:unused
 	return func(ctx sdk.Context, req *cometabci.RequestFinalizeBlock) (*sdk.ResponsePreBlock, error) {
 		defer func() {
 			if err := recover(); err != nil {

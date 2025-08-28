@@ -30,6 +30,8 @@ func (c *Test_ActPrecompile) Setup(t *testing.T, f *framework.F) {
 }
 
 func (c *Test_ActPrecompile) Run(t *testing.T, _ *framework.F) {
+	t.Skip("x/act is disabled")
+
 	alice := exec.NewWardendEth(t, c.w, "alice")
 	bob := exec.NewWardendEth(t, c.w, "bob")
 	dave := exec.NewWardendEth(t, c.w, "dave")

@@ -153,6 +153,8 @@ Now you need to create a fund a key, as shown below. Alternatively, you can find
    wardend query bank balances my-key-name --node https://rpc.chiado.wardenprotocol.org:443
    ```
 
+   Alternatively, you can use [Chiado block explorer](https://testnet.warden.exploreme.pro).
+
 ### 3. Get your private key
 
 To deploy an EVM smart contract, you'll also need the **private key** associated with your account. Run the following command and note down the private key:
@@ -290,6 +292,8 @@ wardend query bank balances my-key-name --node https://rpc.chiado.wardenprotocol
 ```
 </TabItem>
 </Tabs>
+
+To check the key balance on Chiado, you can simply use the [block explorer](https://testnet.warden.exploreme.pro).
 
 ### Create a Space
 

@@ -51,6 +51,10 @@ For more detailed information, refer to our validator guides in [Operate a node]
     <td>[Chiado faucet](https://faucet.chiado.wardenprotocol.org)</td>
   </tr>
   <tr>
+    <td>**Block explorer**</td>
+    <td>[Chiado block explorer](https://testnet.warden.exploreme.pro)</td>
+  </tr>
+  <tr>
     <td>**Validator guides**</td>
     <td>[Operate a node: Chiado testnet](/category/chiado-testnet)</td>
   </tr>

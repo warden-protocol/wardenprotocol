@@ -45,6 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features (non-breaking)
 
 - Update to Go 1.25
+- Remove depinject, return to classic Cosmos SDK app wiring
+- Update cosmos/evm to v0.5.0-rc
 
 ### Bug Fixes
 

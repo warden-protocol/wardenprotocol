@@ -24,7 +24,7 @@ var (
 		// NOTE: "Repository" field is the name of the image tag generated in the tests/justfile job "test-slinky".
 		Repository: "warden/warden-protocol",
 		Version:    "latest",
-		UidGid:     "1025:1025",
+		UIDGID:     "1025:1025",
 	}
 
 	numValidators = 4
@@ -34,7 +34,7 @@ var (
 	oracleImage = ibc.DockerImage{
 		Repository: "ghcr.io/skip-mev/slinky-sidecar",
 		Version:    "latest",
-		UidGid:     "1000:1000",
+		UIDGID:     "1000:1000",
 	}
 	encodingConfig = testutil.MakeTestEncodingConfig(
 		bank.AppModuleBasic{},
@@ -74,7 +74,7 @@ var (
 			Type:                "cosmos",
 			Name:                "slinky",
 			Denom:               denom,
-			ChainID:             "chain_id-0",
+			ChainID:             "chain_1337-0",
 			Bin:                 "wardend",
 			Bech32Prefix:        "warden",
 			CoinType:            "60",

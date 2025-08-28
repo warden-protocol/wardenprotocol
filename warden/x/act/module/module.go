@@ -6,22 +6,13 @@ import (
 	"fmt"
 
 	"cosmossdk.io/core/appmodule"
-	"cosmossdk.io/core/store"
-	"cosmossdk.io/depinject"
-	"cosmossdk.io/log"
-	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 
-	modulev1 "github.com/warden-protocol/wardenprotocol/api/warden/act/module"
-	"github.com/warden-protocol/wardenprotocol/shield/ast"
-	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
@@ -162,78 +153,3 @@ func (am AppModule) IsOnePerModuleType() {}
 
 // IsAppModule implements the appmodule.AppModule interface.
 func (am AppModule) IsAppModule() {}
-
-// ----------------------------------------------------------------------------
-// App Wiring Setup
-// ----------------------------------------------------------------------------
-
-func init() {
-	appmodule.Register(
-		&modulev1.Module{},
-		appmodule.Provide(ProvideModule),
-	)
-}
-
-type ModuleInputs struct {
-	depinject.In
-
-	StoreService store.KVStoreService
-	Cdc          codec.Codec
-	Config       *modulev1.Module
-	Logger       log.Logger
-	Router       baseapp.MessageRouter
-
-	ShieldExpanderFunc func() ast.Expander `optional:"true"`
-
-	AccountKeeper types.AccountKeeper
-	BankKeeper    types.BankKeeper
-}
-
-type ModuleOutputs struct {
-	depinject.Out
-
-	ActKeeper        keeper.Keeper
-	Module           appmodule.AppModule
-	TemplateRegistry *types.TemplatesRegistry
-}
-
-func ProvideModule(in ModuleInputs) ModuleOutputs {
-	// default to governance authority if not provided
-	authority := authtypes.NewModuleAddress(govtypes.ModuleName)
-	if in.Config.Authority != "" {
-		authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
-	}
-
-	actModuleAddress := authtypes.NewModuleAddress(types.ModuleName)
-
-	shieldExpanderFunc := func() ast.Expander {
-		return cosmoshield.NewExpanderManager()
-	}
-	if in.ShieldExpanderFunc != nil {
-		shieldExpanderFunc = in.ShieldExpanderFunc
-	}
-
-	r := types.NewTemplatesRegistry()
-	k := keeper.NewKeeper(
-		in.Cdc,
-		in.StoreService,
-		in.Logger,
-		in.Router,
-		authority.String(),
-		actModuleAddress.String(),
-		shieldExpanderFunc,
-		r,
-	)
-	m := NewAppModule(
-		in.Cdc,
-		k,
-		in.AccountKeeper,
-		in.BankKeeper,
-	)
-
-	return ModuleOutputs{
-		ActKeeper:        k,
-		Module:           m,
-		TemplateRegistry: r,
-	}
-}

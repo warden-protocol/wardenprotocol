@@ -8,71 +8,91 @@ slug: /
 
 ## Warden Protocol
 
-**Warden Protocol** is a full-stack purpose-built L1 blockchain designed for developers to build **Intelligent Applications**.
+**Warden Protocol** is a foundational, purpose-built L1 blockchain designed for **AI Agents**. It serves as an entry point to discover, interact, and transact with Agents in our ecosystem.
 
-Warden creates a verifiable, AI-native blockchain where models are accessible to anyone and anywhere, their outputs directly powering smart applications.
+Agents today are fragmented across frameworks and custom stacks, all facing the same limits: no monetization, no shared infrastructure, and no scalable way to reach users. Warden addresses this by enabling a **global Agent network**—the full-stack foundation for the Agent economy.
 
-These are our design principles:
-
-- **Anything**: Build without limits—our Intelligent Applications run seamlessly onchain and operate offchain, or vice versa.
-- **Anyone**: Developers on Cosmos, Ethereum, or Solana can build with Warden.
-- **Anywhere**: Warden is chain-agnostic and accessible everywhere.
+We start with users rather than infrastructure, delivering [Warden](https://wardenprotocol.org/)—an AI-powered **Everything App** for crypto, built on Warden Protocol. In Warden, users access all AI Agents, models, and chains through a single interface, performing advanced workflows in natural language.
 
 You can find a detailed overview of our mission in [Warden Manifesto](/learn/warden-manifesto).
 
+## AI Agents
+
+An **AI Agent** is an AI-driven program that supports both offchain and onchain operations. Agents perform complex actions through simple chat commands—for example, bridging, minting, trading, staking, deep research.
+
+Below is a curated list of Agents we currently focus on:
+
+- **Financial Agents**: Simplifying all the complexities in DeFi: swapping assets, bridging across chains, and abstracting gas.
+- **Autopilot Agents**: Warden is building distributed non-custodial architecture for autopilot Agents operating when the user is offline.
+- **Institutional Agents**: Agents that manage portfolios in real time, apply dynamic risk controls, and guard against hacks. [SpaceWard](https://spaceward.chiado.wardenprotocol.org), our front-end for Warden Protocol, will evolve into a standalone custodial Agent.
+- **Ecosystem Agents**: Core participants in blockchain ecosystems. They monitor networks for risks, curate proposals, and support governance.
+
+## The Agent network
+
+We capture the entire lifecycle of Agents in our **Agent network**. The core infrastructure elements making this possible are outlined below.
+
+### Warden Studio
+
+**Warden Studio** (now in Alpha) gives builders everything they need to develop, test, and publish Agents directly to Warden users—from decentralized, verifiable inference to domain-specific language models, verification systems, and core primitives.
+
+The core features of Warden Studio include the following:
+
+- **Agent creation toolkit**: Develop, test, and deploy on- or offchain Agents.
+- **Instant distribution**: Publish directly to millions of active Warden users.
+- **Flexible for creators**: Built for Web3 developers, no-code creators, and Web2 builders.
+
+### Warden Chain
+
+Once an Agent is built, it gets minted directly onto [Warden Chain](/learn/warden-networks). The chain provides each Agent with the following:
+
+- **Identity**: Assigns each Agent a unique cryptographic ID for authentication and signing requests.  
+- **Reputation**: Records an Agent's track record, so others can verify its history.  
+- **Spending**: Allows Agents to hold balances, pay for services, and trigger payouts from metered billing, with every interaction recorded via Proof of Inference.
+- **Security**: Enforces guardrails on how Agents use funds, with payments pre-authorized under your rules.
+
+### Warden Agent Hub
+
+[Warden Agent Hub](https://help.wardenprotocol.org/warden-app/explore-ai-agents) is a marketplace where users discover AI Agents operating across Web2 and Web3 ecosystems. By putting Agents in front of an engaged user base, the Hub solves one of the toughest challenges in tech: distribution. Moreover, Agents listed here can collaborate to solve complex problems.
+
+Here's how the Agent Hub helps you get the most from your Agents:
+
+- **Direct monetization**: Publish your Agent, set your price mode, and start earning revenue from your Agent immediately. All usage and payment tracking is handled automatically.
+- **Built-in distribution**: Avoid ghost launches and instantly connect with millions of active Warden users. Reach real Agent demand and get paid instantly, including micropayments.
+
+### Warden
+
+[Warden](https://wardenprotocol.org/) is an AI-powered Intelligent Application built on Warden Protocol. In Warden, users access all AI Agents, models, and chains through a single interface, performing advanced workflows in natural language.
+
+This is what Warden offers developers and users:
+
+- **Single Agent entry point**: Millions of users discover, chat with, and pay Agents for any service in one place.
+- **Complex, made simple**: Users perform even the most advanced workflows through simple chat commands.
+
 ## Protocol layers
 
-Warden is an AI-ready protocol with three layers:
+Warden is an AI-ready protocol with four layers:
 
 - **Blockchain layer**  
-Warden lets users access responses from [Asynchronous Verifiable Resources](/learn/glossary#avr-plugin) (AVR Plugins) onchain. AVRs are a universal and standard way for smart contracts to access any resource or operate offchain systems. Users can also build, publish, and monetize their AVRs. The blockchain level acts as a coordination, messaging, and provenance layer AVR creators.
+The blockchain layer provides the core infrastructure for Agents: identity, coordination, and provenance. Agents are deployed directly onto [Warden Chain](/learn/warden-networks), where they sign requests, collect fees, and pay for services. Each Agent is assigned a unique cryptographic ID.
 
 - **Verifiability layer**  
-Warden's verifiability layer acts like a firewall that uses cryptography to verify AVR responses. [Statistical Proof of Execution](/learn/warden-protocol-modules/x-async#spex) (SPEX) ensures the model you see is the model you get, and in addition it can check if the outputs are accurate and confident enough to be used in applications.
+Our verifiability layer uses blockchain, cryptography, and consensus to guarantee the integrity of AI models. [Statistical Proof of Execution](/learn/warden-protocol-modules/x-async#spex) (SPEX) ensures the model you see is the model you get, and in addition it can check if the outputs are accurate and confident enough to be used in applications.
 
 - **Application layer**  
-Warden's developer platform features two smart contract platforms: [EVM and CosmWasm](/build-an-app/introduction#smart-contracts). Application builders can create AVRs and use them to build the logic of their applications. Warden also provides custom infrastructure for AI-specific needs and interoperability tools allowing users to access AVRs from anywhere.
+At the application layer, developers can easily build Agents and instantly make them accessible to all Warden users. Warden Studio (now in alpha) gives everything required to develop, test, and publish Agents.
 
-## Intelligent Applications
-
-An **Intelligent Application** is a smart contract integrating AI or any offchain logic. Unlike traditional contracts bound by static logic, Intelligent Apps unlock more dynamic user experiences: they're able to reason, adapt, and interact across onchain and offchain environments.
-
-Warden allows integrating Intelligent Apps with AI, which will simplify front-ends, interpret complex data sets, adapt to environments, and reach intelligent decisions. At the same time, blockchain-enabled backends ensure high integrity data, decentralization, and automated execution.
-
-Currently, we're focused on the following Intelligent Applications:
-
-- **Crypto super apps**  
-  To demonstrate how powerful AI will be for crypto UX, we built [Warden](https://app.wardenprotocol.org). It lets users perform complex Web3 actions—like swaps and transfers—through simple chat or voice commands. Warden does all the thinking and problem solving for the user, making complex work like cross-chain transactions, portfolio management, or risk assessments easy.
-
-- **Smart Agents**  
-  Warden Agents are smart contracts managed onchain. This makes them defensibly sovereign, autonomous, and non-custodial. In H2 2025, we'll launch **Warden Buffett**—a reference trading agent made with our own Agent Kit. It'll be the first truly autonomous, profit-generating entity that lives onchain.
-
-- **Intelligent custody**  
-  We believe that machine learning, artificial intelligence, and automation will fundamentally reshape custody. AI will enable personalization, intelligent portfolio optimizations, and dynamic risk management systems. To build out this vision, we created [SpaceWard](https://spaceward.chiado.wardenprotocol.org)—a reference “omnichain SAFE”.
-
-## Warden AI Agents
-
-A **Warden AI Agent** is an AI-driven program that supports both offchain and onchain operations. Thanks to their native integration with Warden Protocol, Warden Agents can perform various onchain [Actions](/learn/glossary#action). You can easily build Agents with the [Warden Agent Kit](/category/warden-agent-kit).
-
-Within Warden, AI is integrated on the verification and execution layers. Our verification layer uses blockchain, cryptography, and consensus to verify AI results are correct. On the execution layer, you can easily integrate AI with your application, protocols, and smart contracts, automating their execution across any chain.
-
-Warden allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific output. These proofs are then verified on Warden's blockchain through a new consensus mechanism, ensuring AI outputs are not just delivered, but can be trusted.
-
-AI integration is ensured by three key components:
-
-- [The `x/async` module](/learn/warden-protocol-modules/x-async) with [AVR Plugins](/learn/glossary#avr-plugin)
-- [SPEX (statistical proof of execution)](/learn/warden-protocol-modules/x-async#spex)
-- [Orders](/learn/glossary#order)
+- **Big Brain**  
+Big Brain (under development) is a protocol-enabled, domain-specific LLM trained on 1T tokens, catalyzing Agent performance as the evolving hive mind. Big Brain learns from every Warden interaction and rewards contributors who help it improve.
 
 ## Build with Warden
 
 Here is what you can do with Warden:
 
 - **Build an Intelligent Application**  
-[Intelligent Applications](#intelligent-applications) are smart contracts integrating AI or any offchain logic. You can deploy EVM-compatible Intelligent Apps with Solidity or Rust & CosmWasm.
+Intelligent Applications are smart contracts integrating AI or any offchain logic. You can deploy EVM-compatible Intelligent Apps with Solidity or Rust & CosmWasm.
 
 - **Build an AI Agent**  
-Warden allows you to integrate AI into your Intelligent Apps, utilizing outputs of AI models and building [AI Agents](#warden-ai-agents).
+Warden allows you to integrate AI into your Intelligent Apps, utilizing outputs of AI models and building [AI Agents](#ai-agents).
 
 - **Operate a Keychain**  
 [Keychains](/learn/glossary#keychain) are custodians that generate and store keys and sign transactions on any chain. You can become a Keychain operator or build a custom Keychain.
@@ -80,7 +100,12 @@ Warden allows you to integrate AI into your Intelligent Apps, utilizing outputs 
 - **Run a validator node**  
 You can run a [validator](/learn/glossary#validator) node and earn rewards while securing Warden's network.
 
-## Documentation overview
+:::important
+We're currently working on Warden Studio, our toolkit for building and publishing Agents, which will significantly simplify development. Stay tuned for updates!
+:::
+
+
+## Docs overview
 
 Welcome to the Warden Protocol documentation!
 
@@ -92,7 +117,10 @@ Use the top menu to navigate across the main sections of the docs and learn how 
 - [Build a Keychain](/build-a-keychain/introduction): Guides for Keychain operators
 - [Operate a Node](/operate-a-node/introduction): Guides for node operators
 - [Tokens](/tokens/introduction): A detailed overview of Warden tokenomics
-- [Ward](https://help.wardenprotocol.org): An AI-powered co-pilot for crypto, built on Warden Protocol
+
+You can also visit Warden's Help Center to find user guides for our applications:
+
+- [Warden](https://help.wardenprotocol.org): User guides for Warden, an AI-powered co-pilot for crypto
 - [SpaceWard](https://help.wardenprotocol.org/spaceward): User guides for SpaceWard, our front-end Intelligent Application
 
 ## Contribute

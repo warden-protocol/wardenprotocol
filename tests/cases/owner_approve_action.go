@@ -25,6 +25,8 @@ func (c *Test_OwnerApproveAction) Setup(t *testing.T, f *framework.F) {
 }
 
 func (c *Test_OwnerApproveAction) Run(t *testing.T, _ *framework.F) {
+	t.Skip("x/warden is disabled")
+
 	client := TestGRPCClient(*c.w.GRPCClient(t))
 
 	alice := exec.NewWardend(c.w, "alice")

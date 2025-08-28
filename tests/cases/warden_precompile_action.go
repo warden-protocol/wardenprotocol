@@ -28,6 +28,8 @@ func (c *Test_WardenPrecompileAction) Setup(t *testing.T, f *framework.F) {
 }
 
 func (c *Test_WardenPrecompileAction) Run(t *testing.T, f *framework.F) {
+	t.Skip("x/warden is disabled")
+
 	alice := exec.NewWardendEth(t, c.w, "alice")
 	bob := exec.NewWardendEth(t, c.w, "bob")
 

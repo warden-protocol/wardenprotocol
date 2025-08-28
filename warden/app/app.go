@@ -7,7 +7,6 @@ import (
 	"io"
 	"net/url"
 	"os"
-	"path/filepath"
 	"time"
 
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
@@ -26,8 +25,6 @@ import (
 	"cosmossdk.io/x/upgrade"
 	upgradekeeper "cosmossdk.io/x/upgrade/keeper"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
-	wasmmodule "github.com/CosmWasm/wasmd/x/wasm"
-	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	abci "github.com/cometbft/cometbft/abci/types"
 	dbm "github.com/cosmos/cosmos-db"
@@ -151,20 +148,10 @@ import (
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/quantkit"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/venice"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/veniceimg"
-	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/warden/app/ante"
-	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
-	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
-	actmodule "github.com/warden-protocol/wardenprotocol/warden/x/act/module"
 	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
-	asyncmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/async/keeper"
-	asyncmodule "github.com/warden-protocol/wardenprotocol/warden/x/async/module"
 	asynctypes "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
-	schedmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/sched/keeper"
-	schedmodule "github.com/warden-protocol/wardenprotocol/warden/x/sched/module"
 	schedtypes "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1"
-	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
-	wardenmodule "github.com/warden-protocol/wardenprotocol/warden/x/warden/module"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
@@ -229,16 +216,6 @@ type App struct {
 	OracleKeeper    *oraclekeeper.Keeper
 	MarketMapKeeper *marketmapkeeper.Keeper
 	slinkyClient    *SlinkyClient
-
-	// Wasm keepers
-	WasmKeeper     wasmkeeper.Keeper
-	ContractKeeper *wasmkeeper.PermissionedKeeper
-
-	// Warden Protocol keepers
-	WardenKeeper wardenmodulekeeper.Keeper
-	ActKeeper    actmodulekeeper.Keeper
-	AsyncKeeper  asyncmodulekeeper.Keeper
-	SchedKeeper  schedmodulekeeper.Keeper
 
 	// the module manager
 	ModuleManager      *module.Manager
@@ -570,39 +547,6 @@ func NewApp(
 		authAddr,
 	)
 
-	wasmDir := filepath.Join(homePath, "wasm")
-
-	nodeConfig, err := wasmmodule.ReadNodeConfig(appOpts)
-	if err != nil {
-		panic(fmt.Sprintf("error while reading wasm config: %s", err))
-	}
-
-	// The last arguments can contain custom message handlers, and custom query handlers,
-	// if we want to allow any custom callbacks
-	app.WasmKeeper = wasmkeeper.NewKeeper(
-		appCodec,
-		runtime.NewKVStoreService(keys[wasmtypes.StoreKey]),
-		app.AccountKeeper,
-		app.BankKeeper,
-		app.StakingKeeper,
-		distrkeeper.NewQuerier(app.DistrKeeper),
-		app.IBCKeeper.ChannelKeeper,
-		app.IBCKeeper.ChannelKeeper,
-		app.IBCKeeper.ChannelKeeperV2,
-		app.TransferKeeper,
-		app.MsgServiceRouter(),
-		app.GRPCQueryRouter(),
-		wasmDir,
-		nodeConfig,
-		wasmtypes.VMConfig{},
-		wasmkeeper.BuiltInCapabilities(),
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
-		// TODO: re-add wasmOpts...,
-	)
-
-	// Create fee enabled wasm ibc Stack
-	wasmStackIBCHandler := wasmmodule.NewIBCHandler(app.WasmKeeper, app.IBCKeeper.ChannelKeeper, app.TransferKeeper, app.IBCKeeper.ChannelKeeper)
-
 	/*
 		Create Transfer Stack
 
@@ -630,7 +574,6 @@ func NewApp(
 		app.Erc20Keeper,
 	)
 	transferStack = ibccallbacks.NewIBCMiddleware(transferStack, app.IBCKeeper.ChannelKeeper, app.CallbackKeeper, maxCallbackGas)
-	transferStack = ibccallbacks.NewIBCMiddleware(transferStack, app.IBCKeeper.ChannelKeeper, wasmStackIBCHandler, wasmmodule.DefaultMaxIBCCallbackGas)
 
 	var transferStackV2 ibcapi.IBCModule
 
@@ -639,12 +582,10 @@ func NewApp(
 
 	// Create static IBC router, add transfer route, then set and seal it
 	ibcRouter := porttypes.NewRouter()
-	ibcRouter.AddRoute(ibctransfertypes.ModuleName, transferStack).
-		AddRoute(wasmtypes.ModuleName, wasmStackIBCHandler)
+	ibcRouter.AddRoute(ibctransfertypes.ModuleName, transferStack)
 
 	ibcRouterV2 := ibcapi.NewRouter()
-	ibcRouterV2.AddRoute(ibctransfertypes.ModuleName, transferStackV2).
-		AddPrefixRoute(wasmkeeper.PortIDPrefixV2, wasmkeeper.NewIBC2Handler(app.WasmKeeper))
+	ibcRouterV2.AddRoute(ibctransfertypes.ModuleName, transferStackV2)
 
 	app.IBCKeeper.SetRouter(ibcRouter)
 	app.IBCKeeper.SetRouterV2(ibcRouterV2)
@@ -656,64 +597,6 @@ func NewApp(
 
 	// Override the ICS20 app module
 	transferModule := transfer.NewAppModule(app.TransferKeeper)
-
-	actAuthAddr := authtypes.NewModuleAddress(acttypes.ModuleName).String()
-	app.ActKeeper = actmodulekeeper.NewKeeper(
-		appCodec,
-		runtime.NewKVStoreService(keys[acttypes.StoreKey]),
-		logger,
-		bApp.MsgServiceRouter(),
-		authAddr,
-		actAuthAddr,
-		func() ast.Expander {
-			return cosmoshield.NewExpanderManager(
-				cosmoshield.NewPrefixedExpander(
-					wardentypes.ModuleName,
-					app.WardenKeeper.ShieldExpander(),
-				),
-			)
-		},
-		acttypes.NewTemplatesRegistry(),
-	)
-	wardenAuthAddr := authtypes.NewModuleAddress(wardentypes.ModuleName)
-	app.WardenKeeper = wardenmodulekeeper.NewKeeper(
-		appCodec,
-		runtime.NewKVStoreService(keys[wardentypes.StoreKey]),
-		logger,
-		authAddr,
-		actAuthAddr,
-		wardenAuthAddr,
-		app.BankKeeper,
-		app.ActKeeper,
-		func() wasmkeeper.Keeper {
-			return app.WasmKeeper
-		},
-	)
-	schedAuthAddr := authtypes.NewModuleAddress(schedtypes.ModuleName)
-	app.SchedKeeper = schedmodulekeeper.NewKeeper(
-		appCodec,
-		runtime.NewKVStoreService(keys[schedtypes.StoreKey]),
-		logger,
-		authAddr,
-		schedAuthAddr,
-		app.AccountKeeper,
-		func(_placeHolder int16) *evmkeeper.Keeper {
-			return app.EVMKeeper
-		},
-	)
-	asyncAuthAddr := authtypes.NewModuleAddress(asynctypes.ModuleName)
-	app.AsyncKeeper = asyncmodulekeeper.NewKeeper(
-		appCodec,
-		runtime.NewKVStoreService(keys[asynctypes.StoreKey]),
-		logger,
-		authAddr,
-		app.prophet,
-		app.AccountKeeper,
-		asyncAuthAddr,
-		app.BankKeeper,
-		app.StakingKeeper,
-		app.SchedKeeper,
-	)
 
 	// NOTE: we are adding all available Cosmos EVM EVM extensions.
 	// Not all of them need to be enabled, which can be configured on a per-chain basis.
@@ -728,11 +611,7 @@ func NewApp(
 			app.EVMKeeper,
 			app.GovKeeper,
 			app.SlashingKeeper,
-			app.WardenKeeper,
-			app.ActKeeper,
 			app.OracleKeeper,
-			app.AsyncKeeper,
-			app.SchedKeeper,
 			app.AppCodec(),
 		),
 	)
@@ -771,13 +650,6 @@ func NewApp(
 		// Slinky modules
 		oraclemodule.NewAppModule(appCodec, *app.OracleKeeper),
 		marketmapmodule.NewAppModule(appCodec, app.MarketMapKeeper),
-		// CosmWasm modules
-		wasmmodule.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper, app.MsgServiceRouter(), nil),
-		// Warden modules
-		actmodule.NewAppModule(appCodec, app.ActKeeper, app.AccountKeeper, app.BankKeeper),
-		wardenmodule.NewAppModule(appCodec, app.WardenKeeper, app.AccountKeeper, app.BankKeeper),
-		asyncmodule.NewAppModule(appCodec, app.AsyncKeeper, app.AccountKeeper, app.BankKeeper),
-		schedmodule.NewAppModule(appCodec, app.SchedKeeper, app.AccountKeeper, app.BankKeeper),
 	)
 
 	// BasicModuleManager defines the module BasicManager which is in charge of setting up basic,
@@ -978,7 +850,7 @@ func NewApp(
 	app.SetBeginBlocker(app.BeginBlocker)
 	app.SetEndBlocker(app.EndBlocker)
 
-	app.setAnteHandler(app.txConfig, nodeConfig, app.GetKey(wasmtypes.StoreKey), maxGasWanted)
+	app.setAnteHandler(app.txConfig, maxGasWanted)
 
 	// In v0.46, the SDK introduces _postHandlers_. PostHandlers are like
 	// antehandlers, but are run _after_ the `runMsgs` execution. They are also
@@ -1344,7 +1216,7 @@ func (app *App) RegisterPendingTxListener(listener func(common.Hash)) {
 	app.pendingTxListeners = append(app.pendingTxListeners, listener)
 }
 
-func (app *App) setAnteHandler(txConfig client.TxConfig, wasmNodeConfig wasmtypes.NodeConfig, txCounterStoreKey *storetypes.KVStoreKey, maxGasWanted uint64) {
+func (app *App) setAnteHandler(txConfig client.TxConfig, maxGasWanted uint64) {
 	options := ante.HandlerOptions{
 		HandlerOptions: evmante.HandlerOptions{
 			Cdc:                    app.appCodec,
@@ -1361,11 +1233,6 @@ func (app *App) setAnteHandler(txConfig client.TxConfig, wasmNodeConfig wasmtype
 			TxFeeChecker:           cosmosevmante.NewDynamicFeeChecker(app.FeeMarketKeeper),
 			PendingTxListener:      app.onPendingTx,
 		},
-
-		IBCKeeper:             app.IBCKeeper,
-		NodeConfig:            &wasmNodeConfig,
-		WasmKeeper:            &app.WasmKeeper,
-		TXCounterStoreService: runtime.NewKVStoreService(txCounterStoreKey),
 	}
 	if err := options.Validate(); err != nil {
 		panic(err)

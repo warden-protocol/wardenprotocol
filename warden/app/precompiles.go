@@ -31,10 +31,6 @@ import (
 	oraclekeeper "github.com/warden-protocol/connect/x/oracle/keeper"
 
 	wardenprecompiles "github.com/warden-protocol/wardenprotocol/precompiles"
-	actkeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
-	asynckeeper "github.com/warden-protocol/wardenprotocol/warden/x/async/keeper"
-	schedkeeper "github.com/warden-protocol/wardenprotocol/warden/x/sched/keeper"
-	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 )
 
 // Optionals define some optional params that can be applied to _some_ precompiles.
@@ -89,11 +85,7 @@ func NewAvailableStaticPrecompiles(
 	evmKeeper *evmkeeper.Keeper,
 	govKeeper govkeeper.Keeper,
 	slashingKeeper slashingkeeper.Keeper,
-	wardenKeeper wardenkeeper.Keeper,
-	actKeeper actkeeper.Keeper,
 	oracleKeeper *oraclekeeper.Keeper,
-	asyncKeeper asynckeeper.Keeper,
-	schedKeeper schedkeeper.Keeper,
 	codec codec.Codec,
 	opts ...Option,
 ) map[common.Address]vm.PrecompiledContract {
@@ -187,11 +179,7 @@ func NewAvailableStaticPrecompiles(
 
 	wardenprecompiles, err := wardenprecompiles.NewWardenPrecompiles(
 		bankKeeper,
-		wardenKeeper,
-		actKeeper,
 		*oracleKeeper,
-		asyncKeeper,
-		schedKeeper,
 		evmKeeper,
 	)
 	if err != nil {

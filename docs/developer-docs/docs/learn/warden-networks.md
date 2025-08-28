@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 6
+sidebar_position: 7
 ---
 
 # Warden networks
@@ -56,6 +56,6 @@ For more detailed information, refer to our validator guides in [Operate a node]
   </tr>
   <tr>
     <td>**Validator guides**</td>
-    <td>[Operate a node: Chiado testnet](/category/chiado-testnet)</td>
+    <td>Operate a node: Chiado testnet</td>
   </tr>
 </table>

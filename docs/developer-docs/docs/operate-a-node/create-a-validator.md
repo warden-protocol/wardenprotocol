@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 6
+sidebar_position: 5
 ---
 
 # Create a validator
@@ -7,12 +7,12 @@ sidebar_position: 6
 This is a simple step-by-step guide for setting up a validator on Chiado testnet. It's not a guide on validator architecture or security features.
 
 :::tip
-We've sunsetted [Buenavista](buenavista-testnet/join-buenavista). Please join our new and improved testnet, [Chiado](chiado-testnet/join-chiado).
+We've sunsetted Buenavista. Please join our new and improved testnet, Chiado.
 :::
 
 ## Prerequisites
 
-The following instructions assume you have already set up a full node and are synchronized to the latest block height. If you haven’t done so, please follow the [Join Chiado](chiado-testnet/join-chiado) instructions.
+The following instructions assume you have already set up a full node and are synchronized to the latest block height. If you haven’t done so, please follow the Join Chiado instructions.
 
 ## 1. Create/restore a key pair
 

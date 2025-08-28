@@ -24,7 +24,7 @@ To perform an onchain Action, one can use [SpaceWard](#spaceward), run [node com
 - A [key request](#key-request) or a [signature request](#signature-request)
 - Adding a member to a [Space](#space)
 
-This concept is implemented in the `x/act` [module](#module). Learn more: [`x/act`](warden-protocol-modules/x-act).
+This concept is implemented in the `x/act` [module](#module).
 
 ---
 
@@ -50,7 +50,7 @@ An Analyzer is a [CosmWasm](https://cosmwasm.com) contract that intercepts a pay
 
 Using Analyzers allows Keychains to receive the final payload without the need to have any knowledge of its content. Analyzers can extract payload metadata and manipulate the payload before it's signed.
 
-This concept is implemented in the `x/warden` [module](#module). Learn more: [`x/warden`](warden-protocol-modules/x-warden).
+This concept is implemented in the `x/warden` [module](#module).
 
 ---
 
@@ -66,7 +66,7 @@ An Approval Rule is a set of user-defined conditions under which an [Action](#ac
 
 You can define Approval Rules as part of [Intents](#intent), using the [Intent-Specific Language](#intent-specific-language). Warden's [Intent Engine](#intent-engine) ensures the validity of transactions by checking Rules, represented as [abstract syntax trees](#abstract-syntax-tree).
 
-This concept is implemented in the `x/act` [module](#module). Learn more: [`x/act`](warden-protocol-modules/x-act).
+This concept is implemented in the `x/act` [module](#module).
 
 ---
 
@@ -79,7 +79,7 @@ Developers can create their own Plugins or use the existing ones. Currently, we 
 - AI-driven price predictions (verified by [SPEX](#spex))
 - HTTP requests to external services, such as blockchain APIs
 
-AVR Plugins provide a universal and standard way for smart contracts to access any resource or operate offchain systems. This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
+AVR Plugins provide a universal and standard way for smart contracts to access any resource or operate offchain systems. This concept is implemented in the `x/async` [module](#module).
 
 ---
 
@@ -139,7 +139,7 @@ With Warden, you can build crypto super apps, smart [AI Agents](#ai-agent), and 
 
 We support two smart contract platforms: EVM and CosmWasm. In contracts, you can interact with our [modules](#module) and [AVR Plugins](#avr-plugin) to access all Warden's core features from any chain. For advanced usage of smart contracts, refer to [Order](#order).
 
-Learn more: [Warden Manifesto](warden-manifesto), [Build an app](/build-an-app/introduction), [Build an Agent](/build-an-agent/introduction).
+Learn more: [Warden Manifesto](warden-manifesto), [Build an Agent](/build-an-agent/introduction).
 
 ---
 
@@ -185,7 +185,7 @@ Keys in blockchain are paired to identify users and secure the ownership of wall
 
 On Warden, [Keychains](#keychain) generate key pairs and sign transactions with private keys. Every key belongs to a certain [Space](#space).
 
-This concept is implemented in the `x/warden` [module](#module). Learn more: [`x/warden`](warden-protocol-modules/x-warden).
+This concept is implemented in the `x/warden` [module](#module).
 
 ---
 
@@ -196,8 +196,6 @@ A key request is a request asking a [Keychain](#keychain) to generate a pair of 
 1. A user sends a key request with a [Keychain ID](#keychain-id) identifying the preferred Keychain.
 2. The [Intent Engine](#intent-engine) checks the user's [Approval Rule](#approval-rule), specified in an [Intent](#intent).
 3. If the Approval Rule is met, the Keychain generates a key pair and stores the private key. A [Keychain Writer](#keychain-writer) publishes the public key to Warden Protocol.
-
-Learn more: [Key request flow](warden-protocol-modules/x-warden#key-request-flow).
 
 ---
 
@@ -213,7 +211,7 @@ Every [Intelligent Application](#intelligent-application) has at least one Keych
 
 Warden Protocol allows users or external organizations to become Keychain operators. They can onboard their own Keychains and charge fees for [key requests](#key-request) and [signature requests](#signature-request). Note that Keychain operators typically use MPC networks to generate keys and signatures.
 
-This concept is implemented in the `x/warden` [module](#module). Learn more: [`x/warden`](warden-protocol-modules/x-warden), [Build a Keychain](/build-a-keychain/introduction).
+This concept is implemented in the `x/warden` [module](#module).
 
 ---
 
@@ -233,15 +231,11 @@ A Keychain Writer is an account that publishes signatures and public keys on beh
 
 The Keychain SDK is a Go SDK that abstracts the communication with [Warden Protocol nodes](#node), facilitating the development of [Keychains](#keychain).
 
-Learn more: [Keychain SDK](/build-a-keychain/implementations/keychain-sdk).
-
 ---
 
 ## Module
 
 Warden protocol modules are [Cosmos SDK](https://docs.cosmos.network) modules containing most of Warden Protocol's logic. Users can interact with modules by sending transactions or querying [nodes](#node). We also provide [precompiles](#precompile) that allow [Intelligent Application](#intelligent-application) builders to call certain modules in EVM smart contracts.
-
-Learn more: [Warden Protocol modules](warden-protocol-modules/introduction).
 
 ---
 
@@ -271,15 +265,11 @@ An Order is a Solidity smart contract performing onchain actions at any destinat
 
 When creating an Order, you can implement custom logic by using [Warden modules](#module), [Keychains](#keychain), and other features. In particular, the `x/async` module with [AVR Plugins](#avr-plugin) allows you to create smart contracts utilizing outputs of AI models. Orders can send any transactions to any Ethereum-based and EVM L2 application.
 
-Learn more: [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction).
-
 ---
 
 ## Precompile
 
 Warden precompiles are precompiled smart contracts that you can call in your EVM smart contract to interact with [Warden Protocol modules](#module). This allows [Intelligent Application](#intelligent-application) builders to manage [Spaces](#space), [Keychains](#keychain), [Actions](#action), [Rules](#approval-rule), [Tasks](#task), and other components.
-
-Learn more: [Interact with Warden modules](/build-an-app/interact-with-warden-modules/introduction).
 
 ---
 
@@ -292,7 +282,7 @@ A Prophet is a subprocess running on [validator](#validator) nodes, which has tw
 
 Prophets run on validator nodes separately from the [wardend process](#node), without blocking the consensus. Running a Prophet is optional for a validator.
 
-This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
+This concept is implemented in the `x/async` [module](#module).
 
 ---
 
@@ -303,8 +293,6 @@ A signature request is a request asking a [Keychain](#keychain) to sign a transa
 1. A user sends a signature request with a [Keychain ID](#keychain-id) identifying the preferred Keychain.
 2. The [Intent Engine](#intent-engine) checks the user's [Approval Rule](#approval-rule), specified in an [Intent](#intent).
 3. If the Approval Rule is met, a [Keychain Writer](#keychain-writer) publishes a signature to Warden Protocol.
-
-Learn more: [Signature request flow](warden-protocol-modules/x-warden#signature-request-flow).
 
 ---
 
@@ -318,7 +306,7 @@ Learn more: [Signature request flow](warden-protocol-modules/x-warden#signature-
 
 A Space is a hub allowing its owner (or multiple owners) to manage [keys](#key). Spaces aggregate accounts for different blockchains and provide access to [Intelligent Applications](#intelligent-application).
 
-This concept is implemented in the `x/warden` [module](#module). Learn more: [`x/warden`](warden-protocol-modules/x-warden).
+This concept is implemented in the `x/warden` [module](#module).
 
 ---
 
@@ -337,7 +325,7 @@ SPEX (Statistical Proof of Execution) is a sampling-based verifiable computing p
 
 SPEX is used as a verifiability layer for AI on Warden Protocol. At the moment, SPEX verifies AI-driven price predictions generated by the `x/async` [Warden module](#module) and [AVR Plugins](#avr-plugin). However, you can extend the module with other computational tasks and use SPEX to protect them.
 
-Learn more: [SPEX](warden-protocol-modules/x-async#spex).
+Learn more: [SPEX](spex).
 
 ---
 
@@ -355,7 +343,7 @@ A Task is an offchain user-defined unit of computation that is executed asynchro
 
 A user requests a Task, specifying an input and an [AVR Plugin](#avr-plugin), which determines what format of input to accept and how to handle it.  There are different types of Tasks, depending on the Plugin type. After that, a [validator](#validator) running a [Prophet](#prophet) executes the Plugin and provides the Task result, and other validators vote on correctness of the result.
 
-This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
+This concept is implemented in the `x/async` [module](#module).
 
 ---
 
@@ -429,8 +417,6 @@ Learn more: [Warden documentation](https://help.wardenprotocol.org/warden-app/ex
 ## Warden Agent Kit
 
 The Warden Agent Kit allows creating [AI Agents](#ai-agent) that are able to access both offchain and onchain functionalities. The kit offers native integration with Warden Protocol for onchain [Actions](#action) and supports compatibility with Typescript, any AI Agent framework, and [LangChain](https://js.langchain.com/docs/introduction/) tools.
-
-Learn more: [Warden Agent Kit](/build-an-agent/warden-agent-kit/introduction).
 
 ---
 

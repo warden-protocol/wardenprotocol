@@ -76,7 +76,7 @@ Warden is an AI-ready protocol with four layers:
 The blockchain layer provides the core infrastructure for Agents: identity, coordination, and provenance. Agents are deployed directly onto [Warden Chain](/learn/warden-networks), where they sign requests, collect fees, and pay for services. Each Agent is assigned a unique cryptographic ID.
 
 - **Verifiability layer**  
-Our verifiability layer uses blockchain, cryptography, and consensus to guarantee the integrity of AI models. [Statistical Proof of Execution](/learn/warden-protocol-modules/x-async#spex) (SPEX) ensures the model you see is the model you get, and in addition it can check if the outputs are accurate and confident enough to be used in applications.
+Our verifiability layer uses blockchain, cryptography, and consensus to guarantee the integrity of AI models. [Statistical Proof of Execution](/learn/spex) (SPEX) ensures the model you see is the model you get, and in addition it can check if the outputs are accurate and confident enough to be used in applications.
 
 - **Application layer**  
 At the application layer, developers can easily build Agents and instantly make them accessible to all Warden users. Warden Studio (now in alpha) gives everything required to develop, test, and publish Agents.
@@ -112,10 +112,8 @@ Welcome to the Warden Protocol documentation!
 Use the top menu to navigate across the main sections of the docs and learn how to join Warden:
 
 - **Learn**: The basic information about the protocol
-- [Build an App](/build-an-app/introduction): Guides for Intelligent Application developers
 - [Build an Agent](/build-an-agent/introduction): Guides for AI Agent builders
-- [Build a Keychain](/build-a-keychain/introduction): Guides for Keychain operators
-- [Operate a Node](/operate-a-node/introduction): Guides for node operators
+- [Operate a node](/operate-a-node/introduction): Guides for node operators
 - [Tokens](/tokens/introduction): A detailed overview of Warden tokenomics
 
 You can also visit Warden's Help Center to find user guides for our applications:

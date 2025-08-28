@@ -16,7 +16,7 @@ These commands allow you to do the following:
 - Edit the genesis file
 - and much more
 
-To learn more on key management and chain setup with node commands, see: [Set up a Warden account](/build-an-app/set-up-a-warden-account#useful-node-commands).
+To learn more on key management and chain setup with node commands, see: [Set up a Warden account](/build-an-agent/set-up-a-warden-account#useful-node-commands).
 
 ## Prerequisites
 
@@ -25,11 +25,11 @@ To interact with the node, you need to install the [Warden binary](https://githu
 You can follow installation instructions in one of these guides (depending on your goal):
 
 - [Run a local chain](run-a-local-chain)
-- [Join Chiado](chiado-testnet/join-chiado#1-install)
+- Join Chiado
 
 ## Execute `wardend` commands
 
-To execute a node command, just run `wardend`, followed by the command. If you need to specify a node to interact with, include the `--node` flag with a [node endpoint](chiado-testnet/chiado-overview).
+To execute a node command, just run `wardend`, followed by the command. If you need to specify a node to interact with, include the `--node` flag with a [node endpoint](barra-testnet/barra-overview).
 
 For example, to check the node status, run the example below using the preferred endpoint:
 
@@ -74,7 +74,7 @@ To get a full list of commands for querying a node, run this:
 wardend query --help
 ```
 
-For example, the `warden` command allows you to query the [`x-warden` module](/learn/warden-protocol-modules/x-warden).
+For example, the `warden` command allows you to query the `x-warden` module.
 
 Here are some of the available `wardend query warden` subcommands with examples:
 
@@ -142,7 +142,7 @@ To get a full list of commands for initiating transactions, run this:
 wardend tx --help
 ```
 
-For example, the `warden` command allows you to initiate [Warden](/learn/warden-protocol-modules/x-warden) transactions. Here are some of the available `wardend tx warden` subcommands with examples:
+For example, the `warden` command allows you to initiate Warden transactions. Here are some of the available `wardend tx warden` subcommands with examples:
 
 - `new-keychain`: This command creates a new [Keychain](/learn/glossary#keychain). It requires specifying an arbitrary Keychain description, your key name, and the chain ID.
    

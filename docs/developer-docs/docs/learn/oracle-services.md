@@ -8,10 +8,6 @@ sidebar_position: 4
 Please note that Skip:Connect is no longer maintained.
 :::
 
-:::tip
-You can use the [`x/async` module](warden-protocol-modules/x-async) as an oracle service: it supports [AVR Plugins](warden-protocol-modules/x-async#avr-plugin) that are able to make HTTP requests to external APIs—for example, for fetching prices.
-:::
-
 ## Overview
 
 An **oracle** is a third-party service that enables smart contracts to access real-life **data feeds**: prices, stock market data, weather conditions, etc.
@@ -22,7 +18,7 @@ Access to oracle data feeds significantly enhances the capabilities of Warden's 
 
 ## Skip\:Connect
 
-Warden integrates with [x/oracle](warden-protocol-modules/external-modules#xoracle)—an external module by **Skip Protocol**. This module provides access to **Skip:Connect**—an oracle service offering mostly price data, formerly known as Slinky.
+Warden integrates with [x/oracle](external-modules#xoracle)—an external module by **Skip Protocol**. This module provides access to **Skip:Connect**—an oracle service offering mostly price data, formerly known as Slinky.
 
 See also: [Connect documentation](https://docs.skip.build/connect/introduction)
 

@@ -22,8 +22,8 @@ Reasons for running a node include the following:
 - [Run a local chain](run-a-local-chain)  
   Follow this guide if you wish to run a local chain for testing purposes.
 
-- [Chiado testnet](chiado-testnet/chiado-overview), [Buenavista testnet](buenavista-testnet/buenavista-overview)  
-  These sections cover our testnets. To get started, follow [Join Chiado](chiado-testnet/join-chiado).  
+- Chiado testnet, Buenavista testnet  
+  These sections cover our testnets. To get started, follow Join Chiado.  
   Please note that we've sunsetted Buenavista. 
 
 - [Create a validator](create-a-validator), [Operate Skip:Connect](operate-skip-connect)    
@@ -37,4 +37,4 @@ Reasons for running a node include the following:
 You can get started with operating a node by following one of these guides:
 
 - [Run a local chain](run-a-local-chain)
-- [Join Chiado](chiado-testnet/join-chiado)
+- Join Chiado

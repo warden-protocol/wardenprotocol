@@ -2,7 +2,7 @@
 sidebar_position: 3
 ---
 
-# Run a local chain
+# Run a local chain (?)
 
 ## Overview
 
@@ -102,6 +102,6 @@ Alternatively you can do this:
 
 ## Next steps
 
-- Use [node commands](node-commands) to interact with the chain and [manage your account](/build-an-app/set-up-a-warden-account#useful-node-commands).
-- Now you can [deploy a smart contract](/category/deploy-smart-contracts-on-warden) or [create a Keychain](/build-a-keychain/operate-a-keychain/create-a-keychain) locally.
-- To join our testnet, see [Join Chiado](chiado-testnet/join-chiado).
+- Use [node commands](node-commands) to interact with the chain and [manage your account](/build-an-agent/set-up-a-warden-account#useful-node-commands).
+- Now you can [deploy an EVM contract](/build-an-agent/deploy-an-evm-contract) or a [WASM contract](/build-an-agent/deploy-a-wasm-contract) locally.
+- To join our testnet, see Join Chiado.

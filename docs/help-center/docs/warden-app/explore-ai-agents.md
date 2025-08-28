@@ -94,7 +94,7 @@ Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees).
 
 ### deBridge
 
-The **deBridge** Agent facilitates secure and precise cross-chain token transfers. You can bridge tokens (native or USDC) between any of the supported networks. All transactions require confirmation.
+The **deBridge** Agent integrates with [deBridge](https://debridge.finance), facilitating secure and precise cross-chain token transfers. You can bridge tokens (native or USDC) between any of the supported networks. All transactions require confirmation.
 
 Networks:
 
@@ -110,13 +110,12 @@ Tokens:
 - **BNB**
 - **USDC**
 
-Fees: [bridge fees](fees#bridge-fees).
+Fees: [deBridge fees](fees#debridge-fees).
 
 ### Coming soon
 
 The Agent lineup keeps growing. Here's what to expect next:
 
-- **DeBridge**
 - **ApexLiquid**
 - **Intelligent DCA**
 - **Levva**

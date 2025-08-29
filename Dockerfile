@@ -30,18 +30,9 @@ RUN npm config set fetch-retries 5 \
 COPY snap/ .
 RUN npm run build
 
-## wardenjs
-FROM node-build-env AS wardenjs-builder
-WORKDIR /wardenjs
-COPY wardenjs/package*.json wardenjs/pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
-COPY wardenjs/ .
-RUN pnpm run build
-
 ## spaceward
 FROM node-build-env AS spaceward-builder
 WORKDIR /wardenprotocol
-COPY --from=wardenjs-builder /wardenjs ./wardenjs
 RUN mkdir spaceward
 COPY spaceward/package*.json spaceward/pnpm-lock.yaml spaceward/.npmrc spaceward/
 RUN cd spaceward && pnpm install

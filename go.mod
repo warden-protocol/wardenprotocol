@@ -12,11 +12,11 @@ replace (
 	github.com/dgrijalva/jwt-go => github.com/dgrijalva/jwt-go/v4 v4.0.0-preview1
 
 	// use Cosmos geth fork
-	github.com/ethereum/go-ethereum => github.com/cosmos/go-ethereum v1.15.11-cosmos-0
+	// branch: release/1.16
+	github.com/ethereum/go-ethereum => github.com/cosmos/go-ethereum v1.16.2-cosmos-1
 
-	// fix upstream GHSA-h395-qcrw-5vmq vulnerability.
-	github.com/gin-gonic/gin => github.com/gin-gonic/gin v1.7.0
-	github.com/mattn/go-sqlite3 => github.com/mattn/go-sqlite3 v1.14.24
+	// Security Advisory https://github.com/advisories/GHSA-h395-qcrw-5vmq
+	github.com/gin-gonic/gin => github.com/gin-gonic/gin v1.9.1
 
 	// replace broken goleveldb
 	github.com/syndtr/goleveldb => github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7

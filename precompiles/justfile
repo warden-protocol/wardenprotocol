@@ -5,7 +5,6 @@ all: abi
 
 _tools:
     @command -v solc >/dev/null 2>&1 || (echo "solc not found. Please install solc. On MacOS, you can use 'brew install solidity'." && exit 1)
-    go install -v github.com/ethereum/go-ethereum/cmd/abigen@v1.15.0
 
 abi: _tools
   just generate_artifacts act IAct
@@ -19,7 +18,7 @@ abi: _tools
 generate_artifacts target type abi_file='abi.json':
   solc --evm-version paris --abi {{git_root}}/precompiles/{{target}}/{{type}}.sol -o {{git_root}}/precompiles/{{target}}/ --overwrite
   mv {{git_root}}/precompiles/{{target}}/{{type}}.abi {{git_root}}/precompiles/{{target}}/{{abi_file}}
-  abigen --abi {{git_root}}/precompiles/{{target}}/{{abi_file}} --pkg {{target}} --type {{type}} --out {{git_root}}/precompiles/{{target}}/{{type}}.go
+  go tool abigen --abi {{git_root}}/precompiles/{{target}}/{{abi_file}} --pkg {{target}} --type {{type}} --out {{git_root}}/precompiles/{{target}}/{{type}}.go
   
   # pretty print the abi
   echo '{"abi":[]}' > {{git_root}}/precompiles/{{target}}/formatted.json

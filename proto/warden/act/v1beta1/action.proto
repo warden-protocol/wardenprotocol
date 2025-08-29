@@ -54,7 +54,7 @@ enum ActionStatus {
   // Action is pending approval. This is the initial status.
   ACTION_STATUS_PENDING = 1;
 
-  // Template has been satified, action has been executed.
+  // Template has been satisfied, action has been executed.
   ACTION_STATUS_COMPLETED = 2;
 
   // Action has been revoked by its creator.

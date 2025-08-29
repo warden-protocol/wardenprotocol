@@ -24,8 +24,8 @@
 		"@cosmjs/proto-signing": "^0.32.4",
 		"@cosmjs/stargate": "^0.32.4",
 		"@cosmos-kit/core": "^2.15.5",
-		"@cosmos-kit/keplr": "^2.14.7",
 		"@cosmos-kit/galaxy-station": "^2.13.7",
+		"@cosmos-kit/keplr": "^2.14.7",
 		"@cosmos-kit/react": "^2.21.7",
 		"@cosmos-kit/react-lite": "^2.15.8",
 		"@dicebear/collection": "^7.0.4",
@@ -67,6 +67,7 @@
 		"@radix-ui/react-tabs": "^1.0.4",
 		"@radix-ui/react-toast": "^1.1.5",
 		"@radix-ui/react-tooltip": "^1.0.7",
+		"@reown/walletkit": "^1.0.0",
 		"@rollup/plugin-inject": "^5.0.5",
 		"@storyblok/react": "^3.0.9",
 		"@tanstack/query-core": "^4.36.1",
@@ -78,8 +79,7 @@
 		"@walletconnect/core": "^2.11.0",
 		"@walletconnect/types": "^2.11.0",
 		"@walletconnect/utils": "^2.11.0",
-		"@reown/walletkit": "^1.0.0",
-		"@wardenprotocol/wardenjs": "file:../wardenjs",
+		"@wardenprotocol/wardenjs": "0.0.12-hackmos",
 		"@web3-onboard/common": "2.4.2",
 		"@web3-onboard/core": "^2.23.0",
 		"@web3-onboard/injected-wallets": "^2.11.2",
@@ -161,10 +161,5 @@
 		"typescript": "^5.3.3",
 		"vite": "^5.4.18",
 		"vitest": "^1.6.1"
-	},
-	"dependenciesMeta": {
-		"@wardenprotocol/wardenjs": {
-			"injected": true
-		}
 	}
 }

@@ -46,9 +46,6 @@ Call Warden modules in your contract to access Warden-specific features such as 
 - [Precompiles](precompiles/introduction)  
 Warden precompiles allow you to call Warden modules in EVM contracts. Browse this section to discover full lists of methods available for each precompile.
 
-- [Build with WardenJS](wardenjs)  
-Here you'll find information about WardenJS—a tool used for building the frontend part of your application.
-
 ## Get started
 
 You can get started with Intelligent Applications by following these steps:

@@ -6,12 +6,14 @@
 version: v1
 plugins:
   - name: gocosmos
+    path: ["go", "tool", "protoc-gen-gocosmos"]
     out: .
     opt:
       - plugins=grpc
       - Mgoogle/protobuf/any.proto=github.com/cosmos/cosmos-sdk/codec/types
       - Mcosmos/orm/v1/orm.proto=cosmossdk.io/orm
   - name: grpc-gateway
+    path: ["go", "tool", "protoc-gen-grpc-gateway"]
     out: .
     opt:
       - logtostderr=true

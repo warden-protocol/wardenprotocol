@@ -28,7 +28,7 @@ gen-contract name:
   echo "Compiling contract: {{name}}"
   pushd "$contract_dir"
   solc --evm-version paris --bin --abi precompiles/=../../../../precompiles/ "./{{name}}.sol" -o . --overwrite --via-ir
-  abigen --bin=./{{name}}.bin --abi=./{{name}}.abi --pkg=contracts --type={{name}} --out=../{{name}}.go
+  go tool abigen --bin=./{{name}}.bin --abi=./{{name}}.abi --pkg=contracts --type={{name}} --out=../{{name}}.go
   popd
   echo "Successfully compiled: {{name}}"
 
@@ -36,11 +36,11 @@ gen-contract name:
 contract-caller:
   solc --evm-version paris --bin ./testdata/contracts/caller/Caller.sol -o ./testdata/contracts/caller --overwrite
   solc --evm-version paris --abi ./testdata/contracts/caller/Caller.sol -o ./testdata/contracts/caller --overwrite
-  abigen --bin=./testdata/contracts/caller/Caller.bin --abi=./testdata/contracts/caller/Caller.abi --pkg=caller --out=./testdata/contracts/caller/Caller.go
+  go tool abigen --bin=./testdata/contracts/caller/Caller.bin --abi=./testdata/contracts/caller/Caller.abi --pkg=caller --out=./testdata/contracts/caller/Caller.go
 
 # regenerate json user contract
 contract-json-user:
   # cp -f ./../precompiles/json/IJson.sol ./testdata/contracts/json-user/IJson.sol
   solc --evm-version paris --bin precompile-json/=../precompiles/json/ precompile-act/=../precompiles/act/ precompile-common/=../precompiles/common/ ./testdata/contracts/json-user/JsonUser.sol -o ./testdata/contracts/json-user --overwrite --via-ir
   solc --evm-version paris --abi precompile-json/=../precompiles/json/ precompile-act/=../precompiles/act/ precompile-common/=../precompiles/common/ ./testdata/contracts/json-user/JsonUser.sol -o ./testdata/contracts/json-user --overwrite --via-ir
-  abigen --bin=./testdata/contracts/json-user/JsonUser.bin --abi=./testdata/contracts/json-user/JsonUser.abi --pkg=json_user --out=./testdata/contracts/json-user/JsonUser.go
+  go tool abigen --bin=./testdata/contracts/json-user/JsonUser.bin --abi=./testdata/contracts/json-user/JsonUser.abi --pkg=json_user --out=./testdata/contracts/json-user/JsonUser.go

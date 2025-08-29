@@ -16,8 +16,10 @@ managed:
       buf.build/warden-protocol/warden: github.com/warden-protocol/wardenprotocol/api
 plugins:
   - name: go-pulsar
+    path: ["go", "tool", "protoc-gen-go-pulsar"]
     out: ./api
     opt: paths=source_relative
   - name: go-grpc
+    path: ["go", "tool", "protoc-gen-go-grpc"]
     out: ./api
     opt: paths=source_relative

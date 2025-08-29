@@ -5,11 +5,10 @@ all: pricepred stoicquote http
 
 _tools:
     @command -v solc >/dev/null 2>&1 || (echo "solc not found. Please install solc. On MacOS, you can use 'brew install solidity'." && exit 1)
-    go install -v github.com/ethereum/go-ethereum/cmd/abigen@v1.15.0
 
 http: _tools
   solc --abi --bin --overwrite plugins/http/Http.sol -o build
-  abigen \
+  go tool abigen \
   --bin=build/Http.bin \
   --abi=build/Http.abi \
   --pkg=generated \
@@ -18,7 +17,7 @@ http: _tools
 
 pricepred: _tools
   solc --abi --bin --overwrite plugins/pricepred/PricePredictor.sol -o build
-  abigen \
+  go tool abigen \
   --bin=build/PricePredictor.bin \
   --abi=build/PricePredictor.abi \
   --pkg=pricepred \
@@ -40,7 +39,7 @@ stoicquote: _tools
     -o build
 
   # Generate Go bindings
-  abigen \
+  go tool abigen \
     --bin=build/StoicQuote.bin \
     --abi=build/StoicQuote.abi \
     --pkg=generated \

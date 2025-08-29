@@ -22,7 +22,7 @@ ARG WARDEND_VERSION="unknown"
 COPY --from=build /dist/wardend /wardend-$WARDEND_VERSION-$TARGETOS-$TARGETARCH
 ENTRYPOINT ["/wardend-$WARDEND_VERSION-$TARGETOS-$TARGETARCH"]
 
-FROM debian:bookworm-slim AS runtime
+FROM debian:trixie-slim AS runtime
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt update && apt install -y \

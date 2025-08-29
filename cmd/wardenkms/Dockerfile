@@ -10,7 +10,7 @@ RUN --mount=type=bind,source=.,target=.,readonly\
     --mount=type=cache,target=/go/pkg/mod,sharing=locked \
     OUTPUT_DIR=/dist just wardend build wardenkms
 
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 RUN apt update && \
     apt install ca-certificates curl -y && \

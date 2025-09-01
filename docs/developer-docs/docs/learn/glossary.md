@@ -127,7 +127,7 @@ Learn more: [Oracle services](oracle-services).
 
 ## SpaceWard
 
-(UPD)
+(?)
 
 SpaceWard is an [Intelligent Application](#intelligent-application) functioning as the front-end interface for Warden. It provides a user-friendly platform where you can create Spaces, manage wallets and Intents, and interact with decentralized applications (dApps) and other components of the Web3 ecosystem.
 

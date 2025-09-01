@@ -18,7 +18,7 @@
     "@wagmi/core": "^2.14.6",
     "@wardenprotocol/wardenjs": "0.0.11",
     "asn1.js": "^5.4.1",
-    "axios": "^1.9.0",
+    "axios": "^1.11.0",
     "cockatiel": "^3.2.1",
     "lru-cache": "^11.0.2",
     "secp256k1": "5.0.1",

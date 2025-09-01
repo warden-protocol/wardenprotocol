@@ -20,7 +20,7 @@ Warden is an AI-driven application for performing Web3 actions through chat or v
 SpaceWard is our application functioning as the front-end interface for Warden:
 
 - 👉 [Try SpaceWard](https://spaceward.chiado.wardenprotocol.org)
-- 👉 [Visit SpaceWard docs](https://help.wardenprotocol.org/spaceward)
+- 👉 [Visit SpaceWard docs](https://help.wardenprotocol.org/spaceward/introduction)
 - 👉 [SpaceWard code on GitHub](https://github.com/warden-protocol/wardenprotocol/tree/main/spaceward)
 
 ## YieldWard

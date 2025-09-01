@@ -67,7 +67,7 @@ You'll see blocks being produced and the height incrementing.
 
 3. You can also check your node's configuration in its home directory at `$HOME/.warden`:
 
-   - `config/genesis.json`: The genesis file. Here you'll find two validator addresses, a [Keychain](/learn/glossary#keychain), a [Space](/learn/glossary#space), and other initial node settings (see `accounts`, `keychains`, `spaces`, etc.).
+   - `config/genesis.json`: The genesis file. Here you'll find two validator addresses (`accounts`) and other initial node settings.
    - `config/app.toml`: The application configuration file. Here you can adjust validator settings and other parameters.
 
 
@@ -103,5 +103,5 @@ Alternatively you can do this:
 ## Next steps
 
 - Use [node commands](node-commands) to interact with the chain and [manage your account](/build-an-agent/set-up-a-warden-account#useful-node-commands).
-- Now you can [deploy an EVM contract](/build-an-agent/deploy-an-evm-contract) or a [WASM contract](/build-an-agent/deploy-a-wasm-contract) locally.
+- Now you can [deploy an EVM contract](/build-an-agent/deploy-an-evm-contract) locally.
 - To join our testnet, see Join Chiado.

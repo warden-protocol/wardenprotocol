@@ -88,14 +88,8 @@ Big Brain (under development) is a protocol-enabled, domain-specific LLM trained
 
 Here is what you can do with Warden:
 
-- **Build an Intelligent Application**  
-Intelligent Applications are smart contracts integrating AI or any offchain logic. You can deploy EVM-compatible Intelligent Apps with Solidity or Rust & CosmWasm.
-
 - **Build an AI Agent**  
 Warden allows you to integrate AI into your Intelligent Apps, utilizing outputs of AI models and building [AI Agents](#ai-agents).
-
-- **Operate a Keychain**  
-[Keychains](/learn/glossary#keychain) are custodians that generate and store keys and sign transactions on any chain. You can become a Keychain operator or build a custom Keychain.
 
 - **Run a validator node**  
 You can run a [validator](/learn/glossary#validator) node and earn rewards while securing Warden's network.

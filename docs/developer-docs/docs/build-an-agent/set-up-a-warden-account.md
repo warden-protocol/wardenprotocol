@@ -9,11 +9,11 @@ import TabItem from '@theme/TabItem';
 
 ## Overview
 
-Before building an application on Warden, it's always required to create and fund a [key](/learn/glossary#key) (account) on a local chain or a testnet. This guide explains how to do it.
+Before building an application on Warden, it's always required to create and fund a key (account) on a local chain or a testnet. This guide explains how to do it.
 
-To get started with application development, you can [set an account on a local chain](#set-up-an-account-on-a-local-chain) and then [deploy an EVM contract](deploy-an-evm-contract) or a [WASM contract](deploy-a-wasm-contract) locally. Alternatively, you can [set up an account on Chiado](#set-up-an-account-on-chiado) and deploy your contract there.
+To get started with application development, you can [set an account on a local chain](#set-up-an-account-on-a-local-chain) and then [deploy an EVM contract](deploy-an-evm-contract) locally. Alternatively, you can [set up an account on Chiado](#set-up-an-account-on-chiado) and deploy your contract there.
 
-Some situations may require slightly different or additional steps—for example, you may need to use an existing key instead of a new one or to create a [Space](/learn/glossary#space). Whenever it happens, refer to [useful node commands](#useful-node-commands).
+Some situations may require slightly different or additional steps—for example, you may need to use an existing key instead of a new one or to create a Space. Whenever it happens, refer to [useful node commands](#useful-node-commands).
 
 ## Set up an account on a local chain
 
@@ -50,7 +50,7 @@ To deploy a smart contract locally, you need to run a local chain and make sure 
    You'll see blocks being produced and height incrementing.
    
 :::tip
-You can check your node's initial settings in the genesis file: `$HOME/.warden/config/genesis.json`. Here you'll find two validator addresses, a [Keychain](/learn/glossary#keychain), a [Space](/learn/glossary#space), and other settings (see `accounts`, `keychains`, `spaces`, etc.).
+You can check your node's initial settings in the genesis file: `$HOME/.warden/config/genesis.json`.
 :::
 
 :::note
@@ -369,7 +369,4 @@ If you've just [created a Space](#create-a-space) and wish to find it, look for 
 
 ## Next steps
 
-After setting up your account on a local chain or a testnet, you can deploy an EVM or WASM contract on Warden:
-
-- [Deploy an EVM contract](deploy-an-evm-contract)
-- [Deploy a WASM contract](deploy-a-wasm-contract)
+Now you can deploy an [EVM contract on Warden](deploy-an-evm-contract).

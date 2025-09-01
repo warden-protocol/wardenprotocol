@@ -14,8 +14,6 @@ An **oracle** is a third-party service that enables smart contracts to access re
 
 [Intelligent Application](glossary#intelligent-application) builders can incorporate **Connect**, an oracle service supported by Warden, into their apps. See the sections below to learn more.
 
-Access to oracle data feeds significantly enhances the capabilities of Warden's [Intents](glossary#intent), allowing users to create highly specific Intents such as limit orders for decentralized exchanges. For an advanced example of oracle data usage, see [Build an onchain AI Agent](/build-an-agent/introduction).
-
 ## Skip\:Connect
 
 Warden integrates with [x/oracle](external-modules#xoracle)—an external module by **Skip Protocol**. This module provides access to **Skip:Connect**—an oracle service offering mostly price data, formerly known as Slinky.

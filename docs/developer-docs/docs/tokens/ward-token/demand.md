@@ -21,14 +21,6 @@ Warden Protocol aims to drive a sustainable equilibrium between supply and deman
 ## Demand levers
 A percentage of Warden revenue will be used to buy back $WARD, at the discretion of Warden Labs.
 
-## Keychain operators
-
-[Keychain](/learn/glossary#keychain) operators serve a vital role within Warden Protocol.
-
-A Keychain is an offchain service that provides key management services to Warden users. The selected Keychain creates and stores a key material locally and publishes the public key on Warden. Users can then request signatures for various purposes. 
-
-Keychains are required to pay a $WARD bond to Warden Protocol by the Total Value Secured concept. This $WARD bond is locked and can only be unbonded after a 6-month notice period.
-
 ## Validator bonds
 
 To operate a validator on Warden Protocol, validators will be required to hold a meaningful stake of $WARD.

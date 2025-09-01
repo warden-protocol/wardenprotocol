@@ -1,8 +1,8 @@
 ﻿---
-sidebar_position: 3
+sidebar_position: 6
 ---
 
-# External modules
+# Cosmos modules
 
 ## Overview
 
@@ -20,19 +20,6 @@ Learn more:
 
 - [Cosmos EVM](https://evm.cosmos.network)
 - [`x/evm` on GitHub](https://github.com/evmos/ethermint/tree/v0.22.0/x/evm)
-
-## x/wasm
-
-The `x/wasm` module is a Cosmos SDK module that processes certain messages and uses them to upload, instantiate, and execute smart contracts. It's an integral part of **CosmWasm**—a smart contract platform that can be integrated into any blockchain built on top of the Cosmos SDK.
-
-To start using `x/wasm`, follow this guide:
-
-- [Deploy a WASM contract](/build-an-agent/deploy-a-wasm-contract)
-
-Learn more:
-
-- [CosmWasm Contract Semantics](https://docs.cosmwasm.com/docs/smart-contracts/contract-semantics)
-- [`x/wasm` on GitHub](https://github.com/CosmWasm/wasmd/blob/main/x/wasm)
 
 ## x/oracle
 

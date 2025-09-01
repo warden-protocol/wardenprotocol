@@ -74,24 +74,6 @@ To get a full list of commands for querying a node, run this:
 wardend query --help
 ```
 
-For example, the `warden` command allows you to query the `x-warden` module.
-
-Here are some of the available `wardend query warden` subcommands with examples:
-
-- `keychains`: This command returns a list of your [Keychains](/learn/glossary#keychain).
-
-   ```bash
-   wardend query warden keychains \
-     --node https://rpc.chiado.wardenprotocol.org:443
-   ```
-
-- `spaces`: This command returns a list of your [Spaces](/learn/glossary#space).
-   
-   ```bash
-   wardend query warden spaces \
-     --node https://rpc.chiado.wardenprotocol.org:443
-   ```
-
 ### `keys`: Manage keys
 
 To get a full list of commands for managing your keys, run this:
@@ -133,32 +115,4 @@ Here are some examples of `wardend keys` commands:
    ```bash
    wardend keys show my-key-name --address
    ```
-
-### `tx`: Initiate transactions
-
-To get a full list of commands for initiating transactions, run this:
-
-```bash
-wardend tx --help
-```
-
-For example, the `warden` command allows you to initiate Warden transactions. Here are some of the available `wardend tx warden` subcommands with examples:
-
-- `new-keychain`: This command creates a new [Keychain](/learn/glossary#keychain). It requires specifying an arbitrary Keychain description, your key name, and the chain ID.
    
-   ```bash
-   wardend tx warden new-keychain \
-   --from my-key-name \
-     --name 'my-keychain-name' \
-     --chain-id chiado_10010-1 \
-     --node https://rpc.chiado.wardenprotocol.org:443
-   ```
-
-- `new-space`: This command creates a new [Space](/learn/glossary#space). It requires specifying your key name and the chain ID.
-   
-   ```bash
-   wardend tx warden new-space \
-     --from my-key-name \
-     --chain-id chiado_10010-1 \
-     --node https://rpc.chiado.wardenprotocol.org:443
-   ```

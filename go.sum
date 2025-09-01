@@ -945,6 +945,8 @@ github.com/cosmos/cosmos-sdk v0.53.4 h1:kPF6vY68+/xi1/VebSZGpoxQqA52qkhUzqkrgeBn
 github.com/cosmos/cosmos-sdk v0.53.4/go.mod h1:7U3+WHZtI44dEOnU46+lDzBb2tFh1QlMvi8Z5JugopI=
 github.com/cosmos/evm v0.5.0-rc.0 h1:JkJliJ4PN+xEatWf2gmBaOHglgM/NTNn0cXJYiYC0bg=
 github.com/cosmos/evm v0.5.0-rc.0/go.mod h1:0MieO7SusZtzF1rwdVzcel0UAWI+JBN98bNLteRDK2E=
+github.com/cosmos/evm v1.0.0-rc2.0.20250829202347-ec57b964505b h1:LjGixJinEUkjb+f9HWTw24Alu7f6y1b0RZn3JZv8Dd0=
+github.com/cosmos/evm v1.0.0-rc2.0.20250829202347-ec57b964505b/go.mod h1:0MieO7SusZtzF1rwdVzcel0UAWI+JBN98bNLteRDK2E=
 github.com/cosmos/evm/evmd v0.0.0-20250822211227-2d3df2ba510c h1:hCjQ8XVK5JKybVEXwCGbpdDwcEuLOSCDX7vRELzA5QQ=
 github.com/cosmos/evm/evmd v0.0.0-20250822211227-2d3df2ba510c/go.mod h1:afe8FBtwa3BqBa7nfnxl43XN8NTFx8e0mQ1wcbD5vec=
 github.com/cosmos/go-bip39 v1.0.0 h1:pcomnQdrdH22njcAatO0yWojsUnCO3y2tNoV1cb6hHY=

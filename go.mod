@@ -67,7 +67,7 @@ require (
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/pflag v1.0.7
 	github.com/spf13/viper v1.20.1
-	github.com/stretchr/testify v1.11.0
+	github.com/stretchr/testify v1.11.1
 	github.com/warden-protocol/connect v1.3.0
 	golang.org/x/image v0.30.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20250826171959-ef028d996bc1

@@ -326,7 +326,7 @@ This concept is implemented in the `x/warden` [module](#module). Learn more: [`x
 
 SpaceWard is an [Intelligent Application](#intelligent-application) functioning as the front-end interface for Warden. It provides a user-friendly platform where you can create [Spaces](#space), manage wallets and [Intents](#intent), and interact with decentralized applications (dApps) and other components of the Web3 ecosystem.
 
-Learn more: [SpaceWard documentation](https://help.wardenprotocol.org/spaceward).  
+Learn more: [SpaceWard documentation](https://help.wardenprotocol.org/spaceward/introduction).  
 Try it out: [SpaceWard](https://spaceward.chiado.wardenprotocol.org).
 
 ---

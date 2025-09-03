@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 7
+sidebar_position: 6
 ---
 
 # Glossary
@@ -23,21 +23,6 @@ We capture the entire life cycle of Agents in our [Agent network](#agent-network
 ## Application layer 
 
 XXX
-
----
-
-## AVR Plugin
-
-(?)
-
-An AVR Plugin, or Asynchronous Verifiable Resource, is code determining what kind of Task input to accept and how to handle it in order to retrieve the result (output). Plugins are executed by Prophets.
-
-Developers can create their own Plugins or use the existing ones. Currently, we support two Plugin types, which allow executing the following Task types:
-
-- AI-driven price predictions (verified by [SPEX](#spex))
-- HTTP requests to external services, such as blockchain APIs
-
-AVR Plugins provide a universal and standard way for smart contracts to access any resource or operate offchain systems.
 
 ---
 
@@ -89,19 +74,9 @@ The voting power depends on the [validator's weight](#validators-weight) or the 
 
 An Intelligent Application is a smart contract integrating AI or any offchain logic. Unlike traditional contracts bound by static logic, Intelligent Apps unlock more dynamic user experiences: they're able to reason, adapt, and interact across onchain and offchain environments.
 
-With Warden, you can build crypto super apps, smart [AI Agents](#ai-agent), and intelligent custody solutions. For example, see [SpaceWard](#spaceward) and [Warden](https://app.wardenprotocol.org). We support EVM smart contracts, where you can interact with [AVR Plugins](#avr-plugin).
+With Warden, you can build crypto super apps, smart [AI Agents](#ai-agent), and intelligent custody solutions. For example, see [SpaceWard](#spaceward) and [Warden](https://app.wardenprotocol.org). We support EVM smart contracts.
 
-Learn more: [Warden Manifesto](warden-manifesto), [Build an Agent](/build-an-agent/introduction).
-
----
-
-## Interoperability
-
-**Interoperability** is the ability of different blockchains to communicate and exchange data or assets. Warden supports it through integration with Hyperlane, a leading modular interoperability framework.
-
-This collaboration makes the output from Warden's [AVR Plugins](#avr-plugin) universally accessible across 150+ blockchains—from Ethereum and Solana to Cosmos-based ecosystems and beyond. This enables developers to access verifiable AI anywhere.
-
-Learn more: [Interoperability](interoperability).
+Learn more: [Warden Manifesto](warden-manifesto).
 
 ---
 
@@ -121,7 +96,7 @@ Reasons for running a node include the following:
 
 An oracle is a third-party service that enables smart contracts to access real-life data feeds: prices, stock market data, weather conditions, etc. Warden is integrated with [Skip:Connect](https://docs.skip.build/connect/introduction)—an oracle service provided by Skip Protocol and offering mostly price data. Connect's data is [validated](#validator) by Warden's network and written onchain.
 
-Learn more: [Oracle services](oracle-services).
+Learn more: [Cosmos modules: `x/oracle`](cosmos-modules#xoracle).
 
 ---
 

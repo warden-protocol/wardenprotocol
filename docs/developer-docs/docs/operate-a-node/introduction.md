@@ -19,12 +19,8 @@ Reasons for running a node include the following:
 - [Delegation plan](delegation-plan)  
   Here you can learn about our delegation plan.
 
-- [Run a local chain](run-a-local-chain)  
-  Follow this guide if you wish to run a local chain for testing purposes.
-
-- Chiado testnet, Buenavista testnet  
-  These sections cover our testnets. To get started, follow Join Chiado.  
-  Please note that we've sunsetted Buenavista. 
+- [Barra testnet](barra-testnet/barra-overview)  
+  This section covers our testnet. To get started, follow [Join Barra](barra-testnet/join-barra).
 
 - [Create a validator](create-a-validator), [Operate Skip:Connect](operate-skip-connect)    
   After joining a network, you can become a validator and run the oracle service integrated with Warden.
@@ -34,7 +30,4 @@ Reasons for running a node include the following:
 
 ## Get started
 
-You can get started with operating a node by following one of these guides:
-
-- [Run a local chain](run-a-local-chain)
-- Join Chiado
+You can get started with operating a node by following [Join Barra](barra-testnet/join-barra).

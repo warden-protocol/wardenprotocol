@@ -45,8 +45,7 @@ https://evm.chiado.wardenprotocol.org
 ```
 
 :::note Notes
-- You can also find these endpoints on GitHub in [chain.json](https://github.com/warden-protocol/networks/tree/main/testnets/chiado/chain.json).
-- The EVM endpoint allows [deploying EVM contracts](/build-an-agent/deploy-an-evm-contract).
+You can also find these endpoints on GitHub in [chain.json](https://github.com/warden-protocol/networks/tree/main/testnets/chiado/chain.json)
 :::
 
 ## Chain ID

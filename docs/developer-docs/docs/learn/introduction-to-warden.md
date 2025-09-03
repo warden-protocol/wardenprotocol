@@ -79,25 +79,10 @@ The blockchain layer provides the core infrastructure for Agents: identity, coor
 Our verifiability layer uses blockchain, cryptography, and consensus to guarantee the integrity of AI models. [Statistical Proof of Execution](/learn/spex) (SPEX) ensures the model you see is the model you get, and in addition it can check if the outputs are accurate and confident enough to be used in applications.
 
 - **Application layer**  
-At the application layer, developers can easily build Agents and instantly make them accessible to all Warden users. Warden Studio (now in alpha) gives everything required to develop, test, and publish Agents.
+At the application layer, developers can easily build Agents and instantly make them accessible to all Warden users. Warden Studio (now in Alpha) gives everything required to develop, test, and publish Agents.
 
 - **Big Brain**  
 Big Brain (under development) is a protocol-enabled, domain-specific LLM trained on 1T tokens, catalyzing Agent performance as the evolving hive mind. Big Brain learns from every Warden interaction and rewards contributors who help it improve.
-
-## Build with Warden
-
-Here is what you can do with Warden:
-
-- **Build an AI Agent**  
-Warden allows you to integrate AI into your Intelligent Apps, utilizing outputs of AI models and building [AI Agents](#ai-agents).
-
-- **Run a validator node**  
-You can run a [validator](/learn/glossary#validator) node and earn rewards while securing Warden's network.
-
-:::important
-We're currently working on Warden Studio, our toolkit for building and publishing Agents, which will significantly simplify development. Stay tuned for updates!
-:::
-
 
 ## Docs overview
 
@@ -105,8 +90,12 @@ Welcome to the Warden Protocol documentation!
 
 Use the top menu to navigate across the main sections of the docs and learn how to join Warden:
 
-- **Learn**: The basic information about the protocol
-- [Build an Agent](/build-an-agent/introduction): Guides for AI Agent builders
+- **Learn**:
+  - [Warden Manifesto](learn/warden-manifesto): A Manifesto capturing Warden's mission
+  - [SPEX](learn/spex): An overview of our verifiability layer, SPEX
+  - [Cosmos modules](learn/cosmos-modules): An overview of Cosmos modules we're using
+  - [Warden networks](learn/warden-networks): A list of available networks
+  - [Glossary](learn/glossary): A list of key Warden terms with definitions
 - [Operate a node](/operate-a-node/introduction): Guides for node operators
 - [Tokens](/tokens/introduction): A detailed overview of Warden tokenomics
 
@@ -114,7 +103,3 @@ You can also visit Warden's Help Center to find user guides for our applications
 
 - [Warden](https://help.wardenprotocol.org): User guides for Warden, an AI-powered co-pilot for crypto
 - [SpaceWard](https://help.wardenprotocol.org/spaceward): User guides for SpaceWard, our front-end Intelligent Application
-
-## Contribute
-
-If you're going to contribute to the protocol, see [protocol developer docs on GitHub](https://github.com/warden-protocol/wardenprotocol/tree/v0.6.3/protocol-developer-docs).

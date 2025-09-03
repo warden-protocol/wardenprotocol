@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 9
+sidebar_position: 7
 ---
 
 # Node commands
@@ -14,22 +14,17 @@ These commands allow you to do the following:
 - Initiate transactions
 - Manage your keys
 - Edit the genesis file
-- and much more
-
-To learn more on key management and chain setup with node commands, see: [Set up a Warden account](/build-an-agent/set-up-a-warden-account#useful-node-commands).
+- and more
 
 ## Prerequisites
 
 To interact with the node, you need to install the [Warden binary](https://github.com/warden-protocol/wardenprotocol/releases), `wardend`.
 
-You can follow installation instructions in one of these guides (depending on your goal):
-
-- [Run a local chain](run-a-local-chain)
-- Join Chiado
+You can follow installation instructions in [Join Barra](barra-testnet/join-barra).
 
 ## Execute `wardend` commands
 
-To execute a node command, just run `wardend`, followed by the command. If you need to specify a node to interact with, include the `--node` flag with a [node endpoint](barra-testnet/barra-overview).
+To execute a node command, just run `wardend`, followed by the command. Specify a node to interact with by including the `--node` flag with a [node endpoint](barra-testnet/barra-overview).
 
 For example, to check the node status, run the example below using the preferred endpoint:
 
@@ -38,8 +33,8 @@ wardend status \
   --node https://rpc.chiado.wardenprotocol.org:443
 ```
 
-:::tip
-You can exclude the `--node` flag if you're running a chain on the same machine at moment when you're executing `wardend` commands. If not specified, `--node` defaults to the localhost.
+:::note
+If not specified, `--node` defaults to the localhost.
 :::
 
 ## Get a list of commands
@@ -61,58 +56,3 @@ wardend query --help
 ```
 
 In the output, you'll see a list of available subcommands and flags. You can query subcommands the same way.
-
-## Examples
-
-This section contains useful examples of `wardend` commands. You'll learn how to query the node, manage keys, and initiate transactions. However, note that there are many more commands available.
-
-### `query`: Query the node
-
-To get a full list of commands for querying a node, run this:
-
-```bash
-wardend query --help
-```
-
-### `keys`: Manage keys
-
-To get a full list of commands for managing your keys, run this:
-
-```bash
-wardend keys --help
-```
-
-Here are some examples of `wardend keys` commands:
-
-- `list`: This command returns a list of your keys.
-   
-   ```bash
-   wardend keys list
-   ```
-
-- `add`: This command adds a key, either newly generated or recovered.
-
-   To create a new key, you need to specify its name:
-      
-   ```bash
-   wardend keys add my-key-name
-   ```
-   
-   To restore a key from its seed phrase, add the `--recover` flag:
-
-   ```bash
-   wardend keys add my-key-name --recover
-   ```
-
-- `delete`: This command deletes a key, identified by its name.
-      
-   ```bash
-   wardend keys delete my-key-name
-   ```
-
-- `show`: This command returns key information. For example, you can get the key address by its name:
-
-   ```bash
-   wardend keys show my-key-name --address
-   ```
-   

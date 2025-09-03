@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 7
+sidebar_position: 5
 ---
 
 # Warden networks
@@ -8,9 +8,7 @@ sidebar_position: 7
 
 In this section, you'll find an overview of the available **Warden networks**.
 
-Here we provide basic chain information: the **chain ID**, supported **endpoints**, and so on. You may need it, for example, if you wish to connect a Web3 application to Warden Protocol.
-
-For more detailed information, refer to our validator guides in [Operate a node](/operate-a-node/introduction).
+Here we provide basic chain information: the **chain ID**, supported **endpoints**. For more detailed information, refer to our validator guides in [Operate a node](/operate-a-node/introduction).
 
 ## Chiado testnet
 

@@ -30,7 +30,7 @@ For example, to check the node status, run the example below using the preferred
 
 ```bash
 wardend status \
-  --node https://rpc.chiado.wardenprotocol.org:443
+  --node https://rpc.barra.wardenprotocol.org:443
 ```
 
 :::note

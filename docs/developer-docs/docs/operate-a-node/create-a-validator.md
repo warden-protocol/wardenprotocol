@@ -4,15 +4,15 @@ sidebar_position: 4
 
 # Create a validator
 
-This is a simple step-by-step guide for setting up a validator on Chiado testnet. It's not a guide on validator architecture or security features.
+This is a simple step-by-step guide for setting up a validator on Barra testnet. It's not a guide on validator architecture or security features.
 
-:::tip
-We've sunsetted Buenavista. Please join our new and improved testnet, Chiado.
+:::important
+Barra is our new testnet, currently available only to selected validators.
 :::
 
 ## Prerequisites
 
-The following instructions assume you have already set up a full node and are synchronized to the latest block height. If you haven’t done so, please follow the Join Chiado instructions.
+The following instructions assume you have already set up a full node and are synchronized to the latest block height. If you haven't done so, please follow the [Join Barra](barra-testnet/join-barra) instructions.
 
 ## 1. Create/restore a key pair
 
@@ -42,10 +42,9 @@ wardend keys show my-key-name --address
 
 In the next steps, you'll register your new validator by submitting a `create-validator` transaction. Transactions consume gas, so you need to fund your newly created address from the first step.
 
-You can obtain testnet **WARD** in one of our faucet:
+You can obtain testnet **WARD** in our faucet:
 
-- [Chiado faucet](https://faucet.chiado.wardenprotocol.org)
-- [Discord faucet](https://discord.com/channels/1199357852666560654/1288141727701536818)
+- [Barra faucet](https://faucet.barra.wardenprotocol.org)
 
 To verify your balance, use this command:
 
@@ -92,28 +91,30 @@ To create a validator and initialize it with a self-delegation, you need to crea
    }
    ```
 
-   Here you have the chance to set your validator’s commission rate, maximum rate, and maximum change rate. You can also make the initial self-delegation (`amount`). Remember to replace the `pubkey` field with your own key obtained in the previous step.
+   Here you have the chance to set your validator's commission rate, maximum rate, and maximum change rate. You can also make the initial self-delegation (`amount`). Remember to replace the `pubkey` field with your own key obtained in the previous step.
 
    :::warning
    When you specify commission parameters, the `commission-max-change-rate` is measured as a percentage point change of the `commission-rate`. For example, a change from 1% to 2% is a 100% rate increase, but the `commission-max-change-rate` is measured as 1%.
    :::
 
 3. Finally, you're ready to submit the transaction to create the validator:
+
    ```bash
    wardend tx staking create-validator validator.json \
      --from=my-key-name \
-     --chain-id=chiado_10010-1 \
+     --chain-id=barra_10010-1 \
      --fees=250000000000000award \
      --gas auto \
      --gas-adjustment 1.6
    ```
+   
    :::tip
    This transaction is just an example. If you want to see an explanation of the parameters values or see all the available flags that can be set to customize your validators you can enter this command: `wardend tx staking create-validator --help`
    :::
 
 ## 3. Back up critical files
 
-There are certain files you need to back up to be able to restore your validator if, for some reason, it’s damaged or lost. Please make a secure, encrypted backup of the following files:
+There are certain files you need to back up to be able to restore your validator if, for some reason, it's damaged or lost. Please make a secure, encrypted backup of the following files:
 
 - `priv_validator_key.json`
 - `node_key.json`
@@ -135,4 +136,3 @@ You're now all set to start validating! You can take these next steps:
 - To learn how to operate an oracle service, see [Operate Skip:Connect](operate-skip-connect).
 - To learn more about `wardend` commands for interacting with the node, see [Node commands](node-commands).
 - Don't forget to join our community in [Discord](https://discord.com/invite/wardenprotocol).
-

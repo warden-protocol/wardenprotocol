@@ -10,7 +10,7 @@ In this section, you'll find an overview of the available **Warden networks**.
 
 Here we provide basic chain information: the **chain ID**, supported **endpoints**. For more detailed information, refer to our validator guides in [Operate a node](/operate-a-node/introduction).
 
-## Chiado testnet
+## Barra testnet
 
 <table>
   <tr>
@@ -21,24 +21,24 @@ Here we provide basic chain information: the **chain ID**, supported **endpoints
     <td>**Endpoints**</td>
     <tr>
       <td>RPC</td>
-      <td>`https://rpc.chiado.wardenprotocol.org/`</td>
+      <td>`https://rpc.barra.wardenprotocol.org/`</td>
     </tr>
     <tr>
       <td>REST</td>
-      <td>`https://api.chiado.wardenprotocol.org/`</td>
+      <td>`https://api.barra.wardenprotocol.org/`</td>
     </tr>
     <tr>
       <td>gRPC</td>
-      <td>`https://grpc.chiado.wardenprotocol.org/`</td>
+      <td>`https://grpc.barra.wardenprotocol.org/`</td>
     </tr>
     <tr>
       <td>EVM</td>
-      <td>`https://evm.chiado.wardenprotocol.org`</td>
+      <td>`https://evm.barra.wardenprotocol.org`</td>
     </tr>
   </tr>
   <tr>
     <td>**Chain ID**</td>
-    <td>`chiado_10010-1`</td>
+    <td>`barra_10010-1`</td>
   </tr>
   <tr>
     <td>**Denomination**</td>
@@ -46,14 +46,14 @@ Here we provide basic chain information: the **chain ID**, supported **endpoints
   </tr>
   <tr>
     <td>**Faucet**</td>
-    <td>[Chiado faucet](https://faucet.chiado.wardenprotocol.org)</td>
+    <td>[Barra faucet](https://faucet.barra.wardenprotocol.org)</td>
   </tr>
   <tr>
     <td>**Block explorer**</td>
-    <td>[Chiado block explorer](https://testnet.warden.exploreme.pro)</td>
+    <td>[Barra block explorer](https://testnet.warden.exploreme.pro)</td>
   </tr>
   <tr>
     <td>**Validator guides**</td>
-    <td>Operate a node: Chiado testnet</td>
+    <td>Operate a node: Barra testnet</td>
   </tr>
 </table>

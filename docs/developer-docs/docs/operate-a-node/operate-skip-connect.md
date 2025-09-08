@@ -10,7 +10,7 @@ Warden integrates with **Skip:Connect** (formerly known as Slinky)—an [oracle 
 
 This article is a guide for validators explaining how to run Connect.
 
-See also: [Connect documentation](https://docs.skip.build/connect/introduction)
+See also: [Connect documentation](https://docs.skip.build/connect/introduction).
 
 ## 1. Download
 

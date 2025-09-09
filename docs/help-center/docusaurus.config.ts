@@ -78,12 +78,6 @@ const config: Config = {
                          label: "Warden",
                          position: "left",
                         },
-                        {
-                            type: "docSidebar",
-                            sidebarId: "spaceward",
-                            label: "SpaceWard",
-                            position: "left",
-                        },
                 {
                     href: "https://discord.com/invite/warden",
                     label: "Discord",

@@ -20,10 +20,10 @@ Reasons for running a node include the following:
   Here you can learn about our delegation plan.
 
 - [Barra testnet](barra-testnet/barra-overview)  
-  This section covers our testnet. To get started, follow [Join Barra](barra-testnet/join-barra).
+  This section covers our testnet. To get started, follow [Join Barra](barra-testnet/join-barra). Then you can [create a validator](barra-testnet/create-a-validator).
 
-- [Create a validator](create-a-validator), [Operate Skip:Connect](operate-skip-connect)    
-  After joining a network, you can become a validator and run the oracle service integrated with Warden.
+- [Operate Skip:Connect](operate-skip-connect)    
+  After joining a network and creating a validator, you can run the oracle service integrated with Warden.
 
 - [Node API](node-api), [Node commands](node-commands)  
   To interact with the node, use the Node API and node commands.

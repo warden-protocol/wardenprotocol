@@ -14,13 +14,18 @@ See the sections below to learn the details of the plan.
 
 During the testnet stage, the Warden Protocol team will be running a series of exercises with validators. The aim of these exercises is to test and prepare for a future mainnet event where the team will be delegating a portion of its token supply to qualifying validators.
 
-## Delegation criteria
+Validators are evaluated based on a combination of positive and negative metrics. Each metric contributes to the overall score of a validator, determining their eligibility and priority in the delegation process. This ensures that only the most reliable and active validators are chosen to maintain and secure the network.
 
-For the testnet, a shortlist of validators has been selected.
+These metrics are, to name a few:
+
+- Activity, community engagement, blog posts
+- Uptime
+- Services provided
+- Testnet performance
 
 ## Amount of tokens
 
-The Warden Protocol team will delegate up to 10% of its token supply to the selected validators.
+The Warden Protocol team will delegate up to 10% of the token supply to selected validators.
 
 ## Validator tiers
 

@@ -4,6 +4,26 @@ sidebar_position: 6
 
 # Glossary
 
+## Agent Card
+
+Each [AI Agent](#ai-agent) on Warden has an Agent Card—an offchain JSON document compliant with the [A2A Protocol specification](https://a2a-protocol.org/latest/specification/). The Agent Card defines the server's identity, capabilities, skills, service endpoint URL, and the methods for authentication and interaction.
+
+See also: [Agent Passport](#agent-passport).
+
+*This feature is coming soon.*
+
+## Agent Identity
+
+Each [AI Agent](#ai-agent) on Warden has an Agent Identity—a unique onchain identifier stored in [ERC-8004's Identity Registry](https://eips.ethereum.org/EIPS/eip-8004#identity-registry). This identity consists of the following:
+
+- The Agent's global onchain ID
+- An EVM-compatible address for the Agent
+- An offchain domain hosting the [Agent Card](#agent-card)
+
+See also: [Agent Passport](#agent-passport).
+
+*This feature is coming soon.*
+
 ## Agent network
 
 The Agent network is the infrastructure that supports the entire lifecycle of [AI Agents](#ai-agent). It provides the full-stack foundation for the Agent economy, unifying Agents that would otherwise remain fragmented across frameworks and custom stacks without reaching users.
@@ -12,23 +32,37 @@ The core elements of the Agent network are [Warden Studio](#warden-studio), [War
 
 ---
 
+## Agent Passport
+
+An Agent Passport is an ensemble of [Agent Identity](#agent-identity), the corresponding [Agent Card](#agent-card) information, and the Agent's monetization settings. In [Warden Studio](#warden-studio), developers provide these details when registering Agents, and the system automatically generates Passports upon publication.
+
+*This feature is coming soon.*
+
+---
+
 ## AI Agent
 
-An AI Agent is an AI-driven program that supports both offchain and onchain operations. Agents perform complex actions through simple chat commands—for example, bridging, minting, trading, staking, deep research. At the moment, we focus on financial, autopilot, institutional (custodial), and ecosystem Agents.
+An AI Agent is an AI-driven program that supports both offchain and onchain operations. Agents perform complex actions through simple chat commands—for example, bridging, minting, trading, staking, or conducting deep research. At the moment, we focus on financial, autopilot, institutional (custodial), and ecosystem Agents.
 
-We capture the entire life cycle of Agents in our [Agent network](#agent-network) through these core elements: [Warden Studio](#warden-studio), [Warden Chain](#warden-chain), [Warden Agent Hub](#warden-agent-hub), [Warden](#warden).
+[Warden Protocol](#warden-protocol) manages the entire life cycle of Agents in the [Agent network](#agent-network):
+
+- Developers build Agents in [Warden Studio](#warden-studio).
+- Agents are published directly on [Warden Chain](#warden-chain).
+- Users discover Agents in [Warden](#warden)'s [Agent Hub](#warden-agent-hub).
 
 ---
 
 ## Application layer 
 
-XXX
+At the application layer of [Warden Protocol](#warden-protocol), developers can easily build [AI Agents](#ai-agent) and instantly make them accessible to all [Warden](#warden) users. [Warden Studio](#warden-studio) (now in Alpha) gives everything required to develop, test, and publish Agents.
 
 ---
 
 ## Big Brain
 
-Big Brain (under development) is a protocol-enabled, domain-specific LLM trained on 1T tokens, catalyzing [AI Agent](#ai-agent) performance as the evolving hive mind. Big Brain learns from every [Warden](#warden) interaction and rewards contributors who help it improve.
+[Warden Protocol](#warden-protocol)'s Big Brain is a protocol-enabled, domain-specific LLM trained on 1T tokens, catalyzing [AI Agent](#ai-agent) performance as the evolving hive mind. Big Brain learns from every [Warden](#warden) interaction and rewards contributors who help it improve.
+
+*This feature is coming soon.*
 
 ---
 
@@ -56,33 +90,21 @@ All delegators inherit the state from their validator: [bonded](#bonded-validato
 
 ## Full node
 
-A full node is a server running a software (binary) that maintains a complete up-to-date version of a protocol with full transaction history. You can run a full [Warden Protocol node](#node) yourself.
+A full node is a server running a software (binary) that maintains a complete up-to-date version of a protocol with full transaction history. You can run a full [Warden node](#node) yourself.
 
 ---
 
 ## Governance
 
-Warden Protocol supports onchain governance. It's a mechanism allowing the decentralized community to update the protocol through direct voting that is recorded onchain. Voting is available for the participants of [staking](#staking): [validators](#validator) and [delegators](#delegator).
+[Warden Chain](#warden-chain) supports onchain governance. It's a mechanism allowing the decentralized community to update the protocol through direct voting that is recorded onchain. Voting is available for the participants of [staking](#staking): [validators](#validator) and [delegators](#delegator).
 
 The voting power depends on the [validator's weight](#validators-weight) or the amount of [WARD](#ward-token) a delegator staked. By default, [delegators](#delegator) inherit votes of their validator. Alternatively, a delegator can cast their own vote, which will reduce the validator's voting power.
 
 ---
 
-## Intelligent Application
-
-(?)
-
-An Intelligent Application is a smart contract integrating AI or any offchain logic. Unlike traditional contracts bound by static logic, Intelligent Apps unlock more dynamic user experiences: they're able to reason, adapt, and interact across onchain and offchain environments.
-
-With Warden, you can build crypto super apps, smart [AI Agents](#ai-agent), and intelligent custody solutions. For example, see [Warden](https://app.wardenprotocol.org). We support EVM smart contracts.
-
-Learn more: [Warden Manifesto](warden-manifesto).
-
----
-
 ## Node
 
-A Warden Protocol node is a server running the software (binary) of Warden Protocol. To run a blockchain node in Warden, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api) and [node commands](/operate-a-node/node-commands).
+A Warden node is a server running the software (binary) of [Warden Chain](#warden-chain). To run a blockchain node in Warden, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api) and [node commands](/operate-a-node/node-commands).
 
 Reasons for running a node include the following:
 
@@ -100,17 +122,23 @@ Learn more: [Cosmos modules: `x/oracle`](cosmos-modules#xoracle).
 
 ---
 
+## Proof of Inference
+
+Proof of Inference is Warden's onchain audit trail for [AI Agents](#ai-agent) that links payments to user prompts and inferences.
+
+When a user submits a prompt, Warden generates a hash of the prompt together with the hash of the returned inference, and stores both in an onchain proof. Developers can generate the same hash offchain and match it against the onchain record. This creates a transparent trail showing that a specific inference request was made and paid for.
+
+*This feature is coming soon.*
+
 ## SPEX
 
-SPEX (Statistical Proof of Execution) is a sampling-based verifiable computing protocol that ensures the integrity of computational tasks through probabilistic guarantees. This includes tasks with potentially non-deterministic outputs, such as those involving large language models (LLMs) or stochastic training pipelines. SPEX is used as a verifiability layer for AI on Warden Protocol.
+SPEX (Statistical Proof of Execution) is a sampling-based verifiable computing protocol that ensures the integrity of computational tasks through probabilistic guarantees. This includes tasks with potentially non-deterministic outputs, such as those involving large language models (LLMs) or stochastic training pipelines. SPEX is used as a verifiability layer for AI on [Warden Protocol](#warden-protocol).
 
 Learn more: [SPEX](spex).
 
 ---
 
 ## Staking
-
-(?)
 
 Staking is the process of participating in the proof-of-stake (POS) consensus mechanism. [Validators](#validator) and [delegators](#delegator) stake their [WARD tokens](#ward-token) for a chance to validate blocks and transactions and earn staking rewards.
 
@@ -120,7 +148,7 @@ The consensus mechanism chooses validators based on their [weight](#validators-w
 
 ## Validator
 
-A validator is an individual or entity that participates in the [staking](#staking) process by running a [full](#full-node) or pruned [Warden Protocol node](#node) and validating blocks and transactions. 
+A validator is an individual or entity that participates in the [staking](#staking) process by running a [full](#full-node) or pruned [Warden node](#node) and validating blocks and transactions. 
 
 Validators act on behalf of their [delegators](#delegator) and earn [commissions](#validators-commission). Each validator has a certain [weight](#validators-weight) and state: [bonded](#bonded-validator), [unbonding](#unbonding-validator), or [unbonded](#unbonded-validator). Validators can also participate in [governance](#governance).
 
@@ -146,7 +174,7 @@ The consensus mechanism selects validators to propose blocks based on validators
 
 ## Verifiability layer
 
-XXX
+The  verifiability layer of [Warden Protocol](#warden-protocol) uses blockchain, cryptography, and consensus to guarantee the integrity of AI models. [SPEX](#spex) (Statistical Proof of Execution) ensures the model you see is the model you get, and in addition it can check if the outputs are accurate and confident enough to be used in applications.
 
 ---
 
@@ -168,9 +196,7 @@ Validators enter this state either when they decide to stop participating in [st
 
 ## WARD token
 
-(UPD)
-
-**$WARD** is the native utility token for the Warden ecosystem, sitting at the heart of both Warden Protocol and [Warden](#warden). $WARD facilitates various operations—such as [governance](#governance), [staking](#staking), rewards—and serves as a medium of payment for any developer publishing an [Agent](#ai-agent) on Warden. For Warden, it'll act as a gas abstraction token and unlock gated functionality. 
+**$WARD** is the native utility token for the [Warden Protocol](#warden-protocol)'s ecosystem, sitting at the heart of both [Warden Chain](#warden-chain) and [Warden](#warden). $WARD facilitates various operations—such as [governance](#governance), [staking](#staking), rewards—and serves as a medium of payment for any developer publishing an [Agent](#ai-agent) on Warden. For Warden, it'll act as a gas abstraction token and unlock gated functionality. 
 
 Learn more: [$WARD](/tokens/ward-token/ward).
 
@@ -178,37 +204,44 @@ Learn more: [$WARD](/tokens/ward-token/ward).
 
 ## Warden
 
-Warden is an AI-driven [Intelligent Application](#intelligent-application) built on Warden Protocol. In Warden, users access all [AI Agents](#ai-agent), models, and chains through a single interface, performing advanced workflows in natural language. Agents are available in [Warden Agent Hub](#warden-agent-hub).
+Warden is an AI-driven application built on [Warden Protocol](#warden-protocol). In Warden, users access all [AI Agents](#ai-agent), models, and chains through a single interface, performing advanced workflows in natural language. Agents are available in Warden's [Agent Hub](#warden-agent-hub); Warden provides a [Proof of Inference](#proof-of-inference) for each user request.
 
-Learn more: [Warden documentation](https://help.wardenprotocol.org).  
-Try it out: [Warden](https://app.wardenprotocol.org).
-
----
+Try it out: [Warden](https://app.wardenprotocol.org).  
+Learn more: [Warden documentation](https://help.wardenprotocol.org).
 
 ## Warden Agent Hub
 
-Warden Agent Hub is a marketplace in [Warden](#warden) where users discover AI Agents operating across Web2 and Web3 ecosystems. By putting Agents in front of an engaged user base, the Hub solves the toughest challenge in tech: distribution. Moreover, Agents listed here can collaborate to solve complex problems.
+Warden Agent Hub is a marketplace in [Warden](#warden) where users discover [AI Agents](#ai-agent) operating across Web2 and Web3 ecosystems. By putting Agents in front of an engaged user base, the Hub solves the toughest challenge in tech: distribution. Moreover, Agents listed here can collaborate to solve complex problems.
 
 Learn more: [Warden documentation](https://help.wardenprotocol.org/warden-app/explore-ai-agents).  
 
 ---
 
-## Warden Agent Kit
-
-(?)
-
-The Warden Agent Kit allows creating [AI Agents](#ai-agent) that are able to access both offchain and onchain functionalities. The kit offers native integration with Warden Protocol for onchain actions and supports compatibility with Typescript, any AI Agent framework, and [LangChain](https://js.langchain.com/docs/introduction/) tools.
-
----
-
 ## Warden Chain
 
-Warden Chain serves as an entry point to discover, interact , and transact with [AI Agents](#ai-agent) in our ecosystem. Once an Agent is built, it gets minted directly onto the chain, where it signs requests, collects fees, and pays for services.
+Warden Chain is an EVM purpose-built blockchain for [AI Agents](#ai-agent). It provides the decentralized infrastructure that makes the [Warden Protocol](#warden-protocol) logic operational.
+
+Once an Agent is built, it's minted directly onto the Chain, where it signs requests, collects fees, and pays for services. In this way, Warden Chain serves as the entry point to discover, interact, and transact with Agents in the ecosystem.
 
 Learn more: [Warden networks](/learn/warden-networks).
 
 ---
 
+## Warden Protocol
+
+Warden Protocol is the full-stack framework powering the [AI Agent](#ai-agent) economy. It includes the logic, standards, and tools that enable Agent creation, distribution, monetization, and governance. Key components of this system include [Warden Chain](#warden-chain), [Proof of Inference](#proof-of-inference), [SPEX](spex), and more.
+
+There are four protocol layets:
+
+- [Blockchain layer](#blockchain-layer)
+- [Verifiability layer](#verifiability-layer)
+- [Application layer](#application-layer)
+- [Big Brain](#big-brain)
+
+Learn more: [Manifesto](warden-manifesto).
+
+---
+
 ## Warden Studio
 
-Warden Studio (now in Alpha) is a toolkit giving builders everything they need to develop, test, and publish [AI Agents](#ai-agent) directly to [Warden](#warden) users—from decentralized, verifiable inference to domain-specific language models, verification systems, and core primitives. This toolkit is built for Web3 developers, no-code creators, and Web2 builders.
+Warden Studio (now in Alpha) is a toolkit giving builders everything they need to develop, test, and publish [AI Agents](#ai-agent) directly to [Warden](#warden) users. Upon publication, Warden Studio generates [Agent Passports](#agent-passport).

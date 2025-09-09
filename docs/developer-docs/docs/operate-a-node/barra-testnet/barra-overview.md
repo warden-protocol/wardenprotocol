@@ -10,13 +10,13 @@ Barra is our new testnet, currently available only to selected validators.
 
 ## Version history
 
-| Release                                                                         | Block height         | Date          |
-| ------------------------------------------------------------------------------- | -------------------- | ------------- |
-| XXX | XXX              |               |
+| Release                                                                                 | Block height | Date               |
+| --------------------------------------------------------------------------------------- | ------------ | ------------------ |
+| [v0.7.0-rc3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0-rc3) | 0            | September 10, 2025 |
 
 ## Binary
 
-The latest binary version compatible with Barra is XXX.
+The latest binary version compatible with Barra is [wardend v0.7.0-rc3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0-rc3).
 
 
 ## Endpoints
@@ -48,7 +48,7 @@ You can also find these endpoints on GitHub in [chain.json](https://github.com/w
 This is Barra's chain ID for interacting with the node:
 
 ```bash
-barra_10010-1
+barra_9191-1
 ```
 
 ## Denomination
@@ -65,4 +65,4 @@ Here is the faucet for getting [WARD](/tokens/ward-token/ward) on Barra:
 
 You can use this block explorer to get data on blocks, transactions, and accounts:
 
-- [Barra block explorer](https://testnet.warden.exploreme.pro)
+- [Barra block explorer](https://explorer.barra.wardenprotocol.org)

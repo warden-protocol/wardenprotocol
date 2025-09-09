@@ -4,11 +4,11 @@ sidebar_position: 3
 
 # Create a validator
 
-This is a simple step-by-step guide for setting up a validator on Barra testnet. It's not a guide on validator architecture or security features.
-
 :::important
 Barra is our new testnet, currently available only to selected validators.
 :::
+
+This is a simple step-by-step guide for setting up a validator on Barra testnet. It's not a guide on validator architecture or security features.
 
 ## Prerequisites
 
@@ -91,35 +91,40 @@ To create a validator and initialize it with a self-delegation, you need to crea
    }
    ```
 
-   Here you have the chance to set your validator's commission rate, maximum rate, and maximum change rate. You can also make the initial self-delegation (`amount`). Remember to replace the `pubkey` field with your own key obtained in the previous step.
+   Here you have the chance to set the commission rate, maximum rate, and maximum change rate for your validator. You can also make the initial self-delegation (`amount`). Remember to replace the `pubkey` field with your own key obtained in the previous step.
 
    :::warning
    When you specify commission parameters, the `commission-max-change-rate` is measured as a percentage point change of the `commission-rate`. For example, a change from 1% to 2% is a 100% rate increase, but the `commission-max-change-rate` is measured as 1%.
    :::
 
-3. Finally, you're ready to submit the transaction to create the validator:
+3. Finally, you're ready to submit a transaction for creating the validator:
 
    ```bash
-   wardend tx staking create-validator validator.json \
-     --from=my-key-name \
-     --chain-id=barra_10010-1 \
-     --fees=250000000000000award \
+   wardend tx staking create-validator \
+     --from my-validator-account \
+     --chain-id barra_9191-1 \
+     --amount 1000000000000000000award \
+     --commission-rate 0.05 \
+     --commission-max-rate 0.1 \
+     --commission-max-change-rate 0.1 \
+     --pubkey "$(wardend tendermint show-validator)" \
      --gas auto \
-     --gas-adjustment 1.6
+     --gas-adjustment 1.3 \
+     --fees 250000000000000award
    ```
    
    :::tip
-   This transaction is just an example. If you want to see an explanation of the parameters values or see all the available flags that can be set to customize your validators you can enter this command: `wardend tx staking create-validator --help`
+   This transaction is just an example. If you want to see an explanation of the parameters values or see all the available flags that can be set to customize your validators you can enter this [command](../node-commands): `wardend tx staking create-validator --help`
    :::
 
-## 3. Back up critical files
+## 4. Back up critical files
 
 There are certain files you need to back up to be able to restore your validator if, for some reason, it's damaged or lost. Please make a secure, encrypted backup of the following files:
 
 - `priv_validator_key.json`
 - `node_key.json`
 
-## 4. Check your validator
+## 5. Check your validator
 
 Check if your validator is in the active set by running this command:
 

@@ -15,7 +15,7 @@ Here we provide basic chain information: the **chain ID**, supported **endpoints
 <table>
   <tr>
     <td>**Binary**</td>
-    <td>[v0.6.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.3)</td>
+    <td>[v0.7.0-rc3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0-rc3)</td>
   </tr>
   <tr>
     <td>**Endpoints**</td>
@@ -38,7 +38,7 @@ Here we provide basic chain information: the **chain ID**, supported **endpoints
   </tr>
   <tr>
     <td>**Chain ID**</td>
-    <td>`barra_10010-1`</td>
+    <td>`barra_9191-1`</td>
   </tr>
   <tr>
     <td>**Denomination**</td>
@@ -50,10 +50,10 @@ Here we provide basic chain information: the **chain ID**, supported **endpoints
   </tr>
   <tr>
     <td>**Block explorer**</td>
-    <td>[Barra block explorer](https://testnet.warden.exploreme.pro)</td>
+    <td>[Barra block explorer](https://explorer.barra.wardenprotocol.org)</td>
   </tr>
   <tr>
     <td>**Validator guides**</td>
-    <td>Operate a node: Barra testnet</td>
+    <td>Operate a node: [Barra testnet](/category/barra-testnet)</td>
   </tr>
 </table>

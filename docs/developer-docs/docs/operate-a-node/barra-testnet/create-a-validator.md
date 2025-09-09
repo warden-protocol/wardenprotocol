@@ -8,7 +8,7 @@ sidebar_position: 3
 Barra is our new testnet, currently available only to selected validators. It's a vanilla Cosmos chain with EVM support.
 :::
 
-This is a simple step-by-step guide for setting up a validator on Barra testnet. It's not a guide on validator architecture or security features.
+This is a simple step-by-step guide for setting up a validator on the Barra testnet. It's not a guide on validator architecture or security features.
 
 ## Prerequisites
 

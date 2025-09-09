@@ -61,7 +61,7 @@ Here's how the Agent Hub helps you get the most from your Agents:
 
 ### Warden
 
-[Warden](https://wardenprotocol.org/) is an AI-powered Intelligent Application built on Warden Protocol. In Warden, users access all AI Agents, models, and chains through a single interface, performing advanced workflows in natural language.
+[Warden](https://wardenprotocol.org/) is an AI-powered application built on Warden Protocol. In Warden, users access all AI Agents, models, and chains through a single interface, performing advanced workflows in natural language.
 
 This is what Warden offers developers and users:
 

@@ -118,7 +118,7 @@ The net result for the user is that it makes crypto look and feel easy and intui
 
 ### From Storytelling to Agent Development
 
-![Agent development: Intelligent Applications](../../static/img/manifesto-7.png)
+![Agent development: Agent types](../../static/img/manifesto-7.png)
 
 Our belief is that all applications will use AI. **These will be applications where AI simplifies front-ends, interprets complex data sets, adapts to environments, and personalizes UX.** Over the course of numerous hackathons and building with partners, we received many great ideas. Below is a curated list of Agents we currently focus on:
 

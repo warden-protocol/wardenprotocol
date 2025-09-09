@@ -229,7 +229,7 @@ Learn more: [Warden networks](/learn/warden-networks).
 
 ## Warden Protocol
 
-Warden Protocol is the full-stack framework powering the [AI Agent](#ai-agent) economy. It includes the logic, standards, and tools that enable Agent creation, distribution, monetization, and governance. Key components of this system include [Warden Chain](#warden-chain), [Proof of Inference](#proof-of-inference), [SPEX](spex), and more.
+Warden Protocol is the full-stack framework powering the [AI Agent](#ai-agent) economy. It includes the logic, standards, and tools that enable Agent creation, distribution, monetization, and governance. Key components of this system are [Warden Chain](#warden-chain), [Proof of Inference](#proof-of-inference), [SPEX](spex), and more.
 
 There are four protocol layets:
 

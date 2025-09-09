@@ -49,10 +49,6 @@ Here we provide basic chain information: the **chain ID**, supported **endpoints
     <td>[Barra faucet](https://faucet.barra.wardenprotocol.org)</td>
   </tr>
   <tr>
-    <td>**Block explorer**</td>
-    <td>[Barra block explorer](https://explorer.barra.wardenprotocol.org)</td>
-  </tr>
-  <tr>
     <td>**Validator guides**</td>
     <td>Operate a node: [Barra testnet](/category/barra-testnet)</td>
   </tr>

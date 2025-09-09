@@ -60,9 +60,3 @@ Barra's denomination is `award` / 0.000000000000000001 [WARD](/tokens/ward-token
 Here is the faucet for getting [WARD](/tokens/ward-token/ward) on Barra:
 
 - [Barra faucet](https://faucet.barra.wardenprotocol.org/)
-
-## Block explorer
-
-You can use this block explorer to get data on blocks, transactions, and accounts:
-
-- [Barra block explorer](https://explorer.barra.wardenprotocol.org)

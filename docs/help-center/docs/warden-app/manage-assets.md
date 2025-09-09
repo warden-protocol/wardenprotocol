@@ -17,7 +17,7 @@ You can access your balances and activity in the [wallet](manage-your-wallet):
 3. You'll see the **Assets** tab with a detailed breakdown of your balances.
 4. To explore your activity history and transaction details, navigate to the **Activity** tab.
 
-Alternatively, you can ask the default [Warden AMA Agent](explore-ai-agents#warden-ama-agent) about your balances.
+Alternatively, you can ask the default [Warden AMA Agent](explore-ai-agents#warden-ama) about your balances.
 
 ![Access your wallet in Warden](../../static/img/warden-app/manage-your-wallet-1.png)
 ![View your balance and activity in Warden](../../static/img/warden-app/manage-your-wallet-2.png)
@@ -50,7 +50,7 @@ In Warden, you can send or swap assets using simple **chat commands**:
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. Make sure your [wallet is funded](#deposit-assets).
-3. In the [chat box](use-the-chat), ask the [Warden AMA Agent](explore-ai-agents#warden-ama-agent) to **send** or **swap** an asset.
+3. In the [chat box](use-the-chat), ask the [Warden AMA Agent](explore-ai-agents#warden-ama) to **send** or **swap** an asset.
 4. Provide the required details and confirm the transaction in the chat.
 5. The Agent will share the transaction details with you. You can also check your [activity history](#view-the-balance--activity).
 

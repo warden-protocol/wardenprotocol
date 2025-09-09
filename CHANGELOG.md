@@ -42,6 +42,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Consensus Breaking Changes
 
+- Disable x/warden, x/act, x/sched, x/async and CosmWasm.
+
 ### Features (non-breaking)
 
 - Update to Go 1.25

@@ -26,6 +26,8 @@ func (c *Test_CreateSpace) Setup(t *testing.T, f *framework.F) {
 }
 
 func (c *Test_CreateSpace) Run(t *testing.T, f *framework.F) {
+	t.Skip("x/warden is disabled")
+
 	alice := exec.NewWardend(c.w, "alice")
 	res := alice.Tx(t, "warden new-space")
 	checks.SuccessTx(t, res)

@@ -93,3 +93,4 @@ jobs:
             artifacts/sha256sum.txt
             artifacts/binary-amd64/*
             artifacts/binary-arm64/*
+          prerelease: ${{ contains(github.ref_name, '-rc') }}

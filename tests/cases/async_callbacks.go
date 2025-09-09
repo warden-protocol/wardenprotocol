@@ -30,6 +30,8 @@ func Wrap[F func()](w *exec.Wardend) {
 }
 
 func (c *Test_AsyncCallbacks) Run(t *testing.T, f *framework.F) {
+	t.Skip("x/async is disabled")
+
 	// deploy the smart contract
 	alice := exec.NewWardendEth(t, c.w, "alice")
 

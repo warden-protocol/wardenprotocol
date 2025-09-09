@@ -7,13 +7,11 @@ on:
       - main
     paths:
       - "spaceward/**"
-      - "wardenjs/**"
     tags:
       - "spaceward/v*"
   pull_request:
     paths:
       - "spaceward/**"
-      - "wardenjs/**"
 
 jobs:
   build:
@@ -35,14 +33,6 @@ jobs:
           node-version: 20
           cache: pnpm
           cache-dependency-path: "spaceward/pnpm-lock.yaml"
-
-      - name: Install dependencies (wardenjs)
-        run: pnpm install
-        working-directory: "wardenjs/"
-
-      - name: Build (wardenjs)
-        run: pnpm build
-        working-directory: "wardenjs/"
 
       - name: Install dependencies
         run: pnpm install

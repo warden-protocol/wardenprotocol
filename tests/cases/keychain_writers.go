@@ -28,6 +28,8 @@ func (c *Test_KeychainWriters) Setup(t *testing.T, f *framework.F) {
 }
 
 func (c *Test_KeychainWriters) Run(t *testing.T, f *framework.F) {
+	t.Skip("x/warden is disabled")
+
 	bob := exec.NewWardend(c.w, "bob")
 	writer := exec.NewWardend(c.w, "writer")
 	client := TestGRPCClient(*c.w.GRPCClient(t))

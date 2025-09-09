@@ -24,7 +24,7 @@ Below is a curated list of Agents we currently focus on:
 
 - **Financial Agents**: Simplifying all the complexities in DeFi: swapping assets, bridging across chains, and abstracting gas.
 - **Autopilot Agents**: Warden is building distributed non-custodial architecture for autopilot Agents operating when the user is offline.
-- **Institutional Agents**: Agents that manage portfolios in real time, apply dynamic risk controls, and guard against hacks. [SpaceWard](https://spaceward.chiado.wardenprotocol.org), our front-end for Warden Protocol, will evolve into a standalone custodial Agent.
+- **Institutional Agents**: Agents that manage portfolios in real time, apply dynamic risk controls, and guard against hacks.
 - **Ecosystem Agents**: Core participants in blockchain ecosystems. They monitor networks for risks, curate proposals, and support governance.
 
 ## The Agent network
@@ -99,7 +99,7 @@ Use the top menu to navigate across the main sections of the docs and learn how 
 - [Operate a node](/operate-a-node/introduction): Guides for node operators
 - [Tokens](/tokens/introduction): A detailed overview of Warden tokenomics
 
-You can also visit Warden's Help Center to find user guides for our applications:
+You can also visit Warden's **Help Center** to find user guides for our applications:
 
 - [Warden](https://help.wardenprotocol.org): User guides for Warden, an AI-powered co-pilot for crypto
-- [SpaceWard](https://help.wardenprotocol.org/spaceward): User guides for SpaceWard, our front-end Intelligent Application
+

@@ -74,7 +74,7 @@ The voting power depends on the [validator's weight](#validators-weight) or the 
 
 An Intelligent Application is a smart contract integrating AI or any offchain logic. Unlike traditional contracts bound by static logic, Intelligent Apps unlock more dynamic user experiences: they're able to reason, adapt, and interact across onchain and offchain environments.
 
-With Warden, you can build crypto super apps, smart [AI Agents](#ai-agent), and intelligent custody solutions. For example, see [SpaceWard](#spaceward) and [Warden](https://app.wardenprotocol.org). We support EVM smart contracts.
+With Warden, you can build crypto super apps, smart [AI Agents](#ai-agent), and intelligent custody solutions. For example, see [Warden](https://app.wardenprotocol.org). We support EVM smart contracts.
 
 Learn more: [Warden Manifesto](warden-manifesto).
 
@@ -97,17 +97,6 @@ Reasons for running a node include the following:
 An oracle is a third-party service that enables smart contracts to access real-life data feeds: prices, stock market data, weather conditions, etc. Warden is integrated with [Skip:Connect](https://docs.skip.build/connect/introduction)—an oracle service provided by Skip Protocol and offering mostly price data. Connect's data is [validated](#validator) by Warden's network and written onchain.
 
 Learn more: [Cosmos modules: `x/oracle`](cosmos-modules#xoracle).
-
----
-
-## SpaceWard
-
-(?)
-
-SpaceWard is an [Intelligent Application](#intelligent-application) functioning as the front-end interface for Warden. It provides a user-friendly platform where you can create Spaces, manage wallets and Intents, and interact with decentralized applications (dApps) and other components of the Web3 ecosystem.
-
-Learn more: [SpaceWard documentation](https://help.wardenprotocol.org/spaceward).  
-Try it out: [SpaceWard](https://spaceward.chiado.wardenprotocol.org).
 
 ---
 

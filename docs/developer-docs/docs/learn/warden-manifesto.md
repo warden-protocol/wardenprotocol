@@ -124,7 +124,7 @@ Our belief is that all applications will use AI. **These will be applications wh
 
 - **Financial Agents**: Simplifying all the complexities in DeFi—from swapping assets and bridging across chains to abstracting gas and providing a "*one screen, all the apps*" experience.
 - **Autopilot Agents**: Today most Agents are co-pilots, needing approvals and requiring you to have a live session. The next frontier are Agents that operate when the user is offline. Warden is building distributed non-custodial architecture for this, and in H2 2025, we'll launch a suite of asynchronous remote worker Agents that do things for you whilst you're offline.
-- **Institutional Agents**: Agents that optimize portfolios in real time, deploy dynamic risk management system, and proactively guard against malicious hacks. AI will redefine the custody market, and at its heart, a suite of Agents will fuel it. We created a reference "omnichain SAFE"—[SpaceWard](https://spaceward.chiado.wardenprotocol.org)—which will become a standalone Agent in Warden.
+- **Institutional Agents**: Agents that optimize portfolios in real time, deploy dynamic risk management system, and proactively guard against malicious hacks. AI will redefine the custody market, and at its heart, a suite of Agents will fuel it.
 - **Ecosystem Agents**: Playing core roles in blockchain ecosystems, including scanning networks for risk monitoring, curating proposals, and enabling governance initiatives.
 
 ## Warden's Roadmap

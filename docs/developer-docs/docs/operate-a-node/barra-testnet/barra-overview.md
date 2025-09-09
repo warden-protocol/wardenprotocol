@@ -5,7 +5,7 @@ sidebar_position: 1
 # Barra overview
 
 :::important
-Barra is our new testnet, currently available only to selected validators.
+Barra is our new testnet, currently available only to selected validators. It's a vanilla Cosmos chain with EVM support.
 :::
 
 ## Version history

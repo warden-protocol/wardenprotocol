@@ -51,7 +51,7 @@ The core features of Warden Studio include the following:
 
 ### Warden Chain
 
-Warden Chain is an EVM purpose-built blockchain for [AI Agents](#ai-agent). It provides the decentralized infrastructure that makes the Warden Protocol logic operational, serving as the entry point to discover, interact, and transact with AI Agents in the ecosystem.
+Warden Chain is an EVM purpose-built blockchain for [AI Agents](#ai-agents). It provides the decentralized infrastructure that makes the Warden Protocol logic operational, serving as the entry point to discover, interact, and transact with AI Agents in the ecosystem.
 
 Once an Agent is built, it gets minted directly onto Warden Chain. The Chain provides each Agent with the following:
 

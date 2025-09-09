@@ -16,18 +16,11 @@ During the testnet stage, the Warden Protocol team will be running a series of e
 
 ## Delegation criteria
 
-Validators are evaluated based on a combination of positive and negative metrics. Each metric contributes to the validator's overall score, determining their eligibility and priority in the delegation process. This ensures that only the most reliable and active validators are chosen to maintain and secure the network.
-
-These metrics are, to name a few:
-
-- Activity, community engagement, blog posts
-- Uptime
-- Services provided
-- Testnet performance
+For the testnet, a shortlist of validators has been selected.
 
 ## Amount of tokens
 
-At mainnet, the Warden Protocol team intends to delegate 10% of its token supply to validators.
+The Warden Protocol team will delegate up to 10% of its token supply to the selected validators.
 
 ## Validator tiers
 
@@ -50,7 +43,7 @@ Validators who want to attract delegations must comply with essential network su
 
 These standards include:
 
-- Commission Rate up to: 10%
+- Commission rate up to: 10%
 - Uptime at least 95%
 - Governance participation of at least 80%
 - Minimal slashing rate

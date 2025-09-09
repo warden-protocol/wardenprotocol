@@ -28,10 +28,10 @@ To be able to interact with the node, install `wardend` (the Warden binary) and 
 
 1. Download the binary for your platform from the release page and unzip it. The archive contains the `wardend` binary.
 
-2. Navigate to the directory containing the binary and initialize the node:
+2. Navigate to the directory containing the binary and initialize the node, specifying a custom chain moniker:
     
    ```bash
-   ./wardend init my-chain-moniker
+   ./wardend init CHAIN_MONIKER
    ```
 
 ## 2. Configure the binary

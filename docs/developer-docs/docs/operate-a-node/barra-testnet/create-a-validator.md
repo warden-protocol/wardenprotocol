@@ -16,26 +16,26 @@ The following instructions assume you have already set up a full node and are sy
 
 ## 1. Create/restore a key pair
 
-The first step is to create a new key pair for your validator. Replace `my-key-name` with a key name of your choice and run the following:
+The first step is to create a new key pair for your validator. Replace `KEY_NAME` with a key name of your choice and run the following:
 
 ```bash
-wardend keys add my-key-name
+wardend keys add KEY_NAME
 ```
 
 :::warning
 After creating a new key, you'll see its information and its seed phrase. It's essential to write down this seed phrase and keep it in a safe place. The seed phrase is the only way to restore your keys. Losing it can result in the irrecoverable loss of WARD tokens.
 :::
 
-Alternatively, you can restore an existing wallet with a mnemonic seed phrase. Replace `my-key-name` with a key name of your choice and run the following:
+Alternatively, you can restore an existing wallet with a mnemonic seed phrase. Replace `KEY_NAME` with a key name of your choice and run the following:
 
 ```bash
-wardend keys add my-key-name --recover
+wardend keys add KEY_NAME --recover
 ```
 
 Then get your public address:
 
 ```bash
-wardend keys show my-key-name --address
+wardend keys show KEY_NAME --address
 ```
 
 ## 2. Get testnet WARD
@@ -49,7 +49,7 @@ You can obtain testnet **WARD** in our faucet:
 To verify your balance, use this command:
 
 ```bash
-wardend query bank balances my-key-name
+wardend query bank balances KEY_NAME
 ```
 
 ## 3. Create a validator
@@ -97,11 +97,11 @@ To create a validator and initialize it with a self-delegation, you need to crea
    When you specify commission parameters, the `commission-max-change-rate` is measured as a percentage point change of the `commission-rate`. For example, a change from 1% to 2% is a 100% rate increase, but the `commission-max-change-rate` is measured as 1%.
    :::
 
-3. Finally, you're ready to submit a transaction for creating the validator:
+3. Finally, you're ready to submit a transaction for creating the validator. Specify your key (account) name and other parameters:
 
    ```bash
    wardend tx staking create-validator \
-     --from my-validator-account \
+     --from KEY_NAME \
      --chain-id barra_9191-1 \
      --amount 1000000000000000000award \
      --commission-rate 0.05 \

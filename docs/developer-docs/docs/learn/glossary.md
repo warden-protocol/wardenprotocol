@@ -130,6 +130,7 @@ When a user submits a prompt, Warden generates a hash of the prompt together wit
 
 *This feature is coming soon.*
 
+
 ## SPEX
 
 SPEX (Statistical Proof of Execution) is a sampling-based verifiable computing protocol that ensures the integrity of computational tasks through probabilistic guarantees. This includes tasks with potentially non-deterministic outputs, such as those involving large language models (LLMs) or stochastic training pipelines. SPEX is used as a verifiability layer for AI on [Warden Protocol](#warden-protocol).

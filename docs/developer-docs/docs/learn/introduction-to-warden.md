@@ -118,4 +118,3 @@ Use the top menu to navigate across the main sections of the docs and learn how 
 You can also visit Warden's **Help Center** to find user guides for our applications:
 
 - [Warden](https://help.wardenprotocol.org): User guides for Warden, an AI-powered co-pilot for crypto
-

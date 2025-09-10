@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # Node API
 
-**Nodes** are servers running the software (binary) of [Warden Chain](/learn/glossary#warden-chain) and serving as central points of contact for the network.
+**Nodes** are servers running the [Warden Chain](/learn/glossary#warden-chain) software (binary) and serving as central points of contact for the network.
 
 There are two ways to communicate with a node:
 

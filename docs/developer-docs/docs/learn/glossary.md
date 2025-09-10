@@ -6,7 +6,7 @@ sidebar_position: 6
 
 ## Agent Card
 
-Each [AI Agent](#ai-agent) on Warden has an Agent Card—an offchain JSON document compliant with the [A2A Protocol specification](https://a2a-protocol.org/latest/specification/). The Agent Card defines the server's identity, capabilities, skills, service endpoint URL, and the methods for authentication and interaction.
+Each [AI Agent](#ai-agent) on Warden has an Agent Card—an offchain JSON document compliant with the [A2A Protocol specification](https://a2a-protocol.org/latest/specification/). The Agent Card defines the Agent's identity, capabilities, skills, service endpoint URL, and the methods for authentication and interaction.
 
 See also: [Agent Passport](#agent-passport).
 
@@ -74,7 +74,7 @@ The blockchain layer provides the core infrastructure for [AI Agents](#ai-agent)
 
 ## Bonded validator
 
-A bonded validator is an active validator  participating in consensus ([staking](#staking)). Bonded validators validate transactions, propose blocks, and earn rewards for their contributions to the network.
+A bonded validator is an active validator participating in consensus ([staking](#staking)). Bonded validators validate transactions, propose blocks, and earn rewards for their contributions to the network.
 
 See also: [Unbonding validator](#unbonding-validator), [Unbonded validator](#unbonded-validator).
 
@@ -90,13 +90,13 @@ All delegators inherit the state from their validator: [bonded](#bonded-validato
 
 ## Full node
 
-A full node is a server running a software (binary) that maintains a complete up-to-date version of a protocol with full transaction history. You can run a full [Warden node](#node) yourself.
+A full node is a server running software (a binary) that maintains a complete up-to-date version of a protocol with full transaction history. You can run a full [Warden node](#node) yourself.
 
 ---
 
 ## Governance
 
-[Warden Chain](#warden-chain) supports onchain governance. It's a mechanism allowing the decentralized community to update the protocol through direct voting that is recorded onchain. Voting is available for the participants of [staking](#staking): [validators](#validator) and [delegators](#delegator).
+[Warden Chain](#warden-chain) supports onchain governance—a mechanism allowing the decentralized community to update the protocol through direct voting that is recorded onchain. Voting is available to [staking](#staking) participants: [validators](#validator) and [delegators](#delegator).
 
 The voting power depends on the [validator's weight](#validators-weight) or the amount of [WARD](#ward-token) a delegator staked. By default, [delegators](#delegator) inherit votes of their validator. Alternatively, a delegator can cast their own vote, which will reduce the validator's voting power.
 
@@ -104,7 +104,7 @@ The voting power depends on the [validator's weight](#validators-weight) or the 
 
 ## Node
 
-A Warden node is a server running the software (binary) of [Warden Chain](#warden-chain). To run a blockchain node in Warden, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api) and [node commands](/operate-a-node/node-commands).
+A Warden node is a server running the[Warden Chain](#warden-chain) software (binary). To run a blockchain node in Warden, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api) and [node commands](/operate-a-node/node-commands).
 
 Reasons for running a node include the following:
 
@@ -175,7 +175,7 @@ The consensus mechanism selects validators to propose blocks based on validators
 
 ## Verifiability layer
 
-The  verifiability layer of [Warden Protocol](#warden-protocol) uses blockchain, cryptography, and consensus to guarantee the integrity of AI models. [SPEX](#spex) (Statistical Proof of Execution) ensures the model you see is the model you get, and in addition it can check if the outputs are accurate and confident enough to be used in applications.
+The verifiability layer of [Warden Protocol](#warden-protocol) uses blockchain, cryptography, and consensus to guarantee the integrity of AI models. [SPEX](#spex) (Statistical Proof of Execution) ensures the model you see is the model you get and can also asses whether outputs are accurate and confident enough to be used in applications.
 
 ---
 
@@ -220,7 +220,7 @@ Learn more: [Warden documentation](https://help.wardenprotocol.org/warden-app/ex
 
 ## Warden Chain
 
-Warden Chain is an EVM purpose-built blockchain for [AI Agents](#ai-agent). It provides the decentralized infrastructure that makes the [Warden Protocol](#warden-protocol) logic operational.
+Warden Chain is a purpose-built EVM blockchain for [AI Agents](#ai-agent). It provides the decentralized infrastructure that makes the [Warden Protocol](#warden-protocol) logic operational.
 
 Once an Agent is built, it's minted directly onto the Chain, where it signs requests, collects fees, and pays for services. In this way, Warden Chain serves as the entry point to discover, interact, and transact with Agents in the ecosystem.
 

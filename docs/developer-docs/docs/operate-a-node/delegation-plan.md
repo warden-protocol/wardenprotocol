@@ -14,7 +14,7 @@ See the sections below to learn the details of the plan.
 
 During the testnet stage, the Warden Protocol team will be running a series of exercises with validators. The aim of these exercises is to test and prepare for a future mainnet event where the team will be delegating a portion of its token supply to qualifying validators.
 
-Validators are evaluated based on a combination of positive and negative metrics. Each metric contributes to the overall score of a validator, determining their eligibility and priority in the delegation process. This ensures that only the most reliable and active validators are chosen to maintain and secure the network.
+Validators are evaluated based on a combination of positive and negative metrics. Each metric contributes to a validator's overall score, determining their eligibility and priority in the delegation process. This ensures that only the most reliable and active validators are chosen to maintain and secure the network.
 
 These metrics are, to name a few:
 
@@ -48,26 +48,26 @@ Validators who want to attract delegations must comply with essential network su
 
 These standards include:
 
-- Commission rate up to: 10%
+- Commission rate: up to 10%
 - Uptime at least 95%
 - Governance participation of at least 80%
 - Minimal slashing rate
-- Timely upgrades and responsiveness to protocol release
-- Run the Skip:Connect oracle and any other external services required from the network
+- Timely upgrades and responsiveness to protocol releases
+- [Run Skip:Connect](run-skip-connect) and any other external services required by the network
 
 **Note**: Validators are slashed when they demonstrate malicious behavior.
 
 ## Undelegation criteria
 
 - Getting slashed/tombstoned (can't apply for 1 year afterward)
-- Getting jailed more than once during the quarter-applicable delegation period
+- Getting jailed more than once during the applicable quarterly delegation period
 - Failing to upgrade your node in a timely manner (24 hours or less)
 - For any other reason, at the Warden Protocol team's discretion
 - Failed to meet the commitments set by the Warden Protocol team
 
 ## Reallocation program
 
-The Warden Protocol team will periodically reallocate tokens to balance the network and review the Validators' commitments.
+The Warden Protocol team will periodically reallocate tokens to balance the network and review the validators' commitments.
 
 ## Feedback process
 
@@ -85,4 +85,4 @@ Delegators have several criteria to consider when choosing validators to delegat
 
 **Track record**: Delegators can review the track record of a validator they plan to delegate to. This includes seniority in the network, past votes on proposals, uptime and the reliability of the validator, and any history of node compromises. Validators with a positive track record are more trusted by delegators.
 
-**Community contribution**: Another criterion is the work validators have contributed to the community, such as educational content, participation in community channels, contributions to open source initiatives etc. Community contribution demonstrates a commitment to the long-term success and growth of the network.
+**Community contribution**: Another criterion is the work validators have contributed to the community, such as educational content, participation in community channels, contributions to open-source initiatives, and so on. Community contribution demonstrates a commitment to the long-term success and growth of the network.

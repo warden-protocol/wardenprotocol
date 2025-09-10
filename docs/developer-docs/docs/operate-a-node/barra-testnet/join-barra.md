@@ -16,11 +16,12 @@ This tutorial explains how to run the Warden binary, `wardend`, and join the **B
 
 Before you start, complete the following prerequisites:
 
+- [Install Go](https://go.dev/doc/install) 1.25 or higher.
+- Make sure you have the following shell tools installed: `wget`, `sed`, `curl`, `jq`.
 - We recommend running public testnet nodes on machines with the following characteristics:
   - at least 4 cores
   - 16GB of RAM
   - 300GB of disk space
-- [Install Go](https://go.dev/doc/install) 1.25 or higher.
 
 ## 1. Install the binary
 
@@ -92,7 +93,7 @@ https://rpc.barra.wardenprotocol.org
     
    The output should be similar to this:
    
-   ```
+   ```bash
    70694 68694 6AF4938885598EA10C0BD493D267EF363B067101B6F81D1210B27EBE0B32FA2A
    ```
     
@@ -105,7 +106,7 @@ https://rpc.barra.wardenprotocol.org
    s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\\1\\"$TRUST_HASH\\"|" $HOME/.warden/config/config.toml
    ```
     
-   These commands will update the `[statesync]` section in `$HOME/.warden/config.toml`. Alternatively, you can adjust the file manually.
+   These commands will update the `[statesync]` section in `$HOME/.warden/config/config.toml`. Alternatively, you can adjust the file manually.
 
 ## 4. Start the node
 
@@ -121,7 +122,7 @@ If needed, add the path to the binary before the command:
 path-to-binary/wardend start
 ```
 
-It'll connect to persistent peers provided and start downloading blocks. You can check the logs to see the progress.
+It'll connect to the configured seed nodes and start downloading blocks. You can check the logs to see the progress.
 
 :::tip
 We recommend using [Cosmovisor](https://docs.cosmos.network/v0.45/run-node/cosmovisor.html) for running a node. It's a utility for managing binary versions of Cosmos SDK-based chains, allowing you to enable binary upgrades without manual intervention.

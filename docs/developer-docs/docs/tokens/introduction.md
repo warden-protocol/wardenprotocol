@@ -5,7 +5,7 @@ sidebar_position: 1
 # Introduction
 
 :::important
-Our tokenomics will change soon—stay tuned for the latest updates!
+Our tokenomics will change soon—stay tuned for the latest updates in the documentation.
 :::
 
 

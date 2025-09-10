@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Warden Protocol nodes
 
-A Warden node is a server running the software (binary) of [Warden Chain](/learn/glossary#warden-chain).
+A Warden node is a server running the [Warden Chain](/learn/glossary#warden-chain) software (binary).
 
 Reasons for running a node include the following:
 
@@ -30,4 +30,4 @@ Reasons for running a node include the following:
 
 ## Get started
 
-You can get started with operating a node by following [Join Barra](barra-testnet/join-barra).
+You can get started with operating a node by following the steps in [Join Barra](barra-testnet/join-barra).

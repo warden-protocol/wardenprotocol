@@ -53,7 +53,7 @@ barra_9191-1
 
 ## Denomination
 
-Barra's denomination is `award` / 0.000000000000000001 [WARD](/tokens/ward-token/ward).
+Barra's denomination is `award` (1 award = 10^-18 [WARD](/tokens/ward-token/ward)).
 
 ## Faucet
 

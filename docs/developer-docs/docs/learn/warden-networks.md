@@ -8,7 +8,7 @@ sidebar_position: 5
 
 In this section, you'll find an overview of the available **Warden networks**.
 
-Here we provide basic chain information: the **chain ID**, supported **endpoints**. For more detailed information, refer to our validator guides in [Operate a node](/operate-a-node/introduction).
+This page lists basic chain information: the **chain ID** and supported **endpoints**. For more detailed information, refer to our validator guides in [Operate a node](/operate-a-node/introduction).
 
 
 ## Barra testnet
@@ -43,7 +43,7 @@ Here we provide basic chain information: the **chain ID**, supported **endpoints
   </tr>
   <tr>
     <td>**Denomination**</td>
-    <td>`award` / 0.000000000000000001 [WARD](/tokens/ward-token/ward)</td>
+    <td>`award` (1 award = 10^-18 [WARD](/tokens/ward-token/ward))</td>
   </tr>
   <tr>
     <td>**Faucet**</td>

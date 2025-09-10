@@ -114,7 +114,11 @@ To create a validator and initialize it with a self-delegation, you need to crea
    ```
    
    :::tip
-   This transaction is just an example. If you want to see an explanation of the parameters values or see all the available flags that can be set to customize your validators you can enter this [command](../node-commands): `wardend tx staking create-validator --help`
+   This transaction is just an example. For explanations of parameters values and all available flags to customize your validator, run this [command](../node-commands):
+
+   ```bash
+   wardend tx staking create-validator --help
+   ```
    :::
 
 ## 4. Back up critical files

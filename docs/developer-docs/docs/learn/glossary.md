@@ -52,9 +52,9 @@ An AI Agent is an AI-driven program that supports both offchain and onchain oper
 
 ---
 
-## Application layer 
+## Application layer
 
-At the application layer of [Warden Protocol](#warden-protocol), developers can easily build [AI Agents](#ai-agent) and instantly make them accessible to all [Warden](#warden) users. [Warden Studio](#warden-studio) (now in Alpha) gives everything required to develop, test, and publish Agents.
+At the application layer of [Warden Protocol](#warden-protocol), developers can easily build [AI Agents](#ai-agent) and instantly make them accessible to all [Warden](#warden) users. [Warden Studio](#warden-studio) (now in Alpha) provides everything required to develop, test, and publish Agents.
 
 ---
 
@@ -82,7 +82,7 @@ See also: [Unbonding validator](#unbonding-validator), [Unbonded validator](#unb
 
 ## Delegator
 
-A delegator is an individual or entity that participates in the [staking](#staking) process by delegating their [WARD tokens](#ward-token) to a [validator](#validator). Delegation allows securing the network and sharing rewards with validators without the responsibility of running a [node](#node).
+A delegator is an individual or entity that participates in the [staking](#staking) process by delegating their [WARD tokens](#ward-token) to a [validator](#validator). Delegation allows validators to secure the network and share rewards with them without the responsibility of running a [node](#node).
 
 All delegators inherit the state from their validator: [bonded](#bonded-validator), [unbonding](#unbonding-validator), or [unbonded](#unbonded-validator). To avoid risks, delegators should perform due diligence on validators and spread their stake over multiple validators. Delegators can also participate in [governance](#governance).
 
@@ -141,7 +141,7 @@ Learn more: [SPEX](spex).
 
 ## Staking
 
-Staking is the process of participating in the proof-of-stake (POS) consensus mechanism. [Validators](#validator) and [delegators](#delegator) stake their [WARD tokens](#ward-token) for a chance to validate blocks and transactions and earn staking rewards.
+Staking is the process of participating in the proof-of-stake (PoS) consensus mechanism. [Validators](#validator) and [delegators](#delegator) stake their [WARD tokens](#ward-token) for a chance to validate blocks and transactions and earn staking rewards.
 
 The consensus mechanism chooses validators based on their [weight](#validators-weight). If a validator is successful, its delegators will earn rewards too. If a validator is slashed, the delegator’s stake will be slashed. Staking also allows validators and delegators to participate in [governance](#governance).
 

@@ -42,7 +42,7 @@ wardend keys show KEY_NAME --address
 
 In the next steps, you'll register your new validator by submitting a `create-validator` transaction. Transactions consume gas, so you need to fund your newly created address from the first step.
 
-You can obtain testnet **WARD** in our faucet:
+You can obtain testnet **WARD** from our faucet:
 
 - [Barra faucet](https://faucet.barra.wardenprotocol.org)
 
@@ -114,7 +114,7 @@ To create a validator and initialize it with a self-delegation, you need to crea
    ```
    
    :::tip
-   This transaction is just an example. For explanations of parameters values and all available flags to customize your validator, run this [command](../node-commands):
+   This transaction is just an example. For explanations of parameter values and all available flags to customize your validator, run this [command](../node-commands):
 
    ```bash
    wardend tx staking create-validator --help

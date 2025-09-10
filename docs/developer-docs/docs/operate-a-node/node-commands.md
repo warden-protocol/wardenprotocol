@@ -14,7 +14,7 @@ These commands allow you to do the following:
 - Initiate transactions
 - Manage your keys
 - Edit the genesis file
-- and more
+- And more
 
 ## Prerequisites
 

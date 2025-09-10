@@ -40,7 +40,7 @@ We focus on *showing, not telling*. Our Agents are accessible to everyone, and t
 From this foundation, how we build adoption of our full-stack strategy becomes clear: 
 
 - **Win users first**: Show (*don't just tell*) how Agents can solve crypto's broken UX. This gives users one interface, with access to all the chains, apps, and models they could ever want—a true AI-powered Everything App for crypto.
-- **Open the rails to builders**: Once we have a large, engaged user base, we open Warden Studio: the creation hub for Agents. Here developers can build and deploy on- or offchain Agents that come with identity, wallet access, trust mechanisms, and monetization tools. Regardless of the framework used to build these Agents, they can be connected to our network instantly.
+- **Open the rails to builders**: Once we have a large, engaged user base, we open Warden Studio: the creation hub for Agents. Here developers can build and deploy onchain or offchain Agents that come with identity, wallet access, trust mechanisms, and monetization tools. Regardless of the framework used to build these Agents, they can be connected to our network instantly.
 - **Power the Agent network**: Give Agents the onchain identity, trust, monetization, and distribution rails to access millions of users—creating the global network they need to thrive.
 
 ### Our Secret Sauce: Owning the Distribution
@@ -77,11 +77,11 @@ The global Agent network we envision needs a team that can build full-stack infr
 
 ### Warden Studio
 
-Available now in Alpha, Warden Studio equips builders with everything they need to develop, test, and deploy Agents—on- or offchain—directly to Warden's millions of users. From decentralized and verifiable inference to domain-specific large language models, verification systems, and primitives, the Studio has all the components needed for the next generation of autonomous Agents. 
+Available now in Alpha, Warden Studio equips builders with everything they need to develop, test, and deploy Agents—onchain or offchain—directly to Warden's millions of users. From decentralized and verifiable inference to domain-specific large language models, verification systems, and primitives, the Studio has all the components needed for the next generation of autonomous Agents. 
 
 We're convinced the next wave of Agent innovation won't come from traditional coders alone—it'll be driven by vibe coders, no-code creators, and Web2 builders. Warden Agent Studio will be designed to empower this new generation of creators.
 
-- **Agent creation toolkit**: Develop, test, and deploy on- or offchain Agents.
+- **Agent creation toolkit**: Develop, test, and deploy onchain or offchain Agents.
 - **Instant distribution**: Publish directly to millions of active Warden users.
 - **Flexible for creators**: Built for Web3 developers, no-code creators, and Web2 builders.
 
@@ -91,7 +91,7 @@ We're convinced the next wave of Agent innovation won't come from traditional co
 
 - **Identity**: Assigns each Agent a unique cryptographic ID for authentication, signing requests, and free movement between Agents and services.
 - **Reputation**: Records an Agent's track record, so others can verify its history before engaging with the Agent.
-- **Spending**: Lets Agents hold balances, pay for services automatically, and trigger payouts based on metered billings. Every interaction is recorded using our own Proof of Inference.
+- **Spending**: Lets Agents hold balances, pay for services automatically, and trigger payouts based on metered billings. Every interaction is recorded using our own [Proof of Inference](glossary#proof-of-inference).
 - **Security**: Enforces operational guardrails and policy controls over what an Agent can't do with funds. Pre-authorize payments under your own spending rules.
 
 ### Warden Agent Hub
@@ -102,8 +102,8 @@ Goodbye apps, hello Agents. Whether you're planning your next trip or need inves
 
 Warden Agent Hub solves tech's hardest problem—distribution. Instead of launching into an empty market, your Agent is placed in front of millions of active and engaged Warden users coming onchain everyday. No ghost launches, no cold stars. Just instant reach and direct monetization.
 
-- **Direct monetization**: Publish your Agent, set your price mode, and start earning revenue from your Agent immediately. All usage and payment tracking is handled automatically.
-- **Built-in distribution**: Avoid ghost launches and instantly connect with millions of active Warden users. Reach real Agent demand and get paid instantly, including micropayments.
+- **Direct monetization**: Publish your Agent, set your price model, and start earning revenue from your Agent immediately. All usage and payment tracking is handled automatically.
+- **Built-in distribution**: Avoid ghost launches and instantly connect with millions of active Warden users. Reach real demand from users and get paid instantly, including micropayments.
 
 ### Warden
 

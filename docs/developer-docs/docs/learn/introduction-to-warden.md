@@ -43,7 +43,7 @@ The core infrastructure elements making this possible are outlined below.
 
 The core features of Warden Studio include the following:
 
-- **Agent creation toolkit**: Develop, test, and deploy on- or offchain Agents.
+- **Agent creation toolkit**: Develop, test, and deploy onchain or offchain Agents.
 - **Instant distribution**: Publish directly to millions of active Warden users.
 - **Flexible for creators**: Built for Web3 developers, no-code creators, and Web2 builders.
 
@@ -55,7 +55,7 @@ Once an Agent is built, it gets minted directly onto Warden Chain. The Chain pro
 
 - **Identity**: Assigns each Agent a unique cryptographic ID for authentication and signing requests.  
 - **Reputation**: Records an Agent's track record, so others can verify its history.  
-- **Spending**: Allows Agents to hold balances, pay for services, and trigger payouts from metered billing, with every interaction recorded via Proof of Inference.
+- **Spending**: Allows Agents to hold balances, pay for services, and trigger payouts from metered billing, with every interaction recorded via [Proof of Inference](/learn/glossary#proof-of-inference).
 - **Security**: Enforces guardrails on how Agents use funds, with payments pre-authorized under your rules.
 
 Learn more: [Warden networks](/learn/warden-networks).
@@ -69,7 +69,7 @@ This is what Warden offers developers and users:
 - **Single Agent entry point**: Millions of users discover, chat with, and pay Agents for any service in one place.
 - **Complex, made simple**: Users perform even the most advanced workflows through simple chat commands.
 
-Try it out: [Warden](https://app.wardenprotocol.org). 
+Try it out: [Warden](https://app.wardenprotocol.org).
 
 ### Warden Agent Hub
 
@@ -77,8 +77,8 @@ Try it out: [Warden](https://app.wardenprotocol.org).
 
 Here's how the Agent Hub helps you get the most from your Agents:
 
-- **Direct monetization**: Publish your Agent, set your price mode, and start earning revenue from your Agent immediately. All usage and payment tracking is handled automatically.
-- **Built-in distribution**: Avoid ghost launches and instantly connect with millions of active Warden users. Reach real Agent demand and get paid instantly, including micropayments.
+- **Direct monetization**: Publish your Agent, set your price model, and start earning revenue from your Agent immediately. All usage and payment tracking is handled automatically.
+- **Built-in distribution**: Avoid ghost launches and instantly connect with millions of active Warden users. Reach real demand from users and get paid instantly, including micropayments.
 
 Learn more: [Warden documentation](https://help.wardenprotocol.org/warden-app/explore-ai-agents). 
 
@@ -90,10 +90,10 @@ Warden is an AI-ready protocol with four layers:
 The blockchain layer provides the core infrastructure for Agents: identity, coordination, and provenance. Agents are deployed directly onto [Warden Chain](#warden-chain), where they sign requests, collect fees, and pay for services. Each Agent is assigned a unique cryptographic ID.
 
 - **Verifiability layer**  
-Our verifiability layer uses blockchain, cryptography, and consensus to guarantee the integrity of AI models. [SPEX](/learn/spex) (Statistical Proof of Execution) ensures the model you see is the model you get, and in addition it can check if the outputs are accurate and confident enough to be used in applications.
+Our verifiability layer uses blockchain, cryptography, and consensus to guarantee the integrity of AI models. [SPEX](/learn/spex) (Statistical Proof of Execution) ensures the model you see is the model you get and can also assess whether outputs are accurate and confident enough to be used in applications.
 
 - **Application layer**  
-At the application layer, developers can easily build Agents and instantly make them accessible to all [Warden](#warden) users. [Warden Studio](#warden-studio) (now in Alpha) gives everything required to develop, test, and publish Agents.
+At the application layer, developers can easily build Agents and instantly make them accessible to all [Warden](#warden) users. [Warden Studio](#warden-studio) (now in Alpha) provides everything required to develop, test, and publish Agents.
 
 - **Big Brain**  
 Big Brain (under development) is a protocol-enabled, domain-specific LLM trained on 1T tokens, catalyzing Agent performance as the evolving hive mind. Big Brain learns from every Warden interaction and rewards contributors who help it improve.
@@ -105,11 +105,11 @@ Welcome to the Warden Protocol documentation!
 Use the top menu to navigate across the main sections of the docs and learn how to join Warden:
 
 - **Learn**:
-  - [Warden Manifesto](learn/warden-manifesto): A Manifesto capturing Warden's mission
-  - [SPEX](learn/spex): An overview of our verifiability layer, SPEX
-  - [Cosmos modules](learn/cosmos-modules): An overview of Cosmos modules we're using
-  - [Warden networks](learn/warden-networks): A list of available networks
-  - [Glossary](learn/glossary): A list of key Warden terms with definitions
+  - [Warden Manifesto](/learn/warden-manifesto): A Manifesto capturing Warden's mission
+  - [SPEX](/learn/spex): An overview of our verifiability layer, SPEX
+  - [Cosmos modules](/learn/cosmos-modules): An overview of Cosmos modules we're using
+  - [Warden networks](/learn/warden-networks): A list of available networks
+  - [Glossary](/learn/glossary): A list of key Warden terms with definitions
 - [Operate a node](/operate-a-node/introduction): Guides for node operators
 - [Tokens](/tokens/introduction): A detailed overview of Warden tokenomics
 

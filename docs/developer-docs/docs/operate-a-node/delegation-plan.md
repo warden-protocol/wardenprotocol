@@ -48,7 +48,7 @@ Validators who want to attract delegations must comply with essential network su
 
 These standards include:
 
-- Commission rate: up to 10%
+- Max commission rate: up to 20%
 - Uptime at least 95%
 - Governance participation of at least 80%
 - Minimal slashing rate

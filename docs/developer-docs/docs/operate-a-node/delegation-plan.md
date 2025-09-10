@@ -53,7 +53,7 @@ These standards include:
 - Governance participation of at least 80%
 - Minimal slashing rate
 - Timely upgrades and responsiveness to protocol releases
-- [Run Skip:Connect](run-skip-connect) and any other external services required by the network
+- [Run Skip:Connect](operate-skip-connect) and any other external services required by the network
 
 **Note**: Validators are slashed when they demonstrate malicious behavior.
 

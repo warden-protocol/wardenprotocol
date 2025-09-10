@@ -20,11 +20,11 @@ These commands allow you to do the following:
 
 To interact with the node, you need to install the [Warden binary](https://github.com/warden-protocol/wardenprotocol/releases), `wardend`.
 
-You can follow installation instructions in [Join Barra](barra-testnet/join-barra).
+You can follow the installation instructions in [Join Barra](barra-testnet/join-barra).
 
 ## Execute `wardend` commands
 
-To execute a node command, just run `wardend`, followed by the command. Specify a node to interact with by including the `--node` flag with a [node endpoint](barra-testnet/barra-overview#endpoints).
+To execute a node command, just run `wardend`, followed by the command. Specify a node by including the `--node` flag with a [node endpoint](barra-testnet/barra-overview#endpoints).
 
 For example, to check the node status, run the example below using the preferred endpoint:
 

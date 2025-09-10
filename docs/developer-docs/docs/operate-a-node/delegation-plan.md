@@ -35,10 +35,10 @@ Each of these tiers will get a percentage of the delegation pool allocated durin
 
 | Tiers | Amount    | Number of validators | Per-validator %| % Total | Total delegation |
 | ----- | --------- | -------------------- | -------------- | ------- | ---------------- |
-| 1     | 1 Million | 5                    | 4%             | 20%     | 5 Million        |
-| 2     | 750,000   | 5                    | 3%             | 15%     | 3.75 Million     |
-| 3     | 625,000   | 10                   | 2.5%           | 25%     | 6.25 Million     |
-| 4     | 500,000   | 20                   | 1%             | 40%     | 10 Million       |
+| 1     | 1 million | 5                    | 4%             | 20%     | 5 million        |
+| 2     | 750,000   | 5                    | 3%             | 15%     | 3.75 million     |
+| 3     | 625,000   | 10                   | 2.5%           | 25%     | 6.25 million     |
+| 4     | 500,000   | 20                   | 2%             | 40%     | 10 million       |
 
 **Note**: Amounts are expressed in WARD tokens.
 

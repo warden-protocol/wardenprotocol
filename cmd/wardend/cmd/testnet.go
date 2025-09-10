@@ -561,12 +561,10 @@ func calculateIP(ip string, i int) (string, error) {
 		return "", fmt.Errorf("%v: non ipv4 address", ip)
 	}
 
-	for j := 0; j < i; j++ {
-    ipv4[3]++
-}
-
-	return ipv4.String(), nil
-}
+	// increment IPv4 by i with carry across octets
+ipInt := uint32(ipv4[0])<<24 | uint32(ipv4[1])<<16 | uint32(ipv4[2])<<8 | uint32(ipv4[3])
+ipInt += uint32(i)
+return net.IPv4(byte(ipInt>>24), byte(ipInt>>16), byte(ipInt>>8), byte(ipInt)).String(), nil
 
 func writeFile(name string, dir string, contents []byte) error {
 	file := filepath.Join(dir, name)

@@ -82,7 +82,7 @@ https://rpc.barra.wardenprotocol.org
 1. From this RPC endpoint, you can get the trusted block height and hash:
     
    ```bash
-   export SNAP_RPC_SERVERS="https://rpc.barra.wardenprotocol.org:443"
+   export SNAP_RPC_SERVERS="https://rpc.barra.wardenprotocol.org:443,https://rpc.barra.wardenprotocol.org:443"
    export LATEST_HEIGHT=$(curl -s "https://rpc.barra.wardenprotocol.org/block" | jq -r .result.block.header.height)
    export BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000))
    export TRUST_HASH=$(curl -s "https://rpc.barra.wardenprotocol.org/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)

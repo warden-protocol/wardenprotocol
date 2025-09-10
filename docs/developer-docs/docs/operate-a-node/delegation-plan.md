@@ -55,7 +55,7 @@ These standards include:
 - Timely upgrades and responsiveness to protocol releases
 - [Run Skip:Connect](operate-skip-connect) and any other external services required by the network
 
-**Note**: Validators are slashed when they demonstrate malicious behavior.
+**Note**: Validators can be slashed when they demonstrate malicious behavior.
 
 ## Undelegation criteria
 

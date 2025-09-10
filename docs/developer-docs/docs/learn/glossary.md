@@ -104,7 +104,7 @@ The voting power depends on the [validator's weight](#validators-weight) or the 
 
 ## Node
 
-A Warden node is a server running the[Warden Chain](#warden-chain) software (binary). To run a blockchain node in Warden, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api) and [node commands](/operate-a-node/node-commands).
+A Warden node is a server running the [Warden Chain](#warden-chain) software (binary). To run a blockchain node in Warden, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api) and [node commands](/operate-a-node/node-commands).
 
 Reasons for running a node include the following:
 

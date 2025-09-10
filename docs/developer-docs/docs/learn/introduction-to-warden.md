@@ -18,8 +18,6 @@ You can find a detailed overview of our mission in [Warden Manifesto](/learn/war
 
 ## AI Agents
 
-An AI Agent is an AI-driven program that supports both offchain and onchain operations. Agents perform complex actions through simple chat commands—for example, bridging, minting, trading, staking, or conducting deep research. At the moment, we focus on financial, autopilot, institutional (custodial), and ecosystem Agents.
-
 An **AI Agent** is an AI-driven program that supports both offchain and onchain operations. Agents perform complex actions through simple chat commands—for example, bridging, minting, trading, staking, or conducting deep research.
 
 Below is a curated list of Agents we currently focus on:

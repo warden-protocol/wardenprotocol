@@ -10,6 +10,7 @@ In this section, you'll find an overview of the available **Warden networks**.
 
 Here we provide basic chain information: the **chain ID**, supported **endpoints**. For more detailed information, refer to our validator guides in [Operate a node](/operate-a-node/introduction).
 
+
 ## Barra testnet
 
 <table>
@@ -21,15 +22,15 @@ Here we provide basic chain information: the **chain ID**, supported **endpoints
     <td>**Endpoints**</td>
     <tr>
       <td>RPC</td>
-      <td>`https://rpc.barra.wardenprotocol.org/`</td>
+      <td>`https://rpc.barra.wardenprotocol.org`</td>
     </tr>
     <tr>
       <td>REST</td>
-      <td>`https://api.barra.wardenprotocol.org/`</td>
+      <td>`https://api.barra.wardenprotocol.org`</td>
     </tr>
     <tr>
       <td>gRPC</td>
-      <td>`https://grpc.barra.wardenprotocol.org/`</td>
+      <td>`https://grpc.barra.wardenprotocol.org`</td>
     </tr>
     <tr>
       <td>EVM</td>
@@ -50,6 +51,6 @@ Here we provide basic chain information: the **chain ID**, supported **endpoints
   </tr>
   <tr>
     <td>**Validator guides**</td>
-    <td>Operate a node: [Barra testnet](/category/barra-testnet)</td>
+    <td>[Operate a node: Barra testnet](/category/barra-testnet)</td>
   </tr>
 </table>

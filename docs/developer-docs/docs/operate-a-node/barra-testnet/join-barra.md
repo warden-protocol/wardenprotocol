@@ -52,8 +52,8 @@ To configure `wardend`, update files in the `$HOME/.warden/config/` directory us
 2. In `app.toml`, set the EVM chain ID and the minimum gas price:
     
    ```bash
-   sed -i 's/evm-chain-id = ""/evm-chain-id = 9191/' app.toml
-   sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "10award"/' app.toml
+   sed -i 's|^\s*evm-chain-id\s*=.*|evm-chain-id = 9191|' app.toml
+   sed -i 's|^\s*minimum-gas-prices\s*=.*|minimum-gas-prices = "10award"|' app.toml
    ```
 
    These commands will update the `evm-chain-id` and `minimum-gas-price` fields.
@@ -61,7 +61,7 @@ To configure `wardend`, update files in the `$HOME/.warden/config/` directory us
 3. In `client.toml`, set the chain ID:
     
    ```bash
-   sed -i 's/chain-id = ""/chain-id = "barra_9191-1"/' client.toml
+   sed -i 's|^\s*chain-id\s*=.*|chain-id = "barra_9191-1"|' client.toml
    ```
 
    This commands will update the `chain-id` field.
@@ -69,18 +69,17 @@ To configure `wardend`, update files in the `$HOME/.warden/config/` directory us
 4. In `config.toml`, enable or disable the mempool, setting its type to `flood` or `nop`:
     
    ```bash
-   sed -i 's/type = ""/type = "flood"/' config.toml
+   sed -i 's|^\s*type\s*=.*|type = "flood"|' config.toml
    ```
 
    ```bash
-   sed -i 's/type = ""/type = "nop"/' config.toml
+   sed -i 's|^\s*type\s*=.*|type = "nop"|' config.toml
    ```
 
    Then add seed nodes:
 
    ```bash
-   sed -i 's/type = ""/type = "flood"/' config.toml
-   sed -i 's/seeds = ""/seeds = "c489c003b7c72298840bd4411ffc98ce13e07c27@54.194.136.183:26656,4564c91423a923eaba7982e69e33aec6185d362f@54.72.5.234:26656"/' config.toml
+   sed -i 's|^\s*seeds\s*=.*|seeds = "c489c003b7c72298840bd4411ffc98ce13e07c27@54.194.136.183:26656,4564c91423a923eaba7982e69e33aec6185d362f@54.72.5.234:26656"|' config.toml
    ```
 
    :::tip

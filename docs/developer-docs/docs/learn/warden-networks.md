@@ -22,19 +22,19 @@ This page lists basic chain information: the **chain ID** and supported **endpoi
     <td>**Endpoints**</td>
     <tr>
       <td>RPC</td>
-      <td>`https://rpc.barra.wardenprotocol.org`</td>
+      <td>`https://rpc.barra.wardenprotocol.org/`</td>
     </tr>
     <tr>
       <td>REST</td>
-      <td>`https://api.barra.wardenprotocol.org`</td>
+      <td>`https://api.barra.wardenprotocol.org/`</td>
     </tr>
     <tr>
       <td>gRPC</td>
-      <td>`https://grpc.barra.wardenprotocol.org`</td>
+      <td>`https://grpc.barra.wardenprotocol.org/`</td>
     </tr>
     <tr>
       <td>EVM</td>
-      <td>`https://evm.barra.wardenprotocol.org`</td>
+      <td>`https://evm.barra.wardenprotocol.org/`</td>
     </tr>
   </tr>
   <tr>

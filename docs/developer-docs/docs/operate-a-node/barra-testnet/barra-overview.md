@@ -36,11 +36,11 @@ https://grpc.barra.wardenprotocol.org/
 ```
 
 ```bash title="EVM"
-https://evm.barra.wardenprotocol.org
+https://evm.barra.wardenprotocol.org/
 ```
 
 :::note Notes
-You can also find these endpoints on GitHub in [chain.json](https://github.com/warden-protocol/networks/tree/main/testnets/barra/chain.json)
+You can also find these endpoints on GitHub in [chain.json](https://github.com/warden-protocol/networks/tree/main/testnets/barra/chain.json).
 :::
 
 ## Chain ID

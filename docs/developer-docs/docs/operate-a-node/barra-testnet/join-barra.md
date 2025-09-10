@@ -44,7 +44,7 @@ To configure `wardend`, do the following:
    ```bash
    cd $HOME/.warden/config
    rm genesis.json
-   wget <https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/barra/genesis.json>    
+   wget https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/barra/genesis.json    
    ```
     
    These commands will remove the `$HOME/.warden/genesis.json` file and replace it with the correct version.
@@ -56,11 +56,14 @@ To configure `wardend`, do the following:
    ```
     
    ```bash
-   sed -i 's/seeds = ""/seeds = "seed-nodes"/' config.toml
+   sed -i 's/seeds = ""/seeds = "c489c003b7c72298840bd4411ffc98ce13e07c27@54.194.136.183:26656,4564c91423a923eaba7982e69e33aec6185d362f@54.72.5.234:26656"/' config.toml
    ```
-    
-    These commands will update the `minimum-gas-price` and `seeds` fields in `$HOME/.warden/app.toml`. Alternatively, you can adjust the file manually.
-    
+
+   These commands will update the `minimum-gas-price` and `seeds` fields in `$HOME/.warden/app.toml`. Alternatively, you can adjust the file manually.
+
+   :::note Notes
+   You can check the available seed nodes on GitHub in [chain.json](https://github.com/warden-protocol/networks/tree/main/testnets/barra/chain.json).
+   :::
 
 ## 3. Sync the node
 
@@ -79,7 +82,7 @@ https://rpc.barra.wardenprotocol.org
 1. From this RPC endpoint, you can get the trusted block height and hash:
     
    ```bash
-   export SNAP_RPC_SERVERS="https://rpc.barra.wardenprotocol.org:443,https://rpc.barra.wardenprotocol.org:443"
+   export SNAP_RPC_SERVERS="https://rpc.barra.wardenprotocol.org:443"
    export LATEST_HEIGHT=$(curl -s "https://rpc.barra.wardenprotocol.org/block" | jq -r .result.block.header.height)
    export BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000))
    export TRUST_HASH=$(curl -s "https://rpc.barra.wardenprotocol.org/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)

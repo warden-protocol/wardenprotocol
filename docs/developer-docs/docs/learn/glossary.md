@@ -175,7 +175,7 @@ The consensus mechanism selects validators to propose blocks based on validators
 
 ## Verifiability layer
 
-The verifiability layer of [Warden Protocol](#warden-protocol) uses blockchain, cryptography, and consensus to guarantee the integrity of AI models. [SPEX](#spex) (Statistical Proof of Execution) ensures the model you see is the model you get and can also asses whether outputs are accurate and confident enough to be used in applications.
+The verifiability layer of [Warden Protocol](#warden-protocol) uses blockchain, cryptography, and consensus to guarantee the integrity of AI models. [SPEX](#spex) (Statistical Proof of Execution) ensures the model you see is the model you get and can also assess whether outputs are accurate and confident enough to be used in applications.
 
 ---
 

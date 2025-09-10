@@ -37,7 +37,7 @@ To be able to interact with the node, install `wardend` (the Warden binary) and 
 
 ## 2. Configure the binary
 
-To configure `wardend`, do the following:
+To configure `wardend`, update files in the `$HOME/.warden/config/` directory using the commands listed below. Alternatively, you can adjust these files manually.
 
 1. Prepare the `genesis.json` file:
     
@@ -46,24 +46,48 @@ To configure `wardend`, do the following:
    rm genesis.json
    wget https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/barra/genesis.json    
    ```
-    
-   These commands will remove the `$HOME/.warden/genesis.json` file and replace it with the correct version.
-    
-2. In the `app.toml` file, set the mandatory options: the minimum gas price and a list of seeds nodes. To find seed nodes, see our network repository.
+
+   These commands will remove the `genesis.json` file and replace it with the correct version.
+
+2. In `app.toml`, set the EVM chain ID and the minimum gas price:
     
    ```bash
+   sed -i 's/evm-chain-id = ""/evm-chain-id = 9191/' app.toml
    sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "10award"/' app.toml
    ```
+
+   These commands will update the `evm-chain-id` and `minimum-gas-price` fields.
+
+3. In `client.toml`, set the chain ID:
     
    ```bash
+   sed -i 's/chain-id = ""/chain-id = "barra_9191-1"/' client.toml
+   ```
+
+   This commands will update the `chain-id` field.
+
+4. In `config.toml`, enable or disable the mempool, setting its type to `flood` or `nop`:
+    
+   ```bash
+   sed -i 's/type = ""/type = "flood"/' config.toml
+   ```
+
+   ```bash
+   sed -i 's/type = ""/type = "nop"/' config.toml
+   ```
+
+   Then add seed nodes:
+
+   ```bash
+   sed -i 's/type = ""/type = "flood"/' config.toml
    sed -i 's/seeds = ""/seeds = "c489c003b7c72298840bd4411ffc98ce13e07c27@54.194.136.183:26656,4564c91423a923eaba7982e69e33aec6185d362f@54.72.5.234:26656"/' config.toml
    ```
 
-   These commands will update the `minimum-gas-price` and `seeds` fields in `$HOME/.warden/app.toml`. Alternatively, you can adjust the file manually.
-
-   :::note Notes
-   You can check the available seed nodes on GitHub in [chain.json](https://github.com/warden-protocol/networks/tree/main/testnets/barra/chain.json).
+   :::tip
+   You can find the available seed nodes on GitHub in [chain.json](https://github.com/warden-protocol/networks/tree/main/testnets/barra/chain.json).
    :::
+
+   These commands will update the `type` and `seeds` fields.
 
 ## 3. Sync the node
 

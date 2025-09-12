@@ -107,12 +107,12 @@ To create a validator and initialize it with a self-delegation, you need to crea
      --commission-rate 0.05 \
      --commission-max-rate 0.1 \
      --commission-max-change-rate 0.1 \
-     --pubkey "$(wardend tendermint show-validator)" \
+     --pubkey "$(wardend comet show-validator)" \
      --gas auto \
      --gas-adjustment 1.3 \
      --fees 250000000000000award
    ```
-   
+
    :::tip
    This transaction is just an example. For explanations of parameter values and all available flags to customize your validator, run this [command](../node-commands):
 

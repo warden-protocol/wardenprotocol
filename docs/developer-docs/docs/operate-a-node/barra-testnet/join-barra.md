@@ -37,56 +37,44 @@ To be able to interact with the node, install `wardend` (the Warden binary) and 
 
 ## 2. Configure the binary
 
-To configure `wardend`, update files in the `$HOME/.warden/config/` directory using the commands listed below. Alternatively, you can adjust these files manually.
+To configure `wardend`, update files in `$HOME/.warden/config/`.
 
-1. Prepare the `genesis.json` file:
-    
-   ```bash
-   cd $HOME/.warden/config
-   rm genesis.json
-   wget https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/barra/genesis.json    
-   ```
+The following list shows the files and fields you need to adjust. You can do it manually or use the `sed` commands below.
 
-   These commands will remove the `genesis.json` file and replace it with the correct version.
+- `app.toml`  
+  Set the minimum gas price and the EVM chain ID:
+  ```bash
+  minimum-gas-prices = "10award"
+  evm-chain-id = 9191
+  ```
+- `client.toml`   
+  Set the chain ID:
+  ```bash
+  chain-id = "barra_9191-1"
+  ```
+- `config.toml`   
+  Add [seed nodes](https://github.com/warden-protocol/networks/tree/main/testnets/barra/chain.json), enable/disable the mempool:
+  ```bash
+  seeds = "c489c003b7c72298840bd4411ffc98ce13e07c27@54.194.136.183:26656,4564c91423a923eaba7982e69e33aec6185d362f@54.72.5.234:26656"
+  type = "flood" # enable the mempool
+  type = "nod"   # disable the mempool
+  ```
+- `genesis.json`  
+  Replace its contents with the correct [genesis settings](https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/barra/genesis.json).
 
-2. In `app.toml`, set the EVM chain ID and the minimum gas price:
-    
-   ```bash
-   sed -i 's|^\s*evm-chain-id\s*=.*|evm-chain-id = 9191|' app.toml
-   sed -i 's|^\s*minimum-gas-prices\s*=.*|minimum-gas-prices = "10award"|' app.toml
-   ```
+To update the files automatically, you can use the following `sed` commands:
 
-   These commands will update the `evm-chain-id` and `minimum-gas-price` fields.
+```bash
+sed -i 's|^\s*minimum-gas-prices\s*=.*|minimum-gas-prices = "10award"|' app.toml
+sed -i 's|^\s*evm-chain-id\s*=.*|evm-chain-id = 9191|' app.toml
+sed -i 's|^\s*chain-id\s*=.*|chain-id = "barra_9191-1"|' client.toml
+sed -i 's|^\s*type\s*=.*|type = "nop"|' config.toml
+sed -i 's|^\s*seeds\s*=.*|seeds = "c489c003b7c72298840bd4411ffc98ce13e07c27@54.194.136.183:26656,4564c91423a923eaba7982e69e33aec6185d362f@54.72.5.234:26656"|' config.toml
+```
 
-3. In `client.toml`, set the chain ID:
-    
-   ```bash
-   sed -i 's|^\s*chain-id\s*=.*|chain-id = "barra_9191-1"|' client.toml
-   ```
-
-   This commands will update the `chain-id` field.
-
-4. In `config.toml`, enable or disable the mempool, setting its type to `flood` or `nop`:
-    
-   ```bash
-   sed -i 's|^\s*type\s*=.*|type = "flood"|' config.toml
-   ```
-
-   ```bash
-   sed -i 's|^\s*type\s*=.*|type = "nop"|' config.toml
-   ```
-
-   Then add seed nodes:
-
-   ```bash
-   sed -i 's|^\s*seeds\s*=.*|seeds = "c489c003b7c72298840bd4411ffc98ce13e07c27@54.194.136.183:26656,4564c91423a923eaba7982e69e33aec6185d362f@54.72.5.234:26656"|' config.toml
-   ```
-
-   :::tip
-   You can find the available seed nodes on GitHub in [chain.json](https://github.com/warden-protocol/networks/tree/main/testnets/barra/chain.json).
-   :::
-
-   These commands will update the `type` and `seeds` fields.
+:::note
+In this example, the mempool is disabled. To enable it, replace `nop` with `flood`.
+:::
 
 ## 3. Sync the node
 

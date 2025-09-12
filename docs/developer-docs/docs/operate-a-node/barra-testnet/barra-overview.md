@@ -39,7 +39,7 @@ https://grpc.barra.wardenprotocol.org/
 https://evm.barra.wardenprotocol.org/
 ```
 
-:::tip
+:::note
 You can also find these endpoints on GitHub in [chain.json](https://github.com/warden-protocol/networks/tree/main/testnets/barra/chain.json).
 :::
 

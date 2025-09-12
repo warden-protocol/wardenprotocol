@@ -33,12 +33,12 @@ Validators will be categorized into four different tiers.
 
 Each of these tiers will get a percentage of the delegation pool allocated during the mainnet launch.
 
-| Tiers | Amount    | Number of validators | Per-validator %| % Total | Total delegation |
-| ----- | --------- | -------------------- | -------------- | ------- | ---------------- |
-| 1     | 1 million | 5                    | 4%             | 20%     | 5 million        |
-| 2     | 750,000   | 5                    | 3%             | 15%     | 3.75 million     |
-| 3     | 625,000   | 10                   | 2.5%           | 25%     | 6.25 million     |
-| 4     | 500,000   | 20                   | 2%             | 40%     | 10 million       |
+| Tiers | Amount      | No of validators | Per-validator %| % Total | Total delegation |
+| ----- | ----------- | ---------------- | -------------- | ------- | ---------------- |
+| 1     | 4M          | 5                | 4%             | 20%     | 20M              |
+| 2     | 3M          | 5                | 3%             | 15%     | 15M              |
+| 3     | 2.5M        | 10               | 2.5%           | 25%     | 25M              |
+| 4     | 2M          | 20               | 2%             | 40%     | 40M              |
 
 **Note**: Amounts are expressed in WARD tokens.
 

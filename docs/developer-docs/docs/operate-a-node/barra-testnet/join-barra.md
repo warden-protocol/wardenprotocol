@@ -138,11 +138,13 @@ https://rpc.barra.wardenprotocol.org
    You can also do it automatically:
      
    ```bash
-   sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\\1true| ; \\
-   s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\\1\\"$SNAP_RPC_SERVERS\\"| ; \\
-   s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\\1$BLOCK_HEIGHT| ; \\
-   s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\\1\\"$TRUST_HASH\\"|" $HOME/.warden/config/config.toml
-    ```
+   sed -i.bak -E \
+   's|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; 
+   s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1"'"$SNAP_RPC_SERVERS"'"| ; 
+   s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1'"$BLOCK_HEIGHT"'| ; 
+   s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1"'"$TRUST_HASH"'"|' \
+   "$HOME/.warden/config/config.toml"
+   ```
 
 ## 4. Start the node
 

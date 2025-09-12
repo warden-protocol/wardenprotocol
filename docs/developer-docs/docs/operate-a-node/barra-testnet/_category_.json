@@ -1,0 +1,11 @@
+{
+  "position": 3,
+  "label": "Barra testnet",
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Barra testnet"
+  },
+  "customProps": {}
+}

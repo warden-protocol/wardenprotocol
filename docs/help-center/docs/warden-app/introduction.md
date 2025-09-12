@@ -10,7 +10,7 @@ slug: /
 
 Try the app: 👉 [Warden](https://app.wardenprotocol.org)
 
-**Warden** is your **AI-powered co-pilot** for crypto, built on Warden Protocol. It lets you interact with **AI Agents** to perform tasks across both Web2 and Web3 ecosystems.
+**Warden** is your **AI-powered co-pilot** for crypto, built on [Warden Protocol](https://docs.wardenprotocol.org). It lets you interact with **AI Agents** to perform tasks across both Web2 and Web3 ecosystems.
 
 With seamless Web3 integration and a focus on privacy, decentralization, and accessibility, the app offers a smooth, user-friendly experience.
 
@@ -21,8 +21,7 @@ Whether you're a seasoned pro, a meme coin trader, or just getting started—War
 Here are the main components of Warden:
 
 - **Chat commands**: You can perform complex Web3 actions, such as swapping and transferring assets, using simple chat commands.
-- **Agent execution**: Under the hood, Warden utilizes [Agents](https://docs.wardenprotocol.org/learn/glossary#ai-agent) to execute the complexities of transactions and interactions.
-- **Integration with Intelligent Apps**: The app serves as a platform for interacting with [Intelligent Applications](https://docs.wardenprotocol.org/learn/glossary#intelligent-application), leveraging AI to enhance the overall experience.
+- **Agent execution**: Under the hood, Warden utilizes [AI Agents](https://docs.wardenprotocol.org/learn/glossary#ai-agent) to execute the complexities of transactions and interactions.
 - **Accessibility**: The app is free, private, and uncensored.
 - **Gamification**: You can create and grow your own coin to earn crypto.
 

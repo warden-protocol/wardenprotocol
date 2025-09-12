@@ -1,10 +1,10 @@
 ﻿---
-sidebar_position: 8
+sidebar_position: 5
 ---
 
 # Node API
 
-Warden Protocol nodes are central points of contact for Warden Protocol. They're responsible for routing requests to [Keychains](/learn/glossary#keychain) and for routing responses back to the client.
+**Nodes** are servers running the [Warden Chain](/learn/glossary#warden-chain) software (binary) and serving as central points of contact for the network.
 
 There are two ways to communicate with a node:
 

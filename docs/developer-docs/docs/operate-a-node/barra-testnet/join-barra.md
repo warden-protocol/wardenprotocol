@@ -39,7 +39,7 @@ To be able to interact with the node, install `wardend` (the Warden binary) and 
 
 To configure `wardend`, update files in `$HOME/.warden/config/`.
 
-The following list shows the files and fields you need to adjust. You can do it manually or use the `sed` commands below.
+The following list shows the files and fields you need to adjust. You can do it manually or use the CLI commands below.
 
 - `app.toml`  
   Set the minimum gas price and the EVM chain ID:
@@ -62,14 +62,17 @@ The following list shows the files and fields you need to adjust. You can do it 
 - `genesis.json`  
   Replace its contents with the correct [genesis settings](https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/barra/genesis.json).
 
-To update the files automatically, you can use the following `sed` commands:
+To update the files automatically, you can use the following commands:
 
 ```bash
+cd $HOME/.warden/config
 sed -i 's|^\s*minimum-gas-prices\s*=.*|minimum-gas-prices = "10award"|' app.toml
 sed -i 's|^\s*evm-chain-id\s*=.*|evm-chain-id = 9191|' app.toml
 sed -i 's|^\s*chain-id\s*=.*|chain-id = "barra_9191-1"|' client.toml
 sed -i 's|^\s*type\s*=.*|type = "nop"|' config.toml
 sed -i 's|^\s*seeds\s*=.*|seeds = "c489c003b7c72298840bd4411ffc98ce13e07c27@54.194.136.183:26656,4564c91423a923eaba7982e69e33aec6185d362f@54.72.5.234:26656"|' config.toml
+rm genesis.json
+wget https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/barra/genesis.json 
 ```
 
 :::note

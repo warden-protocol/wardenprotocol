@@ -2,156 +2,105 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	"crypto/ecdsa"
 	"errors"
 	"fmt"
-	"io"
 	"math/big"
 	"net/http"
-	"os/exec"
 	"slices"
 	"strings"
 	"sync"
 	"time"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/types/bech32"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/rs/zerolog"
 
 	"github.com/warden-protocol/wardenprotocol/cmd/faucet/pkg/config"
 )
-
-type Out struct {
-	Stdout []byte
-	Stderr []byte
-}
 
 type Faucet struct {
 	*sync.Mutex
 
 	log             zerolog.Logger
 	config          config.Config
+	client          *ethclient.Client
+	privateKey      *ecdsa.PrivateKey
+	fromAddress     common.Address
 	DailySupply     float64
 	TokensAvailable float64
 	Amount          float64
 	Batch           []string
 	LatestTXHash    string
 	DisplayTokens   bool
+	nonce           uint64
 }
 
 const (
 	mutexLocked = 1
-	workers     = 2
 	dailyHours  = 24
 )
 
-func execute(ctx context.Context, cmdString string) (Out, error) {
-	// Create the command
-	cmd := exec.CommandContext(ctx, "sh", "-c", cmdString)
-
-	// Get the output pipes
-	stdout, err := cmd.StdoutPipe()
-	if err != nil {
-		return Out{}, fmt.Errorf("error getting stdout pipe: %w", err)
-	}
-
-	stderr, err := cmd.StderrPipe()
-	if err != nil {
-		return Out{}, fmt.Errorf("error getting stderr pipe: %w", err)
-	}
-
-	// Start the command
-	if err = cmd.Start(); err != nil {
-		return Out{}, fmt.Errorf("error starting command: %w", err)
-	}
-
-	// Read the output
-	var output, errOutput []byte
-
-	var stdoutErr, stderrErr error
-
-	var wg sync.WaitGroup
-
-	wg.Add(workers)
-
-	go func() {
-		defer wg.Done()
-
-		output, stdoutErr = io.ReadAll(stdout)
-	}()
-
-	go func() {
-		defer wg.Done()
-
-		errOutput, stderrErr = io.ReadAll(stderr)
-	}()
-
-	wg.Wait()
-
-	if stdoutErr != nil {
-		return Out{}, fmt.Errorf("error reading stdout: %w", stdoutErr)
-	}
-
-	if stderrErr != nil {
-		return Out{}, fmt.Errorf("error reading stderr: %w", stderrErr)
-	}
-
-	// Wait for the command to finish
-	err = cmd.Wait()
-	if err != nil {
-		// Include stderr in the error message if available
-		if len(errOutput) > 0 {
-			return Out{}, fmt.Errorf("command failed: %w\nStderr: %s", err, string(errOutput))
-		}
-
-		return Out{}, fmt.Errorf("command failed: %w", err)
-	}
-
-	return Out{Stdout: output, Stderr: errOutput}, nil
-}
-
 func validAddress(addr string) error {
-	pref, _, err := bech32.DecodeAndConvert(addr)
-	if err != nil {
+	if !common.IsHexAddress(addr) {
 		reqInvalidAddrCount.Inc()
-		return fmt.Errorf("invalid address: %w", err)
+		return fmt.Errorf("invalid Ethereum address: %s", addr)
 	}
-
-	if pref != "warden" {
-		reqInvalidAddrCount.Inc()
-		return fmt.Errorf("invalid address prefix: %s", pref)
-	}
-
 	return nil
 }
 
 func InitFaucet(ctx context.Context, logger zerolog.Logger) (Faucet, error) {
-	var err error
-
 	cfg, err := config.LoadConfig()
 	if err != nil {
 		logger.Fatal().Msgf("error loading config: %s", err)
 	}
 
+	// Connect to the Ethereum client
+	client, err := ethclient.Dial(cfg.Node)
+	if err != nil {
+		return Faucet{}, fmt.Errorf("failed to connect to the Ethereum client: %w", err)
+	}
+
+	// Parse the private key from hex string
+	privateKey, err := crypto.HexToECDSA(cfg.PrivateKey)
+	if err != nil {
+		return Faucet{}, fmt.Errorf("failed to parse private key: %w", err)
+	}
+
+	// Get the public key and address
+	publicKey := privateKey.Public()
+	publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)
+	if !ok {
+		return Faucet{}, errors.New("failed to cast public key to ECDSA")
+	}
+	fromAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
+
 	f := Faucet{
 		config:          cfg,
+		client:          client,
+		privateKey:      privateKey,
+		fromAddress:     fromAddress,
 		Mutex:           &sync.Mutex{},
 		Batch:           []string{},
 		log:             logger,
 		TokensAvailable: float64(cfg.DailyLimit),
 		DailySupply:     float64(cfg.DailyLimit),
 		Amount:          cfg.Amount,
-		DisplayTokens:   bool(cfg.DisplayTokens),
+		DisplayTokens:   cfg.DisplayTokens,
 	}
+
+	// Get the initial nonce
+	nonce, err := client.PendingNonceAt(ctx, fromAddress)
+	if err != nil {
+		return Faucet{}, fmt.Errorf("failed to get nonce: %w", err)
+	}
+	f.nonce = nonce
 
 	dailySupply.Set(f.DailySupply)
 
-	if f.config.Mnemonic != "" {
-		if err = f.setupNewAccount(ctx); err != nil {
-			return Faucet{}, err
-		}
-	}
+	logger.Info().Msgf("EVM Faucet initialized with address: %s", fromAddress.Hex())
 
 	return f, nil
 }
@@ -160,27 +109,7 @@ func addressInBatch(batch []string, addr string) bool {
 	return slices.Contains(batch, addr)
 }
 
-func convertHexToBech32(hexAddr string) (string, error) {
-	if common.IsHexAddress(hexAddr) {
-		addr := common.HexToAddress(hexAddr).Bytes()
-		bech32Addr, err := sdk.Bech32ifyAddressBytes("warden", addr)
-		// 	addr, err = bech32.ConvertAndEncode("warden", []byte(addr))
-		if err != nil {
-			return "", fmt.Errorf(
-				"error converting hex address to bech32: %w",
-				err,
-			)
-		}
-
-		return bech32Addr, nil
-	}
-
-	return "", errors.New("error converting hex address to bech32: address is not hex")
-}
-
 func (f *Faucet) Send(ctx context.Context, addr string, force bool) (string, int, error) {
-	var err error
-
 	f.Lock()
 	defer f.Unlock()
 
@@ -190,12 +119,9 @@ func (f *Faucet) Send(ctx context.Context, addr string, force bool) (string, int
 			errors.New("no tokens available, please come back tomorrow")
 	}
 
-	// if the address is a hex string, convert it to bech32
+	// Normalize address to lowercase for consistency
 	if strings.HasPrefix(addr, "0x") {
-		addr, err = convertHexToBech32(addr)
-		if err != nil {
-			return "", http.StatusUnprocessableEntity, err
-		}
+		addr = strings.ToLower(addr)
 	}
 
 	if len(f.Batch) < f.config.BatchLimit && !force {
@@ -212,99 +138,99 @@ func (f *Faucet) Send(ctx context.Context, addr string, force bool) (string, int
 		}
 
 		f.Batch = append(f.Batch, addr)
-
 		batchSize.Inc()
-
 		return "", 0, nil
 	}
 
-	send := "send"
-	if len(f.Batch) > 1 {
-		send = "multi-send"
+	if len(f.Batch) == 0 {
+		return "", http.StatusBadRequest, errors.New("no addresses in batch to send to")
 	}
 
-	f.log.Debug().Msgf("sending %f %s to %v", f.config.Amount, f.config.Denom, f.Batch)
+	// Send to all addresses in batch
+	var txHashes []string
+	var totalSent float64
 
-	// Convert the float amount to a big.Float.
-	amt := new(big.Float).SetFloat64(f.config.Amount)
-
-	// Compute the multiplier as 10^decimals using big.Int and then convert to big.Float.
-	multiplierInt := new(big.Int).Exp(big.NewInt(10), big.NewInt(int64(f.config.Exponent)), nil)
-	multiplier := new(big.Float).SetInt(multiplierInt)
-
-	// Multiply the amount by the multiplier to shift the decimal point.
-	amt.Mul(amt, multiplier)
-
-	// Convert the scaled value to a big.Int, truncating any fractional part.
-	intAmt := new(big.Int)
-	amt.Int(intAmt)
-
-	// Build the final result string by concatenating the integer amount and the denomination.
-	amount := intAmt.String() + f.config.Denom
-	f.log.Debug().Msg(amount)
-
-	cmd := strings.Join([]string{
-		f.config.CliName,
-		"tx",
-		"bank",
-		send,
-		f.config.AccountName,
-		strings.Join(f.Batch, " "),
-		amount,
-		"--yes",
-		"--keyring-backend",
-		"test",
-		"--chain-id",
-		f.config.ChainID,
-		"--node",
-		f.config.Node,
-		"--fees",
-		f.config.Fees,
-		"--gas",
-		"auto",
-		"--gas-adjustment",
-		"1.6",
-		"-o",
-		"json",
-	}, " ")
-	f.log.Debug().Msg(cmd)
-
-	out, err := execute(ctx, cmd)
-	if err != nil {
-		return "", http.StatusInternalServerError, err
+	for _, address := range f.Batch {
+		txHash, err := f.sendToAddress(ctx, address)
+		if err != nil {
+			f.log.Error().Msgf("failed to send to address %s: %v", address, err)
+			continue
+		}
+		txHashes = append(txHashes, txHash)
+		totalSent += f.Amount
+		f.log.Info().Msgf("sent %f ETH to %s, tx: %s", f.Amount, address, txHash)
 	}
 
-	var result struct {
-		Code   int    `json:"code"`
-		TxHash string `json:"txhash"`
+	if len(txHashes) == 0 {
+		return "", http.StatusInternalServerError, errors.New("failed to send to any addresses")
 	}
 
-	if err = json.Unmarshal(out.Stdout, &result); err != nil {
-		return "", http.StatusInternalServerError, fmt.Errorf(
-			"error unmarshalling tx result: %w",
-			err,
-		)
-	}
-
-	if result.Code != 0 {
-		return "", http.StatusInternalServerError, fmt.Errorf(
-			"tx failed with code %d for address %s",
-			result.Code,
-			addr,
-		)
-	}
-
-	f.TokensAvailable = (f.TokensAvailable - float64(len(f.Batch))*f.Amount)
+	f.TokensAvailable -= totalSent
 	f.log.Debug().Msgf("tokens available: %f", f.TokensAvailable)
 	f.log.Info().Msgf("tokens sent to %v", f.Batch)
 	dailySupply.Set(f.TokensAvailable)
 
+	// Return the first transaction hash (or could return all)
+	latestTxHash := txHashes[len(txHashes)-1]
+	f.LatestTXHash = latestTxHash
 	f.Batch = []string{}
 
-	return result.TxHash, http.StatusOK, nil
+	return latestTxHash, http.StatusOK, nil
 }
 
-// DailyRefresh.
+func (f *Faucet) sendToAddress(ctx context.Context, toAddr string) (string, error) {
+	toAddress := common.HexToAddress(toAddr)
+
+	// Convert amount to wei
+	amount := new(big.Float).SetFloat64(f.config.Amount)
+	multiplierInt := new(big.Int).Exp(big.NewInt(10), big.NewInt(int64(f.config.Exponent)), nil)
+	multiplier := new(big.Float).SetInt(multiplierInt)
+	amount.Mul(amount, multiplier)
+
+	amountWei := new(big.Int)
+	amount.Int(amountWei)
+
+	// Get current gas price
+	gasPrice, err := f.client.SuggestGasPrice(ctx)
+	if err != nil {
+		return "", fmt.Errorf("failed to suggest gas price: %w", err)
+	}
+
+	// Create the transaction
+	tx := types.NewTransaction(
+		f.nonce,
+		toAddress,
+		amountWei,
+		21000, // Standard gas limit for ETH transfer
+		gasPrice,
+		nil,
+	)
+
+	// Get the chain ID
+	chainID, err := f.client.NetworkID(ctx)
+	if err != nil {
+		return "", fmt.Errorf("failed to get network ID: %w", err)
+	}
+
+	// Sign the transaction
+	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), f.privateKey)
+	if err != nil {
+		return "", fmt.Errorf("failed to sign transaction: %w", err)
+	}
+
+	// Send the transaction
+	err = f.client.SendTransaction(ctx, signedTx)
+	if err != nil {
+		return "", fmt.Errorf("failed to send transaction: %w", err)
+	}
+
+	// Increment nonce for next transaction
+	f.nonce++
+
+	return signedTx.Hash().Hex(), nil
+}
+
+// DailyRefresh resets the available tokens daily
 func (f *Faucet) DailyRefresh() {
 	for {
 		now := time.Now()
@@ -318,28 +244,6 @@ func (f *Faucet) DailyRefresh() {
 		f.TokensAvailable = f.DailySupply
 		f.Unlock()
 	}
-}
-
-func (f *Faucet) setupNewAccount(ctx context.Context) error {
-	cmd := strings.Join([]string{
-		"echo",
-		f.config.Mnemonic,
-		"|",
-		f.config.CliName,
-		"keys",
-		"--keyring-backend",
-		"test",
-		"add",
-		f.config.AccountName,
-		"--recover",
-	}, " ")
-
-	_, err := execute(ctx, cmd)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 
 func (f *Faucet) batchProcessInterval() {

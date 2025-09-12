@@ -120,16 +120,29 @@ https://rpc.barra.wardenprotocol.org
    70694 68694 6AF4938885598EA10C0BD493D267EF363B067101B6F81D1210B27EBE0B32FA2A
    ```
     
-3. Add the state sync configuration to the `config.toml` file:
-    
+3. Add the state sync configuration to the `config.toml` file, under `[statesync]`:
+
+   ```bash
+   enable = true # enable the state sync
+   ```
+   ```bash
+   rpc_servers = "SNAP_RPC_SERVERS"
+   ```
+   ```bash
+   trust_height = BLOCK_HEIGHT
+   ```
+   ```bash
+   trust_hash = "TRUST_HASH"
+   ```
+
+   You can also do it automatically:
+     
    ```bash
    sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\\1true| ; \\
    s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\\1\\"$SNAP_RPC_SERVERS\\"| ; \\
    s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\\1$BLOCK_HEIGHT| ; \\
    s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\\1\\"$TRUST_HASH\\"|" $HOME/.warden/config/config.toml
-   ```
-    
-   These commands will update the `[statesync]` section in `$HOME/.warden/config/config.toml`. Alternatively, you can adjust the file manually.
+    ```
 
 ## 4. Start the node
 

@@ -175,7 +175,7 @@ The consensus mechanism selects validators to propose blocks based on validators
 
 ## Verifiability layer
 
-The verifiability layer of [Warden Protocol](#warden-protocol) uses blockchain, cryptography, and consensus to guarantee the integrity of AI models. [SPEX](#spex) (Statistical Proof of Execution) ensures the model you see is the model you get and can also assess whether outputs are accurate and confident enough to be used in applications.
+The verifiability layer of [Warden Protocol](#warden-protocol) uses blockchain, cryptography, and consensus to guarantee the integrity of AI models. [SPEX](#spex) (Statistical Proof of Execution) ensures the model you see is the model you get and can also assess whether outputs are accurate and reliable enough to be used in applications.
 
 ---
 
@@ -222,7 +222,7 @@ Learn more: [Warden documentation](https://help.wardenprotocol.org/warden-app/ex
 
 Warden Chain is a purpose-built EVM blockchain for [AI Agents](#ai-agent). It provides the decentralized infrastructure that makes the [Warden Protocol](#warden-protocol) logic operational.
 
-Once an Agent is built, it's minted directly onto the Chain, where it signs requests, collects fees, and pays for services. In this way, Warden Chain serves as the entry point to discover, interact, and transact with Agents in the ecosystem.
+Once an Agent is built, it's minted directly onto the chain, where it signs requests, collects fees, and pays for services. In this way, Warden Chain serves as the entry point to discover, interact, and transact with Agents in the ecosystem.
 
 Learn more: [Warden networks](/learn/warden-networks).
 
@@ -245,4 +245,4 @@ Learn more: [Manifesto](warden-manifesto).
 
 ## Warden Studio
 
-Warden Studio (now in Alpha) is a toolkit giving builders everything they need to develop, test, and publish [AI Agents](#ai-agent) directly to [Warden](#warden) users. Upon publication, Warden Studio generates [Agent Passports](#agent-passport).
+Warden Studio (now in Alpha) is a toolkit that provides builders everything they need to develop, test, and publish [AI Agents](#ai-agent) directly to [Warden](#warden) users. Upon publication, Warden Studio generates [Agent Passports](#agent-passport).

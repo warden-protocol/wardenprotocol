@@ -90,7 +90,7 @@ Warden is an AI-ready protocol with four layers:
 The blockchain layer provides the core infrastructure for Agents: identity, coordination, and provenance. Agents are deployed directly onto [Warden Chain](#warden-chain), where they sign requests, collect fees, and pay for services. Each Agent is assigned a unique cryptographic ID.
 
 - **Verifiability layer**  
-Our verifiability layer uses blockchain, cryptography, and consensus to guarantee the integrity of AI models. [SPEX](/learn/spex) (Statistical Proof of Execution) ensures the model you see is the model you get and can also assess whether outputs are accurate and confident enough to be used in applications.
+Our verifiability layer uses blockchain, cryptography, and consensus to guarantee the integrity of AI models. [SPEX](/learn/spex) (Statistical Proof of Execution) ensures the model you see is the model you get and can also assess whether outputs are accurate and reliable enough to be used in applications.
 
 - **Application layer**  
 At the application layer, developers can easily build Agents and instantly make them accessible to all [Warden](#warden) users. [Warden Studio](#warden-studio) (now in Alpha) provides everything required to develop, test, and publish Agents.

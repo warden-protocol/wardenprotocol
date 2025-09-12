@@ -45,6 +45,8 @@ The following list shows the files and fields you need to adjust. You can do it 
   Set the minimum gas price and the EVM chain ID:
   ```bash
   minimum-gas-prices = "10award"
+  ```
+  ```
   evm-chain-id = 9191
   ```
 - `client.toml`   
@@ -56,7 +58,11 @@ The following list shows the files and fields you need to adjust. You can do it 
   Add [seed nodes](https://github.com/warden-protocol/networks/tree/main/testnets/barra/chain.json), enable/disable the mempool:
   ```bash
   seeds = "c489c003b7c72298840bd4411ffc98ce13e07c27@54.194.136.183:26656,4564c91423a923eaba7982e69e33aec6185d362f@54.72.5.234:26656"
+  ```
+  ```
   type = "flood" # enable the mempool
+  ```
+  ```
   type = "nod"   # disable the mempool
   ```
 - `genesis.json`  

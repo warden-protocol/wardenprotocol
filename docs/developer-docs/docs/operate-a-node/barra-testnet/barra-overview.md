@@ -40,7 +40,7 @@ https://evm.barra.wardenprotocol.org/
 ```
 
 :::note
-You can also find these endpoints on GitHub in [chain.json](https://github.com/warden-protocol/networks/tree/main/testnets/barra/chain.json).
+You can also find these endpoints on GitHub in [chain.json](https://github.com/warden-protocol/networks/blob/main/testnets/barra/chain.json).
 :::
 
 ## Chain ID

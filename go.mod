@@ -71,7 +71,7 @@ require (
 	github.com/warden-protocol/connect v1.3.0
 	golang.org/x/image v0.30.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20250826171959-ef028d996bc1
-	google.golang.org/grpc v1.75.0
+	google.golang.org/grpc v1.75.1
 	google.golang.org/protobuf v1.36.8
 )
 

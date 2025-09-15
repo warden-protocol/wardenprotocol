@@ -55,7 +55,7 @@ The following list shows the files and fields you need to adjust. You can do it 
   chain-id = "barra_9191-1"
   ```
 - `config.toml`   
-  Add [seed nodes](https://github.com/warden-protocol/networks/blob/main/testnets/barra/chain.json), enable/disable the mempool:
+  Add [seed nodes](https://github.com/warden-protocol/networks/blob/main/testnets/barra/chain.json), enable/disable the mempool, and adjust consensus parameters:
   ```toml
   seeds = "c489c003b7c72298840bd4411ffc98ce13e07c27@54.194.136.183:26656,4564c91423a923eaba7982e69e33aec6185d362f@54.72.5.234:26656"
   ```
@@ -64,6 +64,16 @@ The following list shows the files and fields you need to adjust. You can do it 
   ```
   ```toml
   type = "nop"   # disable the mempool
+  ```
+  ```toml
+  timeout_propose = "1s"
+  timeout_propose_delta = "200ms"
+  timeout_prevote = "500ms"
+  timeout_prevote_delta = "200ms"
+  timeout_precommit = "500ms"
+  timeout_precommit_delta = "200ms"
+  timeout_commit = "2s"
+  create_empty_blocks = true
   ```
 - `genesis.json`  
   Replace its contents with the correct [genesis settings](https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/barra/genesis.json).
@@ -77,6 +87,14 @@ sed -i 's|^\s*evm-chain-id\s*=.*|evm-chain-id = 9191|' app.toml
 sed -i 's|^\s*chain-id\s*=.*|chain-id = "barra_9191-1"|' client.toml
 sed -i 's|^\s*type\s*=.*|type = "nop"|' config.toml
 sed -i 's|^\s*seeds\s*=.*|seeds = "c489c003b7c72298840bd4411ffc98ce13e07c27@54.194.136.183:26656,4564c91423a923eaba7982e69e33aec6185d362f@54.72.5.234:26656"|' config.toml
+sed -i 's|^\s*timeout_propose\s*=.*|timeout_propose = "1s"|' config.toml
+sed -i 's|^\s*timeout_propose_delta\s*=.*|timeout_propose_delta = "200ms"|' config.toml
+sed -i 's|^\s*timeout_prevote\s*=.*|timeout_prevote = "500ms"|' config.toml
+sed -i 's|^\s*timeout_prevote_delta\s*=.*|timeout_prevote_delta = "200ms"|' config.toml
+sed -i 's|^\s*timeout_precommit\s*=.*|timeout_precommit = "500ms"|' config.toml
+sed -i 's|^\s*timeout_precommit_delta\s*=.*|timeout_precommit_delta = "200ms"|' config.toml
+sed -i 's|^\s*timeout_commit\s*=.*|timeout_commit = "2s"|' config.toml
+sed -i 's|^\s*create_empty_blocks\s*=.*|create_empty_blocks = true|' config.toml
 rm genesis.json
 wget https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/barra/genesis.json 
 ```
@@ -163,7 +181,7 @@ path-to-binary/wardend start
 It'll connect to the configured seed nodes and start downloading blocks. You can check the logs to see the progress.
 
 :::tip
-We recommend using [Cosmovisor](https://docs.cosmos.network/v0.45/run-node/cosmovisor.html) for running a node. It's a utility for managing binary versions of Cosmos SDK-based chains, allowing you to enable binary upgrades without manual intervention.
+We recommend using [Cosmovisor](https://docs.cosmos.network/v0.47/build/tooling/cosmovisor) for running a node. It's a utility for managing binary versions of Cosmos SDK-based chains, allowing you to enable binary upgrades without manual intervention.
 :::
 
 ## Next steps

@@ -10,7 +10,7 @@ ldflags := "-ldflags \"
 build_tags := "-tags ledger"
 output_dir := env("OUTPUT_DIR", "./build")
 
-# build (wardend|faucet|wardenkms|clichain). Eg. "just build wardend".
+# build (wardend|wardenkms|clichain). Eg. "just build wardend".
 build binary="wardend":
     go build \
         {{ build_tags }} \
@@ -18,7 +18,7 @@ build binary="wardend":
         -o {{ output_dir }}/{{ binary }} \
         ./cmd/{{ binary }}
 
-# install (wardend|faucet|wardenkms|clichain). Eg. "just install wardend".
+# install (wardend|wardenkms|clichain). Eg. "just install wardend".
 install binary="wardend":
     go install \
         {{ build_tags }} \

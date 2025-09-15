@@ -22,7 +22,7 @@ on:
       - "prophet/**"
 
 env:
-  modules: "./warden/... ./cmd/wardend/... ./cmd/faucet/... ./prophet/... ./precompiles/..."
+  modules: "./warden/... ./cmd/wardend/... ./prophet/... ./precompiles/..."
 
 jobs:
   lint:

@@ -35,8 +35,6 @@ version := `git describe --tags --dirty --always`
 
 release-wardend push="true": (release-publish-docker "wardend" push)
 
-release-faucet push="true": (release-publish-docker "faucet" push)
-
 release-wardenkms push="true": (release-publish-docker "wardenkms" push)
 
 release-publish-docker project-name push="true":

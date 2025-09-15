@@ -6,4 +6,4 @@ help:
 	@echo "  Mac OS:      brew install just"
 	@echo "  Arch Linux:  pacman -S just"
 
-.PHONY: build-all build install build-wardend install-wardend build-faucet build-wardenkms help
+.PHONY: build-all build install build-wardend install-wardend build-wardenkms help

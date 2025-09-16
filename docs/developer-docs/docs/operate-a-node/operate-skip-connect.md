@@ -1,16 +1,16 @@
 ﻿---
-sidebar_position: 7
+sidebar_position: 4
 ---
 
 # Operate Skip:Connect
 
 ## Overview
 
-Warden integrates with **Skip:Connect** (formerly known as Slinky)—an [oracle service](/learn/oracle-services) from **Skip Protocol**. The data provided by Connect is validated by Warden's network and written onchain.
+Warden integrates with **Skip:Connect** (formerly known as Slinky)—an [oracle service](/learn/glossary#oracle-service) from **Skip Protocol**. The data provided by Connect is validated by Warden's network and written onchain.
 
 This article is a guide for validators explaining how to run Connect.
 
-See also: [Connect documentation](https://docs.skip.build/connect/introduction)
+See also: [Connect documentation](https://docs.skip.build/connect/introduction).
 
 ## 1. Download
 

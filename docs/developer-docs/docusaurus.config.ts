@@ -80,24 +80,6 @@ const config: Config = {
                 },
                 {
                     type: "docSidebar",
-                    sidebarId: "buildApp",
-                    label: "Build an app",
-                    position: "left",
-                },
-                {
-                    type: "docSidebar",
-                    sidebarId: "buildAgent",
-                    label: "Build an Agent",
-                    position: "left",
-                },
-                {
-                    type: "docSidebar",
-                    sidebarId: "buildKeychain",
-                    label: "Build a Keychain",
-                    position: "left",
-                },
-                {
-                    type: "docSidebar",
                     sidebarId: "operateNode",
                     label: "Operate a node",
                     position: "left",

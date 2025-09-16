@@ -27,7 +27,7 @@ Note that $WARD distribution will be characterized by the following:
 | Public goods | 10% | Incentivized testnet and genesis airdrop, and ongoing public good initiatives | 19.4M available at genesis, with accelerated vesting to 64M within the first 6 months and full vesting to 100M over 30 months |
 | Ecosystem & community | 12% | Allocated for initiatives that contribute to Warden Protocol's ecosystem and community projects | 20M at genesis with linear vest over 30 months |
 | Liquidity | 5% | Liquidity provisioning on exchanges at listing date | Available at genesis |
-| Agent incentives & developers | 16% | Agents, developers, and other builder incentives | 20M at genesis and linear vest over 12 months |
+| Agent incentives & developers | 19% | Agents, developers, and other builder incentives | 20M at genesis and linear vest over 12 months |
 | Validators and operators | 10% | Initial amount delegated to mainnet validators and operators | Delegated but locked in perpetuity |
 | Treasury & R&D | 24% |Long term treasury and research programs | 120M available at genesis with linear vest over 12 months |
 | Core contributors | 20% | Reserved for the development team, advisors, and early contributors | 6 month cliff and 2 year linear vest |

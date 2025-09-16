@@ -55,15 +55,9 @@ The following list shows the files and fields you need to adjust. You can do it 
   chain-id = "barra_9191-1"
   ```
 - `config.toml`   
-  Add [seed nodes](https://github.com/warden-protocol/networks/blob/main/testnets/barra/chain.json), enable/disable the mempool, and adjust consensus parameters:
+  Add [seed nodes](https://github.com/warden-protocol/networks/blob/main/testnets/barra/chain.json) and adjust consensus parameters:
   ```toml
   seeds = "c489c003b7c72298840bd4411ffc98ce13e07c27@54.194.136.183:26656,4564c91423a923eaba7982e69e33aec6185d362f@54.72.5.234:26656"
-  ```
-  ```toml
-  type = "flood" # enable the mempool
-  ```
-  ```toml
-  type = "nop"   # disable the mempool
   ```
   ```toml
   timeout_propose = "1s"
@@ -85,7 +79,6 @@ cd $HOME/.warden/config
 sed -i.bak 's|^\s*minimum-gas-prices\s*=.*|minimum-gas-prices = "10award"|' app.toml
 sed -i.bak 's|^\s*evm-chain-id\s*=.*|evm-chain-id = 9191|' app.toml
 sed -i.bak 's|^\s*chain-id\s*=.*|chain-id = "barra_9191-1"|' client.toml
-sed -i.bak 's|^\s*type\s*=.*|type = "nop"|' config.toml
 sed -i.bak 's|^\s*seeds\s*=.*|seeds = "c489c003b7c72298840bd4411ffc98ce13e07c27@54.194.136.183:26656,4564c91423a923eaba7982e69e33aec6185d362f@54.72.5.234:26656"|' config.toml
 sed -i.bak 's|^\s*timeout_propose\s*=.*|timeout_propose = "1s"|' config.toml
 sed -i.bak 's|^\s*timeout_propose_delta\s*=.*|timeout_propose_delta = "200ms"|' config.toml
@@ -98,10 +91,6 @@ sed -i.bak 's|^\s*create_empty_blocks\s*=.*|create_empty_blocks = true|' config.
 rm genesis.json
 wget https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/barra/genesis.json 
 ```
-
-:::note
-In this example, the mempool is disabled. To enable it, replace `nop` with `flood`.
-:::
 
 ## 3. Sync the node
 

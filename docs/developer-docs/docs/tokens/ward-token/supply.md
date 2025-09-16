@@ -42,6 +42,6 @@ The **rate of change** is the rate at which the $WARD issuance adapts over the y
 
 - `[1 - (current staked ratio/staking target)] x inflation rate of change`
 
-## **Burns**
+## Burns
 
 $WARD tokens are burned programmatically from a 3% community tax taken from protocol fees to reduce supply along the growth of the protocol. 

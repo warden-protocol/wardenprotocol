@@ -18,7 +18,7 @@ Note that $WARD distribution will be characterized by the following:
 
 **1B WARD**
 
-![Distribution chart](https://i.ibb.co/jPBpyK1X/WARD-Distribution.png)
+![WARD distribution chart](../../../static/img/ward-distribution-1.png)
 
 ## Distribution description
 
@@ -34,4 +34,4 @@ Note that $WARD distribution will be characterized by the following:
 
 ## Release schedule
 
-![release schedule](https://i.ibb.co/3m7tyjNC/Final-WARD-Release-Schedule.png)
+![The final WARD release schedule](../../../static/img/ward-distribution-2.png)

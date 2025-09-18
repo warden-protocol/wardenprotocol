@@ -26,8 +26,8 @@ deploy-contract contract from="shulgin" label="":
 
 # variables for building and releasing
 wasmvm_version := `go list -m -f '{{ .Version }}' github.com/CosmWasm/wasmvm/v3`
-wasmvm_amd64_checksum := 'f2fab51ec2b393ffe6912ff31497c6f8a14c04ad2490a1a3a9fa11a37cb4ce33'
-wasmvm_arm64_checksum := 'f82e608707be7b193a78f5a7f7c6163b633a94ca6a0017a7fa3501cc8e9fbff5'
+wasmvm_amd64_checksum := 'b249396cf884b207f49f46bcf5b8d1fd73b8618eebbe35afb8bf60a8bb24f30a'
+wasmvm_arm64_checksum := 'b9df5056ab9f61d3f9b944060b44e893d7ade7dad6ff134b36276be0f9a4185a'
 commit := `git rev-parse HEAD`
 short_commit := `git rev-parse --short HEAD`
 date := `date -u +"%Y-%m-%dT%H:%M:%SZ"`

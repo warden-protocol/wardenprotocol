@@ -43,7 +43,7 @@ This page lists basic chain information: the **chain ID** and supported **endpoi
   </tr>
   <tr>
     <td>**Denomination**</td>
-    <td>`award` (1 award = 10^-18 [WARD](/tokens/ward-token/ward))</td>
+    <td>`award` (1 award = 10^-18 [WARD](/ward/introduction))</td>
   </tr>
   <tr>
     <td>**Faucet**</td>

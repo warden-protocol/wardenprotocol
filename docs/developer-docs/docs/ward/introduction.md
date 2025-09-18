@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# $WARD
+# Introduction
 
 **$WARD** is the native utility token for the Warden Protocol's ecosystem, sitting at the heart of both [Warden Chain](/learn/glossary#warden-chain) and [Warden](/learn/glossary#warden).
 

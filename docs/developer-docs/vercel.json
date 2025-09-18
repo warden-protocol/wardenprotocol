@@ -10,14 +10,8 @@
         {"source":"/learn/keychains/Keychain%20Onboarding","destination":"/", "statusCode": 301},
         {"source":"/learn/spaceward/:path*","destination":"/", "statusCode": 301},
         {"source":"/category/spaceward","destination":"/", "statusCode": 301},
-        {"source":"/ward","destination":"/tokens/ward-token/ward", "statusCode": 301},
-        {"source":"/ward/airdrop-stages","destination":"/tokens/ward-token/airdrop-stages", "statusCode": 301},
-        {"source":"/ward/demand","destination":"/tokens/ward-token/demand", "statusCode": 301},
-        {"source":"/ward/distribution","destination":"/tokens/ward-token/distribution", "statusCode": 301},
-        {"source":"/ward/incentives","destination":"/tokens/ward-token/incentives", "statusCode": 301},
-        {"source":"/ward/supply","destination":"/tokens/ward-token/supply", "statusCode": 301},
         {"source":"/ward/delegation-program","destination":"/operate-a-node/delegation-plan", "statusCode": 301},
-        {"source":"/warp/:path*","destination":"/tokens/introduction", "statusCode": 301},
+        {"source":"/warp/:path*","destination":"/ward/introduction", "statusCode": 301},
         {"source":"/developers/:path*","destination":"/", "statusCode": 301},
         {"source":"/category/validate","destination":"/operate-a-node/introduction", "statusCode": 301},
         {"source":"/validate/delegation-program","destination":"/operate-a-node/introduction", "statusCode": 301},
@@ -36,8 +30,8 @@
         {"source":"/category/use-the-price-prediction-handler","destination":"/", "statusCode": 301},
         {"source":"/operate-a-node/node-api-reference","destination":"/operate-a-node/node-api", "statusCode": 301},
         {"source":"/category/run-offchain-computations-with-xasync","destination":"/", "statusCode": 301},
-        {"source":"/tokens/warp-token/:path*","destination":"/tokens/introduction", "statusCode": 301},
-        {"source":"/category/warp-token","destination":"/tokens/introduction", "statusCode": 301},
+        {"source":"/tokens/warp-token/:path*","destination":"/ward/introduction", "statusCode": 301},
+        {"source":"/category/warp-token","destination":"/ward/introduction", "statusCode": 301},
         {"source":"/category/build-the-infrastructure-for-orders","destination":"/", "statusCode": 301},
         {"source":"/learn/bridging","destination":"/", "statusCode": 301},
 
@@ -65,6 +59,15 @@
         {"source":"/category/chiado-testnet","destination":"/", "statusCode": 301},
         {"source":"/operate-a-node/buenavista-testnet-deprecated/:path*","destination":"/operate-a-node/introduction", "statusCode": 301},
         {"source":"/category/buenavista-testnet","destination":"/", "statusCode": 301},
-        {"source":"/operate-a-node/create-a-validator","destination":"/operate-a-node/introduction", "statusCode": 301}
+        {"source":"/operate-a-node/create-a-validator","destination":"/operate-a-node/introduction", "statusCode": 301},
+
+        {"source":"/tokens/introduction","destination":"/ward/introduction", "statusCode": 301},
+        {"source":"/tokens/ward-token/ward","destination":"/ward/introduction", "statusCode": 301},
+        {"source":"/tokens/ward-token/airdrop-stages","destination":"/ward/airdrop-stages", "statusCode": 301},
+        {"source":"/tokens/ward-token/demand","destination":"/ward/demand", "statusCode": 301},
+        {"source":"/tokens/ward-token/distribution","destination":"/ward/distribution", "statusCode": 301},
+        {"source":"/tokens/ward-token/incentives","destination":"/ward/incentives", "statusCode": 301},
+        {"source":"/tokens/ward-token/supply","destination":"/ward/supply", "statusCode": 301},
+        {"source":"/category/ward-token","destination":"/ward/introduction", "statusCode": 301}
     ]
 }

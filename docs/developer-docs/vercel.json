@@ -68,6 +68,6 @@
         {"source":"/tokens/ward-token/distribution","destination":"/ward/distribution", "statusCode": 301},
         {"source":"/tokens/ward-token/incentives","destination":"/ward/incentives", "statusCode": 301},
         {"source":"/tokens/ward-token/supply","destination":"/ward/supply", "statusCode": 301},
-        {"source":"/category/ward-token","destination":"/ward/introduction", "statusCode": 301},
+        {"source":"/category/ward-token","destination":"/ward/introduction", "statusCode": 301}
     ]
 }

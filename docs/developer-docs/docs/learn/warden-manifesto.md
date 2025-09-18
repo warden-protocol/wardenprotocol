@@ -170,7 +170,7 @@ We have an ambitious roadmap:
     - Unlock gate-kept functionality on Warden (in Q3)
     - Payment and incentives for builders
     
-    [See the tokenomics overview](/tokens/ward-token/ward).
+    [See the tokenomics overview](/ward/introduction).
     
 5. **What other net-new applications can be built on Warden?**
     

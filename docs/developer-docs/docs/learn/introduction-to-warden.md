@@ -111,7 +111,7 @@ Use the top menu to navigate across the main sections of the docs and learn how 
   - [Warden networks](/learn/warden-networks): A list of available networks
   - [Glossary](/learn/glossary): A list of key Warden terms with definitions
 - [Operate a node](/operate-a-node/introduction): Guides for node operators
-- [Tokens](/tokens/introduction): A detailed overview of Warden tokenomics
+- [Tokens](/ward/introduction): A detailed overview of Warden tokenomics
 
 You can also visit Warden's **Help Center** to find user guides for our applications:
 

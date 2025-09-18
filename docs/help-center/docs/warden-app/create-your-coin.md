@@ -28,6 +28,6 @@ There are multiple things you can do to increase the value of your coin:
 
 ## Earn rewards
 
-Warden is part of an ongoing **rewards campaign**, with up to **2.5%** of the [WARD token](https://docs.wardenprotocol.org/tokens/ward-token/ward) supply (**$1M+** in current value) allocated to participants.
+Warden is part of an ongoing **rewards campaign**, with up to **2.5%** of the [WARD token](https://docs.wardenprotocol.org/ward/introduction) supply (**$1M+** in current value) allocated to participants.
 
 Learn more about the rewards campaign: 👉 [The Great Pump Off](https://wardenprotocol.org/blog/great-pump-off)

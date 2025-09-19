@@ -27,7 +27,7 @@ RUN addgroup -S -g 1000 warden && \
     adduser -S -u 1000 -G warden -h /data -s /bin/sh warden && \
     install -o warden -g warden -d /data
 
-COPY --from=build /dist/wardend /usr/bin/wardend
+COPY --from=build /dist/wardenkms /usr/bin/wardenkms
 
 USER warden
 CMD ["wardenkms"]

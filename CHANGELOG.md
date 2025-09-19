@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Consensus Breaking Changes
 
 - Disable x/warden, x/act, x/sched, x/async and CosmWasm.
+- Bump cosmos/evm to [latest commit](https://github.com/cosmos/evm/commit/bb6162e10da6ed984856922cbecdd1eaf10e2f38).
 
 ### Features (non-breaking)
 

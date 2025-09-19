@@ -520,6 +520,20 @@ func NewApp(
 		&app.ConsensusParamsKeeper,
 		&app.Erc20Keeper,
 		tracer,
+	).WithStaticPrecompiles(
+		NewAvailableStaticPrecompiles(
+			*app.StakingKeeper,
+			app.DistrKeeper,
+			app.PreciseBankKeeper,
+			&app.Erc20Keeper,
+			&app.TransferKeeper,
+			app.IBCKeeper.ChannelKeeper,
+			app.EVMKeeper,
+			app.GovKeeper,
+			app.SlashingKeeper,
+			app.OracleKeeper,
+			app.AppCodec(),
+		),
 	)
 
 	app.Erc20Keeper = erc20keeper.NewKeeper(
@@ -537,7 +551,6 @@ func NewApp(
 	app.TransferKeeper = transferkeeper.NewKeeper(
 		appCodec,
 		runtime.NewKVStoreService(keys[ibctransfertypes.StoreKey]),
-		app.GetSubspace(ibctransfertypes.ModuleName),
 		app.IBCKeeper.ChannelKeeper,
 		app.IBCKeeper.ChannelKeeper,
 		app.MsgServiceRouter(),
@@ -597,24 +610,6 @@ func NewApp(
 
 	// Override the ICS20 app module
 	transferModule := transfer.NewAppModule(app.TransferKeeper)
-
-	// NOTE: we are adding all available Cosmos EVM EVM extensions.
-	// Not all of them need to be enabled, which can be configured on a per-chain basis.
-	app.EVMKeeper.WithStaticPrecompiles(
-		NewAvailableStaticPrecompiles(
-			*app.StakingKeeper,
-			app.DistrKeeper,
-			app.PreciseBankKeeper,
-			app.Erc20Keeper,
-			app.TransferKeeper,
-			app.IBCKeeper.ChannelKeeper,
-			app.EVMKeeper,
-			app.GovKeeper,
-			app.SlashingKeeper,
-			app.OracleKeeper,
-			app.AppCodec(),
-		),
-	)
 
 	/****  Module Options ****/
 

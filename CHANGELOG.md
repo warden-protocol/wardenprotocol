@@ -42,16 +42,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Consensus Breaking Changes
 
+### Features (non-breaking)
+
+### Bug Fixes
+
+## [v0.7.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0) - 2025-09-22
+
+### Consensus Breaking Changes
+
 - Disable x/warden, x/act, x/sched, x/async and CosmWasm.
-- Bump cosmos/evm to [latest commit](https://github.com/cosmos/evm/commit/bb6162e10da6ed984856922cbecdd1eaf10e2f38).
+- Bump cosmos/evm to [latest commit](https://github.com/cosmos/evm/commit/bb6162e10da6ed984856922cbecdd1eaf10e2f38) (pre-v0.5.0).
 
 ### Features (non-breaking)
 
 - Update to Go 1.25
 - Remove depinject, return to classic Cosmos SDK app wiring
-- Update cosmos/evm to v0.5.0-rc
-
-### Bug Fixes
 
 ## [v0.6.5](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.5) - 2025-07-23
 

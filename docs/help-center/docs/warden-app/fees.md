@@ -25,15 +25,13 @@ All swaps incur these fees:
 | Gas fee       | varies | native coin        | A fee paid to the network for processing the transaction |
 | Platform fee  | 0.85%  | input/output token | A percentage charged by Warden     
 
-## Other
-
-### Messari fees
+## Messari fees
 
 All queries to the [Messari Deep Research Agent](explore-ai-agents#messari-deep-research) incur this fee:
 
-| Fee type      | Amount  | Currency     | Description                                              |
-| ------------- | --------|--------------| -------------------------------------------------------- |
-| Messari fee   | 0.25 USD| USDC/SOL/ETH | A fee paid to Messari per query                          |
+| Fee type      | Amount   | Currency     | Description                                              |
+| ------------- | -------- |--------------| -------------------------------------------------------- |
+| Messari fee   | 0.25 USD | USDC/SOL/ETH | A fee paid to Messari per query                          |
 
 The Agent charges fees in the first available currency in this order of priority:
 
@@ -41,7 +39,7 @@ The Agent charges fees in the first available currency in this order of priority
 - **SOL** on Solana
 - **ETH** on Base or Ethereum
 
-### deBridge fees
+## deBridge fees
 
 All [deBridge](explore-ai-agents#debridge) transactions incur these fees:
 
@@ -51,3 +49,17 @@ All [deBridge](explore-ai-agents#debridge) transactions incur these fees:
 | deBridge flat fee      | fixed; periodically adjusted | native coin         | A fee paid to deBridge validators for processing the transaction |
 | deBeridge protocol fee | 0.04%                        | input token         | A percentage charged by the deBridge protocol                    |
 | Platform fee           | 0.85%                        | input/output token  | A percentage charged by Warden                                   |
+
+## Kaibot fees
+
+All queries to the [Kaibot Agent](explore-ai-agents#kaibot) incur this fee:
+
+| Fee type      | Amount   | Currency     | Description                                              |
+| ------------- | -------- |--------------| -------------------------------------------------------- |
+| Kaibot fee    | 0.25 USD | USDC/SOL/ETH | A fee paid to Kaibot per query                           |
+
+The Agent charges fees in the first available currency in this order of priority:
+
+- **USDC** on Solana, Base, or Ethereum
+- **SOL** on Solana
+- **ETH** on Base or Ethereum

@@ -1,12 +1,12 @@
 ﻿---
-sidebar_position: 6
+sidebar_position: 4
 ---
 
 # Explore AI Agents
 
 ## Overview
 
-Unlock the full potential of Warden with **AI Agents**! They allow you to swap, bridge, research, and much more through a simple chat interface.
+Explore the **Agent Hub** to unlock the full potential of Warden with **AI Agents**! They allow you to swap, bridge, research, and much more through a simple chat interface.
 
 In the sections below, you'll find the list of available Agents—and more are coming soon!
 
@@ -15,14 +15,14 @@ In the sections below, you'll find the list of available Agents—and more are c
 You can explore and select Agents in the **Agent Hub**:
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
-2. Click the **Agent Hub** icon in the top-right corner of the screen.
-3. [Fund your wallet](manage-assets#deposit-assets) on any of the chains supported by the preferred Agent.
+2. In the left menu, navigate to the **Agents** tab.
 3. Select an Agent. If required, review and accept the legal terms.
-4. After selecting an Agent, you'll be forwarded to the [chat screen](use-the-chat).
+4. After selecting an Agent, you'll be forwarded to the [Chats tab](use-the-chat#start-chatting).
+5. Make sure you've [funded your wallet](manage-assets#deposit-assets) on one of the chains supported by the chosen Agent.
 
 ![The Agent Hub in Warden](../../static/img/warden-app/explore-ai-agents-1.png)
 
-Alternatively, you can access Agents directly from the chat screen. Use the drop-down menu at the top to switch quickly between the Agents:
+Alternatively, you can access Agents directly from the **Chats** tab. Use the drop-down menu at the top to switch quickly between the Agents:
 
 ![Manage AI chats in Warden](../../static/img/warden-app/use-the-chat-3.png)
 
@@ -30,7 +30,7 @@ Alternatively, you can access Agents directly from the chat screen. Use the drop
 
 ### Warden AMA
 
-The **Warden AMA** Agent is the default Agent you see when logging in to Warden. It's not displayed in the Agent Hub, but you can always switch to it in the [chat](use-the-chat).
+The **Warden AMA** Agent is the default Agent you see when logging in to Warden. It's not displayed in the Agent Hub, but you can always switch to it in the [Chats tab](use-the-chat#start-chatting).
 
 This Agent performs all your Web3 transactions and handles other tasks:
 
@@ -78,20 +78,6 @@ Use this Agent to research any blockchain project with detailed, real-time insig
 
 Fees: [Messari fees](fees#messari-fees).
 
-### Jupiter
-
-The **Jupiter** Agent integrates with the [Jupiter Exchange](https://jup.ag)—a decentralized exchange (DEX) aggregator built on the Solana blockchain. This is the only Agent you need to send and swap any Solana tokens.
-
-Just specify the amount and other details in the chat, and the Agent will do the rest:
-
-- Swap SOL for any Solana token
-- Swap tokens for each other
-- Send SOL or any token to a destination address
-
-Networks: **Solana**.
-
-Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees).
-
 ### deBridge
 
 The **deBridge** Agent integrates with [deBridge](https://debridge.finance), facilitating secure and precise cross-chain token transfers. You can bridge tokens (native or USDC) between any of the supported networks. All transactions require confirmation.
@@ -112,6 +98,33 @@ Tokens:
 
 Fees: [deBridge fees](fees#debridge-fees).
 
+### Jupiter
+
+The **Jupiter** Agent integrates with the [Jupiter Exchange](https://jup.ag)—a decentralized exchange (DEX) aggregator built on the Solana blockchain. This is the only Agent you need to send and swap any Solana tokens.
+
+Just specify the amount and other details in the chat, and the Agent will do the rest:
+
+- Swap SOL for any Solana token
+- Swap tokens for each other
+- Send SOL or any token to a destination address
+
+Networks: **Solana**.
+
+Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees).
+
+### Kaibot
+
+**Kaibot** is a conversational AI Agent that analyzes a user's Twitter/X handle and recent activity to provide personalized feedback on their social media performance:
+
+- Summaries of recent tweets for the last 7–30 days
+- Engagement metrics (likes, replies, retweets)
+- Relative position on the [Kaito leaderboard](https://docs.kaito.ai/kaito-connect-infofi-network/yapper-leaderboard) (without exposing internal score)
+- Tailored recommendations to increase impact
+
+To start using Kaibot, provide your X handle. If your handle is already linked to the Warden account, Kaibot will fetch it automatically.
+
+Fees: [transfer fees](fees#kaibot-fees).
+
 ### Coming soon
 
 The Agent lineup keeps growing. Here's what to expect next:
@@ -119,7 +132,6 @@ The Agent lineup keeps growing. Here's what to expect next:
 - **ApexLiquid**
 - **Intelligent DCA**
 - **Levva**
-- **KaiBot**
 - **The Quantfather**
 - **Venice**
 - **WachAI**

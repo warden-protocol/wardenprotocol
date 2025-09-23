@@ -1,30 +1,34 @@
 ﻿---
-sidebar_position: 7
+sidebar_position: 5
 ---
 
-# Create your coin
+# Earn rewards
 
 ## Overview
 
 In Warden, you can create and grow **your own coin** to compete in the **PUMP Leaderboard** and **earn rewards**.
 
-## Name your coin
+## Create your coin
 
-To get started, click the **Rewards** icon in the top right:
+To create your coin, take these steps:
 
-![Create and grow your coin in Warden](../../static/img/warden-app/create-your-coin-1.png)
+1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
+2. In the left menu, navigate to the **Rewards** tab.
+3. Then simply name your coin.
 
-Then simply name your coin. Congratulations! Now you can start earning rewards.
+Congratulations! Now you can start earning rewards.
 
-![Grow your coin in Warden](../../static/img/warden-app/create-your-coin-2.png)
+![Create and grow your coin in Warden](../../static/img/warden-app/earn-rewards-1.png)
 
 ## Pump your coin
 
 There are multiple things you can do to increase the value of your coin:
 
 - Complete daily and weekly tasks
-- Play Flappy Yapy and other games
+- Play **Flappy Yapy** and other games
 - Invite your friends
+
+To access tasks and games and check your position in the leaderboard, simply navigate to the **Rewards** tab and scroll down.
 
 ## Earn rewards
 

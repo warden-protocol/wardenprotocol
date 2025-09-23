@@ -3,6 +3,7 @@
         {"source":"/warden-app/use-the-ai-assistant","destination":"/warden-app/use-the-chat", "statusCode": 301},
         {"source":"/warden-app/use-ai-agents","destination":"/warden-app/explore-ai-agents", "statusCode": 301},
         {"source":"/warden-app/introduction","destination":"/", "statusCode": 301},
-        {"source":"/warden-app/spaceward","destination":"/", "statusCode": 301}
+        {"source":"/warden-app/spaceward","destination":"/", "statusCode": 301},
+        {"source":"/warden-app/create-your-coin","destination":"/warden-app/earn-rewards", "statusCode": 301}
     ]
 }

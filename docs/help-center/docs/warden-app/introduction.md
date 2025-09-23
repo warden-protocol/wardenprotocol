@@ -32,7 +32,7 @@ These components work together to create a powerful tool for you to navigate the
 Within Warden, you can do the following:
 
 1. [Use the AI chat](warden-app/use-the-chat)
-2. [Explore AI agents](warden-app/explore-ai-agents)
+2. [Explore AI Agents](warden-app/explore-ai-agents)
 3. [Earn rewards](warden-app/earn-rewards)
 4. [Manage your wallet](warden-app/manage-your-wallet)
 5. [Manage assets](warden-app/manage-assets)

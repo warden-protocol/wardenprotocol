@@ -34,9 +34,9 @@ Explore Agents in the [Agent Hub](explore-ai-agents#access-agents) or switch bet
 
 ## Manage chats
 
-You can easily manage your chats using the buttons on the top of the screen:
+You can easily manage your chats using the buttons at the top of the screen:
 
-- To create more chats, click the **+** button.
+- To create a new chat, click the **+** button.
 - To open or delete a previous thread, use the history drop-down menu.
 
 ![Manage AI chats in Warden](../../static/img/warden-app/use-the-chat-4.png)

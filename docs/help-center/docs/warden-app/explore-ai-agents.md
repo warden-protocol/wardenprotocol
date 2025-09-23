@@ -17,7 +17,7 @@ You can explore and select Agents in the **Agent Hub**:
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. In the left menu, navigate to the **Agents** tab.
 3. Select an Agent. If required, review and accept the legal terms.
-4. After selecting an Agent, you'll be forwarded to the [Chats tab](use-the-chat#start-chatting).
+4. After selecting an Agent, you'll be taken to the [Chats tab](use-the-chat#start-chatting).
 5. Make sure you've [funded your wallet](manage-assets#deposit-assets) on one of the chains supported by the chosen Agent.
 
 ![The Agent Hub in Warden](../../static/img/warden-app/explore-ai-agents-1.png)
@@ -123,7 +123,7 @@ Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees).
 
 To start using Kaibot, provide your X handle. If your handle is already linked to the Warden account, Kaibot will fetch it automatically.
 
-Fees: [transfer fees](fees#kaibot-fees).
+Fees: [Kaibot fees](fees#kaibot-fees).
 
 ### Coming soon
 

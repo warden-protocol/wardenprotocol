@@ -54,7 +54,7 @@ In Warden, you can send or swap assets using simple **chat commands**:
 4. Provide the required details and confirm the transaction in the chat.
 5. The Agent will share the transaction details with you. You can also check your [activity history](#view-the-balance--activity).
 
-![Send assets using the Warden AMA Agent](../../static/img/warden-app/manage-assets-3.png)
+![Send or swap assets using the Warden AMA Agent](../../static/img/warden-app/manage-assets-3.png)
 
 Before you start, keep in mind this:
 

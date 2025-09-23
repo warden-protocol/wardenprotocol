@@ -24,15 +24,15 @@ To access your wallet, simply do this:
 
 To copy your wallet address, [open the wallet](#access-your-wallet) and take these steps:
 
-2. Click **Addresses**.
-3. Select an address associated with the desired network.
+1. Click **Addresses**.
+2. Select an address associated with the desired network.
 
 ![Access your addresses in Warden](../../static/img/warden-app/manage-your-wallet-3.png)
 ![Copy a wallet address in Warden](../../static/img/warden-app/manage-your-wallet-4.png)
 
 ## Configure the wallet
 
-To access your Warden account settings, [open your wallet](#access-your-wallet) and click the gear icon on the top:
+To access your Warden account settings, [open your wallet](#access-your-wallet) and click the gear icon at the top:
 
 ![Access your wallet settings in Warden](../../static/img/warden-app/manage-your-wallet-5.png)
 
@@ -50,7 +50,7 @@ The following settings are available:
 
 You can [export your wallet](https://privy-io.notion.site/Transferring-your-account-9dab9e16c6034a7ab1ff7fa479b02828) by copying its private key. [Open the wallet](#access-your-wallet) and take these steps:
 
-1. Click the gear icon on the top to access account settings.
+1. Click the gear icon at the top to access account settings.
 2. In the **Security** section, click your private key on the desired network.
 3. Click **Copy key**.
 
@@ -59,4 +59,4 @@ Never share your private key with anyone. It grants full access to your assets.
 :::
 
 ![Access your wallet settings in Warden](../../static/img/warden-app/manage-your-wallet-5.png)
-![Copy a wallet address in Warden](../../static/img/warden-app/manage-your-wallet-7.png)
+![Copy your private key in Warden](../../static/img/warden-app/manage-your-wallet-7.png)

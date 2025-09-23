@@ -47,7 +47,7 @@ All [deBridge](explore-ai-agents#debridge) transactions incur these fees:
 | -----------------------| -----------------------------|---------------------| ---------------------------------------------------------------- |
 | Gas fee                | varies                       | native coin         | A fee paid to the source network for processing the transaction  |
 | deBridge flat fee      | fixed; periodically adjusted | native coin         | A fee paid to deBridge validators for processing the transaction |
-| deBeridge protocol fee | 0.04%                        | input token         | A percentage charged by the deBridge protocol                    |
+| deBridge protocol fee  | 0.04%                        | input token         | A percentage charged by the deBridge protocol                    |
 | Platform fee           | 0.85%                        | input/output token  | A percentage charged by Warden                                   |
 
 ## Kaibot fees

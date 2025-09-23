@@ -1,6 +1,7 @@
 package app
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -25,7 +26,6 @@ import (
 	"cosmossdk.io/x/upgrade"
 	upgradekeeper "cosmossdk.io/x/upgrade/keeper"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
-	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	abci "github.com/cometbft/cometbft/abci/types"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -149,10 +149,6 @@ import (
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/venice"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/veniceimg"
 	"github.com/warden-protocol/wardenprotocol/warden/app/ante"
-	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
-	asynctypes "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
-	schedtypes "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1"
-	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func init() {
@@ -278,9 +274,9 @@ func NewApp(
 		// Slinky store keys
 		oracletypes.StoreKey, marketmaptypes.StoreKey,
 		// CosmWasm store keys
-		wasmtypes.StoreKey,
+		// wasmtypes.StoreKey,
 		// Warden Protocol store keys
-		acttypes.StoreKey, asynctypes.StoreKey, schedtypes.StoreKey, wardentypes.StoreKey,
+		// acttypes.StoreKey, asynctypes.StoreKey, schedtypes.StoreKey, wardentypes.StoreKey,
 	)
 
 	tkeys := storetypes.NewTransientStoreKeys(paramstypes.TStoreKey, evmtypes.TransientKey, feemarkettypes.TransientKey)
@@ -520,6 +516,20 @@ func NewApp(
 		&app.ConsensusParamsKeeper,
 		&app.Erc20Keeper,
 		tracer,
+	).WithStaticPrecompiles(
+		NewAvailableStaticPrecompiles(
+			*app.StakingKeeper,
+			app.DistrKeeper,
+			app.PreciseBankKeeper,
+			&app.Erc20Keeper,
+			&app.TransferKeeper,
+			app.IBCKeeper.ChannelKeeper,
+			app.EVMKeeper,
+			app.GovKeeper,
+			app.SlashingKeeper,
+			app.OracleKeeper,
+			app.AppCodec(),
+		),
 	)
 
 	app.Erc20Keeper = erc20keeper.NewKeeper(
@@ -537,7 +547,6 @@ func NewApp(
 	app.TransferKeeper = transferkeeper.NewKeeper(
 		appCodec,
 		runtime.NewKVStoreService(keys[ibctransfertypes.StoreKey]),
-		app.GetSubspace(ibctransfertypes.ModuleName),
 		app.IBCKeeper.ChannelKeeper,
 		app.IBCKeeper.ChannelKeeper,
 		app.MsgServiceRouter(),
@@ -597,24 +606,6 @@ func NewApp(
 
 	// Override the ICS20 app module
 	transferModule := transfer.NewAppModule(app.TransferKeeper)
-
-	// NOTE: we are adding all available Cosmos EVM EVM extensions.
-	// Not all of them need to be enabled, which can be configured on a per-chain basis.
-	app.EVMKeeper.WithStaticPrecompiles(
-		NewAvailableStaticPrecompiles(
-			*app.StakingKeeper,
-			app.DistrKeeper,
-			app.PreciseBankKeeper,
-			app.Erc20Keeper,
-			app.TransferKeeper,
-			app.IBCKeeper.ChannelKeeper,
-			app.EVMKeeper,
-			app.GovKeeper,
-			app.SlashingKeeper,
-			app.OracleKeeper,
-			app.AppCodec(),
-		),
-	)
 
 	/****  Module Options ****/
 
@@ -707,10 +698,10 @@ func NewApp(
 		oracletypes.ModuleName, marketmaptypes.ModuleName,
 
 		// CosmWasm modules
-		wasmtypes.ModuleName,
+		// wasmtypes.ModuleName,
 
 		// Warden modules
-		acttypes.ModuleName, wardentypes.ModuleName, asynctypes.ModuleName, schedtypes.ModuleName,
+		// acttypes.ModuleName, wardentypes.ModuleName, asynctypes.ModuleName, schedtypes.ModuleName,
 	)
 
 	// NOTE: the feemarket module should go last in order of end blockers that are actually doing something,
@@ -723,10 +714,10 @@ func NewApp(
 		oracletypes.ModuleName, marketmaptypes.ModuleName,
 
 		// CosmWasm modules
-		wasmtypes.ModuleName,
+		// wasmtypes.ModuleName,
 
 		// Warden modules
-		acttypes.ModuleName, wardentypes.ModuleName, asynctypes.ModuleName, schedtypes.ModuleName,
+		// acttypes.ModuleName, wardentypes.ModuleName, asynctypes.ModuleName, schedtypes.ModuleName,
 
 		// Cosmos EVM EndBlockers
 		evmtypes.ModuleName, erc20types.ModuleName, feemarkettypes.ModuleName,
@@ -767,10 +758,10 @@ func NewApp(
 		oracletypes.ModuleName, marketmaptypes.ModuleName,
 
 		// CosmWasm modules
-		wasmtypes.ModuleName,
+		// wasmtypes.ModuleName,
 
 		// Warden modules
-		acttypes.ModuleName, wardentypes.ModuleName, asynctypes.ModuleName, schedtypes.ModuleName,
+		// acttypes.ModuleName, wardentypes.ModuleName, asynctypes.ModuleName, schedtypes.ModuleName,
 	}
 	app.ModuleManager.SetOrderInitGenesis(genesisModuleOrder...)
 	app.ModuleManager.SetOrderExportGenesis(genesisModuleOrder...)
@@ -885,6 +876,10 @@ func NewApp(
 		// want to panic here instead of logging a warning.
 		fmt.Fprintln(os.Stderr, err.Error())
 	}
+
+	app.UpgradeKeeper.SetUpgradeHandler("v0.7.0", func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+		return app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
+	})
 
 	if loadLatest {
 		if err := app.LoadLatestVersion(); err != nil {

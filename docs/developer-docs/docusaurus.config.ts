@@ -86,8 +86,8 @@ const config: Config = {
                 },
                 {
                     type: "docSidebar",
-                    sidebarId: "tokens",
-                    label: "Tokens",
+                    sidebarId: "ward",
+                    label: "$WARD",
                     position: "left",
                 },
                 {

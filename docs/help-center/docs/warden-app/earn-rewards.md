@@ -32,6 +32,6 @@ To access tasks and games and check your position in the leaderboard, simply nav
 
 ## Earn rewards
 
-Warden is part of an ongoing **rewards campaign**, with up to **2.5%** of the [WARD token](https://docs.wardenprotocol.org/tokens/ward-token/ward) supply (**$1M+** in current value) allocated to participants.
+Warden is part of an ongoing **rewards campaign**, with up to **2.5%** of the [WARD token](https://docs.wardenprotocol.org/ward/introduction) supply (**$1M+** in current value) allocated to participants.
 
 Learn more about the rewards campaign: 👉 [The Great Pump Off](https://wardenprotocol.org/blog/great-pump-off)

@@ -12,11 +12,11 @@ Barra is our new testnet, currently available only to selected validators. It's 
 
 | Release                                                                                 | Block height | Date               |
 | --------------------------------------------------------------------------------------- | ------------ | ------------------ |
-| [v0.7.0-rc3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0-rc3) | 0            | September 10, 2025 |
+| [v0.7.0-rc5](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0-rc5) | 0            | September 10, 2025 |
 
 ## Binary
 
-The latest binary version compatible with Barra is [wardend v0.7.0-rc3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0-rc3).
+The latest binary version compatible with Barra is [wardend v0.7.0-rc5](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0-rc5).
 
 
 ## Endpoints
@@ -53,10 +53,10 @@ barra_9191-1
 
 ## Denomination
 
-Barra's denomination is `award` (1 award = 10^-18 [WARD](/tokens/ward-token/ward)).
+Barra's denomination is `award` (1 award = 10^-18 [WARD](/ward/introduction)).
 
 ## Faucet
 
-Here is the faucet for getting [WARD](/tokens/ward-token/ward) on Barra:
+Here is the faucet for getting [WARD](/ward/introduction) on Barra:
 
 - [Barra faucet](https://faucet.barra.wardenprotocol.org/)

@@ -1,7 +1,12 @@
-FROM golang:1.25-trixie AS build
+FROM golang:1.25-alpine AS build
 
-# Install just
-RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /usr/bin
+RUN set -eux; apk add --no-cache ca-certificates build-base linux-headers git curl just;
+
+ARG WASMVM_VERSION
+ARG WASMVM_AMD64_CHECKSUM
+ARG WASMVM_ARM64_CHECKSUM
+ADD --checksum=sha256:${WASMVM_AMD64_CHECKSUM} --chmod=755 https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvm_muslc.x86_64.a /lib/libwasmvm_muslc.x86_64.a
+ADD --checksum=sha256:${WASMVM_ARM64_CHECKSUM} --chmod=755 https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvm_muslc.aarch64.a /lib/libwasmvm_muslc.aarch64.a
 
 WORKDIR /warden
 
@@ -13,7 +18,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked \
 RUN --mount=type=bind,source=.,target=.,readonly\
     --mount=type=cache,target=/root/.cache/go-build,sharing=locked \
     --mount=type=cache,target=/go/pkg/mod,sharing=locked \
-    OUTPUT_DIR=/dist just wardend build
+    OUTPUT_DIR=/dist LINK_STATIC=true just wardend build
 
 FROM scratch AS binary
 ARG TARGETOS
@@ -22,20 +27,12 @@ ARG WARDEND_VERSION="unknown"
 COPY --from=build /dist/wardend /wardend-$WARDEND_VERSION-$TARGETOS-$TARGETARCH
 ENTRYPOINT ["/wardend-$WARDEND_VERSION-$TARGETOS-$TARGETARCH"]
 
-FROM debian:trixie-slim AS runtime
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked \
-    apt update && apt install -y \
-    ca-certificates curl
+FROM alpine:3.18 AS runtime
+RUN set -eux; apk add --no-cache ca-certificates curl;
 
-RUN useradd -M -u 1000 -U -s /bin/sh -d /data warden && \
-    install -o 1000 -g 1000 -d /data
-
-ARG WASMVM_VERSION
-ARG WASMVM_AMD64_CHECKSUM
-ARG WASMVM_ARM64_CHECKSUM
-ADD --checksum=sha256:${WASMVM_AMD64_CHECKSUM} --chmod=755 https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvm.x86_64.so /usr/lib/libwasmvm.x86_64.so
-ADD --checksum=sha256:${WASMVM_ARM64_CHECKSUM} --chmod=755 https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvm.aarch64.so /usr/lib/libwasmvm.aarch64.so
+RUN addgroup -S -g 1000 warden && \
+    adduser -S -u 1000 -G warden -h /data -s /bin/sh warden && \
+    install -o warden -g warden -d /data
 
 COPY --from=build /dist/wardend /usr/bin/wardend
 

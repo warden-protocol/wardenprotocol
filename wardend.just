@@ -6,8 +6,13 @@ ldflags := "-ldflags \"
     -X github.com/cosmos/cosmos-sdk/version.Name=" + app_name + "
     -X github.com/cosmos/cosmos-sdk/version.AppName=" + app_name + "d
     -X github.com/cosmos/cosmos-sdk/version.Version=" + version + "
-    -X github.com/cosmos/cosmos-sdk/version.Commit=" + commit + '"'
-build_tags := "-tags ledger"
+    -X github.com/cosmos/cosmos-sdk/version.Commit=" + commit + if env("LINK_STATIC", "false") == "true" {
+        "
+        -linkmode=external -extldflags '-Wl,-z,muldefs -static'" + '"'
+    } else {
+        '"'
+    }
+build_tags := "-tags \"netgo,muslc\" -trimpath"
 output_dir := env("OUTPUT_DIR", "./build")
 
 # build (wardend|wardenkms|clichain). Eg. "just build wardend".

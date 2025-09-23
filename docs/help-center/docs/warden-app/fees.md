@@ -31,7 +31,7 @@ All queries to the [Messari Deep Research Agent](explore-ai-agents#messari-deep-
 
 | Fee type      | Amount   | Currency     | Description                                              |
 | ------------- | -------- |--------------| -------------------------------------------------------- |
-| Messari fee   | 0.25 USD | USDC/SOL/ETH | A fee paid to Messari per query                          |
+| Messari fee   | 0.25 USD | USDC/SOL/ETH | A fee paid to Messari per report                         |
 
 The Agent charges fees in the first available currency in this order of priority:
 
@@ -56,7 +56,7 @@ All queries to the [Kaibot Agent](explore-ai-agents#kaibot) incur this fee:
 
 | Fee type      | Amount   | Currency     | Description                                              |
 | ------------- | -------- |--------------| -------------------------------------------------------- |
-| Kaibot fee    | 0.25 USD | USDC/SOL/ETH | A fee paid to Kaibot per query                           |
+| Kaibot fee    | 0.25 USD | USDC/SOL/ETH | A fee paid to Kaibot per report                          |
 
 The Agent charges fees in the first available currency in this order of priority:
 

@@ -48,7 +48,7 @@ The following settings are available:
 
 ## Export your wallet
 
-You can [export your wallet]((https://privy-io.notion.site/Transferring-your-account-9dab9e16c6034a7ab1ff7fa479b02828)) by copying its private key. [Open the wallet](#access-your-wallet) and take these steps:
+You can [export your wallet](https://privy-io.notion.site/Transferring-your-account-9dab9e16c6034a7ab1ff7fa479b02828) by copying its private key. [Open the wallet](#access-your-wallet) and take these steps:
 
 1. Click the gear icon on the top to access account settings.
 2. In the **Security** section, click your private key on the desired network.

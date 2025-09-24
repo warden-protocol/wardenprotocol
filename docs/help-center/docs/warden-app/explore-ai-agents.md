@@ -129,8 +129,8 @@ Fees: [informational Agent fees](fees#informational-agent-fees).
 
 **WachAI** is an Agent that performs token verification. It uses the following methods:
 
-- Address- and chain-based verification: You provide WachAI with the token's address and the blockchain it resides on.This method is highly accurate, as token addresses are unique.
-- Ticker-based verification: You provide WachAI with a token's ticker, and the Agent fetches verification data. This method is less reliable due to possible duplicates in token tickers.
+- **Address- and chain-based verification**: You provide WachAI with the token's address and the blockchain it resides on.This method is highly accurate, as token addresses are unique.
+- **Ticker-based verification**: You provide WachAI with a token's ticker, and the Agent fetches verification data. This method is less reliable due to possible duplicates in token tickers.
 
 Fees: [informational Agent fees](fees#informational-agent-fees).
 

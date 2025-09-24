@@ -76,7 +76,7 @@ The **Messari Deep Research** Agent integrates with [Messari](https://messari.io
 
 Use this Agent to research any blockchain project with detailed, real-time insight: discover trending tokens on a specific chain, generate meme coin reports, analyze NFT market dynamics, and much more.
 
-Fees: [Messari fees](fees#messari-fees).
+Fees: [informational Agent fees](fees#informational-agent-fees).
 
 ### deBridge
 
@@ -123,9 +123,18 @@ Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees).
 
 To start using Kaibot, provide your X handle. If your handle is already linked to the Warden account, Kaibot will fetch it automatically.
 
-Fees: [Kaibot fees](fees#kaibot-fees).
+Fees: [informational Agent fees](fees#informational-agent-fees).
 
-### Coming soon
+### WachAI
+
+**WachAI** is an Agent that performs token verification. It uses the following methods:
+
+- Address- and chain-based verification: You provide WachAI with the token's address and the blockchain it resides on.This method is highly accurate, as token addresses are unique.
+- Ticker-based verification: You provide WachAI with a token's ticker, and the Agent fetches verification data. This method is less reliable due to possible duplicates in token tickers.
+
+Fees: [informational Agent fees](fees#informational-agent-fees).
+
+## Coming soon
 
 The Agent lineup keeps growing. Here's what to expect next:
 
@@ -134,6 +143,5 @@ The Agent lineup keeps growing. Here's what to expect next:
 - **Levva**
 - **The Quantfather**
 - **Venice**
-- **WachAI**
 - **Warden Bufett**
 - **The Butler**

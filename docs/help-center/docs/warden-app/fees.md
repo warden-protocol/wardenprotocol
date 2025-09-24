@@ -25,20 +25,6 @@ All swaps incur these fees:
 | Gas fee       | varies | native coin        | A fee paid to the network for processing the transaction |
 | Platform fee  | 0.85%  | input/output token | A percentage charged by Warden     
 
-## Messari fees
-
-All queries to the [Messari Deep Research Agent](explore-ai-agents#messari-deep-research) incur this fee:
-
-| Fee type      | Amount   | Currency     | Description                                              |
-| ------------- | -------- |--------------| -------------------------------------------------------- |
-| Messari fee   | 0.25 USD | USDC/SOL/ETH | A fee paid to Messari per report                         |
-
-The Agent charges fees in the first available currency in this order of priority:
-
-- **USDC** on Solana, Base, or Ethereum
-- **SOL** on Solana
-- **ETH** on Base or Ethereum
-
 ## deBridge fees
 
 All [deBridge](explore-ai-agents#debridge) transactions incur these fees:
@@ -48,18 +34,24 @@ All [deBridge](explore-ai-agents#debridge) transactions incur these fees:
 | Gas fee                | varies                       | native coin         | A fee paid to the source network for processing the transaction  |
 | deBridge flat fee      | fixed; periodically adjusted | native coin         | A fee paid to deBridge validators for processing the transaction |
 | deBridge protocol fee  | 0.04%                        | input token         | A percentage charged by the deBridge protocol                    |
-| Platform fee           | 0.85%                        | input/output token  | A percentage charged by Warden                                   |
+| Platform fee           | 0.85%                        | input/output token  | A percentage charged by Warden
 
-## Kaibot fees
+## Informational Agent fees
 
-All queries to the [Kaibot Agent](explore-ai-agents#kaibot) incur this fee:
+Below you can find a list of **informational Agents**, which focus on collecting and analyzing data. All reports provided by these Agents incur the following fee:
 
 | Fee type      | Amount   | Currency     | Description                                              |
 | ------------- | -------- |--------------| -------------------------------------------------------- |
-| Kaibot fee    | 0.25 USD | USDC/SOL/ETH | A fee paid to Kaibot per report                          |
+| Agent fee     | 0.25 USD | USDC/SOL/ETH | A fee paid to the Agent per report                         |
 
-The Agent charges fees in the first available currency in this order of priority:
+Agents charge this fee in the first available currency, based on this priority:
 
 - **USDC** on Solana, Base, or Ethereum
 - **SOL** on Solana
 - **ETH** on Base or Ethereum
+
+This fee applies to the following Agents:
+
+- [Messari Deep Research](explore-ai-agents#messari-deep-research)
+- [Kaibot](explore-ai-agents#kaibot)
+- [WachAI](explore-ai-agents#wachai)

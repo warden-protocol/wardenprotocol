@@ -12,11 +12,11 @@ Barra is our new testnet, currently available only to selected validators. It's 
 
 | Release                                                                                 | Block height | Date               |
 | --------------------------------------------------------------------------------------- | ------------ | ------------------ |
-| [v0.7.0-rc5](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0-rc5) | 0            | September 10, 2025 |
+| [v0.7.0-rc4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0-rc4) | 0            | September 10, 2025 |
 
 ## Binary
 
-The latest binary version compatible with Barra is [wardend v0.7.0-rc5](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0-rc5).
+The latest binary version compatible with Barra is [wardend v0.7.0-rc4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0-rc4).
 
 
 ## Endpoints

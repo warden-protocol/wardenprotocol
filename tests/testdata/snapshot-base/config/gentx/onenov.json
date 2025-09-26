@@ -5,8 +5,8 @@
         "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
         "description": {
           "moniker": "OneNov",
-          "identity": "",
-          "website": "",
+          "identity": "09F974A66062BDCC",
+          "website": "https://onenov.xyz",
           "security_contact": "onenov0209@gmail.com",
           "details": "Validator OneNov siap mengamankan jaringan"
         },

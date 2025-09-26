@@ -36,22 +36,18 @@ All [deBridge](explore-ai-agents#debridge) transactions incur these fees:
 | deBridge protocol fee  | 0.04%                        | input token         | A percentage charged by the deBridge protocol                    |
 | Platform fee           | 0.85%                        | input/output token  | A percentage charged by Warden
 
-## Informational Agent fees
+## Research Agent fees
 
-Below you can find a list of **informational Agents**, which focus on collecting and analyzing data. All reports provided by these Agents incur the following fee:
+All reports provided by [research Agents](explore-ai-agents#research-agents) incur the following fee:
 
 | Fee type      | Amount   | Currency     | Description                                              |
 | ------------- | -------- |--------------| -------------------------------------------------------- |
-| Agent fee     | 0.25 USD | USDC/SOL/ETH | A fee paid to the Agent per report                         |
+| Agent fee     | 0.25 USD | USDC/SOL/ETH | A fee paid to the Agent per report                       |
 
-Agents charge this fee in the first available currency, based on this priority:
+:::note
+Agents charge it in the first available currency, based on this priority:
 
 - **USDC** on Solana, Base, or Ethereum
 - **SOL** on Solana
 - **ETH** on Base or Ethereum
-
-This fee applies to the following Agents:
-
-- [Messari Deep Research](explore-ai-agents#messari-deep-research)
-- [Kaibot](explore-ai-agents#kaibot)
-- [WachAI](explore-ai-agents#wachai)
+:::

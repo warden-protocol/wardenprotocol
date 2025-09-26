@@ -26,7 +26,9 @@ Alternatively, you can access Agents directly from the **Chats** tab. Use the dr
 
 ![Manage AI chats in Warden](../../static/img/warden-app/use-the-chat-3.png)
 
-## Available Agents
+## Asset management Agents
+
+These Agents allow you to send, swap, bridge, and stake your assets.
 
 ### Warden AMA
 
@@ -70,13 +72,19 @@ Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees).
 To start using this Agent, you need to read and agree to the Uniswap Labs terms of service and privacy policy.
 :::
 
-### Messari Deep Research
+### Jupiter
 
-The **Messari Deep Research** Agent integrates with [Messari](https://messari.io)—the leading provider of crypto market intelligence products that help professionals navigate the Web3 space.
+The **Jupiter** Agent integrates with the [Jupiter Exchange](https://jup.ag)—a decentralized exchange (DEX) aggregator built on the Solana blockchain. This is the only Agent you need to send and swap any Solana tokens.
 
-Use this Agent to research any blockchain project with detailed, real-time insight: discover trending tokens on a specific chain, generate meme coin reports, analyze NFT market dynamics, and much more.
+Just specify the amount and other details in the chat, and the Agent will do the rest:
 
-Fees: [informational Agent fees](fees#informational-agent-fees).
+- Swap SOL for any Solana token
+- Swap tokens for each other
+- Send SOL or any token to a destination address
+
+Networks: **Solana**.
+
+Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees).
 
 ### deBridge
 
@@ -98,19 +106,34 @@ Tokens:
 
 Fees: [deBridge fees](fees#debridge-fees).
 
-### Jupiter
+### Base Farmer
 
-The **Jupiter** Agent integrates with the [Jupiter Exchange](https://jup.ag)—a decentralized exchange (DEX) aggregator built on the Solana blockchain. This is the only Agent you need to send and swap any Solana tokens.
+The **Base Farmer** Agent assists you with managing your tokens on the Base chain:
 
-Just specify the amount and other details in the chat, and the Agent will do the rest:
+- Checks balances
+- Swaps tokens using [Uniswap](https://app.uniswap.org)
+- Transfers tokens
 
-- Swap SOL for any Solana token
-- Swap tokens for each other
-- Send SOL or any token to a destination address
+Networks: **Base**
 
-Networks: **Solana**.
+Tokens:
+
+- **USDC**
+- **VIRTUAL**
 
 Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees).
+
+## Research Agents
+
+Research Agents focus on collecting and analyzing data.
+
+### Messari Deep Research
+
+The **Messari Deep Research** Agent integrates with [Messari](https://messari.io)—the leading provider of crypto market intelligence products that help professionals navigate the Web3 space.
+
+Use this Agent to research any blockchain project with detailed, real-time insight: discover trending tokens on a specific chain, generate meme coin reports, analyze NFT market dynamics, and much more.
+
+Fees: [research Agent fees](fees#research-agent-fees).
 
 ### Kaibot
 
@@ -123,24 +146,25 @@ Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees).
 
 To start using Kaibot, provide your X handle. If your handle is already linked to the Warden account, Kaibot will fetch it automatically.
 
-Fees: [informational Agent fees](fees#informational-agent-fees).
+Fees: [research Agent fees](fees#research-agent-fees).
 
 ### WachAI
 
 **WachAI** is an Agent that performs token verification. It uses the following methods:
 
-- **Address- and chain-based verification**: You provide WachAI with the token's address and the blockchain it resides on.This method is highly accurate, as token addresses are unique.
+- **Address- and chain-based verification**: You provide WachAI with the token's address and the blockchain it resides on. This method is highly accurate, as token addresses are unique.
 - **Ticker-based verification**: You provide WachAI with a token's ticker, and the Agent fetches verification data. This method is less reliable due to possible duplicates in token tickers.
 
-Fees: [informational Agent fees](fees#informational-agent-fees).
+Fees: [research Agent fees](fees#research-agent-fees).
 
 ## Coming soon
 
 The Agent lineup keeps growing. Here's what to expect next:
 
-- **ApexLiquid**
-- **Intelligent DCA**
 - **Levva**
+- **Travel Agent**
+- **Intelligent DCA**
+- **ApexLiquid**
 - **The Quantfather**
 - **Venice**
 - **Warden Bufett**

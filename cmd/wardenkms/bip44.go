@@ -23,6 +23,7 @@ func FromSeedPhrase(seedPhrase, password string) (*Bip44Keychain, error) {
 	}
 
 	masterKey, chainCode := hd.ComputeMastersFromSeed(seedBytes)
+
 	return &Bip44Keychain{
 		masterSeed: masterKey,
 		chainCode:  chainCode,
@@ -41,7 +42,6 @@ func (k *Bip44Keychain) PublicKey(keyID [4]byte) (pubKey []byte, err error) {
 	}
 
 	pubKey, err = generateECDSAPubKey(privKeySeed)
-
 	if err != nil {
 		return nil, err
 	}
@@ -73,14 +73,17 @@ func (k *Bip44Keychain) Sign(keyID [4]byte, message []byte) ([]byte, error) {
 func generateECDSASignature(seed, message []byte, recoveryID bool) ([]byte, error) {
 	privateKey, _ := btcec.PrivKeyFromBytes(seed[:])
 	ecdsaPriv := privateKey.ToECDSA()
+
 	prvD := math.PaddedBigBytes(ecdsaPriv.D, 32)
 	if len(prvD) != 32 {
 		return nil, fmt.Errorf("error generating ecdsa private key: Priv key bitlength: %v", 8*len(prvD))
 	}
+
 	prv, err := crypto.ToECDSA(prvD)
 	if err != nil {
 		return nil, fmt.Errorf("error generating ecdsa private key: Error %v. Priv key length: %v", err, 8*len(seed))
 	}
+
 	sigBytes, err := crypto.Sign(message, prv)
 	if err != nil {
 		return nil, fmt.Errorf("error signing msg: %x. error: %v", message, err)
@@ -102,14 +105,17 @@ func generateECDSASignature(seed, message []byte, recoveryID bool) ([]byte, erro
 func generateECDSAPubKey(seed []byte) (pubKeyBytes []byte, err error) {
 	privateKey, _ := btcec.PrivKeyFromBytes(seed[:])
 	ecdsaPriv := privateKey.ToECDSA()
+
 	prvD := math.PaddedBigBytes(ecdsaPriv.D, 32)
 	if len(prvD) != 32 {
 		return nil, fmt.Errorf("error generating ecdsa private key: Priv key bit length: %v", 8*len(prvD))
 	}
+
 	prv, err := crypto.ToECDSA(prvD)
 	if err != nil {
-		return nil, fmt.Errorf("error genertaing ecdsa private/public key pair: Error %v. Priv key bitlength: %v", err, 8*len(seed))
+		return nil, fmt.Errorf("error generating ecdsa private/public key pair: Error %v. Priv key bitlength: %v", err, 8*len(seed))
 	}
+
 	pubKeyBytes = crypto.CompressPubkey(&prv.PublicKey)
 
 	return pubKeyBytes, nil
@@ -125,6 +131,7 @@ func derivationPathFromKeyID(keyID [4]byte) (string, error) {
 		Change:       false,
 		AddressIndex: idx,
 	}.String() + "'" // BIP44 Hardened keys  - https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#extended-keys
+
 	return hardenedPath, nil
 }
 
@@ -134,6 +141,7 @@ func (k *Bip44Keychain) getSeedFromPath(derivationPath string) ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to derive private key: %w", err)
 	}
+
 	return derivedSeed, nil
 }
 

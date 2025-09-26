@@ -87,6 +87,32 @@ var allTestCasesError = []anyTestCaseError{
 	}}, // undefined variable
 }
 
+type containsTestCaseSuccess struct {
+	input    string
+	expected bool
+}
+
+type containsTestCaseError struct {
+	input string
+}
+
+var containsTestCasesSuccess = []containsTestCaseSuccess{
+	{`contains(1, [1])`, true},
+	{`contains(1, [])`, false},
+	{`contains("foo string", [1, "foo string"])`, true},
+	{`contains(false, [true, true, false])`, true},
+	{`contains(true, [true, true, false])`, true},
+}
+
+var containsTestCasesError = []containsTestCaseError{
+	{`contains()`},
+	{`contains(1)`},
+	{`contains(1, 1)`},
+	{`contains([], 1)`},
+	{`contains([], [[]])`},
+	{`contains([1, 2, 3], [[], [1, 2, 3]])`},
+}
+
 func TestAny(t *testing.T) {
 	for _, tt := range anyTestCasesSuccess {
 		evaluated := testEval(tt.input, tt.env)
@@ -107,6 +133,18 @@ func TestAll(t *testing.T) {
 
 	for _, tt := range allTestCasesError {
 		evaluated := testEval(tt.input, tt.env)
+		testErrorObject(t, evaluated, "input: %s", tt.input)
+	}
+}
+
+func TestContains(t *testing.T) {
+	for _, tt := range containsTestCasesSuccess {
+		evaluated := testEval(tt.input, nil)
+		testBooleanObject(t, evaluated, tt.expected, "input: %s", tt.input)
+	}
+
+	for _, tt := range containsTestCasesError {
+		evaluated := testEval(tt.input, nil)
 		testErrorObject(t, evaluated, "input: %s", tt.input)
 	}
 }

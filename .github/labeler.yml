@@ -2,18 +2,23 @@ protocol:
   - warden/**
 
 protobuf:
-  - warden/proto/**
+  - proto/**
 
-sdk-module:
+x-warden:
   - warden/x/warden/**
-  - warden/proto/warden/warden/**
+  - proto/warden/warden/**
 
-intent:
+x-intent:
   - warden/x/intent/**
-  - warden/proto/warden/intent/**
+  - proto/warden/intent/**
+
+shield:
+  - shield/**
+  - proto/shield/**
 
 test:
-  - '**/*_test.go'
+  - "**/*_test.go"
+  - tests/
 
 docs:
   - docs/**
@@ -25,7 +30,13 @@ keychain:
   - keychain-sdk/**
 
 wardenkms:
-  - wardenkms/**
+  - cmd/wardenkms/**
 
 spaceward:
   - spaceward/**
+
+contracts:
+  - contracts/**
+
+snap:
+  - snap/**

@@ -5,95 +5,86 @@ on:
   workflow_dispatch:
     inputs:
       service_name:
-        description: 'Service'
+        description: "Service"
         required: true
         type: choice
         options:
           - spaceward
-          - wardend
-          - faucet
-          - wardenkms
+          - spaceward-relay
+          - automated-orders-scheduler
+          - automated-orders-relayer
   workflow_call:
     inputs:
       service_name:
         required: true
         type: string
-    secrets:
-      PAT:
-        required: true
-
-env:
-  AWS_REGION: eu-west-1
-  EKS_CLUSTER_NAME: ${{ vars.CLUSTER_NAME }}
 
 jobs:
   build-and-push:
+    name: Build and Push ${{inputs.service_name }}
     runs-on: ubuntu-latest
+    outputs:
+      image: ${{ vars.REGISTRY }}/${{ inputs.service_name }}:${{ steps.meta.outputs.version }}
     permissions:
       id-token: write
       contents: read
+      packages: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: aws-actions/configure-aws-credentials@v4
+      - uses: actions/checkout@v5
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
         with:
-          role-to-assume: ${{ vars.AWS_ROLE }}
-          aws-region: ${{ env.AWS_REGION }}
-      - uses: aws-actions/amazon-ecr-login@v2
-        id: login-ecr
-      - name: Set tags
-        id: vars
-        run: |
-          echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          echo "COMMIT_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
-          echo "VERSION=$(git describe --tags --always --match "v*" | sed 's/^v//')" >> $GITHUB_ENV
-          echo "BUILD_DATE=$(git show -s --format=%ci ${{ env.COMMIT_SHA }})" >> $GITHUB_ENV
-          echo "ECR_REPO=${{ vars.ECR_REGISTRY }}.dkr.ecr.eu-west-1.amazonaws.com/wardenprotocol/production" >> $GITHUB_ENV
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Build and Push
-        id: image
-        uses: docker/build-push-action@v4
+          registry: ${{ vars.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ vars.REGISTRY }}/${{ inputs.service_name }}
+          tags: |
+            type=match,pattern=${{ inputs.service_name }}/v(.+),group=1,prefix=v,latest=true
+            type=semver,pattern={{raw}},latest=true
+            type=sha,format=short,prefix=
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
         with:
           context: .
-          target: ${{ inputs.service_name }}
-          build-args: |
-             SERVICE=${{ inputs.service_name }}
-             COMMIT=${{ env.COMMIT_SHA }}
-             VERSION=${{ env.VERSION }}
-             BUILD_DATE=${{ env.BUILD_DATE }}
           push: true
-          tags: |
-            ${{ env.ECR_REPO }}/${{ inputs.service_name }}:${{ env.SHORT_SHA }}
+          target: ${{ inputs.service_name }}
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - name: 'Clone Helm repository'
-        uses: actions/checkout@v3
+  scan-image:
+    name: Scan Image ${{inputs.service_name }}
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    steps:
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@0.28.0
         with:
-          repository: ${{ vars.HELM_REPOSITORY }}
-          ref: 'main'
-          token: ${{ secrets.PAT }}
-      - name: Update kube config
-        run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
-      - uses: azure/setup-helm@v3
-        with:
-          version: 'v3.12.0'
-      - name: Deploy to EKS
+          image-ref: ${{ needs.build-and-push.outputs.image }}
+          output: "trivy.txt"
+          # exit-code: "1"
+          severity: "CRITICAL,HIGH"
+        env:
+          TRIVY_DB_REPOSITORY: ghcr.io/aquasecurity/trivy-db,public.ecr.aws/aquasecurity/trivy-db
+          TRIVY_USERNAME: ${{ github.actor }}
+          TRIVY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish Trivy Output to Summary
         run: |
-          helm upgrade \
-           -i ${{ inputs.service_name }} \
-           -n devnet \
-           --set fullnameOverride=${{ inputs.service_name }} \
-           --set image.repository=${{ env.ECR_REPO }}  \
-           --set image.name=${{ inputs.service_name }} \
-           --set image.tag=${{ env.SHORT_SHA }} \
-           ./charts/${{ inputs.service_name }}/
-      - name: send telegram message on push
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            ✅ Deployed to devnet
-            Service: ${{ inputs.service_name }}
-            Commit: ${{ env.SHORT_SHA }}
-            See changes: https://github.com/${{ github.repository }}/commit/${{env.COMMIT_SHA}}
+          if [[ -s trivy.txt ]]; then
+            {
+              echo "### Security Output"
+              echo "<details><summary>Click to expand</summary>"
+              echo ""
+              echo '```terraform'
+              cat trivy.txt
+              echo '```'
+              echo "</details>"
+            } >> $GITHUB_STEP_SUMMARY
+          fi

@@ -4,8 +4,9 @@ import (
 	"context"
 
 	"github.com/cosmos/cosmos-sdk/types/query"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 	"google.golang.org/grpc"
+
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 type PageRequest = query.PageRequest
@@ -15,7 +16,7 @@ type WardenQueryClient struct {
 	client types.QueryClient
 }
 
-// NewWardenQueryClient returns a WardenQueryClient
+// NewWardenQueryClient returns a WardenQueryClient.
 func NewWardenQueryClient(c *grpc.ClientConn) *WardenQueryClient {
 	return &WardenQueryClient{
 		client: types.NewQueryClient(c),
@@ -49,10 +50,10 @@ func (t *WardenQueryClient) GetKeyRequest(ctx context.Context, requestID uint64)
 	return res.KeyRequest, nil
 }
 
-// PendingSignatureRequests executes a paginated pending signature request query with context. wardend will return a slice of pending
+// PendingSignRequests executes a paginated pending signature request query with context. wardend will return a slice of pending
 // signature requests for the supplied keychain address.
-func (t *WardenQueryClient) PendingSignatureRequests(ctx context.Context, page *PageRequest, keychainId uint64) ([]*types.SignRequest, error) {
-	res, err := t.client.SignatureRequests(ctx, &types.QuerySignatureRequestsRequest{
+func (t *WardenQueryClient) PendingSignRequests(ctx context.Context, page *PageRequest, keychainId uint64) ([]*types.SignRequest, error) {
+	res, err := t.client.SignRequests(ctx, &types.QuerySignRequestsRequest{
 		Pagination: page,
 		KeychainId: keychainId,
 		Status:     types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
@@ -64,9 +65,9 @@ func (t *WardenQueryClient) PendingSignatureRequests(ctx context.Context, page *
 	return res.SignRequests, nil
 }
 
-// GetSignatureRequest returns the signature request corresponding to the specific request ID.
-func (t *WardenQueryClient) GetSignatureRequest(ctx context.Context, requestID uint64) (*types.SignRequest, error) {
-	res, err := t.client.SignatureRequestById(ctx, &types.QuerySignatureRequestByIdRequest{
+// GetSignRequest returns the signature request corresponding to the specific request ID.
+func (t *WardenQueryClient) GetSignRequest(ctx context.Context, requestID uint64) (*types.SignRequest, error) {
+	res, err := t.client.SignRequestById(ctx, &types.QuerySignRequestByIdRequest{
 		Id: requestID,
 	})
 	if err != nil {
@@ -74,18 +75,4 @@ func (t *WardenQueryClient) GetSignatureRequest(ctx context.Context, requestID u
 	}
 
 	return res.SignRequest, nil
-}
-
-// SignedTransactions returns a paginated set of fulfilled signature requests for the supplied wallet type.
-func (t *WardenQueryClient) SignedTransactions(ctx context.Context, page *PageRequest, walletType types.WalletType) (*types.QuerySignTransactionRequestsResponse, error) {
-	res, err := t.client.SignTransactionRequests(ctx, &types.QuerySignTransactionRequestsRequest{
-		Pagination: page,
-		WalletType: walletType,
-		Status:     types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED,
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	return res, nil
 }

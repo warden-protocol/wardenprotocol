@@ -3,11 +3,13 @@ package lexer
 import (
 	"testing"
 
+	"github.com/stretchr/testify/require"
+
 	"github.com/warden-protocol/wardenprotocol/shield/token"
 )
 
 func TestNextToken(t *testing.T) {
-	input := `any(2, [warden123, wardenXXX]) true false && ||;`
+	input := `any(2, [warden123, wardenXXX]) true false && || 1 > 1 < 1 >= 1 <= 1 == 1 != 1 "some string""" + - * /;`
 
 	tests := []struct {
 		expectedType    token.Type
@@ -27,6 +29,25 @@ func TestNextToken(t *testing.T) {
 		{token.Type_FALSE, "false"},
 		{token.Type_AND, "&&"},
 		{token.Type_OR, "||"},
+		{token.Type_INT, "1"},
+		{token.Type_GT, ">"},
+		{token.Type_INT, "1"},
+		{token.Type_LT, "<"},
+		{token.Type_INT, "1"},
+		{token.Type_GTE, ">="},
+		{token.Type_INT, "1"},
+		{token.Type_LTE, "<="},
+		{token.Type_INT, "1"},
+		{token.Type_EQ, "=="},
+		{token.Type_INT, "1"},
+		{token.Type_NEQ, "!="},
+		{token.Type_INT, "1"},
+		{token.Type_STRING, "some string"},
+		{token.Type_STRING, ""},
+		{token.Type_ADD, "+"},
+		{token.Type_SUB, "-"},
+		{token.Type_MUL, "*"},
+		{token.Type_DIV, "/"},
 		{token.Type_SEMICOLON, ";"},
 		{token.Type_EOF, ""},
 	}
@@ -45,4 +66,11 @@ func TestNextToken(t *testing.T) {
 				i, tt.expectedLiteral, tok.Literal)
 		}
 	}
+}
+
+func TestUnterminatedString(t *testing.T) {
+	input := `"some unterminated string`
+	l := New(input)
+	tok := l.NextToken()
+	require.Equal(t, token.Token{Type: token.Type_ILLEGAL, Literal: `"`}, tok)
 }

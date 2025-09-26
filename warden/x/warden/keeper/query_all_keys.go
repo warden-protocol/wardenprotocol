@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func (k Keeper) AllKeys(goCtx context.Context, req *types.QueryAllKeysRequest) (*types.QueryKeysResponse, error) {
@@ -18,14 +18,14 @@ func (k Keeper) AllKeys(goCtx context.Context, req *types.QueryAllKeysRequest) (
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	keys, page, err := query.CollectionPaginate(ctx, k.KeysKeeper.Coll(), req.Pagination, func(key uint64, value types.Key) (types.QueryKeyResponse, error) {
+	keys, page, err := query.CollectionPaginate(goCtx, k.KeysKeeper.Coll(), req.Pagination, func(key uint64, value types.Key) (types.QueryKeyResponse, error) {
 		response := types.QueryKeyResponse{
-			Key:     value,
-			Wallets: value.DeriveAddresses(ctx, req.DeriveWallets),
+			Key:       value,
+			Addresses: value.DeriveAddresses(ctx.Logger(), req.DeriveAddresses),
 		}
+
 		return response, nil
 	})
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

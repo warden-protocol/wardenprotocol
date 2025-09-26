@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	keepertest "github.com/warden-protocol/wardenprotocol/warden/testutil/keeper"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func TestParamsQuery(t *testing.T) {

@@ -2,45 +2,15 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 
+	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/gogoproto/proto"
-	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
-func (k msgServer) RemoveSpaceOwner(goCtx context.Context, msg *types.MsgRemoveSpaceOwner) (*intenttypes.MsgActionCreated, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-	space, err := k.SpacesKeeper.Get(ctx, msg.SpaceId)
-	if err != nil {
-		return nil, err
-	}
-
-	intent, err := k.removeSpaceOwnerIntent(ctx, space)
-	if err != nil {
-		return nil, err
-	}
-
-	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, intent, msg.Btl)
-	if err != nil {
-		return nil, err
-	}
-
-	return &intenttypes.MsgActionCreated{Action: act}, nil
-}
-
-func (k msgServer) removeSpaceOwnerIntent(ctx sdk.Context, space types.Space) (intenttypes.Intent, error) {
-	if space.AdminIntentId > 0 {
-		return k.intentKeeper.GetIntent(ctx, space.AdminIntentId)
-	} else {
-		return space.IntentRemoveOwner(), nil
-	}
-}
-
-func (k msgServer) RemoveOwnerActionHandler(ctx sdk.Context, act intenttypes.Action) (proto.Message, error) {
-	msg, err := intenttypes.GetActionMessage[*types.MsgRemoveSpaceOwner](k.cdc, act)
-	if err != nil {
+func (k msgServer) RemoveSpaceOwner(ctx context.Context, msg *types.MsgRemoveSpaceOwner) (*types.MsgRemoveSpaceOwnerResponse, error) {
+	if err := k.assertActAuthority(msg.Authority); err != nil {
 		return nil, err
 	}
 
@@ -50,12 +20,27 @@ func (k msgServer) RemoveOwnerActionHandler(ctx sdk.Context, act intenttypes.Act
 	}
 
 	if !space.IsOwner(msg.Owner) {
-		return nil, fmt.Errorf("owner does not exist")
+		return nil, errors.Wrapf(types.ErrNotSpaceOwner, "%s is not an owner of the space", msg.Owner)
 	}
 
-	space.RemoveOwner(msg.Owner)
+	if err := space.RemoveOwner(msg.Owner, msg.Nonce); err != nil {
+		return nil, err
+	}
+
+	if _, err := space.IncrementNonce(msg.Nonce); err != nil {
+		return nil, err
+	}
 
 	if err := k.SpacesKeeper.Set(ctx, space); err != nil {
+		return nil, err
+	}
+
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventRemoveSpaceOwner{
+		SpaceId:      space.Id,
+		RemovedOwner: msg.Owner,
+		OwnersCount:  uint64(len(space.Owners)),
+	}); err != nil {
 		return nil, err
 	}
 

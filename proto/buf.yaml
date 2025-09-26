@@ -2,6 +2,9 @@ name: buf.build/warden-protocol/warden
 breaking:
   use:
   - FILE
+  - FIELD_NO_DELETE_UNLESS_NUMBER_RESERVED
+  except:
+    - FIELD_NO_DELETE
 deps:
 - buf.build/protocolbuffers/wellknowntypes
 - buf.build/cosmos/cosmos-sdk
@@ -20,7 +23,7 @@ lint:
   ignore:
   - tendermint
   use:
-  - DEFAULT
+  - STANDARD
   - COMMENTS
   - FILE_LOWER_SNAKE_CASE
 version: v1

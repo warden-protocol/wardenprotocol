@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "launch scheduler",
+            "program": "${workspaceFolder}/packages/scheduler/src/index.ts",
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "outFiles": [
+                "${workspaceFolder}/packages/scheduler/dist/**/*.js"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "launch relayer",
+            "program": "${workspaceFolder}/packages/relayer/src/index.ts",
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "outFiles": [
+                "${workspaceFolder}/packages/relayer/dist/**/*.js"
+            ]
+        }
+    ]
+}

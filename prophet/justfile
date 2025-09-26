@@ -1,0 +1,47 @@
+git_root := `git rev-parse --show-toplevel`
+tmpdir := `mktemp -d`
+
+all: pricepred stoicquote http
+
+_tools:
+    @command -v solc >/dev/null 2>&1 || (echo "solc not found. Please install solc. On MacOS, you can use 'brew install solidity'." && exit 1)
+
+http: _tools
+  solc --abi --bin --overwrite plugins/http/Http.sol -o build
+  go tool abigen \
+  --bin=build/Http.bin \
+  --abi=build/Http.abi \
+  --pkg=generated \
+  --type=Http \
+  --out=plugins/http/generated/http_bindings.go
+
+pricepred: _tools
+  solc --abi --bin --overwrite plugins/pricepred/PricePredictor.sol -o build
+  go tool abigen \
+  --bin=build/PricePredictor.bin \
+  --abi=build/PricePredictor.abi \
+  --pkg=pricepred \
+  --type=PricePredictor \
+  --out=plugins/pricepred/pricepred_bindings.go
+
+stoicquote: _tools
+  # Retrieve the Stoic quote JSON from the API, generate only an output struct
+  curl --max-time 3 --retry 3 --retry-delay 2 --fail "https://stoic.tekloon.net/stoic-quote" \
+    | go run ../cmd/soliditygen \
+      --contractName="StoicQuote" \
+      --outputFile="-" \
+      --outputName="Response" \
+      --output="plugins/stoicquote/generated/StoicQuote.sol"
+
+  # Compile the generated Solidity
+  solc --abi --bin --overwrite \
+    plugins/stoicquote/generated/StoicQuote.sol \
+    -o build
+
+  # Generate Go bindings
+  go tool abigen \
+    --bin=build/StoicQuote.bin \
+    --abi=build/StoicQuote.abi \
+    --pkg=generated \
+    --type=StoicQuote \
+    --out=plugins/stoicquote/generated/stoicquote_bindings.go

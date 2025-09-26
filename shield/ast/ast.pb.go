@@ -30,9 +30,11 @@ type Expression struct {
 	//	*Expression_Identifier
 	//	*Expression_IntegerLiteral
 	//	*Expression_BooleanLiteral
+	//	*Expression_StringLiteral
 	//	*Expression_ArrayLiteral
 	//	*Expression_CallExpression
 	//	*Expression_InfixExpression
+	//	*Expression_PrefixExpression
 	Value isExpression_Value `protobuf_oneof:"value"`
 }
 
@@ -84,22 +86,30 @@ type Expression_IntegerLiteral struct {
 type Expression_BooleanLiteral struct {
 	BooleanLiteral *BooleanLiteral `protobuf:"bytes,3,opt,name=boolean_literal,json=booleanLiteral,proto3,oneof" json:"boolean_literal,omitempty"`
 }
+type Expression_StringLiteral struct {
+	StringLiteral *StringLiteral `protobuf:"bytes,4,opt,name=string_literal,json=stringLiteral,proto3,oneof" json:"string_literal,omitempty"`
+}
 type Expression_ArrayLiteral struct {
-	ArrayLiteral *ArrayLiteral `protobuf:"bytes,4,opt,name=array_literal,json=arrayLiteral,proto3,oneof" json:"array_literal,omitempty"`
+	ArrayLiteral *ArrayLiteral `protobuf:"bytes,5,opt,name=array_literal,json=arrayLiteral,proto3,oneof" json:"array_literal,omitempty"`
 }
 type Expression_CallExpression struct {
-	CallExpression *CallExpression `protobuf:"bytes,5,opt,name=call_expression,json=callExpression,proto3,oneof" json:"call_expression,omitempty"`
+	CallExpression *CallExpression `protobuf:"bytes,6,opt,name=call_expression,json=callExpression,proto3,oneof" json:"call_expression,omitempty"`
 }
 type Expression_InfixExpression struct {
-	InfixExpression *InfixExpression `protobuf:"bytes,6,opt,name=infix_expression,json=infixExpression,proto3,oneof" json:"infix_expression,omitempty"`
+	InfixExpression *InfixExpression `protobuf:"bytes,7,opt,name=infix_expression,json=infixExpression,proto3,oneof" json:"infix_expression,omitempty"`
+}
+type Expression_PrefixExpression struct {
+	PrefixExpression *PrefixExpression `protobuf:"bytes,8,opt,name=prefix_expression,json=prefixExpression,proto3,oneof" json:"prefix_expression,omitempty"`
 }
 
-func (*Expression_Identifier) isExpression_Value()      {}
-func (*Expression_IntegerLiteral) isExpression_Value()  {}
-func (*Expression_BooleanLiteral) isExpression_Value()  {}
-func (*Expression_ArrayLiteral) isExpression_Value()    {}
-func (*Expression_CallExpression) isExpression_Value()  {}
-func (*Expression_InfixExpression) isExpression_Value() {}
+func (*Expression_Identifier) isExpression_Value()       {}
+func (*Expression_IntegerLiteral) isExpression_Value()   {}
+func (*Expression_BooleanLiteral) isExpression_Value()   {}
+func (*Expression_StringLiteral) isExpression_Value()    {}
+func (*Expression_ArrayLiteral) isExpression_Value()     {}
+func (*Expression_CallExpression) isExpression_Value()   {}
+func (*Expression_InfixExpression) isExpression_Value()  {}
+func (*Expression_PrefixExpression) isExpression_Value() {}
 
 func (m *Expression) GetValue() isExpression_Value {
 	if m != nil {
@@ -129,6 +139,13 @@ func (m *Expression) GetBooleanLiteral() *BooleanLiteral {
 	return nil
 }
 
+func (m *Expression) GetStringLiteral() *StringLiteral {
+	if x, ok := m.GetValue().(*Expression_StringLiteral); ok {
+		return x.StringLiteral
+	}
+	return nil
+}
+
 func (m *Expression) GetArrayLiteral() *ArrayLiteral {
 	if x, ok := m.GetValue().(*Expression_ArrayLiteral); ok {
 		return x.ArrayLiteral
@@ -150,15 +167,24 @@ func (m *Expression) GetInfixExpression() *InfixExpression {
 	return nil
 }
 
+func (m *Expression) GetPrefixExpression() *PrefixExpression {
+	if x, ok := m.GetValue().(*Expression_PrefixExpression); ok {
+		return x.PrefixExpression
+	}
+	return nil
+}
+
 // XXX_OneofWrappers is for the internal use of the proto package.
 func (*Expression) XXX_OneofWrappers() []interface{} {
 	return []interface{}{
 		(*Expression_Identifier)(nil),
 		(*Expression_IntegerLiteral)(nil),
 		(*Expression_BooleanLiteral)(nil),
+		(*Expression_StringLiteral)(nil),
 		(*Expression_ArrayLiteral)(nil),
 		(*Expression_CallExpression)(nil),
 		(*Expression_InfixExpression)(nil),
+		(*Expression_PrefixExpression)(nil),
 	}
 }
 
@@ -216,7 +242,7 @@ func (m *Identifier) GetValue() string {
 
 type IntegerLiteral struct {
 	Token token.Token `protobuf:"bytes,1,opt,name=token,proto3" json:"token"`
-	Value int64       `protobuf:"varint,2,opt,name=value,proto3" json:"value,omitempty"`
+	Value string      `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
 }
 
 func (m *IntegerLiteral) Reset()         { *m = IntegerLiteral{} }
@@ -259,11 +285,11 @@ func (m *IntegerLiteral) GetToken() token.Token {
 	return token.Token{}
 }
 
-func (m *IntegerLiteral) GetValue() int64 {
+func (m *IntegerLiteral) GetValue() string {
 	if m != nil {
 		return m.Value
 	}
-	return 0
+	return ""
 }
 
 type BooleanLiteral struct {
@@ -318,6 +344,58 @@ func (m *BooleanLiteral) GetValue() bool {
 	return false
 }
 
+type StringLiteral struct {
+	Token token.Token `protobuf:"bytes,1,opt,name=token,proto3" json:"token"`
+	Value string      `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
+}
+
+func (m *StringLiteral) Reset()         { *m = StringLiteral{} }
+func (m *StringLiteral) String() string { return proto.CompactTextString(m) }
+func (*StringLiteral) ProtoMessage()    {}
+func (*StringLiteral) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a8efe25b47b2c2b2, []int{4}
+}
+func (m *StringLiteral) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *StringLiteral) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_StringLiteral.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *StringLiteral) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_StringLiteral.Merge(m, src)
+}
+func (m *StringLiteral) XXX_Size() int {
+	return m.Size()
+}
+func (m *StringLiteral) XXX_DiscardUnknown() {
+	xxx_messageInfo_StringLiteral.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_StringLiteral proto.InternalMessageInfo
+
+func (m *StringLiteral) GetToken() token.Token {
+	if m != nil {
+		return m.Token
+	}
+	return token.Token{}
+}
+
+func (m *StringLiteral) GetValue() string {
+	if m != nil {
+		return m.Value
+	}
+	return ""
+}
+
 type ArrayLiteral struct {
 	Token    token.Token   `protobuf:"bytes,1,opt,name=token,proto3" json:"token"`
 	Elements []*Expression `protobuf:"bytes,2,rep,name=elements,proto3" json:"elements,omitempty"`
@@ -327,7 +405,7 @@ func (m *ArrayLiteral) Reset()         { *m = ArrayLiteral{} }
 func (m *ArrayLiteral) String() string { return proto.CompactTextString(m) }
 func (*ArrayLiteral) ProtoMessage()    {}
 func (*ArrayLiteral) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a8efe25b47b2c2b2, []int{4}
+	return fileDescriptor_a8efe25b47b2c2b2, []int{5}
 }
 func (m *ArrayLiteral) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -380,7 +458,7 @@ func (m *CallExpression) Reset()         { *m = CallExpression{} }
 func (m *CallExpression) String() string { return proto.CompactTextString(m) }
 func (*CallExpression) ProtoMessage()    {}
 func (*CallExpression) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a8efe25b47b2c2b2, []int{5}
+	return fileDescriptor_a8efe25b47b2c2b2, []int{6}
 }
 func (m *CallExpression) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -441,7 +519,7 @@ func (m *InfixExpression) Reset()         { *m = InfixExpression{} }
 func (m *InfixExpression) String() string { return proto.CompactTextString(m) }
 func (*InfixExpression) ProtoMessage()    {}
 func (*InfixExpression) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a8efe25b47b2c2b2, []int{6}
+	return fileDescriptor_a8efe25b47b2c2b2, []int{7}
 }
 func (m *InfixExpression) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -498,55 +576,122 @@ func (m *InfixExpression) GetRight() *Expression {
 	return nil
 }
 
+type PrefixExpression struct {
+	Token    token.Token `protobuf:"bytes,1,opt,name=token,proto3" json:"token"`
+	Operator string      `protobuf:"bytes,2,opt,name=operator,proto3" json:"operator,omitempty"`
+	Right    *Expression `protobuf:"bytes,3,opt,name=right,proto3" json:"right,omitempty"`
+}
+
+func (m *PrefixExpression) Reset()         { *m = PrefixExpression{} }
+func (m *PrefixExpression) String() string { return proto.CompactTextString(m) }
+func (*PrefixExpression) ProtoMessage()    {}
+func (*PrefixExpression) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a8efe25b47b2c2b2, []int{8}
+}
+func (m *PrefixExpression) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *PrefixExpression) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_PrefixExpression.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *PrefixExpression) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PrefixExpression.Merge(m, src)
+}
+func (m *PrefixExpression) XXX_Size() int {
+	return m.Size()
+}
+func (m *PrefixExpression) XXX_DiscardUnknown() {
+	xxx_messageInfo_PrefixExpression.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_PrefixExpression proto.InternalMessageInfo
+
+func (m *PrefixExpression) GetToken() token.Token {
+	if m != nil {
+		return m.Token
+	}
+	return token.Token{}
+}
+
+func (m *PrefixExpression) GetOperator() string {
+	if m != nil {
+		return m.Operator
+	}
+	return ""
+}
+
+func (m *PrefixExpression) GetRight() *Expression {
+	if m != nil {
+		return m.Right
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*Expression)(nil), "shield.ast.Expression")
 	proto.RegisterType((*Identifier)(nil), "shield.ast.Identifier")
 	proto.RegisterType((*IntegerLiteral)(nil), "shield.ast.IntegerLiteral")
 	proto.RegisterType((*BooleanLiteral)(nil), "shield.ast.BooleanLiteral")
+	proto.RegisterType((*StringLiteral)(nil), "shield.ast.StringLiteral")
 	proto.RegisterType((*ArrayLiteral)(nil), "shield.ast.ArrayLiteral")
 	proto.RegisterType((*CallExpression)(nil), "shield.ast.CallExpression")
 	proto.RegisterType((*InfixExpression)(nil), "shield.ast.InfixExpression")
+	proto.RegisterType((*PrefixExpression)(nil), "shield.ast.PrefixExpression")
 }
 
 func init() { proto.RegisterFile("shield/ast/ast.proto", fileDescriptor_a8efe25b47b2c2b2) }
 
 var fileDescriptor_a8efe25b47b2c2b2 = []byte{
-	// 553 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x94, 0xc1, 0x8a, 0x13, 0x31,
-	0x18, 0xc7, 0x67, 0xb6, 0xed, 0xda, 0x7e, 0xae, 0x5b, 0x77, 0xb6, 0xc8, 0x50, 0x61, 0x5c, 0x7a,
-	0x92, 0x45, 0x5b, 0x58, 0xf7, 0x05, 0xac, 0x08, 0x5d, 0x10, 0x0f, 0x51, 0x10, 0xf6, 0xe0, 0x92,
-	0xb6, 0xe9, 0x34, 0x98, 0x26, 0x25, 0x93, 0x6a, 0x7d, 0x0b, 0x1f, 0x43, 0xf0, 0x22, 0x9e, 0x7c,
-	0x84, 0x3d, 0xee, 0xd1, 0x93, 0x48, 0x7b, 0xf0, 0x35, 0x24, 0xc9, 0x74, 0x66, 0x32, 0xab, 0x0b,
-	0xeb, 0x1e, 0x1a, 0x26, 0xff, 0xfc, 0xfb, 0xcb, 0x9f, 0x7c, 0x5f, 0x02, 0xad, 0x64, 0x4a, 0x09,
-	0x1b, 0xf7, 0x70, 0xa2, 0xf4, 0xaf, 0x3b, 0x97, 0x42, 0x89, 0x00, 0xac, 0xda, 0xc5, 0x89, 0x6a,
-	0xef, 0xe1, 0x19, 0xe5, 0xa2, 0x67, 0x46, 0xbb, 0xdc, 0x6e, 0xc5, 0x22, 0x16, 0xe6, 0xb3, 0xa7,
-	0xbf, 0x52, 0x35, 0x4c, 0x51, 0x4a, 0xbc, 0x23, 0xdc, 0x8e, 0x76, 0xa5, 0xf3, 0xb9, 0x0a, 0xf0,
-	0x7c, 0x39, 0x97, 0x24, 0x49, 0xa8, 0xe0, 0xc1, 0x09, 0x00, 0x1d, 0x13, 0xae, 0xe8, 0x84, 0x12,
-	0x19, 0xfa, 0x07, 0xfe, 0xc3, 0xdb, 0x47, 0xf7, 0xba, 0xf9, 0x96, 0xdd, 0x93, 0x6c, 0xb5, 0xdf,
-	0xfc, 0xf6, 0xfb, 0xeb, 0x21, 0xe4, 0xc2, 0xc0, 0x43, 0x85, 0x3f, 0x07, 0xa7, 0xd0, 0xa4, 0x5c,
-	0x91, 0x98, 0xc8, 0x33, 0x46, 0x15, 0x91, 0x98, 0x85, 0x5b, 0x86, 0xd7, 0x76, 0x78, 0xd6, 0xf2,
-	0xc2, 0x3a, 0xfa, 0xfb, 0x9a, 0xb9, 0xeb, 0x8a, 0x03, 0x0f, 0xed, 0x52, 0x47, 0xd1, 0xec, 0xa1,
-	0x10, 0x8c, 0x60, 0x9e, 0xb1, 0x2b, 0x97, 0xd9, 0x7d, 0x6b, 0x71, 0xd9, 0xae, 0xa8, 0xd9, 0x43,
-	0x47, 0x09, 0x10, 0xdc, 0xc1, 0x52, 0xe2, 0x8f, 0x19, 0xb9, 0x6a, 0xc8, 0x61, 0x91, 0xfc, 0x54,
-	0x1b, 0x36, 0xdc, 0x3d, 0xcd, 0xdd, 0x29, 0x4a, 0x03, 0x0f, 0xed, 0xe0, 0xc2, 0x5c, 0xe7, 0x1d,
-	0x61, 0xc6, 0xce, 0x48, 0x76, 0xd2, 0x61, 0xed, 0x72, 0xde, 0x67, 0x98, 0xb1, 0xbc, 0x16, 0x69,
-	0x5e, 0x57, 0xd4, 0x79, 0x47, 0x8e, 0x12, 0xbc, 0x85, 0xbb, 0x94, 0x4f, 0xe8, 0xb2, 0x08, 0xdf,
-	0x36, 0xf0, 0xfb, 0xee, 0x41, 0x4f, 0xe8, 0xb2, 0x40, 0x6f, 0x69, 0x7a, 0xb3, 0xa4, 0x0e, 0x3c,
-	0xd4, 0xa4, 0x25, 0xe3, 0x2d, 0xa8, 0xbd, 0xc7, 0x6c, 0x41, 0x3a, 0xaf, 0xa0, 0x50, 0xec, 0xa0,
-	0x07, 0x35, 0xd3, 0x47, 0x69, 0x93, 0xec, 0x6f, 0xf6, 0xb2, 0xcd, 0xf5, 0x5a, 0x8f, 0xfd, 0xea,
-	0xf9, 0xcf, 0x07, 0x1e, 0xb2, 0xbe, 0xa0, 0x95, 0x72, 0x4c, 0x17, 0x34, 0x50, 0x0a, 0x7d, 0x03,
-	0xa5, 0x6a, 0xdf, 0x10, 0x5c, 0x29, 0x80, 0xdd, 0x52, 0xdf, 0x10, 0x5c, 0xdf, 0x80, 0x13, 0x70,
-	0x6a, 0x7d, 0x7d, 0xec, 0x11, 0xd4, 0x09, 0x23, 0x33, 0xc2, 0x55, 0x12, 0x6e, 0x1d, 0x54, 0xca,
-	0x37, 0x2c, 0x3f, 0x7a, 0x94, 0xf9, 0x3a, 0x5f, 0x7c, 0x28, 0x75, 0xc2, 0x7f, 0xed, 0x3b, 0x59,
-	0xf0, 0x91, 0xd2, 0x0d, 0xb2, 0x75, 0xd5, 0xcd, 0x46, 0x99, 0x2f, 0x38, 0x86, 0x06, 0x96, 0xf1,
-	0xc2, 0x86, 0xad, 0x5c, 0x19, 0x36, 0x37, 0x76, 0xbe, 0xfb, 0x50, 0xee, 0xac, 0xeb, 0xc7, 0x3d,
-	0x84, 0x2a, 0x23, 0x13, 0xf5, 0xb7, 0xa8, 0x85, 0x5d, 0x8d, 0x27, 0x68, 0x43, 0x5d, 0xcc, 0x89,
-	0xc4, 0x4a, 0x48, 0xf3, 0x10, 0x34, 0x50, 0x36, 0x0f, 0x1e, 0x41, 0x4d, 0xd2, 0x78, 0xaa, 0xd2,
-	0x7b, 0xfc, 0x2f, 0x90, 0x35, 0xf5, 0x5f, 0x9e, 0xaf, 0x22, 0xff, 0x62, 0x15, 0xf9, 0xbf, 0x56,
-	0x91, 0xff, 0x69, 0x1d, 0x79, 0x17, 0xeb, 0xc8, 0xfb, 0xb1, 0x8e, 0xbc, 0xd3, 0xe3, 0x98, 0xaa,
-	0xe9, 0x62, 0xd8, 0x1d, 0x89, 0x59, 0xef, 0x03, 0x96, 0x63, 0xc2, 0x1f, 0x9b, 0x27, 0x74, 0x24,
-	0x58, 0x3a, 0xcf, 0xa6, 0xf9, 0xc3, 0x3d, 0xdc, 0x36, 0xe2, 0x93, 0x3f, 0x01, 0x00, 0x00, 0xff,
-	0xff, 0x15, 0x67, 0x3e, 0x6a, 0xcd, 0x05, 0x00, 0x00,
+	// 637 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x95, 0xc1, 0x6e, 0xd3, 0x30,
+	0x18, 0xc7, 0x93, 0x76, 0xdd, 0xba, 0x8f, 0x6d, 0xdd, 0xbc, 0x82, 0x4a, 0x41, 0x61, 0xea, 0x09,
+	0x4d, 0xd0, 0x4a, 0x63, 0x2f, 0x40, 0x11, 0x52, 0x26, 0x21, 0x84, 0x3c, 0x34, 0xa4, 0x1d, 0x98,
+	0xdc, 0xce, 0xcd, 0x2c, 0xbc, 0xb8, 0x72, 0x5c, 0x18, 0x0f, 0x81, 0xc4, 0x7b, 0x70, 0x41, 0x9c,
+	0x78, 0x84, 0x1d, 0x77, 0xe4, 0x84, 0xd0, 0x86, 0xc4, 0x6b, 0x20, 0x3b, 0x69, 0x62, 0x67, 0x6c,
+	0x62, 0xb0, 0x43, 0xa3, 0xf8, 0xef, 0x7f, 0x7f, 0xdf, 0x27, 0xfb, 0x6f, 0x07, 0x9a, 0xc9, 0x01,
+	0xa3, 0x7c, 0xbf, 0x47, 0x12, 0xa5, 0x7f, 0xdd, 0xb1, 0x14, 0x4a, 0x20, 0x48, 0xd5, 0x2e, 0x49,
+	0x54, 0x7b, 0x85, 0x1c, 0xb2, 0x58, 0xf4, 0xcc, 0x33, 0x9d, 0x6e, 0x37, 0x23, 0x11, 0x09, 0xf3,
+	0xda, 0xd3, 0x6f, 0x99, 0xda, 0xca, 0x50, 0x4a, 0xbc, 0xa1, 0x71, 0xfa, 0x4c, 0x67, 0x3a, 0x3f,
+	0x6b, 0x00, 0x4f, 0x8f, 0xc6, 0x92, 0x26, 0x09, 0x13, 0x31, 0xda, 0x02, 0x60, 0xfb, 0x34, 0x56,
+	0x6c, 0xc4, 0xa8, 0x6c, 0xf9, 0x6b, 0xfe, 0xfd, 0x1b, 0x1b, 0xb7, 0xba, 0x45, 0xc9, 0xee, 0x56,
+	0x3e, 0xdb, 0x6f, 0x7c, 0xf9, 0xf5, 0x79, 0x1d, 0x0a, 0x21, 0xf4, 0xb0, 0xf5, 0x67, 0xb4, 0x0b,
+	0x0d, 0x16, 0x2b, 0x1a, 0x51, 0xb9, 0xc7, 0x99, 0xa2, 0x92, 0xf0, 0x56, 0xc5, 0xf0, 0xda, 0x0e,
+	0x2f, 0xb5, 0x3c, 0x4b, 0x1d, 0xfd, 0x55, 0xcd, 0x5c, 0x72, 0xc5, 0xd0, 0xc3, 0x4b, 0xcc, 0x51,
+	0x34, 0x7b, 0x20, 0x04, 0xa7, 0x24, 0xce, 0xd9, 0xd5, 0xf3, 0xec, 0x7e, 0x6a, 0x71, 0xd9, 0xae,
+	0xa8, 0xd9, 0x03, 0x47, 0x41, 0x3b, 0xb0, 0x94, 0x28, 0xc9, 0xe2, 0x28, 0x47, 0xcf, 0x18, 0xf4,
+	0x6d, 0x1b, 0xbd, 0x6d, 0x1c, 0x53, 0x32, 0xd2, 0xe4, 0x45, 0x47, 0x0b, 0x3d, 0xbc, 0x98, 0xd8,
+	0x02, 0xc2, 0xb0, 0x48, 0xa4, 0x24, 0xef, 0x73, 0x6c, 0xcd, 0x60, 0x5b, 0x36, 0xf6, 0xb1, 0x36,
+	0x4c, 0xa9, 0x2b, 0x9a, 0xba, 0x60, 0x4b, 0xa1, 0x87, 0x17, 0x88, 0x35, 0xd6, 0xeb, 0x30, 0x24,
+	0x9c, 0xef, 0xd1, 0x7c, 0x07, 0x5b, 0xb3, 0xe7, 0xd7, 0xe1, 0x09, 0xe1, 0xbc, 0xd8, 0xe3, 0x6c,
+	0x1d, 0x5c, 0x51, 0xaf, 0xc3, 0xd0, 0x51, 0xd0, 0x6b, 0x58, 0x66, 0xf1, 0x88, 0x1d, 0xd9, 0xf0,
+	0x39, 0x03, 0xbf, 0xe3, 0x6e, 0xe0, 0x88, 0x1d, 0x59, 0xf4, 0xa6, 0xa6, 0x37, 0x4a, 0x6a, 0xe8,
+	0xe1, 0x06, 0x73, 0x25, 0x34, 0x80, 0x95, 0xb1, 0xa4, 0xa5, 0x02, 0x75, 0x53, 0xe0, 0xae, 0x5d,
+	0xe0, 0x85, 0x31, 0x59, 0x15, 0x6e, 0xea, 0x0a, 0xcb, 0x65, 0x39, 0xf4, 0xf0, 0xf2, 0xb8, 0x6c,
+	0x9d, 0x83, 0xda, 0x5b, 0xc2, 0x27, 0xb4, 0xb3, 0x0d, 0x56, 0x50, 0x51, 0x0f, 0x6a, 0xe6, 0x0c,
+	0x64, 0x01, 0x5f, 0x9d, 0x96, 0x4b, 0x0f, 0xc6, 0x4b, 0xfd, 0xec, 0xcf, 0x1c, 0x7f, 0xbf, 0xe7,
+	0xe1, 0xd4, 0x87, 0x9a, 0x19, 0xc7, 0x24, 0x78, 0x1e, 0x67, 0xd0, 0x57, 0x50, 0x4a, 0xea, 0x35,
+	0x82, 0xdd, 0x98, 0xfe, 0x27, 0xb8, 0x3e, 0x05, 0xef, 0x80, 0x9b, 0xd2, 0xeb, 0x6a, 0x38, 0x01,
+	0x27, 0xa7, 0x57, 0xc7, 0x6e, 0x40, 0x9d, 0x72, 0x7a, 0x48, 0x63, 0x95, 0xb4, 0x2a, 0x6b, 0xd5,
+	0xf2, 0xad, 0x53, 0x6c, 0x29, 0xce, 0x7d, 0x9d, 0x4f, 0x3e, 0x94, 0x52, 0xfc, 0x4f, 0x75, 0x47,
+	0x93, 0x78, 0xa8, 0x74, 0xf6, 0x2a, 0x97, 0xdd, 0x76, 0x38, 0xf7, 0xa1, 0x4d, 0x98, 0x27, 0x32,
+	0x9a, 0xa4, 0xcd, 0x56, 0x2f, 0x6d, 0xb6, 0x30, 0x76, 0xbe, 0xfa, 0x50, 0x3e, 0x15, 0x57, 0x6f,
+	0x77, 0x1d, 0x66, 0x38, 0x1d, 0xa9, 0x3f, 0xb5, 0x6a, 0x55, 0x35, 0x1e, 0xd4, 0x86, 0xba, 0x18,
+	0x53, 0x49, 0x94, 0x90, 0xe6, 0x72, 0x9c, 0xc7, 0xf9, 0x18, 0x3d, 0x80, 0x9a, 0x64, 0xd1, 0x81,
+	0xca, 0xae, 0xb6, 0x8b, 0x40, 0xa9, 0xa9, 0xf3, 0xc1, 0x87, 0x73, 0xc7, 0xed, 0xea, 0xbd, 0xdb,
+	0xfd, 0x54, 0x2e, 0xea, 0xa7, 0xfa, 0x17, 0xfd, 0xf4, 0x9f, 0x1f, 0x9f, 0x06, 0xfe, 0xc9, 0x69,
+	0xe0, 0xff, 0x38, 0x0d, 0xfc, 0x8f, 0x67, 0x81, 0x77, 0x72, 0x16, 0x78, 0xdf, 0xce, 0x02, 0x6f,
+	0x77, 0x33, 0x62, 0xea, 0x60, 0x32, 0xe8, 0x0e, 0xc5, 0x61, 0xef, 0x1d, 0x91, 0xfb, 0x34, 0x7e,
+	0x68, 0x3e, 0x73, 0x43, 0xc1, 0xb3, 0x71, 0x3e, 0x2c, 0x3e, 0xae, 0x83, 0x59, 0x23, 0x3e, 0xfa,
+	0x1d, 0x00, 0x00, 0xff, 0xff, 0xea, 0xb5, 0xf0, 0x11, 0x71, 0x07, 0x00, 0x00,
 }
 
 func (m *Expression) Marshal() (dAtA []byte, err error) {
@@ -644,6 +789,27 @@ func (m *Expression_BooleanLiteral) MarshalToSizedBuffer(dAtA []byte) (int, erro
 	}
 	return len(dAtA) - i, nil
 }
+func (m *Expression_StringLiteral) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Expression_StringLiteral) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.StringLiteral != nil {
+		{
+			size, err := m.StringLiteral.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAst(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x22
+	}
+	return len(dAtA) - i, nil
+}
 func (m *Expression_ArrayLiteral) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
@@ -661,7 +827,7 @@ func (m *Expression_ArrayLiteral) MarshalToSizedBuffer(dAtA []byte) (int, error)
 			i = encodeVarintAst(dAtA, i, uint64(size))
 		}
 		i--
-		dAtA[i] = 0x22
+		dAtA[i] = 0x2a
 	}
 	return len(dAtA) - i, nil
 }
@@ -682,7 +848,7 @@ func (m *Expression_CallExpression) MarshalToSizedBuffer(dAtA []byte) (int, erro
 			i = encodeVarintAst(dAtA, i, uint64(size))
 		}
 		i--
-		dAtA[i] = 0x2a
+		dAtA[i] = 0x32
 	}
 	return len(dAtA) - i, nil
 }
@@ -703,7 +869,28 @@ func (m *Expression_InfixExpression) MarshalToSizedBuffer(dAtA []byte) (int, err
 			i = encodeVarintAst(dAtA, i, uint64(size))
 		}
 		i--
-		dAtA[i] = 0x32
+		dAtA[i] = 0x3a
+	}
+	return len(dAtA) - i, nil
+}
+func (m *Expression_PrefixExpression) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Expression_PrefixExpression) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.PrefixExpression != nil {
+		{
+			size, err := m.PrefixExpression.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAst(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x42
 	}
 	return len(dAtA) - i, nil
 }
@@ -767,10 +954,12 @@ func (m *IntegerLiteral) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.Value != 0 {
-		i = encodeVarintAst(dAtA, i, uint64(m.Value))
+	if len(m.Value) > 0 {
+		i -= len(m.Value)
+		copy(dAtA[i:], m.Value)
+		i = encodeVarintAst(dAtA, i, uint64(len(m.Value)))
 		i--
-		dAtA[i] = 0x10
+		dAtA[i] = 0x12
 	}
 	{
 		size, err := m.Token.MarshalToSizedBuffer(dAtA[:i])
@@ -814,6 +1003,46 @@ func (m *BooleanLiteral) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		}
 		i--
 		dAtA[i] = 0x10
+	}
+	{
+		size, err := m.Token.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintAst(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *StringLiteral) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *StringLiteral) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *StringLiteral) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Value) > 0 {
+		i -= len(m.Value)
+		copy(dAtA[i:], m.Value)
+		i = encodeVarintAst(dAtA, i, uint64(len(m.Value)))
+		i--
+		dAtA[i] = 0x12
 	}
 	{
 		size, err := m.Token.MarshalToSizedBuffer(dAtA[:i])
@@ -998,6 +1227,58 @@ func (m *InfixExpression) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *PrefixExpression) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *PrefixExpression) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *PrefixExpression) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Right != nil {
+		{
+			size, err := m.Right.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAst(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Operator) > 0 {
+		i -= len(m.Operator)
+		copy(dAtA[i:], m.Operator)
+		i = encodeVarintAst(dAtA, i, uint64(len(m.Operator)))
+		i--
+		dAtA[i] = 0x12
+	}
+	{
+		size, err := m.Token.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintAst(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintAst(dAtA []byte, offset int, v uint64) int {
 	offset -= sovAst(v)
 	base := offset
@@ -1057,6 +1338,18 @@ func (m *Expression_BooleanLiteral) Size() (n int) {
 	}
 	return n
 }
+func (m *Expression_StringLiteral) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.StringLiteral != nil {
+		l = m.StringLiteral.Size()
+		n += 1 + l + sovAst(uint64(l))
+	}
+	return n
+}
 func (m *Expression_ArrayLiteral) Size() (n int) {
 	if m == nil {
 		return 0
@@ -1093,6 +1386,18 @@ func (m *Expression_InfixExpression) Size() (n int) {
 	}
 	return n
 }
+func (m *Expression_PrefixExpression) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.PrefixExpression != nil {
+		l = m.PrefixExpression.Size()
+		n += 1 + l + sovAst(uint64(l))
+	}
+	return n
+}
 func (m *Identifier) Size() (n int) {
 	if m == nil {
 		return 0
@@ -1116,8 +1421,9 @@ func (m *IntegerLiteral) Size() (n int) {
 	_ = l
 	l = m.Token.Size()
 	n += 1 + l + sovAst(uint64(l))
-	if m.Value != 0 {
-		n += 1 + sovAst(uint64(m.Value))
+	l = len(m.Value)
+	if l > 0 {
+		n += 1 + l + sovAst(uint64(l))
 	}
 	return n
 }
@@ -1132,6 +1438,21 @@ func (m *BooleanLiteral) Size() (n int) {
 	n += 1 + l + sovAst(uint64(l))
 	if m.Value {
 		n += 2
+	}
+	return n
+}
+
+func (m *StringLiteral) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.Token.Size()
+	n += 1 + l + sovAst(uint64(l))
+	l = len(m.Value)
+	if l > 0 {
+		n += 1 + l + sovAst(uint64(l))
 	}
 	return n
 }
@@ -1186,6 +1507,25 @@ func (m *InfixExpression) Size() (n int) {
 		l = m.Left.Size()
 		n += 1 + l + sovAst(uint64(l))
 	}
+	l = len(m.Operator)
+	if l > 0 {
+		n += 1 + l + sovAst(uint64(l))
+	}
+	if m.Right != nil {
+		l = m.Right.Size()
+		n += 1 + l + sovAst(uint64(l))
+	}
+	return n
+}
+
+func (m *PrefixExpression) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.Token.Size()
+	n += 1 + l + sovAst(uint64(l))
 	l = len(m.Operator)
 	if l > 0 {
 		n += 1 + l + sovAst(uint64(l))
@@ -1339,6 +1679,41 @@ func (m *Expression) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StringLiteral", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAst
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAst
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAst
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &StringLiteral{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Value = &Expression_StringLiteral{v}
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ArrayLiteral", wireType)
 			}
 			var msglen int
@@ -1372,7 +1747,7 @@ func (m *Expression) Unmarshal(dAtA []byte) error {
 			}
 			m.Value = &Expression_ArrayLiteral{v}
 			iNdEx = postIndex
-		case 5:
+		case 6:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field CallExpression", wireType)
 			}
@@ -1407,7 +1782,7 @@ func (m *Expression) Unmarshal(dAtA []byte) error {
 			}
 			m.Value = &Expression_CallExpression{v}
 			iNdEx = postIndex
-		case 6:
+		case 7:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field InfixExpression", wireType)
 			}
@@ -1441,6 +1816,41 @@ func (m *Expression) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			m.Value = &Expression_InfixExpression{v}
+			iNdEx = postIndex
+		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PrefixExpression", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAst
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAst
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAst
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &PrefixExpression{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Value = &Expression_PrefixExpression{v}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -1641,10 +2051,10 @@ func (m *IntegerLiteral) Unmarshal(dAtA []byte) error {
 			}
 			iNdEx = postIndex
 		case 2:
-			if wireType != 0 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Value", wireType)
 			}
-			m.Value = 0
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowAst
@@ -1654,11 +2064,24 @@ func (m *IntegerLiteral) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Value |= int64(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAst
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAst
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Value = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipAst(dAtA[iNdEx:])
@@ -1762,6 +2185,121 @@ func (m *BooleanLiteral) Unmarshal(dAtA []byte) error {
 				}
 			}
 			m.Value = bool(v != 0)
+		default:
+			iNdEx = preIndex
+			skippy, err := skipAst(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthAst
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *StringLiteral) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowAst
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: StringLiteral: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: StringLiteral: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Token", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAst
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAst
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAst
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Token.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Value", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAst
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAst
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAst
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Value = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipAst(dAtA[iNdEx:])
@@ -2184,6 +2722,157 @@ func (m *InfixExpression) Unmarshal(dAtA []byte) error {
 			m.Operator = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Right", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAst
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAst
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAst
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Right == nil {
+				m.Right = &Expression{}
+			}
+			if err := m.Right.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipAst(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthAst
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *PrefixExpression) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowAst
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: PrefixExpression: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: PrefixExpression: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Token", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAst
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAst
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAst
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Token.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Operator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAst
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAst
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAst
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Operator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Right", wireType)
 			}

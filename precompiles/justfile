@@ -1,0 +1,26 @@
+git_root := `git rev-parse --show-toplevel`
+tmpdir := `mktemp -d`
+
+all: abi
+
+_tools:
+    @command -v solc >/dev/null 2>&1 || (echo "solc not found. Please install solc. On MacOS, you can use 'brew install solidity'." && exit 1)
+
+abi: _tools
+  just generate_artifacts act IAct
+  just generate_artifacts warden IWarden
+  just generate_artifacts slinky ISlinky
+  just generate_artifacts async IAsync
+  just generate_artifacts callbacks ICallback abiCallback.json
+  just generate_artifacts json IJson
+  just generate_artifacts sched ISched
+
+generate_artifacts target type abi_file='abi.json':
+  solc --evm-version paris --abi {{git_root}}/precompiles/{{target}}/{{type}}.sol -o {{git_root}}/precompiles/{{target}}/ --overwrite
+  mv {{git_root}}/precompiles/{{target}}/{{type}}.abi {{git_root}}/precompiles/{{target}}/{{abi_file}}
+  go tool abigen --abi {{git_root}}/precompiles/{{target}}/{{abi_file}} --pkg {{target}} --type {{type}} --out {{git_root}}/precompiles/{{target}}/{{type}}.go
+  
+  # pretty print the abi
+  echo '{"abi":[]}' > {{git_root}}/precompiles/{{target}}/formatted.json
+  echo "$(jq '.abi += inputs' {{git_root}}/precompiles/{{target}}/formatted.json {{git_root}}/precompiles/{{target}}/{{abi_file}})" > {{git_root}}/precompiles/{{target}}/formatted.json
+  mv {{git_root}}/precompiles/{{target}}/formatted.json {{git_root}}/precompiles/{{target}}/{{abi_file}}

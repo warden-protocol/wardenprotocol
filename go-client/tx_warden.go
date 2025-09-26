@@ -2,7 +2,8 @@ package client
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 type KeyRequestFulfilment struct {
@@ -11,11 +12,11 @@ type KeyRequestFulfilment struct {
 }
 
 func (r KeyRequestFulfilment) Msg(creator string) sdk.Msg {
-	return &types.MsgUpdateKeyRequest{
+	return &types.MsgFulfilKeyRequest{
 		Creator:   creator,
 		RequestId: r.RequestID,
 		Status:    types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED,
-		Result:    types.NewMsgUpdateKeyRequestKey(r.PublicKey),
+		Result:    types.NewMsgFulfilKeyRequestKey(r.PublicKey),
 	}
 }
 
@@ -25,11 +26,11 @@ type KeyRequestRejection struct {
 }
 
 func (r KeyRequestRejection) Msg(creator string) sdk.Msg {
-	return &types.MsgUpdateKeyRequest{
+	return &types.MsgFulfilKeyRequest{
 		Creator:   creator,
 		RequestId: r.RequestID,
 		Status:    types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED,
-		Result:    types.NewMsgUpdateKeyRequestReject(r.Reason),
+		Result:    types.NewMsgFulfilKeyRequestReject(r.Reason),
 	}
 }
 
@@ -39,11 +40,11 @@ type SignRequestFulfilment struct {
 }
 
 func (r SignRequestFulfilment) Msg(creator string) sdk.Msg {
-	return &types.MsgFulfilSignatureRequest{
+	return &types.MsgFulfilSignRequest{
 		Creator:   creator,
 		RequestId: r.RequestID,
 		Status:    types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED,
-		Result: &types.MsgFulfilSignatureRequest_Payload{
+		Result: &types.MsgFulfilSignRequest_Payload{
 			Payload: &types.MsgSignedData{
 				SignedData: r.Signature,
 			},
@@ -57,11 +58,11 @@ type SignRequestRejection struct {
 }
 
 func (r SignRequestRejection) Msg(creator string) sdk.Msg {
-	return &types.MsgFulfilSignatureRequest{
+	return &types.MsgFulfilSignRequest{
 		Creator:   creator,
 		RequestId: r.RequestID,
 		Status:    types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED,
-		Result: &types.MsgFulfilSignatureRequest_RejectReason{
+		Result: &types.MsgFulfilSignRequest_RejectReason{
 			RejectReason: r.Reason,
 		},
 	}

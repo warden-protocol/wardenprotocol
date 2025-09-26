@@ -1,0 +1,28 @@
+[package]
+name = "analyzers-core"
+version.workspace = true
+edition = "2021"
+description = ""
+license = "Apache-2.0"
+repository = "https://github.com/warden-protocol/wardenprotocol"
+homepage = "https://wardenprotocol.org/"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+# use library feature to disable all instantiate/execute/query exports
+library = []
+test-utils = []
+
+[dependencies]
+cosmwasm-schema = { workspace = true }
+cosmwasm-std = { workspace = true, features = ["staking"] }
+cw2 = { workspace = true }
+serde = { workspace = true }
+hex = "0.4.3"
+
+[dev-dependencies]
+anyhow = "1"
+assert_matches = "1"
+derivative = "2"

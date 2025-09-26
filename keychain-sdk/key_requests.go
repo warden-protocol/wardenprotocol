@@ -7,78 +7,82 @@ import (
 	"time"
 
 	"github.com/warden-protocol/wardenprotocol/go-client"
-	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	"github.com/warden-protocol/wardenprotocol/keychain-sdk/internal/writer"
+	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
-type KeyResponseWriter interface {
-	Fulfil(publicKey []byte) error
-	Reject(reason string) error
-}
-
+// KeyRequest is a key request.
 type KeyRequest wardentypes.KeyRequest
 
-type KeyRequestHandler func(w KeyResponseWriter, req *KeyRequest)
+// KeyRequestHandler is a function that handles key requests.
+type KeyRequestHandler func(ctx context.Context, w Writer, req *KeyRequest)
 
 type keyResponseWriter struct {
-	ctx          context.Context
-	txWriter     *TxWriter
+	txWriter     *writer.W
 	keyRequestID uint64
 	logger       *slog.Logger
 	onComplete   func()
 }
 
-func (w *keyResponseWriter) Fulfil(publicKey []byte) error {
-	w.logger.Debug("fulfilling key request", "id", w.keyRequestID, "public_key", hex.EncodeToString(publicKey))
-	defer w.onComplete()
-	return w.txWriter.Write(w.ctx, client.KeyRequestFulfilment{
+func (w *keyResponseWriter) Fulfil(ctx context.Context, publicKey []byte) error {
+	w.logger.DebugContext(ctx, "fulfilling key request", "id", w.keyRequestID, "public_key", hex.EncodeToString(publicKey))
+	err := w.txWriter.Write(ctx, client.KeyRequestFulfilment{
 		RequestID: w.keyRequestID,
 		PublicKey: publicKey,
 	})
+	w.onComplete()
+	w.logger.DebugContext(ctx, "fulfilled key request", "id", w.keyRequestID, "error", err)
+
+	return err
 }
 
-func (w *keyResponseWriter) Reject(reason string) error {
-	w.logger.Debug("rejecting key request", "id", w.keyRequestID, "reason", reason)
-	defer w.onComplete()
-	return w.txWriter.Write(w.ctx, client.KeyRequestRejection{
+func (w *keyResponseWriter) Reject(ctx context.Context, reason string) error {
+	w.logger.DebugContext(ctx, "rejecting key request", "id", w.keyRequestID, "reason", reason)
+	err := w.txWriter.Write(ctx, client.KeyRequestRejection{
 		RequestID: w.keyRequestID,
 		Reason:    reason,
 	})
+	w.onComplete()
+	w.logger.DebugContext(ctx, "rejected key request", "id", w.keyRequestID, "error", err)
+
+	return err
 }
 
-func (a *App) ingestKeyRequests(keyRequestsCh chan *wardentypes.KeyRequest) {
+func (a *App) ingestKeyRequests(ctx context.Context, keyRequestsCh chan *wardentypes.KeyRequest) {
 	for {
-		reqCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		reqCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
 		keyRequests, err := a.keyRequests(reqCtx)
+
 		cancel()
+
 		if err != nil {
-			a.logger().Error("failed to get key requests", "error", err)
+			a.logger().ErrorContext(reqCtx, "failed to get key requests", "error", err)
 		} else {
 			for _, keyRequest := range keyRequests {
 				if !a.keyRequestTracker.IsNew(keyRequest.Id) {
-					a.logger().Debug("skipping key request", "id", keyRequest.Id)
+					a.logger().DebugContext(reqCtx, "skipping key request", "id", keyRequest.Id)
 					continue
 				}
 
-				a.logger().Info("got key request", "id", keyRequest.Id)
+				a.logger().InfoContext(reqCtx, "got key request", "id", keyRequest.Id)
 				a.keyRequestTracker.Ingested(keyRequest.Id)
+
 				keyRequestsCh <- keyRequest
 			}
 		}
 
-		time.Sleep(5 * time.Second)
+		time.Sleep(a.config.BatchInterval / 2)
 	}
 }
 
-func (a *App) handleKeyRequest(keyRequest *wardentypes.KeyRequest) {
+func (a *App) handleKeyRequest(ctx context.Context, keyRequest *wardentypes.KeyRequest) {
 	if a.keyRequestHandler == nil {
-		a.logger().Error("key request handler not set")
+		a.logger().ErrorContext(ctx, "key request handler not set")
 		return
 	}
 
 	go func() {
-		ctx := context.Background()
 		w := &keyResponseWriter{
-			ctx:          ctx,
 			txWriter:     a.txWriter,
 			keyRequestID: keyRequest.Id,
 			logger:       a.logger(),
@@ -86,18 +90,21 @@ func (a *App) handleKeyRequest(keyRequest *wardentypes.KeyRequest) {
 				a.keyRequestTracker.Done(keyRequest.Id)
 			},
 		}
+
 		defer func() {
 			if r := recover(); r != nil {
-				a.logger().Error("panic in key request handler", "error", r)
-				_ = w.Reject("internal error")
+				a.logger().ErrorContext(ctx, "panic in key request handler", "error", r)
+
+				_ = w.Reject(ctx, "internal error")
+
 				return
 			}
 		}()
 
-		a.keyRequestHandler(w, (*KeyRequest)(keyRequest))
+		a.keyRequestHandler(ctx, w, (*KeyRequest)(keyRequest))
 	}()
 }
 
 func (a *App) keyRequests(ctx context.Context) ([]*wardentypes.KeyRequest, error) {
-	return a.query.PendingKeyRequests(ctx, &client.PageRequest{Limit: defaultPageLimit}, a.config.KeychainId)
+	return a.query.PendingKeyRequests(ctx, &client.PageRequest{Limit: uint64(a.config.BatchSize)}, a.config.KeychainID)
 }

@@ -1,0 +1,23 @@
+{
+  "name": "@wardenprotocol/tracker",
+  "version": "1.0.0",
+  "license": "ISC",
+  "devDependencies": {
+    "forge-std": "github:foundry-rs/forge-std#v1.8.1",
+    "prettier": "^3.0.0",
+    "solhint": "^3.6.2"
+  },
+  "dependencies": {},
+  "scripts": {
+    "clean": "rm -rf cache out",
+    "build": "forge build src --via-ir",
+    "lint": "pnpm run lint:sol && pnpm run prettier:check",
+    "lint:sol": "forge fmt --check && pnpm solhint \"{script,src,test}/**/*.sol\"",
+    "prettier:check": "prettier --check \"**/*.{json,md,yml}\" --ignore-path \".prettierignore\"",
+    "prettier:write": "prettier --write \"**/*.{json,md,yml}\" --ignore-path \".prettierignore\"",
+    "test": "forge test --via-ir",
+    "test:coverage": "forge coverage",
+    "test:coverage:report": "forge coverage --report lcov && genhtml lcov.info --branch-coverage --output-dir coverage",
+    "deploy": "forge script script/Deploy.s.sol:Deploy --chain $CHAIN_ID --rpc-url $RPC_URL --broadcast -vvvv --via-ir --slow"
+  }
+}

@@ -19,11 +19,12 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+*.local
 
 node_modules
 dist
 dist-ssr
-*.local
+dist-linux-amd64
 
 # Editor directories and files
 .tmp
@@ -36,3 +37,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.envrc
+
+cache
+out

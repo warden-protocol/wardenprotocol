@@ -1,0 +1,12 @@
+name: "Go mod tidy check"
+
+on:
+  push:
+
+jobs:
+  go-mod-tidy-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v5
+      - uses: katexochen/go-tidy-check@v2

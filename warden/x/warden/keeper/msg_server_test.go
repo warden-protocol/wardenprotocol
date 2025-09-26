@@ -8,7 +8,7 @@ import (
 
 	keepertest "github.com/warden-protocol/wardenprotocol/warden/testutil/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func setupMsgServer(t testing.TB) (keeper.Keeper, types.MsgServer, context.Context) {

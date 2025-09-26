@@ -16,13 +16,15 @@ import (
 )
 
 var (
-	md_Expression                  protoreflect.MessageDescriptor
-	fd_Expression_identifier       protoreflect.FieldDescriptor
-	fd_Expression_integer_literal  protoreflect.FieldDescriptor
-	fd_Expression_boolean_literal  protoreflect.FieldDescriptor
-	fd_Expression_array_literal    protoreflect.FieldDescriptor
-	fd_Expression_call_expression  protoreflect.FieldDescriptor
-	fd_Expression_infix_expression protoreflect.FieldDescriptor
+	md_Expression                   protoreflect.MessageDescriptor
+	fd_Expression_identifier        protoreflect.FieldDescriptor
+	fd_Expression_integer_literal   protoreflect.FieldDescriptor
+	fd_Expression_boolean_literal   protoreflect.FieldDescriptor
+	fd_Expression_string_literal    protoreflect.FieldDescriptor
+	fd_Expression_array_literal     protoreflect.FieldDescriptor
+	fd_Expression_call_expression   protoreflect.FieldDescriptor
+	fd_Expression_infix_expression  protoreflect.FieldDescriptor
+	fd_Expression_prefix_expression protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -31,9 +33,11 @@ func init() {
 	fd_Expression_identifier = md_Expression.Fields().ByName("identifier")
 	fd_Expression_integer_literal = md_Expression.Fields().ByName("integer_literal")
 	fd_Expression_boolean_literal = md_Expression.Fields().ByName("boolean_literal")
+	fd_Expression_string_literal = md_Expression.Fields().ByName("string_literal")
 	fd_Expression_array_literal = md_Expression.Fields().ByName("array_literal")
 	fd_Expression_call_expression = md_Expression.Fields().ByName("call_expression")
 	fd_Expression_infix_expression = md_Expression.Fields().ByName("infix_expression")
+	fd_Expression_prefix_expression = md_Expression.Fields().ByName("prefix_expression")
 }
 
 var _ protoreflect.Message = (*fastReflection_Expression)(nil)
@@ -121,6 +125,12 @@ func (x *fastReflection_Expression) Range(f func(protoreflect.FieldDescriptor, p
 			if !f(fd_Expression_boolean_literal, value) {
 				return
 			}
+		case *Expression_StringLiteral:
+			v := o.StringLiteral
+			value := protoreflect.ValueOfMessage(v.ProtoReflect())
+			if !f(fd_Expression_string_literal, value) {
+				return
+			}
 		case *Expression_ArrayLiteral:
 			v := o.ArrayLiteral
 			value := protoreflect.ValueOfMessage(v.ProtoReflect())
@@ -137,6 +147,12 @@ func (x *fastReflection_Expression) Range(f func(protoreflect.FieldDescriptor, p
 			v := o.InfixExpression
 			value := protoreflect.ValueOfMessage(v.ProtoReflect())
 			if !f(fd_Expression_infix_expression, value) {
+				return
+			}
+		case *Expression_PrefixExpression:
+			v := o.PrefixExpression
+			value := protoreflect.ValueOfMessage(v.ProtoReflect())
+			if !f(fd_Expression_prefix_expression, value) {
 				return
 			}
 		}
@@ -180,6 +196,14 @@ func (x *fastReflection_Expression) Has(fd protoreflect.FieldDescriptor) bool {
 		} else {
 			return false
 		}
+	case "shield.ast.Expression.string_literal":
+		if x.Value == nil {
+			return false
+		} else if _, ok := x.Value.(*Expression_StringLiteral); ok {
+			return true
+		} else {
+			return false
+		}
 	case "shield.ast.Expression.array_literal":
 		if x.Value == nil {
 			return false
@@ -200,6 +224,14 @@ func (x *fastReflection_Expression) Has(fd protoreflect.FieldDescriptor) bool {
 		if x.Value == nil {
 			return false
 		} else if _, ok := x.Value.(*Expression_InfixExpression); ok {
+			return true
+		} else {
+			return false
+		}
+	case "shield.ast.Expression.prefix_expression":
+		if x.Value == nil {
+			return false
+		} else if _, ok := x.Value.(*Expression_PrefixExpression); ok {
 			return true
 		} else {
 			return false
@@ -226,11 +258,15 @@ func (x *fastReflection_Expression) Clear(fd protoreflect.FieldDescriptor) {
 		x.Value = nil
 	case "shield.ast.Expression.boolean_literal":
 		x.Value = nil
+	case "shield.ast.Expression.string_literal":
+		x.Value = nil
 	case "shield.ast.Expression.array_literal":
 		x.Value = nil
 	case "shield.ast.Expression.call_expression":
 		x.Value = nil
 	case "shield.ast.Expression.infix_expression":
+		x.Value = nil
+	case "shield.ast.Expression.prefix_expression":
 		x.Value = nil
 	default:
 		if fd.IsExtension() {
@@ -272,6 +308,14 @@ func (x *fastReflection_Expression) Get(descriptor protoreflect.FieldDescriptor)
 		} else {
 			return protoreflect.ValueOfMessage((*BooleanLiteral)(nil).ProtoReflect())
 		}
+	case "shield.ast.Expression.string_literal":
+		if x.Value == nil {
+			return protoreflect.ValueOfMessage((*StringLiteral)(nil).ProtoReflect())
+		} else if v, ok := x.Value.(*Expression_StringLiteral); ok {
+			return protoreflect.ValueOfMessage(v.StringLiteral.ProtoReflect())
+		} else {
+			return protoreflect.ValueOfMessage((*StringLiteral)(nil).ProtoReflect())
+		}
 	case "shield.ast.Expression.array_literal":
 		if x.Value == nil {
 			return protoreflect.ValueOfMessage((*ArrayLiteral)(nil).ProtoReflect())
@@ -295,6 +339,14 @@ func (x *fastReflection_Expression) Get(descriptor protoreflect.FieldDescriptor)
 			return protoreflect.ValueOfMessage(v.InfixExpression.ProtoReflect())
 		} else {
 			return protoreflect.ValueOfMessage((*InfixExpression)(nil).ProtoReflect())
+		}
+	case "shield.ast.Expression.prefix_expression":
+		if x.Value == nil {
+			return protoreflect.ValueOfMessage((*PrefixExpression)(nil).ProtoReflect())
+		} else if v, ok := x.Value.(*Expression_PrefixExpression); ok {
+			return protoreflect.ValueOfMessage(v.PrefixExpression.ProtoReflect())
+		} else {
+			return protoreflect.ValueOfMessage((*PrefixExpression)(nil).ProtoReflect())
 		}
 	default:
 		if descriptor.IsExtension() {
@@ -325,6 +377,9 @@ func (x *fastReflection_Expression) Set(fd protoreflect.FieldDescriptor, value p
 	case "shield.ast.Expression.boolean_literal":
 		cv := value.Message().Interface().(*BooleanLiteral)
 		x.Value = &Expression_BooleanLiteral{BooleanLiteral: cv}
+	case "shield.ast.Expression.string_literal":
+		cv := value.Message().Interface().(*StringLiteral)
+		x.Value = &Expression_StringLiteral{StringLiteral: cv}
 	case "shield.ast.Expression.array_literal":
 		cv := value.Message().Interface().(*ArrayLiteral)
 		x.Value = &Expression_ArrayLiteral{ArrayLiteral: cv}
@@ -334,6 +389,9 @@ func (x *fastReflection_Expression) Set(fd protoreflect.FieldDescriptor, value p
 	case "shield.ast.Expression.infix_expression":
 		cv := value.Message().Interface().(*InfixExpression)
 		x.Value = &Expression_InfixExpression{InfixExpression: cv}
+	case "shield.ast.Expression.prefix_expression":
+		cv := value.Message().Interface().(*PrefixExpression)
+		x.Value = &Expression_PrefixExpression{PrefixExpression: cv}
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.Expression"))
@@ -402,6 +460,22 @@ func (x *fastReflection_Expression) Mutable(fd protoreflect.FieldDescriptor) pro
 			x.Value = oneofValue
 			return protoreflect.ValueOfMessage(value.ProtoReflect())
 		}
+	case "shield.ast.Expression.string_literal":
+		if x.Value == nil {
+			value := &StringLiteral{}
+			oneofValue := &Expression_StringLiteral{StringLiteral: value}
+			x.Value = oneofValue
+			return protoreflect.ValueOfMessage(value.ProtoReflect())
+		}
+		switch m := x.Value.(type) {
+		case *Expression_StringLiteral:
+			return protoreflect.ValueOfMessage(m.StringLiteral.ProtoReflect())
+		default:
+			value := &StringLiteral{}
+			oneofValue := &Expression_StringLiteral{StringLiteral: value}
+			x.Value = oneofValue
+			return protoreflect.ValueOfMessage(value.ProtoReflect())
+		}
 	case "shield.ast.Expression.array_literal":
 		if x.Value == nil {
 			value := &ArrayLiteral{}
@@ -450,6 +524,22 @@ func (x *fastReflection_Expression) Mutable(fd protoreflect.FieldDescriptor) pro
 			x.Value = oneofValue
 			return protoreflect.ValueOfMessage(value.ProtoReflect())
 		}
+	case "shield.ast.Expression.prefix_expression":
+		if x.Value == nil {
+			value := &PrefixExpression{}
+			oneofValue := &Expression_PrefixExpression{PrefixExpression: value}
+			x.Value = oneofValue
+			return protoreflect.ValueOfMessage(value.ProtoReflect())
+		}
+		switch m := x.Value.(type) {
+		case *Expression_PrefixExpression:
+			return protoreflect.ValueOfMessage(m.PrefixExpression.ProtoReflect())
+		default:
+			value := &PrefixExpression{}
+			oneofValue := &Expression_PrefixExpression{PrefixExpression: value}
+			x.Value = oneofValue
+			return protoreflect.ValueOfMessage(value.ProtoReflect())
+		}
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.Expression"))
@@ -472,6 +562,9 @@ func (x *fastReflection_Expression) NewField(fd protoreflect.FieldDescriptor) pr
 	case "shield.ast.Expression.boolean_literal":
 		value := &BooleanLiteral{}
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
+	case "shield.ast.Expression.string_literal":
+		value := &StringLiteral{}
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	case "shield.ast.Expression.array_literal":
 		value := &ArrayLiteral{}
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
@@ -480,6 +573,9 @@ func (x *fastReflection_Expression) NewField(fd protoreflect.FieldDescriptor) pr
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	case "shield.ast.Expression.infix_expression":
 		value := &InfixExpression{}
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
+	case "shield.ast.Expression.prefix_expression":
+		value := &PrefixExpression{}
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	default:
 		if fd.IsExtension() {
@@ -505,12 +601,16 @@ func (x *fastReflection_Expression) WhichOneof(d protoreflect.OneofDescriptor) p
 			return x.Descriptor().Fields().ByName("integer_literal")
 		case *Expression_BooleanLiteral:
 			return x.Descriptor().Fields().ByName("boolean_literal")
+		case *Expression_StringLiteral:
+			return x.Descriptor().Fields().ByName("string_literal")
 		case *Expression_ArrayLiteral:
 			return x.Descriptor().Fields().ByName("array_literal")
 		case *Expression_CallExpression:
 			return x.Descriptor().Fields().ByName("call_expression")
 		case *Expression_InfixExpression:
 			return x.Descriptor().Fields().ByName("infix_expression")
+		case *Expression_PrefixExpression:
+			return x.Descriptor().Fields().ByName("prefix_expression")
 		}
 	default:
 		panic(fmt.Errorf("%s is not a oneof field in shield.ast.Expression", d.FullName()))
@@ -587,6 +687,12 @@ func (x *fastReflection_Expression) ProtoMethods() *protoiface.Methods {
 			}
 			l = options.Size(x.BooleanLiteral)
 			n += 1 + l + runtime.Sov(uint64(l))
+		case *Expression_StringLiteral:
+			if x == nil {
+				break
+			}
+			l = options.Size(x.StringLiteral)
+			n += 1 + l + runtime.Sov(uint64(l))
 		case *Expression_ArrayLiteral:
 			if x == nil {
 				break
@@ -604,6 +710,12 @@ func (x *fastReflection_Expression) ProtoMethods() *protoiface.Methods {
 				break
 			}
 			l = options.Size(x.InfixExpression)
+			n += 1 + l + runtime.Sov(uint64(l))
+		case *Expression_PrefixExpression:
+			if x == nil {
+				break
+			}
+			l = options.Size(x.PrefixExpression)
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
 		if x.unknownFields != nil {
@@ -675,6 +787,19 @@ func (x *fastReflection_Expression) ProtoMethods() *protoiface.Methods {
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
 			i--
 			dAtA[i] = 0x1a
+		case *Expression_StringLiteral:
+			encoded, err := options.Marshal(x.StringLiteral)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+			i--
+			dAtA[i] = 0x22
 		case *Expression_ArrayLiteral:
 			encoded, err := options.Marshal(x.ArrayLiteral)
 			if err != nil {
@@ -687,7 +812,7 @@ func (x *fastReflection_Expression) ProtoMethods() *protoiface.Methods {
 			copy(dAtA[i:], encoded)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
 			i--
-			dAtA[i] = 0x22
+			dAtA[i] = 0x2a
 		case *Expression_CallExpression:
 			encoded, err := options.Marshal(x.CallExpression)
 			if err != nil {
@@ -700,7 +825,7 @@ func (x *fastReflection_Expression) ProtoMethods() *protoiface.Methods {
 			copy(dAtA[i:], encoded)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
 			i--
-			dAtA[i] = 0x2a
+			dAtA[i] = 0x32
 		case *Expression_InfixExpression:
 			encoded, err := options.Marshal(x.InfixExpression)
 			if err != nil {
@@ -713,7 +838,20 @@ func (x *fastReflection_Expression) ProtoMethods() *protoiface.Methods {
 			copy(dAtA[i:], encoded)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
 			i--
-			dAtA[i] = 0x32
+			dAtA[i] = 0x3a
+		case *Expression_PrefixExpression:
+			encoded, err := options.Marshal(x.PrefixExpression)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+			i--
+			dAtA[i] = 0x42
 		}
 		if input.Buf != nil {
 			input.Buf = append(input.Buf, dAtA...)
@@ -871,6 +1009,41 @@ func (x *fastReflection_Expression) ProtoMethods() *protoiface.Methods {
 				iNdEx = postIndex
 			case 4:
 				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field StringLiteral", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				v := &StringLiteral{}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				x.Value = &Expression_StringLiteral{v}
+				iNdEx = postIndex
+			case 5:
+				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ArrayLiteral", wireType)
 				}
 				var msglen int
@@ -904,7 +1077,7 @@ func (x *fastReflection_Expression) ProtoMethods() *protoiface.Methods {
 				}
 				x.Value = &Expression_ArrayLiteral{v}
 				iNdEx = postIndex
-			case 5:
+			case 6:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field CallExpression", wireType)
 				}
@@ -939,7 +1112,7 @@ func (x *fastReflection_Expression) ProtoMethods() *protoiface.Methods {
 				}
 				x.Value = &Expression_CallExpression{v}
 				iNdEx = postIndex
-			case 6:
+			case 7:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field InfixExpression", wireType)
 				}
@@ -973,6 +1146,41 @@ func (x *fastReflection_Expression) ProtoMethods() *protoiface.Methods {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				x.Value = &Expression_InfixExpression{v}
+				iNdEx = postIndex
+			case 8:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field PrefixExpression", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				v := &PrefixExpression{}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				x.Value = &Expression_PrefixExpression{v}
 				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
@@ -1592,8 +1800,8 @@ func (x *fastReflection_IntegerLiteral) Range(f func(protoreflect.FieldDescripto
 			return
 		}
 	}
-	if x.Value != int64(0) {
-		value := protoreflect.ValueOfInt64(x.Value)
+	if x.Value != "" {
+		value := protoreflect.ValueOfString(x.Value)
 		if !f(fd_IntegerLiteral_value, value) {
 			return
 		}
@@ -1616,7 +1824,7 @@ func (x *fastReflection_IntegerLiteral) Has(fd protoreflect.FieldDescriptor) boo
 	case "shield.ast.IntegerLiteral.token":
 		return x.Token != nil
 	case "shield.ast.IntegerLiteral.value":
-		return x.Value != int64(0)
+		return x.Value != ""
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.IntegerLiteral"))
@@ -1636,7 +1844,7 @@ func (x *fastReflection_IntegerLiteral) Clear(fd protoreflect.FieldDescriptor) {
 	case "shield.ast.IntegerLiteral.token":
 		x.Token = nil
 	case "shield.ast.IntegerLiteral.value":
-		x.Value = int64(0)
+		x.Value = ""
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.IntegerLiteral"))
@@ -1658,7 +1866,7 @@ func (x *fastReflection_IntegerLiteral) Get(descriptor protoreflect.FieldDescrip
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	case "shield.ast.IntegerLiteral.value":
 		value := x.Value
-		return protoreflect.ValueOfInt64(value)
+		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.IntegerLiteral"))
@@ -1682,7 +1890,7 @@ func (x *fastReflection_IntegerLiteral) Set(fd protoreflect.FieldDescriptor, val
 	case "shield.ast.IntegerLiteral.token":
 		x.Token = value.Message().Interface().(*token.Token)
 	case "shield.ast.IntegerLiteral.value":
-		x.Value = value.Int()
+		x.Value = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.IntegerLiteral"))
@@ -1727,7 +1935,7 @@ func (x *fastReflection_IntegerLiteral) NewField(fd protoreflect.FieldDescriptor
 		m := new(token.Token)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	case "shield.ast.IntegerLiteral.value":
-		return protoreflect.ValueOfInt64(int64(0))
+		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.IntegerLiteral"))
@@ -1801,8 +2009,9 @@ func (x *fastReflection_IntegerLiteral) ProtoMethods() *protoiface.Methods {
 			l = options.Size(x.Token)
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if x.Value != 0 {
-			n += 1 + runtime.Sov(uint64(x.Value))
+		l = len(x.Value)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
 		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
@@ -1833,10 +2042,12 @@ func (x *fastReflection_IntegerLiteral) ProtoMethods() *protoiface.Methods {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if x.Value != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.Value))
+		if len(x.Value) > 0 {
+			i -= len(x.Value)
+			copy(dAtA[i:], x.Value)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Value)))
 			i--
-			dAtA[i] = 0x10
+			dAtA[i] = 0x12
 		}
 		if x.Token != nil {
 			encoded, err := options.Marshal(x.Token)
@@ -1938,10 +2149,10 @@ func (x *fastReflection_IntegerLiteral) ProtoMethods() *protoiface.Methods {
 				}
 				iNdEx = postIndex
 			case 2:
-				if wireType != 0 {
+				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Value", wireType)
 				}
-				x.Value = 0
+				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -1951,11 +2162,24 @@ func (x *fastReflection_IntegerLiteral) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					x.Value |= int64(b&0x7F) << shift
+					stringLen |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Value = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -2480,6 +2704,505 @@ func (x *fastReflection_BooleanLiteral) ProtoMethods() *protoiface.Methods {
 	}
 }
 
+var (
+	md_StringLiteral       protoreflect.MessageDescriptor
+	fd_StringLiteral_token protoreflect.FieldDescriptor
+	fd_StringLiteral_value protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_shield_ast_ast_proto_init()
+	md_StringLiteral = File_shield_ast_ast_proto.Messages().ByName("StringLiteral")
+	fd_StringLiteral_token = md_StringLiteral.Fields().ByName("token")
+	fd_StringLiteral_value = md_StringLiteral.Fields().ByName("value")
+}
+
+var _ protoreflect.Message = (*fastReflection_StringLiteral)(nil)
+
+type fastReflection_StringLiteral StringLiteral
+
+func (x *StringLiteral) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_StringLiteral)(x)
+}
+
+func (x *StringLiteral) slowProtoReflect() protoreflect.Message {
+	mi := &file_shield_ast_ast_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_StringLiteral_messageType fastReflection_StringLiteral_messageType
+var _ protoreflect.MessageType = fastReflection_StringLiteral_messageType{}
+
+type fastReflection_StringLiteral_messageType struct{}
+
+func (x fastReflection_StringLiteral_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_StringLiteral)(nil)
+}
+func (x fastReflection_StringLiteral_messageType) New() protoreflect.Message {
+	return new(fastReflection_StringLiteral)
+}
+func (x fastReflection_StringLiteral_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_StringLiteral
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_StringLiteral) Descriptor() protoreflect.MessageDescriptor {
+	return md_StringLiteral
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_StringLiteral) Type() protoreflect.MessageType {
+	return _fastReflection_StringLiteral_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_StringLiteral) New() protoreflect.Message {
+	return new(fastReflection_StringLiteral)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_StringLiteral) Interface() protoreflect.ProtoMessage {
+	return (*StringLiteral)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_StringLiteral) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if x.Token != nil {
+		value := protoreflect.ValueOfMessage(x.Token.ProtoReflect())
+		if !f(fd_StringLiteral_token, value) {
+			return
+		}
+	}
+	if x.Value != "" {
+		value := protoreflect.ValueOfString(x.Value)
+		if !f(fd_StringLiteral_value, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_StringLiteral) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "shield.ast.StringLiteral.token":
+		return x.Token != nil
+	case "shield.ast.StringLiteral.value":
+		return x.Value != ""
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.StringLiteral"))
+		}
+		panic(fmt.Errorf("message shield.ast.StringLiteral does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_StringLiteral) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "shield.ast.StringLiteral.token":
+		x.Token = nil
+	case "shield.ast.StringLiteral.value":
+		x.Value = ""
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.StringLiteral"))
+		}
+		panic(fmt.Errorf("message shield.ast.StringLiteral does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_StringLiteral) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "shield.ast.StringLiteral.token":
+		value := x.Token
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
+	case "shield.ast.StringLiteral.value":
+		value := x.Value
+		return protoreflect.ValueOfString(value)
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.StringLiteral"))
+		}
+		panic(fmt.Errorf("message shield.ast.StringLiteral does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_StringLiteral) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "shield.ast.StringLiteral.token":
+		x.Token = value.Message().Interface().(*token.Token)
+	case "shield.ast.StringLiteral.value":
+		x.Value = value.Interface().(string)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.StringLiteral"))
+		}
+		panic(fmt.Errorf("message shield.ast.StringLiteral does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_StringLiteral) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "shield.ast.StringLiteral.token":
+		if x.Token == nil {
+			x.Token = new(token.Token)
+		}
+		return protoreflect.ValueOfMessage(x.Token.ProtoReflect())
+	case "shield.ast.StringLiteral.value":
+		panic(fmt.Errorf("field value of message shield.ast.StringLiteral is not mutable"))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.StringLiteral"))
+		}
+		panic(fmt.Errorf("message shield.ast.StringLiteral does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_StringLiteral) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "shield.ast.StringLiteral.token":
+		m := new(token.Token)
+		return protoreflect.ValueOfMessage(m.ProtoReflect())
+	case "shield.ast.StringLiteral.value":
+		return protoreflect.ValueOfString("")
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.StringLiteral"))
+		}
+		panic(fmt.Errorf("message shield.ast.StringLiteral does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_StringLiteral) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in shield.ast.StringLiteral", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_StringLiteral) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_StringLiteral) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_StringLiteral) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_StringLiteral) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*StringLiteral)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		if x.Token != nil {
+			l = options.Size(x.Token)
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.Value)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*StringLiteral)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if len(x.Value) > 0 {
+			i -= len(x.Value)
+			copy(dAtA[i:], x.Value)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Value)))
+			i--
+			dAtA[i] = 0x12
+		}
+		if x.Token != nil {
+			encoded, err := options.Marshal(x.Token)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+			i--
+			dAtA[i] = 0xa
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*StringLiteral)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: StringLiteral: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: StringLiteral: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Token", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if x.Token == nil {
+					x.Token = &token.Token{}
+				}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Token); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
+			case 2:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Value", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Value = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
 var _ protoreflect.List = (*_ArrayLiteral_2_list)(nil)
 
 type _ArrayLiteral_2_list struct {
@@ -2553,7 +3276,7 @@ func (x *ArrayLiteral) ProtoReflect() protoreflect.Message {
 }
 
 func (x *ArrayLiteral) slowProtoReflect() protoreflect.Message {
-	mi := &file_shield_ast_ast_proto_msgTypes[4]
+	mi := &file_shield_ast_ast_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3128,7 +3851,7 @@ func (x *CallExpression) ProtoReflect() protoreflect.Message {
 }
 
 func (x *CallExpression) slowProtoReflect() protoreflect.Message {
-	mi := &file_shield_ast_ast_proto_msgTypes[5]
+	mi := &file_shield_ast_ast_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3731,7 +4454,7 @@ func (x *InfixExpression) ProtoReflect() protoreflect.Message {
 }
 
 func (x *InfixExpression) slowProtoReflect() protoreflect.Message {
-	mi := &file_shield_ast_ast_proto_msgTypes[6]
+	mi := &file_shield_ast_ast_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4362,6 +5085,584 @@ func (x *fastReflection_InfixExpression) ProtoMethods() *protoiface.Methods {
 	}
 }
 
+var (
+	md_PrefixExpression          protoreflect.MessageDescriptor
+	fd_PrefixExpression_token    protoreflect.FieldDescriptor
+	fd_PrefixExpression_operator protoreflect.FieldDescriptor
+	fd_PrefixExpression_right    protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_shield_ast_ast_proto_init()
+	md_PrefixExpression = File_shield_ast_ast_proto.Messages().ByName("PrefixExpression")
+	fd_PrefixExpression_token = md_PrefixExpression.Fields().ByName("token")
+	fd_PrefixExpression_operator = md_PrefixExpression.Fields().ByName("operator")
+	fd_PrefixExpression_right = md_PrefixExpression.Fields().ByName("right")
+}
+
+var _ protoreflect.Message = (*fastReflection_PrefixExpression)(nil)
+
+type fastReflection_PrefixExpression PrefixExpression
+
+func (x *PrefixExpression) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_PrefixExpression)(x)
+}
+
+func (x *PrefixExpression) slowProtoReflect() protoreflect.Message {
+	mi := &file_shield_ast_ast_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_PrefixExpression_messageType fastReflection_PrefixExpression_messageType
+var _ protoreflect.MessageType = fastReflection_PrefixExpression_messageType{}
+
+type fastReflection_PrefixExpression_messageType struct{}
+
+func (x fastReflection_PrefixExpression_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_PrefixExpression)(nil)
+}
+func (x fastReflection_PrefixExpression_messageType) New() protoreflect.Message {
+	return new(fastReflection_PrefixExpression)
+}
+func (x fastReflection_PrefixExpression_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_PrefixExpression
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_PrefixExpression) Descriptor() protoreflect.MessageDescriptor {
+	return md_PrefixExpression
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_PrefixExpression) Type() protoreflect.MessageType {
+	return _fastReflection_PrefixExpression_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_PrefixExpression) New() protoreflect.Message {
+	return new(fastReflection_PrefixExpression)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_PrefixExpression) Interface() protoreflect.ProtoMessage {
+	return (*PrefixExpression)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_PrefixExpression) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if x.Token != nil {
+		value := protoreflect.ValueOfMessage(x.Token.ProtoReflect())
+		if !f(fd_PrefixExpression_token, value) {
+			return
+		}
+	}
+	if x.Operator != "" {
+		value := protoreflect.ValueOfString(x.Operator)
+		if !f(fd_PrefixExpression_operator, value) {
+			return
+		}
+	}
+	if x.Right != nil {
+		value := protoreflect.ValueOfMessage(x.Right.ProtoReflect())
+		if !f(fd_PrefixExpression_right, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_PrefixExpression) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "shield.ast.PrefixExpression.token":
+		return x.Token != nil
+	case "shield.ast.PrefixExpression.operator":
+		return x.Operator != ""
+	case "shield.ast.PrefixExpression.right":
+		return x.Right != nil
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.PrefixExpression"))
+		}
+		panic(fmt.Errorf("message shield.ast.PrefixExpression does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_PrefixExpression) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "shield.ast.PrefixExpression.token":
+		x.Token = nil
+	case "shield.ast.PrefixExpression.operator":
+		x.Operator = ""
+	case "shield.ast.PrefixExpression.right":
+		x.Right = nil
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.PrefixExpression"))
+		}
+		panic(fmt.Errorf("message shield.ast.PrefixExpression does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_PrefixExpression) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "shield.ast.PrefixExpression.token":
+		value := x.Token
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
+	case "shield.ast.PrefixExpression.operator":
+		value := x.Operator
+		return protoreflect.ValueOfString(value)
+	case "shield.ast.PrefixExpression.right":
+		value := x.Right
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.PrefixExpression"))
+		}
+		panic(fmt.Errorf("message shield.ast.PrefixExpression does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_PrefixExpression) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "shield.ast.PrefixExpression.token":
+		x.Token = value.Message().Interface().(*token.Token)
+	case "shield.ast.PrefixExpression.operator":
+		x.Operator = value.Interface().(string)
+	case "shield.ast.PrefixExpression.right":
+		x.Right = value.Message().Interface().(*Expression)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.PrefixExpression"))
+		}
+		panic(fmt.Errorf("message shield.ast.PrefixExpression does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_PrefixExpression) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "shield.ast.PrefixExpression.token":
+		if x.Token == nil {
+			x.Token = new(token.Token)
+		}
+		return protoreflect.ValueOfMessage(x.Token.ProtoReflect())
+	case "shield.ast.PrefixExpression.right":
+		if x.Right == nil {
+			x.Right = new(Expression)
+		}
+		return protoreflect.ValueOfMessage(x.Right.ProtoReflect())
+	case "shield.ast.PrefixExpression.operator":
+		panic(fmt.Errorf("field operator of message shield.ast.PrefixExpression is not mutable"))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.PrefixExpression"))
+		}
+		panic(fmt.Errorf("message shield.ast.PrefixExpression does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_PrefixExpression) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "shield.ast.PrefixExpression.token":
+		m := new(token.Token)
+		return protoreflect.ValueOfMessage(m.ProtoReflect())
+	case "shield.ast.PrefixExpression.operator":
+		return protoreflect.ValueOfString("")
+	case "shield.ast.PrefixExpression.right":
+		m := new(Expression)
+		return protoreflect.ValueOfMessage(m.ProtoReflect())
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.PrefixExpression"))
+		}
+		panic(fmt.Errorf("message shield.ast.PrefixExpression does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_PrefixExpression) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in shield.ast.PrefixExpression", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_PrefixExpression) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_PrefixExpression) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_PrefixExpression) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_PrefixExpression) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*PrefixExpression)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		if x.Token != nil {
+			l = options.Size(x.Token)
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.Operator)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.Right != nil {
+			l = options.Size(x.Right)
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*PrefixExpression)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if x.Right != nil {
+			encoded, err := options.Marshal(x.Right)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+			i--
+			dAtA[i] = 0x1a
+		}
+		if len(x.Operator) > 0 {
+			i -= len(x.Operator)
+			copy(dAtA[i:], x.Operator)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Operator)))
+			i--
+			dAtA[i] = 0x12
+		}
+		if x.Token != nil {
+			encoded, err := options.Marshal(x.Token)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+			i--
+			dAtA[i] = 0xa
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*PrefixExpression)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: PrefixExpression: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: PrefixExpression: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Token", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if x.Token == nil {
+					x.Token = &token.Token{}
+				}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Token); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
+			case 2:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Operator", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Operator = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 3:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Right", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if x.Right == nil {
+					x.Right = &Expression{}
+				}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Right); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
 // Code generated by protoc-gen-go. DO NOT EDIT.
 // versions:
 // 	protoc-gen-go v1.27.0
@@ -4385,9 +5686,11 @@ type Expression struct {
 	//	*Expression_Identifier
 	//	*Expression_IntegerLiteral
 	//	*Expression_BooleanLiteral
+	//	*Expression_StringLiteral
 	//	*Expression_ArrayLiteral
 	//	*Expression_CallExpression
 	//	*Expression_InfixExpression
+	//	*Expression_PrefixExpression
 	Value isExpression_Value `protobuf_oneof:"value"`
 }
 
@@ -4439,6 +5742,13 @@ func (x *Expression) GetBooleanLiteral() *BooleanLiteral {
 	return nil
 }
 
+func (x *Expression) GetStringLiteral() *StringLiteral {
+	if x, ok := x.GetValue().(*Expression_StringLiteral); ok {
+		return x.StringLiteral
+	}
+	return nil
+}
+
 func (x *Expression) GetArrayLiteral() *ArrayLiteral {
 	if x, ok := x.GetValue().(*Expression_ArrayLiteral); ok {
 		return x.ArrayLiteral
@@ -4460,6 +5770,13 @@ func (x *Expression) GetInfixExpression() *InfixExpression {
 	return nil
 }
 
+func (x *Expression) GetPrefixExpression() *PrefixExpression {
+	if x, ok := x.GetValue().(*Expression_PrefixExpression); ok {
+		return x.PrefixExpression
+	}
+	return nil
+}
+
 type isExpression_Value interface {
 	isExpression_Value()
 }
@@ -4476,16 +5793,24 @@ type Expression_BooleanLiteral struct {
 	BooleanLiteral *BooleanLiteral `protobuf:"bytes,3,opt,name=boolean_literal,json=booleanLiteral,proto3,oneof"`
 }
 
+type Expression_StringLiteral struct {
+	StringLiteral *StringLiteral `protobuf:"bytes,4,opt,name=string_literal,json=stringLiteral,proto3,oneof"`
+}
+
 type Expression_ArrayLiteral struct {
-	ArrayLiteral *ArrayLiteral `protobuf:"bytes,4,opt,name=array_literal,json=arrayLiteral,proto3,oneof"`
+	ArrayLiteral *ArrayLiteral `protobuf:"bytes,5,opt,name=array_literal,json=arrayLiteral,proto3,oneof"`
 }
 
 type Expression_CallExpression struct {
-	CallExpression *CallExpression `protobuf:"bytes,5,opt,name=call_expression,json=callExpression,proto3,oneof"`
+	CallExpression *CallExpression `protobuf:"bytes,6,opt,name=call_expression,json=callExpression,proto3,oneof"`
 }
 
 type Expression_InfixExpression struct {
-	InfixExpression *InfixExpression `protobuf:"bytes,6,opt,name=infix_expression,json=infixExpression,proto3,oneof"`
+	InfixExpression *InfixExpression `protobuf:"bytes,7,opt,name=infix_expression,json=infixExpression,proto3,oneof"`
+}
+
+type Expression_PrefixExpression struct {
+	PrefixExpression *PrefixExpression `protobuf:"bytes,8,opt,name=prefix_expression,json=prefixExpression,proto3,oneof"`
 }
 
 func (*Expression_Identifier) isExpression_Value() {}
@@ -4494,11 +5819,15 @@ func (*Expression_IntegerLiteral) isExpression_Value() {}
 
 func (*Expression_BooleanLiteral) isExpression_Value() {}
 
+func (*Expression_StringLiteral) isExpression_Value() {}
+
 func (*Expression_ArrayLiteral) isExpression_Value() {}
 
 func (*Expression_CallExpression) isExpression_Value() {}
 
 func (*Expression_InfixExpression) isExpression_Value() {}
+
+func (*Expression_PrefixExpression) isExpression_Value() {}
 
 type Identifier struct {
 	state         protoimpl.MessageState
@@ -4549,7 +5878,7 @@ type IntegerLiteral struct {
 	unknownFields protoimpl.UnknownFields
 
 	Token *token.Token `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
-	Value int64        `protobuf:"varint,2,opt,name=value,proto3" json:"value,omitempty"`
+	Value string       `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
 }
 
 func (x *IntegerLiteral) Reset() {
@@ -4579,11 +5908,11 @@ func (x *IntegerLiteral) GetToken() *token.Token {
 	return nil
 }
 
-func (x *IntegerLiteral) GetValue() int64 {
+func (x *IntegerLiteral) GetValue() string {
 	if x != nil {
 		return x.Value
 	}
-	return 0
+	return ""
 }
 
 type BooleanLiteral struct {
@@ -4629,6 +5958,49 @@ func (x *BooleanLiteral) GetValue() bool {
 	return false
 }
 
+type StringLiteral struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Token *token.Token `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	Value string       `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
+}
+
+func (x *StringLiteral) Reset() {
+	*x = StringLiteral{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_shield_ast_ast_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *StringLiteral) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StringLiteral) ProtoMessage() {}
+
+// Deprecated: Use StringLiteral.ProtoReflect.Descriptor instead.
+func (*StringLiteral) Descriptor() ([]byte, []int) {
+	return file_shield_ast_ast_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *StringLiteral) GetToken() *token.Token {
+	if x != nil {
+		return x.Token
+	}
+	return nil
+}
+
+func (x *StringLiteral) GetValue() string {
+	if x != nil {
+		return x.Value
+	}
+	return ""
+}
+
 type ArrayLiteral struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -4641,7 +6013,7 @@ type ArrayLiteral struct {
 func (x *ArrayLiteral) Reset() {
 	*x = ArrayLiteral{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_shield_ast_ast_proto_msgTypes[4]
+		mi := &file_shield_ast_ast_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4655,7 +6027,7 @@ func (*ArrayLiteral) ProtoMessage() {}
 
 // Deprecated: Use ArrayLiteral.ProtoReflect.Descriptor instead.
 func (*ArrayLiteral) Descriptor() ([]byte, []int) {
-	return file_shield_ast_ast_proto_rawDescGZIP(), []int{4}
+	return file_shield_ast_ast_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ArrayLiteral) GetToken() *token.Token {
@@ -4685,7 +6057,7 @@ type CallExpression struct {
 func (x *CallExpression) Reset() {
 	*x = CallExpression{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_shield_ast_ast_proto_msgTypes[5]
+		mi := &file_shield_ast_ast_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4699,7 +6071,7 @@ func (*CallExpression) ProtoMessage() {}
 
 // Deprecated: Use CallExpression.ProtoReflect.Descriptor instead.
 func (*CallExpression) Descriptor() ([]byte, []int) {
-	return file_shield_ast_ast_proto_rawDescGZIP(), []int{5}
+	return file_shield_ast_ast_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CallExpression) GetToken() *token.Token {
@@ -4737,7 +6109,7 @@ type InfixExpression struct {
 func (x *InfixExpression) Reset() {
 	*x = InfixExpression{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_shield_ast_ast_proto_msgTypes[6]
+		mi := &file_shield_ast_ast_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4751,7 +6123,7 @@ func (*InfixExpression) ProtoMessage() {}
 
 // Deprecated: Use InfixExpression.ProtoReflect.Descriptor instead.
 func (*InfixExpression) Descriptor() ([]byte, []int) {
-	return file_shield_ast_ast_proto_rawDescGZIP(), []int{6}
+	return file_shield_ast_ast_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *InfixExpression) GetToken() *token.Token {
@@ -4782,6 +6154,57 @@ func (x *InfixExpression) GetRight() *Expression {
 	return nil
 }
 
+type PrefixExpression struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Token    *token.Token `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	Operator string       `protobuf:"bytes,2,opt,name=operator,proto3" json:"operator,omitempty"`
+	Right    *Expression  `protobuf:"bytes,3,opt,name=right,proto3" json:"right,omitempty"`
+}
+
+func (x *PrefixExpression) Reset() {
+	*x = PrefixExpression{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_shield_ast_ast_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PrefixExpression) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PrefixExpression) ProtoMessage() {}
+
+// Deprecated: Use PrefixExpression.ProtoReflect.Descriptor instead.
+func (*PrefixExpression) Descriptor() ([]byte, []int) {
+	return file_shield_ast_ast_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *PrefixExpression) GetToken() *token.Token {
+	if x != nil {
+		return x.Token
+	}
+	return nil
+}
+
+func (x *PrefixExpression) GetOperator() string {
+	if x != nil {
+		return x.Operator
+	}
+	return ""
+}
+
+func (x *PrefixExpression) GetRight() *Expression {
+	if x != nil {
+		return x.Right
+	}
+	return nil
+}
+
 var File_shield_ast_ast_proto protoreflect.FileDescriptor
 
 var file_shield_ast_ast_proto_rawDesc = []byte{
@@ -4791,7 +6214,7 @@ var file_shield_ast_ast_proto_rawDesc = []byte{
 	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f,
 	0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x18, 0x73, 0x68, 0x69,
 	0x65, 0x6c, 0x64, 0x2f, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2f, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xa8, 0x04, 0x0a, 0x0a, 0x45, 0x78, 0x70, 0x72, 0x65, 0x73,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xe4, 0x05, 0x0a, 0x0a, 0x45, 0x78, 0x70, 0x72, 0x65, 0x73,
 	0x73, 0x69, 0x6f, 0x6e, 0x12, 0x49, 0x0a, 0x0a, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x66, 0x69,
 	0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c,
 	0x64, 0x2e, 0x61, 0x73, 0x74, 0x2e, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x66, 0x69, 0x65, 0x72,
@@ -4808,81 +6231,108 @@ var file_shield_ast_ast_proto_rawDesc = []byte{
 	0x74, 0x2e, 0x42, 0x6f, 0x6f, 0x6c, 0x65, 0x61, 0x6e, 0x4c, 0x69, 0x74, 0x65, 0x72, 0x61, 0x6c,
 	0x42, 0x13, 0xb2, 0xe7, 0xb0, 0x2a, 0x0e, 0x42, 0x6f, 0x6f, 0x6c, 0x65, 0x61, 0x6e, 0x4c, 0x69,
 	0x74, 0x65, 0x72, 0x61, 0x6c, 0x48, 0x00, 0x52, 0x0e, 0x62, 0x6f, 0x6f, 0x6c, 0x65, 0x61, 0x6e,
-	0x4c, 0x69, 0x74, 0x65, 0x72, 0x61, 0x6c, 0x12, 0x52, 0x0a, 0x0d, 0x61, 0x72, 0x72, 0x61, 0x79,
-	0x5f, 0x6c, 0x69, 0x74, 0x65, 0x72, 0x61, 0x6c, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x18,
-	0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e, 0x61, 0x73, 0x74, 0x2e, 0x41, 0x72, 0x72, 0x61,
-	0x79, 0x4c, 0x69, 0x74, 0x65, 0x72, 0x61, 0x6c, 0x42, 0x11, 0xb2, 0xe7, 0xb0, 0x2a, 0x0c, 0x41,
-	0x72, 0x72, 0x61, 0x79, 0x4c, 0x69, 0x74, 0x65, 0x72, 0x61, 0x6c, 0x48, 0x00, 0x52, 0x0c, 0x61,
-	0x72, 0x72, 0x61, 0x79, 0x4c, 0x69, 0x74, 0x65, 0x72, 0x61, 0x6c, 0x12, 0x5a, 0x0a, 0x0f, 0x63,
-	0x61, 0x6c, 0x6c, 0x5f, 0x65, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x05,
-	0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e, 0x61, 0x73,
-	0x74, 0x2e, 0x43, 0x61, 0x6c, 0x6c, 0x45, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e,
-	0x42, 0x13, 0xb2, 0xe7, 0xb0, 0x2a, 0x0e, 0x43, 0x61, 0x6c, 0x6c, 0x45, 0x78, 0x70, 0x72, 0x65,
-	0x73, 0x73, 0x69, 0x6f, 0x6e, 0x48, 0x00, 0x52, 0x0e, 0x63, 0x61, 0x6c, 0x6c, 0x45, 0x78, 0x70,
-	0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x5e, 0x0a, 0x10, 0x69, 0x6e, 0x66, 0x69, 0x78,
-	0x5f, 0x65, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x06, 0x20, 0x01, 0x28,
-	0x0b, 0x32, 0x1b, 0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e, 0x61, 0x73, 0x74, 0x2e, 0x49,
-	0x6e, 0x66, 0x69, 0x78, 0x45, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x42, 0x14,
-	0xb2, 0xe7, 0xb0, 0x2a, 0x0f, 0x49, 0x6e, 0x66, 0x69, 0x78, 0x45, 0x78, 0x70, 0x72, 0x65, 0x73,
-	0x73, 0x69, 0x6f, 0x6e, 0x48, 0x00, 0x52, 0x0f, 0x69, 0x6e, 0x66, 0x69, 0x78, 0x45, 0x78, 0x70,
-	0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x42, 0x07, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65,
-	0x22, 0x53, 0x0a, 0x0a, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x66, 0x69, 0x65, 0x72, 0x12, 0x2f,
-	0x0a, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x13, 0x2e,
-	0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x54, 0x6f, 0x6b,
-	0x65, 0x6e, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x12,
-	0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05,
-	0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x57, 0x0a, 0x0e, 0x49, 0x6e, 0x74, 0x65, 0x67, 0x65, 0x72,
-	0x4c, 0x69, 0x74, 0x65, 0x72, 0x61, 0x6c, 0x12, 0x2f, 0x0a, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x13, 0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e,
-	0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x42, 0x04, 0xc8, 0xde, 0x1f,
-	0x00, 0x52, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75,
-	0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x57,
-	0x0a, 0x0e, 0x42, 0x6f, 0x6f, 0x6c, 0x65, 0x61, 0x6e, 0x4c, 0x69, 0x74, 0x65, 0x72, 0x61, 0x6c,
-	0x12, 0x2f, 0x0a, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
-	0x13, 0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x54,
-	0x6f, 0x6b, 0x65, 0x6e, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x05, 0x74, 0x6f, 0x6b, 0x65,
-	0x6e, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x08,
-	0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x73, 0x0a, 0x0c, 0x41, 0x72, 0x72, 0x61, 0x79,
-	0x4c, 0x69, 0x74, 0x65, 0x72, 0x61, 0x6c, 0x12, 0x2f, 0x0a, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x13, 0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e,
-	0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x42, 0x04, 0xc8, 0xde, 0x1f,
-	0x00, 0x52, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x32, 0x0a, 0x08, 0x65, 0x6c, 0x65, 0x6d,
-	0x65, 0x6e, 0x74, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x73, 0x68, 0x69,
+	0x4c, 0x69, 0x74, 0x65, 0x72, 0x61, 0x6c, 0x12, 0x56, 0x0a, 0x0e, 0x73, 0x74, 0x72, 0x69, 0x6e,
+	0x67, 0x5f, 0x6c, 0x69, 0x74, 0x65, 0x72, 0x61, 0x6c, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x19, 0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e, 0x61, 0x73, 0x74, 0x2e, 0x53, 0x74, 0x72,
+	0x69, 0x6e, 0x67, 0x4c, 0x69, 0x74, 0x65, 0x72, 0x61, 0x6c, 0x42, 0x12, 0xb2, 0xe7, 0xb0, 0x2a,
+	0x0d, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x4c, 0x69, 0x74, 0x65, 0x72, 0x61, 0x6c, 0x48, 0x00,
+	0x52, 0x0d, 0x73, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x4c, 0x69, 0x74, 0x65, 0x72, 0x61, 0x6c, 0x12,
+	0x52, 0x0a, 0x0d, 0x61, 0x72, 0x72, 0x61, 0x79, 0x5f, 0x6c, 0x69, 0x74, 0x65, 0x72, 0x61, 0x6c,
+	0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x18, 0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e,
+	0x61, 0x73, 0x74, 0x2e, 0x41, 0x72, 0x72, 0x61, 0x79, 0x4c, 0x69, 0x74, 0x65, 0x72, 0x61, 0x6c,
+	0x42, 0x11, 0xb2, 0xe7, 0xb0, 0x2a, 0x0c, 0x41, 0x72, 0x72, 0x61, 0x79, 0x4c, 0x69, 0x74, 0x65,
+	0x72, 0x61, 0x6c, 0x48, 0x00, 0x52, 0x0c, 0x61, 0x72, 0x72, 0x61, 0x79, 0x4c, 0x69, 0x74, 0x65,
+	0x72, 0x61, 0x6c, 0x12, 0x5a, 0x0a, 0x0f, 0x63, 0x61, 0x6c, 0x6c, 0x5f, 0x65, 0x78, 0x70, 0x72,
+	0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x06, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x73,
+	0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e, 0x61, 0x73, 0x74, 0x2e, 0x43, 0x61, 0x6c, 0x6c, 0x45, 0x78,
+	0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x42, 0x13, 0xb2, 0xe7, 0xb0, 0x2a, 0x0e, 0x43,
+	0x61, 0x6c, 0x6c, 0x45, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x48, 0x00, 0x52,
+	0x0e, 0x63, 0x61, 0x6c, 0x6c, 0x45, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12,
+	0x5e, 0x0a, 0x10, 0x69, 0x6e, 0x66, 0x69, 0x78, 0x5f, 0x65, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73,
+	0x69, 0x6f, 0x6e, 0x18, 0x07, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x73, 0x68, 0x69, 0x65,
+	0x6c, 0x64, 0x2e, 0x61, 0x73, 0x74, 0x2e, 0x49, 0x6e, 0x66, 0x69, 0x78, 0x45, 0x78, 0x70, 0x72,
+	0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x42, 0x14, 0xb2, 0xe7, 0xb0, 0x2a, 0x0f, 0x49, 0x6e, 0x66,
+	0x69, 0x78, 0x45, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x48, 0x00, 0x52, 0x0f,
+	0x69, 0x6e, 0x66, 0x69, 0x78, 0x45, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12,
+	0x62, 0x0a, 0x11, 0x70, 0x72, 0x65, 0x66, 0x69, 0x78, 0x5f, 0x65, 0x78, 0x70, 0x72, 0x65, 0x73,
+	0x73, 0x69, 0x6f, 0x6e, 0x18, 0x08, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x73, 0x68, 0x69,
+	0x65, 0x6c, 0x64, 0x2e, 0x61, 0x73, 0x74, 0x2e, 0x50, 0x72, 0x65, 0x66, 0x69, 0x78, 0x45, 0x78,
+	0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x42, 0x15, 0xb2, 0xe7, 0xb0, 0x2a, 0x10, 0x50,
+	0x72, 0x65, 0x66, 0x69, 0x78, 0x45, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x48,
+	0x00, 0x52, 0x10, 0x70, 0x72, 0x65, 0x66, 0x69, 0x78, 0x45, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73,
+	0x69, 0x6f, 0x6e, 0x42, 0x07, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x53, 0x0a, 0x0a,
+	0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x66, 0x69, 0x65, 0x72, 0x12, 0x2f, 0x0a, 0x05, 0x74, 0x6f,
+	0x6b, 0x65, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x13, 0x2e, 0x73, 0x68, 0x69, 0x65,
+	0x6c, 0x64, 0x2e, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x42, 0x04,
+	0xc8, 0xde, 0x1f, 0x00, 0x52, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x14, 0x0a, 0x05, 0x76,
+	0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75,
+	0x65, 0x22, 0x57, 0x0a, 0x0e, 0x49, 0x6e, 0x74, 0x65, 0x67, 0x65, 0x72, 0x4c, 0x69, 0x74, 0x65,
+	0x72, 0x61, 0x6c, 0x12, 0x2f, 0x0a, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x13, 0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e, 0x74, 0x6f, 0x6b, 0x65,
+	0x6e, 0x2e, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x05, 0x74,
+	0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x57, 0x0a, 0x0e, 0x42, 0x6f,
+	0x6f, 0x6c, 0x65, 0x61, 0x6e, 0x4c, 0x69, 0x74, 0x65, 0x72, 0x61, 0x6c, 0x12, 0x2f, 0x0a, 0x05,
+	0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x13, 0x2e, 0x73, 0x68,
+	0x69, 0x65, 0x6c, 0x64, 0x2e, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x54, 0x6f, 0x6b, 0x65, 0x6e,
+	0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x14, 0x0a,
+	0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x08, 0x52, 0x05, 0x76, 0x61,
+	0x6c, 0x75, 0x65, 0x22, 0x56, 0x0a, 0x0d, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x4c, 0x69, 0x74,
+	0x65, 0x72, 0x61, 0x6c, 0x12, 0x2f, 0x0a, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x13, 0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e, 0x74, 0x6f, 0x6b,
+	0x65, 0x6e, 0x2e, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x05,
+	0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x73, 0x0a, 0x0c, 0x41,
+	0x72, 0x72, 0x61, 0x79, 0x4c, 0x69, 0x74, 0x65, 0x72, 0x61, 0x6c, 0x12, 0x2f, 0x0a, 0x05, 0x74,
+	0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x13, 0x2e, 0x73, 0x68, 0x69,
+	0x65, 0x6c, 0x64, 0x2e, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x42,
+	0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x32, 0x0a, 0x08,
+	0x65, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x16,
+	0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e, 0x61, 0x73, 0x74, 0x2e, 0x45, 0x78, 0x70, 0x72,
+	0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x08, 0x65, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x73,
+	0x22, 0xab, 0x01, 0x0a, 0x0e, 0x43, 0x61, 0x6c, 0x6c, 0x45, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73,
+	0x69, 0x6f, 0x6e, 0x12, 0x2f, 0x0a, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x13, 0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e, 0x74, 0x6f, 0x6b, 0x65,
+	0x6e, 0x2e, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x05, 0x74,
+	0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x32, 0x0a, 0x08, 0x66, 0x75, 0x6e, 0x63, 0x74, 0x69, 0x6f, 0x6e,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e,
+	0x61, 0x73, 0x74, 0x2e, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x66, 0x69, 0x65, 0x72, 0x52, 0x08,
+	0x66, 0x75, 0x6e, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x34, 0x0a, 0x09, 0x61, 0x72, 0x67, 0x75,
+	0x6d, 0x65, 0x6e, 0x74, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x73, 0x68,
+	0x69, 0x65, 0x6c, 0x64, 0x2e, 0x61, 0x73, 0x74, 0x2e, 0x45, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73,
+	0x69, 0x6f, 0x6e, 0x52, 0x09, 0x61, 0x72, 0x67, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x22, 0xb8,
+	0x01, 0x0a, 0x0f, 0x49, 0x6e, 0x66, 0x69, 0x78, 0x45, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69,
+	0x6f, 0x6e, 0x12, 0x2f, 0x0a, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x0b, 0x32, 0x13, 0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e, 0x74, 0x6f, 0x6b, 0x65, 0x6e,
+	0x2e, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x05, 0x74, 0x6f,
+	0x6b, 0x65, 0x6e, 0x12, 0x2a, 0x0a, 0x04, 0x6c, 0x65, 0x66, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x0b, 0x32, 0x16, 0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e, 0x61, 0x73, 0x74, 0x2e, 0x45,
+	0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x04, 0x6c, 0x65, 0x66, 0x74, 0x12,
+	0x1a, 0x0a, 0x08, 0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x08, 0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x2c, 0x0a, 0x05, 0x72,
+	0x69, 0x67, 0x68, 0x74, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x73, 0x68, 0x69,
 	0x65, 0x6c, 0x64, 0x2e, 0x61, 0x73, 0x74, 0x2e, 0x45, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69,
-	0x6f, 0x6e, 0x52, 0x08, 0x65, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x22, 0xab, 0x01, 0x0a,
-	0x0e, 0x43, 0x61, 0x6c, 0x6c, 0x45, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12,
-	0x2f, 0x0a, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x13,
-	0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x54, 0x6f,
-	0x6b, 0x65, 0x6e, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e,
-	0x12, 0x32, 0x0a, 0x08, 0x66, 0x75, 0x6e, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01,
-	0x28, 0x0b, 0x32, 0x16, 0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e, 0x61, 0x73, 0x74, 0x2e,
-	0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x66, 0x69, 0x65, 0x72, 0x52, 0x08, 0x66, 0x75, 0x6e, 0x63,
-	0x74, 0x69, 0x6f, 0x6e, 0x12, 0x34, 0x0a, 0x09, 0x61, 0x72, 0x67, 0x75, 0x6d, 0x65, 0x6e, 0x74,
-	0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64,
-	0x2e, 0x61, 0x73, 0x74, 0x2e, 0x45, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52,
-	0x09, 0x61, 0x72, 0x67, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x22, 0xb8, 0x01, 0x0a, 0x0f, 0x49,
-	0x6e, 0x66, 0x69, 0x78, 0x45, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x2f,
+	0x6f, 0x6e, 0x52, 0x05, 0x72, 0x69, 0x67, 0x68, 0x74, 0x22, 0x8d, 0x01, 0x0a, 0x10, 0x50, 0x72,
+	0x65, 0x66, 0x69, 0x78, 0x45, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x2f,
 	0x0a, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x13, 0x2e,
 	0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x54, 0x6f, 0x6b,
 	0x65, 0x6e, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x12,
-	0x2a, 0x0a, 0x04, 0x6c, 0x65, 0x66, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x16, 0x2e,
-	0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e, 0x61, 0x73, 0x74, 0x2e, 0x45, 0x78, 0x70, 0x72, 0x65,
-	0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x04, 0x6c, 0x65, 0x66, 0x74, 0x12, 0x1a, 0x0a, 0x08, 0x6f,
-	0x70, 0x65, 0x72, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x6f,
-	0x70, 0x65, 0x72, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x2c, 0x0a, 0x05, 0x72, 0x69, 0x67, 0x68, 0x74,
-	0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e,
-	0x61, 0x73, 0x74, 0x2e, 0x45, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x05,
-	0x72, 0x69, 0x67, 0x68, 0x74, 0x42, 0x9d, 0x01, 0x0a, 0x0e, 0x63, 0x6f, 0x6d, 0x2e, 0x73, 0x68,
-	0x69, 0x65, 0x6c, 0x64, 0x2e, 0x61, 0x73, 0x74, 0x42, 0x08, 0x41, 0x73, 0x74, 0x50, 0x72, 0x6f,
-	0x74, 0x6f, 0x50, 0x01, 0x5a, 0x38, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d,
-	0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c,
-	0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f,
-	0x61, 0x70, 0x69, 0x2f, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2f, 0x61, 0x73, 0x74, 0xa2, 0x02,
-	0x03, 0x53, 0x41, 0x58, 0xaa, 0x02, 0x0a, 0x53, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e, 0x41, 0x73,
-	0x74, 0xca, 0x02, 0x0a, 0x53, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x5c, 0x41, 0x73, 0x74, 0xe2, 0x02,
-	0x16, 0x53, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x5c, 0x41, 0x73, 0x74, 0x5c, 0x47, 0x50, 0x42, 0x4d,
-	0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0b, 0x53, 0x68, 0x69, 0x65, 0x6c, 0x64,
-	0x3a, 0x3a, 0x41, 0x73, 0x74, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x1a, 0x0a, 0x08, 0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x08, 0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x2c, 0x0a, 0x05, 0x72,
+	0x69, 0x67, 0x68, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x73, 0x68, 0x69,
+	0x65, 0x6c, 0x64, 0x2e, 0x61, 0x73, 0x74, 0x2e, 0x45, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69,
+	0x6f, 0x6e, 0x52, 0x05, 0x72, 0x69, 0x67, 0x68, 0x74, 0x42, 0x9d, 0x01, 0x0a, 0x0e, 0x63, 0x6f,
+	0x6d, 0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e, 0x61, 0x73, 0x74, 0x42, 0x08, 0x41, 0x73,
+	0x74, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x38, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62,
+	0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2f, 0x61,
+	0x73, 0x74, 0xa2, 0x02, 0x03, 0x53, 0x41, 0x58, 0xaa, 0x02, 0x0a, 0x53, 0x68, 0x69, 0x65, 0x6c,
+	0x64, 0x2e, 0x41, 0x73, 0x74, 0xca, 0x02, 0x0a, 0x53, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x5c, 0x41,
+	0x73, 0x74, 0xe2, 0x02, 0x16, 0x53, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x5c, 0x41, 0x73, 0x74, 0x5c,
+	0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0b, 0x53, 0x68,
+	0x69, 0x65, 0x6c, 0x64, 0x3a, 0x3a, 0x41, 0x73, 0x74, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x33,
 }
 
 var (
@@ -4897,40 +6347,47 @@ func file_shield_ast_ast_proto_rawDescGZIP() []byte {
 	return file_shield_ast_ast_proto_rawDescData
 }
 
-var file_shield_ast_ast_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_shield_ast_ast_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_shield_ast_ast_proto_goTypes = []interface{}{
-	(*Expression)(nil),      // 0: shield.ast.Expression
-	(*Identifier)(nil),      // 1: shield.ast.Identifier
-	(*IntegerLiteral)(nil),  // 2: shield.ast.IntegerLiteral
-	(*BooleanLiteral)(nil),  // 3: shield.ast.BooleanLiteral
-	(*ArrayLiteral)(nil),    // 4: shield.ast.ArrayLiteral
-	(*CallExpression)(nil),  // 5: shield.ast.CallExpression
-	(*InfixExpression)(nil), // 6: shield.ast.InfixExpression
-	(*token.Token)(nil),     // 7: shield.token.Token
+	(*Expression)(nil),       // 0: shield.ast.Expression
+	(*Identifier)(nil),       // 1: shield.ast.Identifier
+	(*IntegerLiteral)(nil),   // 2: shield.ast.IntegerLiteral
+	(*BooleanLiteral)(nil),   // 3: shield.ast.BooleanLiteral
+	(*StringLiteral)(nil),    // 4: shield.ast.StringLiteral
+	(*ArrayLiteral)(nil),     // 5: shield.ast.ArrayLiteral
+	(*CallExpression)(nil),   // 6: shield.ast.CallExpression
+	(*InfixExpression)(nil),  // 7: shield.ast.InfixExpression
+	(*PrefixExpression)(nil), // 8: shield.ast.PrefixExpression
+	(*token.Token)(nil),      // 9: shield.token.Token
 }
 var file_shield_ast_ast_proto_depIdxs = []int32{
 	1,  // 0: shield.ast.Expression.identifier:type_name -> shield.ast.Identifier
 	2,  // 1: shield.ast.Expression.integer_literal:type_name -> shield.ast.IntegerLiteral
 	3,  // 2: shield.ast.Expression.boolean_literal:type_name -> shield.ast.BooleanLiteral
-	4,  // 3: shield.ast.Expression.array_literal:type_name -> shield.ast.ArrayLiteral
-	5,  // 4: shield.ast.Expression.call_expression:type_name -> shield.ast.CallExpression
-	6,  // 5: shield.ast.Expression.infix_expression:type_name -> shield.ast.InfixExpression
-	7,  // 6: shield.ast.Identifier.token:type_name -> shield.token.Token
-	7,  // 7: shield.ast.IntegerLiteral.token:type_name -> shield.token.Token
-	7,  // 8: shield.ast.BooleanLiteral.token:type_name -> shield.token.Token
-	7,  // 9: shield.ast.ArrayLiteral.token:type_name -> shield.token.Token
-	0,  // 10: shield.ast.ArrayLiteral.elements:type_name -> shield.ast.Expression
-	7,  // 11: shield.ast.CallExpression.token:type_name -> shield.token.Token
-	1,  // 12: shield.ast.CallExpression.function:type_name -> shield.ast.Identifier
-	0,  // 13: shield.ast.CallExpression.arguments:type_name -> shield.ast.Expression
-	7,  // 14: shield.ast.InfixExpression.token:type_name -> shield.token.Token
-	0,  // 15: shield.ast.InfixExpression.left:type_name -> shield.ast.Expression
-	0,  // 16: shield.ast.InfixExpression.right:type_name -> shield.ast.Expression
-	17, // [17:17] is the sub-list for method output_type
-	17, // [17:17] is the sub-list for method input_type
-	17, // [17:17] is the sub-list for extension type_name
-	17, // [17:17] is the sub-list for extension extendee
-	0,  // [0:17] is the sub-list for field type_name
+	4,  // 3: shield.ast.Expression.string_literal:type_name -> shield.ast.StringLiteral
+	5,  // 4: shield.ast.Expression.array_literal:type_name -> shield.ast.ArrayLiteral
+	6,  // 5: shield.ast.Expression.call_expression:type_name -> shield.ast.CallExpression
+	7,  // 6: shield.ast.Expression.infix_expression:type_name -> shield.ast.InfixExpression
+	8,  // 7: shield.ast.Expression.prefix_expression:type_name -> shield.ast.PrefixExpression
+	9,  // 8: shield.ast.Identifier.token:type_name -> shield.token.Token
+	9,  // 9: shield.ast.IntegerLiteral.token:type_name -> shield.token.Token
+	9,  // 10: shield.ast.BooleanLiteral.token:type_name -> shield.token.Token
+	9,  // 11: shield.ast.StringLiteral.token:type_name -> shield.token.Token
+	9,  // 12: shield.ast.ArrayLiteral.token:type_name -> shield.token.Token
+	0,  // 13: shield.ast.ArrayLiteral.elements:type_name -> shield.ast.Expression
+	9,  // 14: shield.ast.CallExpression.token:type_name -> shield.token.Token
+	1,  // 15: shield.ast.CallExpression.function:type_name -> shield.ast.Identifier
+	0,  // 16: shield.ast.CallExpression.arguments:type_name -> shield.ast.Expression
+	9,  // 17: shield.ast.InfixExpression.token:type_name -> shield.token.Token
+	0,  // 18: shield.ast.InfixExpression.left:type_name -> shield.ast.Expression
+	0,  // 19: shield.ast.InfixExpression.right:type_name -> shield.ast.Expression
+	9,  // 20: shield.ast.PrefixExpression.token:type_name -> shield.token.Token
+	0,  // 21: shield.ast.PrefixExpression.right:type_name -> shield.ast.Expression
+	22, // [22:22] is the sub-list for method output_type
+	22, // [22:22] is the sub-list for method input_type
+	22, // [22:22] is the sub-list for extension type_name
+	22, // [22:22] is the sub-list for extension extendee
+	0,  // [0:22] is the sub-list for field type_name
 }
 
 func init() { file_shield_ast_ast_proto_init() }
@@ -4988,7 +6445,7 @@ func file_shield_ast_ast_proto_init() {
 			}
 		}
 		file_shield_ast_ast_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ArrayLiteral); i {
+			switch v := v.(*StringLiteral); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -5000,7 +6457,7 @@ func file_shield_ast_ast_proto_init() {
 			}
 		}
 		file_shield_ast_ast_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CallExpression); i {
+			switch v := v.(*ArrayLiteral); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -5012,7 +6469,31 @@ func file_shield_ast_ast_proto_init() {
 			}
 		}
 		file_shield_ast_ast_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CallExpression); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_shield_ast_ast_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*InfixExpression); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_shield_ast_ast_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*PrefixExpression); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -5028,9 +6509,11 @@ func file_shield_ast_ast_proto_init() {
 		(*Expression_Identifier)(nil),
 		(*Expression_IntegerLiteral)(nil),
 		(*Expression_BooleanLiteral)(nil),
+		(*Expression_StringLiteral)(nil),
 		(*Expression_ArrayLiteral)(nil),
 		(*Expression_CallExpression)(nil),
 		(*Expression_InfixExpression)(nil),
+		(*Expression_PrefixExpression)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -5038,7 +6521,7 @@ func file_shield_ast_ast_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_shield_ast_ast_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

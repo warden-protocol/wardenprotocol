@@ -1,0 +1,46 @@
+# run all integration tests
+test regen-snapshots="false":
+  go test -run 'TestIntegration' -regen-snapshots={{regen-snapshots}} -v ./integration_test.go
+
+alias tests := test
+
+test-slinky:
+    # NOTE: if you change the -t flag value, you MUST also change the name in slinky_test.go L29.
+    cd .. && go mod tidy && docker build -f warden.Dockerfile -t warden/warden-protocol .
+    cd slinky && go mod tidy && go test -v -race .
+
+# list available integration tests
+list:
+  go test -v -list-only ./integration_test.go
+
+# run a specific test case
+focus name regen-snapshots="false":
+  go test -run 'TestIntegration/{{name}}' -regen-snapshots={{regen-snapshots}} -v ./integration_test.go
+
+snapshot:
+  echo "deprecated: use \"just test true\" to regenerate the snapshots instead"
+  exit 1
+
+gen-contract name:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  contract_dir="testdata/contracts/{{name}}"
+  echo "Compiling contract: {{name}}"
+  pushd "$contract_dir"
+  solc --evm-version paris --bin --abi precompiles/=../../../../precompiles/ "./{{name}}.sol" -o . --overwrite --via-ir
+  go tool abigen --bin=./{{name}}.bin --abi=./{{name}}.abi --pkg=contracts --type={{name}} --out=../{{name}}.go
+  popd
+  echo "Successfully compiled: {{name}}"
+
+# regenerate caller contract
+contract-caller:
+  solc --evm-version paris --bin ./testdata/contracts/caller/Caller.sol -o ./testdata/contracts/caller --overwrite
+  solc --evm-version paris --abi ./testdata/contracts/caller/Caller.sol -o ./testdata/contracts/caller --overwrite
+  go tool abigen --bin=./testdata/contracts/caller/Caller.bin --abi=./testdata/contracts/caller/Caller.abi --pkg=caller --out=./testdata/contracts/caller/Caller.go
+
+# regenerate json user contract
+contract-json-user:
+  # cp -f ./../precompiles/json/IJson.sol ./testdata/contracts/json-user/IJson.sol
+  solc --evm-version paris --bin precompile-json/=../precompiles/json/ precompile-act/=../precompiles/act/ precompile-common/=../precompiles/common/ ./testdata/contracts/json-user/JsonUser.sol -o ./testdata/contracts/json-user --overwrite --via-ir
+  solc --evm-version paris --abi precompile-json/=../precompiles/json/ precompile-act/=../precompiles/act/ precompile-common/=../precompiles/common/ ./testdata/contracts/json-user/JsonUser.sol -o ./testdata/contracts/json-user --overwrite --via-ir
+  go tool abigen --bin=./testdata/contracts/json-user/JsonUser.bin --abi=./testdata/contracts/json-user/JsonUser.abi --pkg=json_user --out=./testdata/contracts/json-user/JsonUser.go

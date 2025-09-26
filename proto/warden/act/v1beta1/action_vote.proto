@@ -1,0 +1,35 @@
+syntax = "proto3";
+package warden.act.v1beta1;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1";
+
+message ActionVote {
+  // participant is the address of the voter.
+  string participant = 1;
+
+  // voted_at is a timestamp specifying when the voter voted on the action.
+  google.protobuf.Timestamp voted_at = 2 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true,
+    (gogoproto.stdtime) = true
+  ];
+
+  // vote is the type of the vote.
+  ActionVoteType vote_type = 3;
+}
+
+//  Type of a vote.
+enum ActionVoteType {
+  // Unspecified vote type.
+  VOTE_TYPE_UNSPECIFIED = 0;
+
+  // Positive vote for an action.
+  VOTE_TYPE_APPROVED = 1;
+
+  // Negative vote for an action.
+  VOTE_TYPE_REJECTED = 2;
+}

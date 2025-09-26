@@ -1,0 +1,31 @@
+---
+name: license
+permissions:
+  contents: read
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "warden/x/async/**"
+      - .licenserc.json
+      - .github/workflows/license.yml
+  pull_request:
+    paths:
+      - "warden/x/async/**"
+      - .licenserc.json
+      - .github/workflows/license.yml
+
+jobs:
+  license:
+    runs-on: ubuntu-latest
+    name: license
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check license headers
+        uses: viperproject/check-license-header@v2
+        with:
+          path: .
+          config: ./.licenserc.json
+          strict: false

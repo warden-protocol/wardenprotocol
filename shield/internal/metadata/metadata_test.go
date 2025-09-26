@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/shield/internal/lexer"
 	"github.com/warden-protocol/wardenprotocol/shield/internal/parser"
@@ -75,6 +76,11 @@ func TestExtractMetadata(t *testing.T) {
 			identifiers: []string{"foo"},
 			functions:   nil,
 		},
+		{
+			code:        "[1, 2, 3, -foo]",
+			identifiers: []string{"foo"},
+			functions:   nil,
+		},
 	}
 
 	for _, tt := range tests {
@@ -86,12 +92,15 @@ func TestExtractMetadata(t *testing.T) {
 
 func testExtractMetadata(t *testing.T, code string) (*ast.Expression, Metadata) {
 	t.Helper()
+
 	l := lexer.New(code)
+
 	p := parser.New(l)
 	if p.Errors() != nil {
 		t.Fatalf("parser errors: %v", p.Errors())
 	}
 
 	expr := p.Parse()
+
 	return expr, ExtractMetadata(expr)
 }

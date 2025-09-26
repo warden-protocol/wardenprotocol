@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-// AuthQueryClient stores a query client for the warden auth module
+// AuthQueryClient stores a query client for the warden auth module.
 type AuthQueryClient struct {
 	client authtypes.QueryClient
 }
@@ -32,7 +32,7 @@ func (c *AuthQueryClient) Account(ctx context.Context, addr string) (types.Accou
 
 	var account authtypes.BaseAccount
 	if err := account.Unmarshal(res.Account.Value); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal account: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal BaseAccount: %w", err)
 	}
 
 	return &account, nil

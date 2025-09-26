@@ -4,42 +4,12 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/gogoproto/proto"
-	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
-func (k msgServer) UpdateSpace(goCtx context.Context, msg *types.MsgUpdateSpace) (*intenttypes.MsgActionCreated, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-	space, err := k.SpacesKeeper.Get(ctx, msg.SpaceId)
-	if err != nil {
-		return nil, err
-	}
-
-	intent, err := k.updateSpaceIntent(ctx, space)
-	if err != nil {
-		return nil, err
-	}
-
-	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, intent, msg.Btl)
-	if err != nil {
-		return nil, err
-	}
-
-	return &intenttypes.MsgActionCreated{Action: act}, nil
-}
-
-func (k msgServer) updateSpaceIntent(ctx sdk.Context, space types.Space) (intenttypes.Intent, error) {
-	if space.AdminIntentId > 0 {
-		return k.intentKeeper.GetIntent(ctx, space.AdminIntentId)
-	} else {
-		return space.IntentUpdateSpace(), nil
-	}
-}
-
-func (k msgServer) UpdateSpaceActionHandler(ctx sdk.Context, act intenttypes.Action) (proto.Message, error) {
-	msg, err := intenttypes.GetActionMessage[*types.MsgUpdateSpace](k.cdc, act)
-	if err != nil {
+func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (*types.MsgUpdateSpaceResponse, error) {
+	if err := k.assertActAuthority(msg.Authority); err != nil {
 		return nil, err
 	}
 
@@ -48,27 +18,54 @@ func (k msgServer) UpdateSpaceActionHandler(ctx sdk.Context, act intenttypes.Act
 		return nil, err
 	}
 
-	if msg.AdminIntentId != space.AdminIntentId {
-		if msg.AdminIntentId != 0 {
-			_, err := k.intentKeeper.GetIntent(ctx, msg.AdminIntentId)
-			if err != nil {
-				return nil, err
-			}
+	if msg.ApproveAdminTemplateId != space.ApproveAdminTemplateId {
+		if err := k.actKeeper.IsValidTemplate(ctx, msg.ApproveAdminTemplateId); err != nil {
+			return nil, err
 		}
-		space.AdminIntentId = msg.AdminIntentId
+
+		space.ApproveAdminTemplateId = msg.ApproveAdminTemplateId
 	}
 
-	if msg.SignIntentId != space.SignIntentId {
-		if msg.SignIntentId != 0 {
-			_, err := k.intentKeeper.GetIntent(ctx, msg.SignIntentId)
-			if err != nil {
-				return nil, err
-			}
+	if msg.RejectAdminTemplateId != space.RejectAdminTemplateId {
+		if err := k.actKeeper.IsValidTemplate(ctx, msg.RejectAdminTemplateId); err != nil {
+			return nil, err
 		}
-		space.SignIntentId = msg.SignIntentId
+
+		space.RejectAdminTemplateId = msg.RejectAdminTemplateId
+	}
+
+	if msg.ApproveSignTemplateId != space.ApproveSignTemplateId {
+		if err := k.actKeeper.IsValidTemplate(ctx, msg.ApproveSignTemplateId); err != nil {
+			return nil, err
+		}
+
+		space.ApproveSignTemplateId = msg.ApproveSignTemplateId
+	}
+
+	if msg.RejectSignTemplateId != space.RejectSignTemplateId {
+		if err := k.actKeeper.IsValidTemplate(ctx, msg.RejectSignTemplateId); err != nil {
+			return nil, err
+		}
+
+		space.RejectSignTemplateId = msg.RejectSignTemplateId
+	}
+
+	if _, err := space.IncrementNonce(msg.Nonce); err != nil {
+		return nil, err
 	}
 
 	if err := k.SpacesKeeper.Set(ctx, space); err != nil {
+		return nil, err
+	}
+
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventUpdateSpace{
+		SpaceId:                space.Id,
+		ApproveAdminTemplateId: space.ApproveAdminTemplateId,
+		RejectAdminTemplateId:  space.RejectAdminTemplateId,
+		ApproveSignTemplateId:  space.ApproveSignTemplateId,
+		RejectSignTemplateId:   space.RejectSignTemplateId,
+	}); err != nil {
 		return nil, err
 	}
 

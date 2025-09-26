@@ -1,4 +1,8 @@
-import { EIP6963AnnounceProviderEvent, MetaMaskInpageProvider } from "@metamask/providers";
+import { env } from "@/env";
+import {
+	EIP6963AnnounceProviderEvent,
+	MetaMaskInpageProvider,
+} from "@metamask/providers";
 
 export type GetSnapsResponse = Record<string, Snap>;
 
@@ -21,7 +25,7 @@ export async function hasSnapsSupport(
 ) {
 	try {
 		await provider.request({
-			method: 'wallet_getSnaps',
+			method: "wallet_getSnaps",
 		});
 
 		return true;
@@ -51,7 +55,7 @@ export async function getMetaMaskEIP6963Provider() {
 		 */
 		function resolve(provider: MetaMaskInpageProvider | null) {
 			window.removeEventListener(
-				'eip6963:announceProvider',
+				"eip6963:announceProvider",
 				onAnnounceProvider,
 			);
 			clearTimeout(timeout);
@@ -69,14 +73,14 @@ export async function getMetaMaskEIP6963Provider() {
 		function onAnnounceProvider({ detail }: EIP6963AnnounceProviderEvent) {
 			const { info, provider } = detail;
 
-			if (info.rdns.includes('io.metamask')) {
+			if (info.rdns.includes("io.metamask")) {
 				resolve(provider);
 			}
 		}
 
-		window.addEventListener('eip6963:announceProvider', onAnnounceProvider);
+		window.addEventListener("eip6963:announceProvider", onAnnounceProvider);
 
-		window.dispatchEvent(new Event('eip6963:requestProvider'));
+		window.dispatchEvent(new Event("eip6963:requestProvider"));
 	});
 }
 
@@ -87,7 +91,7 @@ export async function getMetaMaskEIP6963Provider() {
  * @returns The provider, or `null` if no provider supports snaps.
  */
 export async function getSnapsProvider() {
-	if (typeof window === 'undefined') {
+	if (typeof window === "undefined") {
 		return null;
 	}
 
@@ -126,7 +130,9 @@ export async function getSnapsProvider() {
  * @param snapId - The snap ID.
  * @returns True if it's a local Snap, or false otherwise.
  */
-export const isLocalSnap = (snapId: string) => snapId.startsWith('local:');
+export const isLocalSnap = (snapId: string) => snapId.startsWith("local:");
 
 export const shouldDisplayReconnectButton = (installedSnap: Snap | null) =>
-	installedSnap && isLocalSnap(installedSnap?.id);
+	installedSnap && isLocalSnap(installedSnap?.id)
+		? true
+		: installedSnap?.version !== env.snapVersion;

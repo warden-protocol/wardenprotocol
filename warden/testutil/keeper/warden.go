@@ -17,8 +17,9 @@ import (
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	"github.com/stretchr/testify/require"
 
+	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func WardenKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
@@ -32,16 +33,21 @@ func WardenKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 	registry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(registry)
 	authority := authtypes.NewModuleAddress(govtypes.ModuleName)
+	actAuthority := authtypes.NewModuleAddress(acttypes.ModuleName)
+	wardenAuthority := authtypes.NewModuleAddress(types.ModuleName)
 
-	intentKeeper, _ := IntentKeeper(t)
+	actKeeper, _ := ActKeeper(t)
 
 	k := keeper.NewKeeper(
 		cdc,
 		runtime.NewKVStoreService(storeKey),
 		log.NewNopLogger(),
 		authority.String(),
+		actAuthority.String(),
+		wardenAuthority,
 		nil,
-		intentKeeper,
+		actKeeper,
+		nil,
 	)
 
 	ctx := sdk.NewContext(stateStore, cmtproto.Header{}, false, log.NewNopLogger())

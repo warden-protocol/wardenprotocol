@@ -1,0 +1,32 @@
+git_root := `git rev-parse --show-toplevel`
+tmpdir := `mktemp -d`
+
+# regenerate all protobuf definitions using "buf"
+all: gogo pulsar
+
+_clean-gogo:
+  #!/usr/bin/env bash
+  shopt -s globstar
+  rm -rf {{git_root / "warden/x/**/*.pb.go"}}
+
+# run "buf" to generate gogo definitions
+gogo:
+  go tool buf generate --template={{git_root / "proto/buf.gen.gogo.yaml"}} --output={{tmpdir}}
+  cp -rf {{tmpdir}}/github.com/warden-protocol/wardenprotocol/* {{git_root}}
+
+_clean-pulsar:
+  #!/usr/bin/env bash
+  shopt -s globstar
+  mkdir -p {{git_root / "api"}}
+  rm -rf {{git_root / "api/**/*.pulsar.go"}}
+
+# run "buf" to generate pulsar definitions
+pulsar: _clean-pulsar
+  go tool buf generate --template={{git_root / "proto/buf.gen.pulsar.yaml"}} --output={{tmpdir}}
+  rm -rf {{git_root / "api/"}}
+  cp -rf {{tmpdir}}/api {{git_root / "api"}}
+
+# run linter for protobufs
+lint:
+  go tool buf lint
+

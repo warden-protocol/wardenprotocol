@@ -1,0 +1,105 @@
+// Copyright (c) 2025 Warden Labs. All Rights Reserved.
+//
+// ** RESTRICTED LICENSE **
+//
+// This file is part of the 'async' module. It is NOT licensed
+// under the Apache 2.0 license governing the rest of the project.
+// Refer to the LICENSE file in this module's directory for full terms.
+// Use, modification, and distribution are strictly limited.
+// Do NOT use this file unless you agree to the terms stated in that license.
+//
+// SPDX-FileCopyrightText: 2025 Warden Labs
+// SPDX-License-Identifier: LicenseRef-Proprietary-RestrictedModule
+
+syntax = "proto3";
+
+package warden.async.v1beta1;
+
+import "amino/amino.proto";
+import "cosmos/base/v1beta1/coin.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/duration.proto";
+import "warden/async/v1beta1/params.proto";
+import "warden/async/v1beta1/plugin.proto";
+import "warden/sched/v1beta1/callback.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1";
+
+// Msg defines the Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
+
+  // AddPlugin defines a (governance) operation for creating a new plugin. The
+  // authority defaults to the x/gov module account.
+  rpc AddPlugin(MsgAddPlugin) returns (MsgAddPluginResponse);
+
+  // Create a new Task to be executed.
+  rpc AddTask(MsgAddTask) returns (MsgAddTaskResponse);
+}
+
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) = "authority";
+  option (amino.name) = "warden/x/async/MsgUpdateParams";
+
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // params defines the module parameters to update.
+
+  // NOTE: All parameters must be supplied.
+  Params params = 2 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}
+
+message MsgAddPlugin {
+  option (cosmos.msg.v1.signer) = "authority";
+  option (amino.name) = "warden/x/async/MsgUpdateParams";
+
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  string name = 2;
+  string description = 3;
+  PluginFee fee = 4 [(gogoproto.nullable) = false];
+  google.protobuf.Duration timeout = 5 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true,
+    (gogoproto.stdduration) = true
+  ];
+}
+
+message MsgAddPluginResponse {}
+
+message MsgAddTask {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string plugin = 2;
+  bytes input = 3;
+  reserved 4;
+
+  repeated cosmos.base.v1beta1.Coin max_fee = 5 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
+    (amino.dont_omitempty) = true,
+    (amino.encoding) = "legacy_coins"
+  ];
+  warden.sched.v1beta1.CallbackParams callback_params = 6 [(gogoproto.nullable) = true];
+}
+
+message MsgAddTaskResponse {
+  uint64 id = 1;
+}

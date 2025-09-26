@@ -1,0 +1,223 @@
+syntax = "proto3";
+package warden.warden.v1beta3;
+
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "warden/warden/v1beta3/key.proto";
+import "warden/warden/v1beta3/keychain.proto";
+import "warden/warden/v1beta3/signature.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3";
+
+// EventCreateSpace is emitted on Space creation
+message EventCreateSpace {
+  // id of the new space
+  uint64 id = 1;
+
+  // creator is the account address of the space creator
+  string creator = 2;
+
+  // owners_count is the count of the space owners
+  uint64 owners_count = 3;
+
+  // id of the template to be applied to every approve admin operation
+  uint64 approve_admin_template_id = 4;
+
+  // id of the template to be applied to every reject admin operation
+  uint64 reject_admin_template_id = 5;
+
+  // id of the template to be applied to every approve sign operation
+  uint64 approve_sign_template_id = 6;
+
+  // id of the template to be applied to every reject sign operation
+  uint64 reject_sign_template_id = 7;
+}
+
+// EventUpdateSpace is emitted when Space is updated
+message EventUpdateSpace {
+  // id of the space being updated
+  uint64 space_id = 1;
+
+  // id of the template to be applied to every approve admin operation
+  uint64 approve_admin_template_id = 2;
+
+  // id of the template to be applied to every reject admin operation
+  uint64 reject_admin_template_id = 3;
+
+  // id of the template to be applied to every approve sign operation
+  uint64 approve_sign_template_id = 4;
+
+  // id of the template to be applied to every reject sign operation
+  uint64 reject_sign_template_id = 5;
+}
+
+// EventAddSpaceOwner is emitted when a new owner is added
+message EventAddSpaceOwner {
+  // id of the space being updated
+  uint64 space_id = 1;
+
+  // new_owner is the address of the new space owner
+  string new_owner = 2;
+
+  // owners_count is the new count of space owners
+  uint64 owners_count = 3;
+}
+
+// EventRemoveSpaceOwner is emitted when an owner is removed
+message EventRemoveSpaceOwner {
+  // id of the space being updated
+  uint64 space_id = 1;
+
+  // removed_owner is the address of the removed space owner
+  string removed_owner = 2;
+
+  // owners_count is the new count of space owners
+  uint64 owners_count = 3;
+}
+
+// EventNewKeyRequest is emitted on new key request
+message EventNewKeyRequest {
+  // id of the new key request
+  uint64 id = 1;
+
+  // space_id associated with the key request
+  uint64 space_id = 2;
+
+  // keychain_id associated with the key request
+  uint64 keychain_id = 3;
+
+  // id of the template to be applied to every approve sign operation for this key
+  uint64 approve_template_id = 4;
+
+  // id of the template to be applied to every reject sign operation for this key
+  uint64 reject_template_id = 5;
+
+  // the crypto scheme requested for this key
+  KeyType key_type = 6;
+
+  // address of the account that requested the key
+  string creator = 7;
+}
+
+// EventNewKey is emitted when a new Key is created
+message EventNewKey {
+  // id of the new key
+  uint64 id = 1;
+
+  // the crypto scheme used by this key
+  KeyType key_type = 2;
+
+  // space_id associated with the key request
+  uint64 space_id = 3;
+
+  // keychain_id associated with the key request
+  uint64 keychain_id = 4;
+
+  // id of the template to be applied to every approve sign operation for this key
+  uint64 approve_template_id = 5;
+
+  // id of the template to be applied to every reject sign operation for this key
+  uint64 reject_template_id = 6;
+}
+
+// EventRejectKeyRequest is emitted when a Key request is rejected
+message EventRejectKeyRequest {
+  // id of the key request
+  uint64 id = 1;
+}
+
+// EventUpdateKey is emitted when a key is updated
+message EventUpdateKey {
+  // id of the key
+  uint64 id = 1;
+
+  // id of the template to be applied to every approve sign operation
+  uint64 approve_template_id = 3;
+
+  // id of the template to be applied to every reject sign operation
+  uint64 reject_template_id = 4;
+}
+
+// EventNewSignRequest is emitted on new signature requests
+message EventNewSignRequest {
+  // id of the signature request
+  uint64 id = 1;
+
+  // id of the Key to be used for signing
+  uint64 key_id = 2;
+
+  // address of the account that requested the signature
+  string creator = 3;
+
+  // broadcast type of the signature request
+  BroadcastType broadcast_type = 4;
+}
+
+// EventRequestNewSignatureFulfilled is emitted when signature request is fulfilled
+message EventFulfilSignRequest {
+  // id of the sign request
+  uint64 id = 1;
+}
+
+// EventRejectSignRequest is emitted when a signature request is rejected
+message EventRejectSignRequest {
+  // id of the signature request
+  uint64 id = 1;
+}
+
+// EventNewKeychain is emitted on Keychain creation
+message EventNewKeychain {
+  // id of the new keychain
+  uint64 id = 1;
+
+  // address of the account that created the keychain
+  string creator = 2;
+
+  // amount of charging fees for key and signature requests
+  KeychainFees keychain_fees = 3 [(gogoproto.nullable) = false];
+}
+
+// EventUpdateKeychain is emitted when a Keychain is updated
+message EventUpdateKeychain {
+  // id of the keychain
+  uint64 id = 1;
+
+  // amount of charging fees for key and signature requests
+  KeychainFees keychain_fees = 2 [(gogoproto.nullable) = false];
+}
+
+// EventAddKeychainWriter is emitted when a new writer address is added to a Keychain
+message EventAddKeychainWriter {
+  // id of the keychain
+  uint64 id = 1;
+
+  // address of the new writer
+  string new_writer = 2;
+
+  // updated count of writers
+  uint64 writers_count = 3;
+}
+
+// EventAddKeychainAdmin is emitted when a new admin address is added to a Keychain
+message EventAddKeychainAdmin {
+  // id of the keychain
+  uint64 id = 1;
+
+  // address of the new admin
+  string new_admin = 2 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // updated count of admins
+  uint64 admins_count = 3;
+}
+
+// EventRemoveKeychainAdmin is emitted when a new admin address is removed from a Keychain
+message EventRemoveKeychainAdmin {
+  // id of the keychain
+  uint64 id = 1;
+
+  // address of the new admin
+  string admin = 2 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // updated count of admins
+  uint64 admins_count = 3;
+}

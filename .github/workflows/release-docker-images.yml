@@ -1,0 +1,87 @@
+---
+name: Release Docker images
+
+on:
+  workflow_call:
+    inputs:
+      app_name:
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      app_name:
+        description: "App"
+        required: true
+        type: choice
+        options:
+          - wardend
+          - wardenkms
+
+jobs:
+  release-image-amd64:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: write
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Expose GitHub Runtime
+        uses: crazy-max/ghaction-github-runtime@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup just
+        uses: extractions/setup-just@v2
+        with:
+          just-version: 1.40.0
+
+      - name: Release
+        run: just release-${{ inputs.app_name }}
+
+  release-image-arm64:
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      actions: read
+      contents: write
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Expose GitHub Runtime
+        uses: crazy-max/ghaction-github-runtime@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup just
+        uses: extractions/setup-just@v2
+        with:
+          just-version: 1.40.0
+
+      - name: Release
+        run: just release-${{ inputs.app_name }}

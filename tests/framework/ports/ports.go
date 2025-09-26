@@ -14,12 +14,16 @@ type FreePort struct {
 
 func ReservePorts(t *testing.T, count int) *FreePort {
 	t.Helper()
-	var ports []int
-	var lsns []net.Listener
 
-	for i := 0; i < count; i++ {
-		ln, err := net.Listen("tcp", "127.0.0.1:0")
+	var (
+		ports []int
+		lsns  []net.Listener
+	)
+
+	for range count {
+		ln, err := new(net.ListenConfig).Listen(t.Context(), "tcp", "127.0.0.1:0")
 		require.NoError(t, err)
+
 		ports = append(ports, ln.Addr().(*net.TCPAddr).Port)
 		lsns = append(lsns, ln)
 	}

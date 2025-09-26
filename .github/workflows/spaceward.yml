@@ -3,8 +3,15 @@ name: spaceward
 
 on:
   push:
+    branches:
+      - main
     paths:
-      - 'spaceward/**'
+      - "spaceward/**"
+    tags:
+      - "spaceward/v*"
+  pull_request:
+    paths:
+      - "spaceward/**"
 
 jobs:
   build:
@@ -12,12 +19,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - uses: pnpm/action-setup@v3
         name: Install pnpm
         with:
-          version: 8
+          version: 9
           run_install: false
 
       - name: Install Node.js
@@ -25,18 +32,18 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
-          cache-dependency-path: 'spaceward/pnpm-lock.yaml'
+          cache-dependency-path: "spaceward/pnpm-lock.yaml"
 
       - name: Install dependencies
         run: pnpm install
-        working-directory: 'spaceward/'
+        working-directory: "spaceward/"
 
       - name: Build
         run: pnpm build
-        working-directory: 'spaceward/'
+        working-directory: "spaceward/"
 
   build-and-push:
-    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/spaceward/v')
     needs: [build]
     uses: ./.github/workflows/build_push.yml
     with:

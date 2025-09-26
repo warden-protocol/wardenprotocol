@@ -14,6 +14,8 @@ func Preprocess(ctx context.Context, node *ast.Expression, expander ast.Expander
 		return node, preprocessElements(ctx, n.ArrayLiteral.Elements, expander)
 	case *ast.Expression_CallExpression:
 		return node, preprocessCallExpression(ctx, n.CallExpression, expander)
+	case *ast.Expression_PrefixExpression:
+		return node, preprocessPrefixExpression(ctx, n.PrefixExpression, expander)
 	case *ast.Expression_InfixExpression:
 		return node, preprocessInfixExpression(ctx, n.InfixExpression, expander)
 	default:
@@ -24,16 +26,27 @@ func Preprocess(ctx context.Context, node *ast.Expression, expander ast.Expander
 func preprocessElements(ctx context.Context, elements []*ast.Expression, expander ast.Expander) error {
 	for i, elem := range elements {
 		var err error
+
 		elements[i], err = Preprocess(ctx, elem, expander)
 		if err != nil {
 			return err
 		}
 	}
+
 	return nil
+}
+
+func preprocessPrefixExpression(ctx context.Context, prefix *ast.PrefixExpression, expander ast.Expander) error {
+	var err error
+
+	prefix.Right, err = Preprocess(ctx, prefix.Right, expander)
+
+	return err
 }
 
 func preprocessInfixExpression(ctx context.Context, infix *ast.InfixExpression, expander ast.Expander) error {
 	var err error
+
 	infix.Left, err = Preprocess(ctx, infix.Left, expander)
 	if err != nil {
 		return err

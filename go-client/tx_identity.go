@@ -5,19 +5,13 @@ import (
 
 	"github.com/btcsuite/btcd/btcec/v2"
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdktypes "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/evm/crypto/ethsecp256k1"
 	"github.com/cosmos/go-bip39"
 )
 
-var addrPrefix = "warden"
-
-func init() {
-	// set up SDK config (singleton)
-	config := sdktypes.GetConfig()
-	config.SetBech32PrefixForAccount(addrPrefix, addrPrefix+"pub")
-}
+var DefaultDerivationPath = "m/44'/60'/0'/0/0"
 
 // Identity represents an account on the Warden Protocol. It can be used to sign
 // transactions.
@@ -28,7 +22,7 @@ type Identity struct {
 
 // NewIdentityFromSeed returns a Identity from a seed phrase.
 // This is useful in a mock environment or during testing but should not be used in production.
-func NewIdentityFromSeed(derivationPath, seedPhrase string) (Identity, error) {
+func NewIdentityFromSeed(seedPhrase string) (Identity, error) {
 	// Convert the seed phrase to a seed
 	seedBytes, err := bip39.NewSeedWithErrorChecking(seedPhrase, "")
 	if err != nil {
@@ -37,7 +31,8 @@ func NewIdentityFromSeed(derivationPath, seedPhrase string) (Identity, error) {
 
 	// Create a master key and derive the desired key
 	masterKey, ch := hd.ComputeMastersFromSeed(seedBytes)
-	derivedKey, err := hd.DerivePrivateKeyForPath(masterKey, ch, derivationPath)
+
+	derivedKey, err := hd.DerivePrivateKeyForPath(masterKey, ch, DefaultDerivationPath)
 	if err != nil {
 		return Identity{}, fmt.Errorf("failed to derive private key: %w", err)
 	}
@@ -45,8 +40,7 @@ func NewIdentityFromSeed(derivationPath, seedPhrase string) (Identity, error) {
 	// Generate a private key object from the bytes
 	privKey, _ := btcec.PrivKeyFromBytes(derivedKey)
 
-	// Convert the public key to a Cosmos secp256k1.PublicKey
-	cosmosPrivKey := &secp256k1.PrivKey{
+	cosmosPrivKey := &ethsecp256k1.PrivKey{
 		Key: privKey.Serialize(),
 	}
 

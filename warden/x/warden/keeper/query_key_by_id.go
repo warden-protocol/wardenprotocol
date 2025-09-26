@@ -7,7 +7,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func (k Keeper) KeyById(goCtx context.Context, req *types.QueryKeyByIdRequest) (*types.QueryKeyResponse, error) {
@@ -17,13 +17,13 @@ func (k Keeper) KeyById(goCtx context.Context, req *types.QueryKeyByIdRequest) (
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	key, err := k.KeysKeeper.Get(ctx, req.Id)
+	key, err := k.KeysKeeper.Get(goCtx, req.Id)
 	if err != nil {
 		return nil, err
 	}
 
 	return &types.QueryKeyResponse{
-		Key:     key,
-		Wallets: key.DeriveAddresses(ctx, req.DeriveWallets),
+		Key:       key,
+		Addresses: key.DeriveAddresses(ctx.Logger(), req.DeriveAddresses),
 	}, nil
 }

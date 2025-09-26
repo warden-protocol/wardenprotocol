@@ -1,0 +1,35 @@
+---
+name: Solidity Contracts
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "solidity/orders/**"
+      - "precompiles/**"
+  pull_request:
+    paths:
+      - "solidity/orders/**"
+      - "precompiles/**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "solidity/orders/"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: foundry-rs/foundry-toolchain@v1
+      - uses: pnpm/action-setup@v3
+        name: Install pnpm
+        with:
+          version: 10.11.0
+          run_install: false
+      - name: Install dependencies
+        run: pnpm install
+      - name: Run lint
+        run: pnpm run lint
+      - name: Run test
+        run: pnpm run test

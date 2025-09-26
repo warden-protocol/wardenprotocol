@@ -1,0 +1,27 @@
+# directories
+cache
+coverage
+node_modules
+out
+
+# files
+*.env
+*.log
+.DS_Store
+.pnp.*
+lcov.info
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# broadcasts
+broadcast/**
+!broadcast/Deploy.s.sol
+!broadcast/Deploy.s.sol/12345
+!broadcast/Deploy.s.sol/12345/latest.json
+!broadcast/Deploy.s.sol/12345/run-latest.json
+
+# chiado orders
+!broadcast/Deploy.s.sol/10010
+!broadcast/Deploy.s.sol/10010/latest.json
+!broadcast/Deploy.s.sol/10010/run-latest.json

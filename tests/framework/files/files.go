@@ -21,7 +21,9 @@ func CloneDir(dest, src string, templateData any) error {
 
 	for _, entry := range entries {
 		if entry.IsDir() {
-			CloneDir(dest+"/"+entry.Name(), src+"/"+entry.Name(), templateData)
+			if err := CloneDir(dest+"/"+entry.Name(), src+"/"+entry.Name(), templateData); err != nil {
+				return err
+			}
 		} else {
 			if strings.HasSuffix(entry.Name(), ".tmpl") {
 				// render template
@@ -35,7 +37,9 @@ func CloneDir(dest, src string, templateData any) error {
 					return err
 				}
 
-				t.Execute(out, templateData)
+				if err := t.Execute(out, templateData); err != nil {
+					return err
+				}
 			} else {
 				// copy file
 				out, err := os.Create(dest + "/" + entry.Name())

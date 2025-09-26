@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "declaration": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "outDir": "dist",
+    "strictNullChecks": true
+  },
+  "exclude": [
+    "dist"
+  ],
+  "references": [
+    {
+      "path": "./packages/utils-library"
+    },
+    {
+      "path": "./packages/aws-kms-signer"
+    },
+    {
+      "path": "./packages/blockchain-library"
+    },
+    {
+      "path": "./packages/relayer"
+    },
+    {
+      "path": "./packages/scheduler"
+    }
+  ],
+  "compileOnSave": true
+}

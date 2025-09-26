@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	keepertest "github.com/warden-protocol/wardenprotocol/warden/testutil/keeper"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func Benchmark_QueryKeysBySpaceId(b *testing.B) {
@@ -17,10 +17,10 @@ func Benchmark_QueryKeysBySpaceId(b *testing.B) {
 	pk, err := base64.StdEncoding.DecodeString("A8Ijpl1mphVgurSqcDfS4mVVSqgXVLubol7+Kgjay1I+")
 	require.NoError(b, err)
 
-	for i := 0; i < 100_000; i++ {
+	for i := range 100_000 {
 		err = k.KeysKeeper.New(
 			ctx,
-			types.Key{
+			&types.Key{
 				Type:      types.KeyType_KEY_TYPE_ECDSA_SECP256K1,
 				PublicKey: pk,
 				SpaceId:   uint64(i),
@@ -34,17 +34,19 @@ func Benchmark_QueryKeysBySpaceId(b *testing.B) {
 
 	req := &types.QueryKeysBySpaceIdRequest{
 		SpaceId: 9999,
-		DeriveWallets: []types.WalletType{
-			types.WalletType_WALLET_TYPE_ETH,
-			types.WalletType_WALLET_TYPE_CELESTIA,
+		DeriveAddresses: []types.AddressType{
+			types.AddressType_ADDRESS_TYPE_ETHEREUM,
+			types.AddressType_ADDRESS_TYPE_OSMOSIS,
 		},
 		Pagination: &query.PageRequest{
 			CountTotal: true,
 			Limit:      1,
 		},
 	}
+
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+
+	for range b.N {
 		res, err := k.KeysBySpaceId(ctx, req)
 		require.NoError(b, err)
 		require.NotNil(b, res)

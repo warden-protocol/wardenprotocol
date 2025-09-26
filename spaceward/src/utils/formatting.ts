@@ -1,30 +1,43 @@
-import { ActionStatus } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/rest";
-import { KeyType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
+import { KeyType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
+import { ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
 
 export function prettyKeyType(type: KeyType | string) {
-  switch (type) {
-    case KeyType.KEYTYPEECDSASECP256K1:
-      return "ECDSA (secp256k1)";
-    case KeyType.KEYTYPEEDDSAED25519:
-      return "EdDSA (ed25519)";
-    default:
-      return "Unknown";
-  }
+	switch (type) {
+		case KeyType.KEY_TYPE_ECDSA_SECP256K1:
+			return "ECDSA (secp256k1)";
+		case KeyType.KEY_TYPE_EDDSA_ED25519:
+			return "EdDSA (ed25519)";
+		default:
+			return "Unknown";
+	}
 }
 
 export function prettyActionStatus(s: ActionStatus | string) {
-  switch (s) {
-    case ActionStatus.ACTION_STATUS_PENDING:
-      return "Pending approvals";
-    case ActionStatus.ACTION_STATUS_COMPLETED:
-      return "Completed";
-    case ActionStatus.ACTION_STATUS_REVOKED:
-      return "Revoked";
-    default:
-      return "Unknown";
-  }
+	switch (s) {
+		case ActionStatus.ACTION_STATUS_PENDING:
+			return "Pending approvals";
+		case ActionStatus.ACTION_STATUS_COMPLETED:
+			return "Completed";
+		case ActionStatus.ACTION_STATUS_REVOKED:
+			return "Revoked";
+		default:
+			return "Unknown";
+	}
 }
 
 export function prettyBytes(b: Uint8Array) {
-  return b.reduce((s, v) => s + v.toString(16).padStart(2, "0"), "");
+	return b.reduce((s, v) => s + v.toString(16).padStart(2, "0"), "");
 }
+
+export const extReplacer = (_: any, v: any) =>
+	typeof v === "bigint"
+		? {
+				type: "bigint",
+				value: v.toString(),
+			}
+		: v instanceof Uint8Array
+			? {
+					type: "Uint8Array",
+					value: Array.from(v),
+				}
+			: v;

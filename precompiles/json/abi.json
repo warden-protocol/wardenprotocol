@@ -1,0 +1,52 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "enum JsonOp[]",
+          "name": "ops",
+          "type": "uint8[]"
+        },
+        {
+          "internalType": "bytes[]",
+          "name": "data",
+          "type": "bytes[]"
+        }
+      ],
+      "name": "build",
+      "outputs": [
+        {
+          "internalType": "bytes",
+          "name": "json",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "jsonBytes",
+          "type": "bytes"
+        },
+        {
+          "internalType": "bytes",
+          "name": "schema",
+          "type": "bytes"
+        }
+      ],
+      "name": "parse",
+      "outputs": [
+        {
+          "internalType": "bytes",
+          "name": "abiEncodedData",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
+}

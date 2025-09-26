@@ -6,29 +6,27 @@ import (
 	"strings"
 	"time"
 
-	"cosmossdk.io/log"
 	"cosmossdk.io/math"
-	db "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	"github.com/cosmos/cosmos-sdk/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	txtypes "github.com/cosmos/cosmos-sdk/types/tx"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	xauthsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
-	"github.com/spf13/viper"
-	"github.com/warden-protocol/wardenprotocol/warden/app"
 	"google.golang.org/grpc"
+
+	"github.com/warden-protocol/wardenprotocol/warden/app"
 )
 
 var (
-	DefaultGasLimit = uint64(300000)
-	DefaultFees     = types.NewCoins(types.NewCoin("uward", math.NewInt(1000)))
+	DefaultGasLimit = uint64(300000000000000000)
+	DefaultFees     = sdk.NewCoins(sdk.NewCoin("award", math.NewInt(1000000000000000)))
 
 	queryTimeout = 250 * time.Millisecond
+	txConfig     = app.NewTxConfig()
 )
 
 type AccountFetcher interface {
-	Account(ctx context.Context, addr string) (types.AccountI, error)
+	Account(ctx context.Context, addr string) (sdk.AccountI, error)
 }
 
 var _ AccountFetcher = (*QueryClient)(nil)
@@ -52,17 +50,17 @@ func NewRawTxClient(id Identity, chainID string, c *grpc.ClientConn, accountFetc
 }
 
 // Send a transaction and wait for it to be included in a block.
-func (c *RawTxClient) SendWaitTx(ctx context.Context, txBytes []byte) error {
+func (c *RawTxClient) SendWaitTx(ctx context.Context, txBytes []byte) (string, error) {
 	hash, err := c.SendTx(ctx, txBytes)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	if err = c.WaitForTx(ctx, hash); err != nil {
-		return err
+		return "", err
 	}
 
-	return nil
+	return hash, nil
 }
 
 type Msger interface {
@@ -71,27 +69,17 @@ type Msger interface {
 
 // Build a transaction with the given messages and sign it.
 // Sequence and account numbers will be fetched automatically from the chain.
-func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.Coins, msgers ...Msger) ([]byte, error) {
+func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees sdk.Coins, msgers ...Msger) ([]byte, error) {
 	account, err := c.accountFetcher.Account(ctx, c.Identity.Address.String())
 	if err != nil {
 		return nil, fmt.Errorf("fetch account: %w", err)
 	}
+
 	accSeq := account.GetSequence()
 	accNum := account.GetAccountNumber()
 
-	app, err := app.New(
-		log.NewNopLogger(),
-		db.NewMemDB(),
-		nil,
-		false,
-		viper.New(),
-	)
-	if err != nil {
-		return nil, fmt.Errorf("create app: %w", err)
-	}
-
-	txBuilder := app.TxConfig().NewTxBuilder()
-	signMode := app.TxConfig().SignModeHandler().DefaultMode()
+	txBuilder := txConfig.NewTxBuilder()
+	signMode := txConfig.SignModeHandler().DefaultMode()
 
 	// build unsigned tx
 	txBuilder.SetGasLimit(gasLimit)
@@ -116,6 +104,7 @@ func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.C
 		},
 		Sequence: accSeq,
 	}
+
 	err = txBuilder.SetSignatures(sigV2)
 	if err != nil {
 		return nil, fmt.Errorf("set empty signature: %w", err)
@@ -135,7 +124,7 @@ func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.C
 		signerData,
 		txBuilder,
 		c.Identity.PrivKey,
-		app.TxConfig(),
+		txConfig,
 		accSeq,
 	)
 	if err != nil {
@@ -147,7 +136,7 @@ func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.C
 		return nil, fmt.Errorf("set signature: %w", err)
 	}
 
-	txBytes, err := app.TxConfig().TxEncoder()(txBuilder.GetTx())
+	txBytes, err := txConfig.TxEncoder()(txBuilder.GetTx())
 	if err != nil {
 		return nil, fmt.Errorf("encode tx: %w", err)
 	}

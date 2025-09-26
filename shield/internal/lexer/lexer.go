@@ -1,6 +1,8 @@
 package lexer
 
-import "github.com/warden-protocol/wardenprotocol/shield/token"
+import (
+	"github.com/warden-protocol/wardenprotocol/shield/token"
+)
 
 type Lexer struct {
 	input        string
@@ -12,6 +14,7 @@ type Lexer struct {
 func New(input string) *Lexer {
 	l := &Lexer{input: input}
 	l.readChar()
+
 	return l
 }
 
@@ -49,6 +52,49 @@ func (l *Lexer) NextToken() token.Token {
 		} else {
 			tok = newToken(token.Type_ILLEGAL, l.ch)
 		}
+	case '>':
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.Type_GTE, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.Type_GT, l.ch)
+		}
+	case '<':
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.Type_LTE, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.Type_LT, l.ch)
+		}
+	case '!':
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.Type_NEQ, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.Type_ILLEGAL, l.ch)
+		}
+	case '=':
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.Type_EQ, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.Type_ILLEGAL, l.ch)
+		}
+	case '"':
+		l.readChar()
+		tok = l.readString()
+	case '+':
+		tok = newToken(token.Type_ADD, l.ch)
+	case '-':
+		tok = newToken(token.Type_SUB, l.ch)
+	case '*':
+		tok = newToken(token.Type_MUL, l.ch)
+	case '/':
+		tok = newToken(token.Type_DIV, l.ch)
 	case 0:
 		tok.Literal = ""
 		tok.Type = token.Type_EOF
@@ -56,10 +102,12 @@ func (l *Lexer) NextToken() token.Token {
 		if isLetter(l.ch) {
 			tok.Literal = l.readIdentifier()
 			tok.Type = token.LookupIdent(tok.Literal)
+
 			return tok
 		} else if isDigit(l.ch) {
 			tok.Type = token.Type_INT
 			tok.Literal = l.readNumber()
+
 			return tok
 		} else {
 			tok = newToken(token.Type_ILLEGAL, l.ch)
@@ -67,6 +115,7 @@ func (l *Lexer) NextToken() token.Token {
 	}
 
 	l.readChar()
+
 	return tok
 }
 
@@ -76,6 +125,7 @@ func (l *Lexer) readChar() {
 	} else {
 		l.ch = l.input[l.readPosition]
 	}
+
 	l.position = l.readPosition
 	l.readPosition++
 }
@@ -84,6 +134,7 @@ func (l *Lexer) peekChar() byte {
 	if l.readPosition >= len(l.input) {
 		return 0
 	}
+
 	return l.input[l.readPosition]
 }
 
@@ -92,6 +143,7 @@ func (l *Lexer) readIdentifier() string {
 	for isLetter(l.ch) || isDigit(l.ch) || isDot(l.ch) {
 		l.readChar()
 	}
+
 	return l.input[position:l.position]
 }
 
@@ -100,7 +152,24 @@ func (l *Lexer) readNumber() string {
 	for isDigit(l.ch) {
 		l.readChar()
 	}
+
 	return l.input[position:l.position]
+}
+
+func (l *Lexer) readString() token.Token {
+	position := l.position
+	for l.ch != '"' && l.ch != 0 {
+		l.readChar()
+	}
+
+	if l.ch == 0 {
+		return newToken(token.Type_ILLEGAL, l.input[position-1])
+	}
+
+	return token.Token{
+		Type:    token.Type_STRING,
+		Literal: l.input[position:l.position],
+	}
 }
 
 func (l *Lexer) skipWhitespace() {

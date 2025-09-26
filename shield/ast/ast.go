@@ -28,9 +28,21 @@ func NewBooleanLiteral(boolean *BooleanLiteral) *Expression {
 	})
 }
 
+func NewStringLiteral(sl *StringLiteral) *Expression {
+	return NewExpression(&Expression_StringLiteral{
+		StringLiteral: sl,
+	})
+}
+
 func NewArrayLiteral(array *ArrayLiteral) *Expression {
 	return NewExpression(&Expression_ArrayLiteral{
 		ArrayLiteral: array,
+	})
+}
+
+func NewPrefixExpression(prefix *PrefixExpression) *Expression {
+	return NewExpression(&Expression_PrefixExpression{
+		PrefixExpression: prefix,
 	})
 }
 
@@ -50,6 +62,7 @@ func UnwrapIdentifier(expr *Expression) (*Identifier, bool) {
 	if ident, ok := expr.Value.(*Expression_Identifier); ok {
 		return ident.Identifier, true
 	}
+
 	return nil, false
 }
 
@@ -57,6 +70,7 @@ func UnwrapIntegerLiteral(expr *Expression) (*IntegerLiteral, bool) {
 	if ident, ok := expr.Value.(*Expression_IntegerLiteral); ok {
 		return ident.IntegerLiteral, true
 	}
+
 	return nil, false
 }
 
@@ -64,6 +78,15 @@ func UnwrapBooleanLiteral(expr *Expression) (*BooleanLiteral, bool) {
 	if ident, ok := expr.Value.(*Expression_BooleanLiteral); ok {
 		return ident.BooleanLiteral, true
 	}
+
+	return nil, false
+}
+
+func UnwrapStringLiteral(expr *Expression) (*StringLiteral, bool) {
+	if v, ok := expr.Value.(*Expression_StringLiteral); ok {
+		return v.StringLiteral, true
+	}
+
 	return nil, false
 }
 
@@ -71,6 +94,15 @@ func UnwrapArrayLiteral(expr *Expression) (*ArrayLiteral, bool) {
 	if ident, ok := expr.Value.(*Expression_ArrayLiteral); ok {
 		return ident.ArrayLiteral, true
 	}
+
+	return nil, false
+}
+
+func UnwrapPrefixExpression(expr *Expression) (*PrefixExpression, bool) {
+	if ident, ok := expr.Value.(*Expression_PrefixExpression); ok {
+		return ident.PrefixExpression, true
+	}
+
 	return nil, false
 }
 
@@ -78,6 +110,7 @@ func UnwrapInfixExpression(expr *Expression) (*InfixExpression, bool) {
 	if ident, ok := expr.Value.(*Expression_InfixExpression); ok {
 		return ident.InfixExpression, true
 	}
+
 	return nil, false
 }
 
@@ -85,6 +118,7 @@ func UnwrapCallExpression(expr *Expression) (*CallExpression, bool) {
 	if ident, ok := expr.Value.(*Expression_CallExpression); ok {
 		return ident.CallExpression, true
 	}
+
 	return nil, false
 }
 
@@ -97,21 +131,3 @@ func NewIdent(name string) *Identifier {
 		Value: name,
 	}
 }
-
-func (i *Identifier) expressionNode()      {}
-func (i *Identifier) TokenLiteral() string { return i.Token.Literal }
-
-func (il *IntegerLiteral) expressionNode()      {}
-func (il *IntegerLiteral) TokenLiteral() string { return il.Token.Literal }
-
-func (bl *BooleanLiteral) expressionNode()      {}
-func (bl *BooleanLiteral) TokenLiteral() string { return bl.Token.Literal }
-
-func (al *ArrayLiteral) expressionNode()      {}
-func (al *ArrayLiteral) TokenLiteral() string { return al.Token.Literal }
-
-func (ce *CallExpression) expressionNode()      {}
-func (ce *CallExpression) TokenLiteral() string { return ce.Token.Literal }
-
-func (ie *InfixExpression) expressionNode()      {}
-func (ie *InfixExpression) TokenLiteral() string { return ie.Token.Literal }

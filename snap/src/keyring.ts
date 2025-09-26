@@ -39,11 +39,7 @@ export class WardenKeyring implements Keyring {
       id,
       address: options?.address?.valueOf() as string,
       options: options ?? {},
-      methods: [
-        'personal_sign',
-        'eth_signTransaction',
-        'eth_signTypedData_v4',
-      ],
+      methods: ['personal_sign', 'eth_signTransaction', 'eth_signTypedData_v4'],
     };
     this.state.accounts[id] = account;
     await emitSnapKeyringEvent(snap, KeyringEvent.AccountCreated, { account });
@@ -78,11 +74,13 @@ export class WardenKeyring implements Keyring {
     this.state.pendingRequests[request.id] = request;
     await this.saveState();
 
+    const url = account.options.url?.toString() ?? 'http://localhost:5173/';
+
     return {
       pending: true,
       redirect: {
         message: 'Proceed in SpaceWard to approve this request',
-        url: 'http://localhost:5173/metamask',
+        url,
       },
     };
   }

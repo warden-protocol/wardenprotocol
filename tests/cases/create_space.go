@@ -6,33 +6,40 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/require"
+
 	"github.com/warden-protocol/wardenprotocol/tests/framework"
+	"github.com/warden-protocol/wardenprotocol/tests/framework/checks"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/exec"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
+
+func init() {
+	Register(&Test_CreateSpace{})
+}
 
 type Test_CreateSpace struct {
 	w *exec.WardenNode
 }
 
-func (c *Test_CreateSpace) Setup(t *testing.T, ctx context.Context, build framework.BuildResult) {
-	c.w = exec.NewWardenNode(t, build.Wardend)
-
-	go c.w.Start(t, ctx, "./testdata/snapshot-base")
-	c.w.WaitRunnning(t)
+func (c *Test_CreateSpace) Setup(t *testing.T, f *framework.F) {
+	c.w = f.StartNodeFromSnapshot(t, framework.SnapshotBase)
 }
 
-func (c *Test_CreateSpace) Run(t *testing.T, ctx context.Context, build framework.BuildResult) {
+func (c *Test_CreateSpace) Run(t *testing.T, f *framework.F) {
+	t.Skip("x/warden is disabled")
+
 	alice := exec.NewWardend(c.w, "alice")
-	alice.Run(t, "tx warden new-space")
+	res := alice.Tx(t, "warden new-space")
+	checks.SuccessTx(t, res)
 
 	client := c.w.GRPCClient(t)
 
 	require.Eventually(t, func() bool {
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
+		ctx, cancel := context.WithTimeout(t.Context(), 10*time.Millisecond)
 		defer cancel()
 
 		res, err := client.Warden.Spaces(ctx, &types.QuerySpacesRequest{})
-		return err == nil && len(res.Spaces) == 1
+
+		return err == nil && len(res.Spaces) == 1 && res.Spaces[0].Nonce == 0
 	}, 10*time.Second, 10*time.Millisecond)
 }

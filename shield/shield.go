@@ -2,6 +2,7 @@ package shield
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
@@ -21,6 +22,7 @@ type Environment = env.Environment
 func Parse(input string) (*ast.Expression, error) {
 	l := lexer.New(input)
 	p := parser.New(l)
+
 	root := p.Parse()
 	if len(p.Errors()) > 0 {
 		return nil, fmt.Errorf("parser errors: %v", p.Errors())
@@ -45,7 +47,7 @@ type Metadata = metadata.Metadata
 // ExtractMetadata extracts metadata from the given expression.
 func ExtractMetadata(root *ast.Expression) (Metadata, error) {
 	if root == nil {
-		return Metadata{}, fmt.Errorf("empty input")
+		return Metadata{}, errors.New("empty input")
 	}
 
 	return metadata.ExtractMetadata(root), nil

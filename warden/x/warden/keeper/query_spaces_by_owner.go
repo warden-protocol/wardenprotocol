@@ -6,9 +6,10 @@ import (
 	"cosmossdk.io/collections"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func (k Keeper) SpacesByOwner(goCtx context.Context, req *types.QuerySpacesByOwnerRequest) (*types.QuerySpacesResponse, error) {
@@ -21,18 +22,15 @@ func (k Keeper) SpacesByOwner(goCtx context.Context, req *types.QuerySpacesByOwn
 		return nil, status.Error(codes.InvalidArgument, "invalid owner address")
 	}
 
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
 	spaces, pageRes, err := query.CollectionPaginate(
-		ctx,
+		goCtx,
 		k.SpacesKeeper.ByOwner(),
 		req.Pagination,
 		func(key collections.Pair[sdk.AccAddress, uint64], value collections.NoValue) (types.Space, error) {
-			return k.SpacesKeeper.Get(ctx, key.K2())
+			return k.SpacesKeeper.Get(goCtx, key.K2())
 		},
 		query.WithCollectionPaginationPairPrefix[sdk.AccAddress, uint64](ownerAddr),
 	)
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

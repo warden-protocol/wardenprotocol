@@ -1,0 +1,37 @@
+# docs content
+docs/**/*.md @warden-protocol/DevRel
+docs/**/*.mdx @warden-protocol/DevRel
+ 
+# docs website
+docs/**/*.js @jjheywood
+docs/**/*.ts @jjheywood
+docs/**/*.json @jjheywood
+
+# SpaceWard
+spaceward/ @jjheywood
+
+# Protocol
+api/ @warden-protocol/Protocol
+cmd/ @warden-protocol/Protocol
+contracts/ @warden-protocol/Protocol
+go-client/ @warden-protocol/Protocol
+keychain-sdk/ @warden-protocol/Protocol
+precompiles/ @warden-protocol/Protocol
+prophet/ @warden-protocol/Protocol
+proto/ @warden-protocol/Protocol
+protocol-developer-docs/ @warden-protocol/Protocol
+shield/ @warden-protocol/Protocol
+soliditygen/ @warden-protocol/Protocol
+tests/ @warden-protocol/Protocol
+warden/ @warden-protocol/Protocol
+wardend.just @warden-protocol/Protocol
+localnet.just @warden-protocol/Protocol
+
+# CI
+.github/workflows @warden-protocol/DevOps
+
+# Builds
+docker-compose.yml @warden-protocol/DevOps
+Dockerfile @warden-protocol/DevOps
+Dockerfile-releaser @warden-protocol/DevOps
+warden.Dockerfile @warden-protocol/DevOps

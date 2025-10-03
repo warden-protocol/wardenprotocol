@@ -52,6 +52,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - oracle: Enable Slinky pre-blocker to store prices onchain.
 
+### Bug Fixes
+
+- Fix `query-gas-limit` in `app.toml` being ignored.
+
 ## [v0.7.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0) - 2025-09-22
 
 ### Consensus Breaking Changes

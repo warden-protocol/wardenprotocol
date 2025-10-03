@@ -40,7 +40,7 @@ type ParamSubspace interface {
 	Set(context.Context, []byte, interface{})
 }
 
-// ScheduleKeeper defined the expected interface for the Schedule module.
+// SchedKeeper defines the expected interface for the Sched module.
 type SchedKeeper interface {
 	SetCallback(ctx context.Context, cb *schedtypes.Callback) (id uint64, err error)
 	ExecuteCallback(ctx context.Context, id uint64, output []byte) error

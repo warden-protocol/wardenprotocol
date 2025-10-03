@@ -90,7 +90,6 @@ import (
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	evmante "github.com/cosmos/evm/ante"
-	cosmosevmante "github.com/cosmos/evm/ante/evm"
 	evmconfig "github.com/cosmos/evm/config"
 	evmosencoding "github.com/cosmos/evm/encoding"
 	evmmempool "github.com/cosmos/evm/mempool"
@@ -1225,7 +1224,6 @@ func (app *App) setAnteHandler(txConfig client.TxConfig, maxGasWanted uint64) {
 			SignModeHandler:        txConfig.SignModeHandler(),
 			SigGasConsumer:         evmante.SigVerificationGasConsumer,
 			MaxTxGasWanted:         maxGasWanted,
-			TxFeeChecker:           cosmosevmante.NewDynamicFeeChecker(app.FeeMarketKeeper),
 			PendingTxListener:      app.onPendingTx,
 		},
 	}

@@ -35,13 +35,14 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	evmconfig "github.com/cosmos/evm/config"
 	cosmosevmhd "github.com/cosmos/evm/crypto/hd"
 	cosmosevmkeyring "github.com/cosmos/evm/crypto/keyring"
-	"github.com/cosmos/evm/evmd"
-	evmdconfig "github.com/cosmos/evm/evmd/cmd/evmd/config"
 	cosmosevmserverconfig "github.com/cosmos/evm/server/config"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+
+	"github.com/warden-protocol/wardenprotocol/warden/app"
 )
 
 var (
@@ -137,7 +138,7 @@ or a similar setup where each node has a manually configurable IP address.
 Note, strict routability for addresses is turned off in the config file.
 
 Example:
-	evmd testnet init-files --v 4 --output-dir ./.testnets --starting-ip-address 192.168.10.2
+	wardend testnet init-files --v 4 --output-dir ./.testnets --starting-ip-address 192.168.10.2
 	`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			clientCtx, err := client.GetClientQueryContext(cmd)
@@ -161,10 +162,12 @@ Example:
 			args.startingIPAddress, _ = cmd.Flags().GetString(flagStartingIPAddress)
 			args.numValidators, _ = cmd.Flags().GetInt(flagNumValidators)
 			args.singleMachine, _ = cmd.Flags().GetBool(flagSingleHost)
+
 			config.Consensus.TimeoutCommit, err = cmd.Flags().GetDuration(flagCommitTimeout)
 			if err != nil {
 				return err
 			}
+
 			args.algo, _ = cmd.Flags().GetString(flags.FlagKeyType)
 
 			return initTestnetFiles(clientCtx, cmd, config, mbm, genBalIterator, args)
@@ -175,7 +178,7 @@ Example:
 	cmd.Flags().Duration(flagCommitTimeout, 5*time.Second, "Time to wait after a block commit before starting on the new height")
 	cmd.Flags().Bool(flagSingleHost, false, "Cluster runs on a single host machine with different ports")
 	cmd.Flags().String(flagNodeDirPrefix, "node", "Prefix the directory name for each node with (node results in node0, node1, ...)")
-	cmd.Flags().String(flagNodeDaemonHome, "evmd", "Home directory of the node's daemon configuration")
+	cmd.Flags().String(flagNodeDaemonHome, "wardend", "Home directory of the node's daemon configuration")
 	cmd.Flags().String(flagStartingIPAddress, "192.168.0.1", "Starting IP address (192.168.0.1 results in persistent peers list ID0@192.168.0.1:46656, ID1@192.168.0.2:46656, ...)")
 	cmd.Flags().String(flags.FlagKeyringBackend, flags.DefaultKeyringBackend, "Select keyring's backend (os|file|test)")
 	cmd.Flags().Bool(flagsUseDocker, false, "test network via docker")
@@ -193,7 +196,7 @@ and generate "v" directories, populated with necessary validator configuration f
 (private validator, genesis, config, etc.).
 
 Example:
-	evmd testnet --v 4 --output-dir ./.testnets
+	wardend testnet --v 4 --output-dir ./.testnets
 	`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			args := startArgs{}
@@ -248,8 +251,8 @@ func initTestnetFiles(
 	appConfig.Telemetry.EnableHostnameLabel = false
 	appConfig.Telemetry.GlobalLabels = [][]string{{"chain_id", args.chainID}}
 	evm := cosmosevmserverconfig.DefaultEVMConfig()
-	evm.EVMChainID = evmdconfig.EVMChainID
-	evmCfg := evmdconfig.EVMAppConfig{
+	evm.EVMChainID = evmconfig.EVMChainID
+	evmCfg := evmconfig.EVMAppConfig{
 		Config:  *appConfig,
 		EVM:     *evm,
 		JSONRPC: *cosmosevmserverconfig.DefaultJSONRPCConfig(),
@@ -629,7 +632,7 @@ func startTestnet(cmd *cobra.Command, args startArgs) error {
 	return nil
 }
 
-// NewTestNetworkFixture returns a new evmd AppConstructor for network simulation tests.
+// NewTestNetworkFixture returns a new wardend AppConstructor for network simulation tests.
 func NewTestNetworkFixture() network.TestFixture {
 	dir, err := os.MkdirTemp("", "evm")
 	if err != nil {
@@ -637,27 +640,27 @@ func NewTestNetworkFixture() network.TestFixture {
 	}
 	defer os.RemoveAll(dir)
 
-	app := evmd.NewExampleApp(
-		log.NewNopLogger(),
-		dbm.NewMemDB(),
-		nil,
-		true,
-		simtestutil.EmptyAppOptions{},
-		evmdconfig.EVMChainID,
-		evmdconfig.EvmAppOptions,
-	)
-
 	appCtr := func(val network.ValidatorI) servertypes.Application {
-		return evmd.NewExampleApp(
+		return app.NewApp(
 			log.NewNopLogger(),
 			dbm.NewMemDB(),
 			nil,
 			true,
 			simtestutil.EmptyAppOptions{},
-			evmdconfig.EVMChainID,
-			evmdconfig.EvmAppOptions,
+			evmconfig.EVMChainID,
+			evmconfig.EvmAppOptions,
 		)
 	}
+
+	app := app.NewApp(
+		log.NewNopLogger(),
+		dbm.NewMemDB(),
+		nil,
+		true,
+		simtestutil.EmptyAppOptions{},
+		evmconfig.EVMChainID,
+		evmconfig.EvmAppOptions,
+	)
 
 	return network.TestFixture{
 		AppConstructor: appCtr,

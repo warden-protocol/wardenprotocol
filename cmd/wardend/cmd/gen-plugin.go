@@ -26,6 +26,7 @@ func AddGenesisPluginCmd(defaultNodeHome string) *cobra.Command {
 			if err != nil {
 				return err
 			}
+
 			timeout := &timeoutFlag
 			if timeoutFlag == 0 {
 				timeout = nil
@@ -45,6 +46,7 @@ func AddGenesisPluginCmd(defaultNodeHome string) *cobra.Command {
 					if err != nil {
 						return fmt.Errorf("marshalling async genesis state: %w", err)
 					}
+
 					appState[asynctypes.ModuleName] = asyncGenStateBz
 
 					return nil

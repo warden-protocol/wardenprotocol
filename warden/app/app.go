@@ -837,7 +837,6 @@ func NewApp(
 
 	// initialize BaseApp
 	app.SetInitChainer(app.InitChainer)
-	app.SetPreBlocker(app.PreBlocker)
 	app.SetBeginBlocker(app.BeginBlocker)
 	app.SetEndBlocker(app.EndBlocker)
 
@@ -877,7 +876,7 @@ func NewApp(
 		fmt.Fprintln(os.Stderr, err.Error())
 	}
 
-	app.UpgradeKeeper.SetUpgradeHandler("v0.7.0", func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+	app.UpgradeKeeper.SetUpgradeHandler("v0.7.1", func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
 		return app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
 	})
 
@@ -924,10 +923,6 @@ func (app *App) InitChainer(ctx sdk.Context, req *abci.RequestInitChain) (*abci.
 	}
 
 	return app.ModuleManager.InitGenesis(ctx, app.appCodec, genesisState)
-}
-
-func (app *App) PreBlocker(ctx sdk.Context, _ *abci.RequestFinalizeBlock) (*sdk.ResponsePreBlock, error) {
-	return app.ModuleManager.PreBlock(ctx)
 }
 
 // LoadHeight loads a particular height.

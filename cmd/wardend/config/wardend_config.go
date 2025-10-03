@@ -21,7 +21,8 @@ import (
 	evmtypes "github.com/cosmos/evm/x/vm/types"
 	ibctransfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
 	corevm "github.com/ethereum/go-ethereum/core/vm"
-	oracleconfig "github.com/skip-mev/slinky/oracle/config"
+
+	oracleconfig "github.com/warden-protocol/connect/oracle/config"
 
 	httpconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/http/config"
 	pfpconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/pfp/config"

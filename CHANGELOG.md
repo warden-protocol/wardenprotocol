@@ -46,6 +46,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 
+## [v0.7.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.1) - 2025-10-02
+
+### Consensus Breaking Changes
+
+- oracle: Enable Slinky pre-blocker to store prices onchain.
+
 ## [v0.7.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0) - 2025-09-22
 
 ### Consensus Breaking Changes

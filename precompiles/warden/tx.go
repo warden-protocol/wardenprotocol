@@ -35,14 +35,16 @@ const (
 // AddKeychainAdminMethod constructs MsgAddKeychainAdminRequest from args, passes it to msg server and packs corresponding abi output.
 func (p Precompile) AddKeychainAdminMethod(
 	ctx sdk.Context,
-	origin common.Address,
+	contract *vm.Contract,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
-	msgAddKeychainAdmin, newAdmin, err := newMsgAddKeychainAdmin(args, origin)
+	msgSender := contract.Caller()
+
+	msgAddKeychainAdmin, newAdmin, err := newMsgAddKeychainAdmin(args, msgSender)
 	if err != nil {
 		return nil, err
 	}
@@ -67,14 +69,16 @@ func (p Precompile) AddKeychainAdminMethod(
 // AddKeychainWriterMethod constructs MsgAddKeychainWriter from args, passes it to msg server and packs corresponding abi output.
 func (p Precompile) AddKeychainWriterMethod(
 	ctx sdk.Context,
-	origin common.Address,
+	contract *vm.Contract,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
-	msgAddKeychainWriter, newWriterAddress, err := newMsgAddKeychainWriter(args, origin)
+	msgSender := contract.Caller()
+
+	msgAddKeychainWriter, newWriterAddress, err := newMsgAddKeychainWriter(args, msgSender)
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +103,7 @@ func (p Precompile) AddKeychainWriterMethod(
 // FulfilKeyRequestMethod constructs MsgFulfilKeyRequest from args, passes it to msg server and packs corresponding abi output.
 func (p Precompile) FulfilKeyRequestMethod(
 	ctx sdk.Context,
-	origin common.Address,
+	contract *vm.Contract,
 	keyRequestStatus wardentypes.KeyRequestStatus,
 	stateDB vm.StateDB,
 	method *abi.Method,
@@ -107,7 +111,9 @@ func (p Precompile) FulfilKeyRequestMethod(
 ) ([]byte, error) {
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
-	msgFulfilKeyRequest, err := newMsgFulfilKeyRequest(args, keyRequestStatus, origin)
+	msgSender := contract.Caller()
+
+	msgFulfilKeyRequest, err := newMsgFulfilKeyRequest(args, keyRequestStatus, msgSender)
 	if err != nil {
 		return nil, err
 	}
@@ -132,7 +138,7 @@ func (p Precompile) FulfilKeyRequestMethod(
 // FulfilSignRequestMethod constructs MsgFulfilSignRequest from args, passes it to msg server and packs corresponding abi output.
 func (p Precompile) FulfilSignRequestMethod(
 	ctx sdk.Context,
-	origin common.Address,
+	contract *vm.Contract,
 	signRequestStatus wardentypes.SignRequestStatus,
 	stateDB vm.StateDB,
 	method *abi.Method,
@@ -140,7 +146,9 @@ func (p Precompile) FulfilSignRequestMethod(
 ) ([]byte, error) {
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
-	msgFulfilSignRequest, err := newMsgFulfilSignRequest(args, signRequestStatus, origin)
+	msgSender := contract.Caller()
+
+	msgFulfilSignRequest, err := newMsgFulfilSignRequest(args, signRequestStatus, msgSender)
 	if err != nil {
 		return nil, err
 	}
@@ -165,14 +173,16 @@ func (p Precompile) FulfilSignRequestMethod(
 // NewKeychainMethod constructs MsgNewKeychain from args, passes it to msg server and packs corresponding abi output.
 func (p Precompile) NewKeychainMethod(
 	ctx sdk.Context,
-	origin common.Address,
+	contract *vm.Contract,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
-	msgNewKeychain, err := newMsgNewKeychain(method, args, origin)
+	msgSender := contract.Caller()
+
+	msgNewKeychain, err := newMsgNewKeychain(method, args, msgSender)
 	if err != nil {
 		return nil, err
 	}
@@ -188,7 +198,7 @@ func (p Precompile) NewKeychainMethod(
 		return nil, err
 	}
 
-	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &msgSender); err != nil {
 		return nil, err
 	}
 
@@ -198,14 +208,16 @@ func (p Precompile) NewKeychainMethod(
 // NewSpaceMethod constructs MsgNewSpace from args, passes it to msg server and packs corresponding abi output.
 func (p Precompile) NewSpaceMethod(
 	ctx sdk.Context,
-	origin common.Address,
+	contract *vm.Contract,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
-	msgNewSpace, err := newMsgNewSpace(args, origin)
+	msgSender := contract.Caller()
+
+	msgNewSpace, err := newMsgNewSpace(args, msgSender)
 	if err != nil {
 		return nil, err
 	}
@@ -221,7 +233,7 @@ func (p Precompile) NewSpaceMethod(
 		return nil, err
 	}
 
-	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &msgSender); err != nil {
 		return nil, err
 	}
 
@@ -231,14 +243,16 @@ func (p Precompile) NewSpaceMethod(
 // RemoveKeychainAdminMethod constructs MsgRemoveKeychainAdminRequest from args, passes it to msg server and packs corresponding abi output.
 func (p Precompile) RemoveKeychainAdminMethod(
 	ctx sdk.Context,
-	origin common.Address,
+	contract *vm.Contract,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
-	msgRemoveKeychainAdmin, admin, err := newMsgRemoveKeychainAdmin(args, origin)
+	msgSender := contract.Caller()
+
+	msgRemoveKeychainAdmin, admin, err := newMsgRemoveKeychainAdmin(args, msgSender)
 	if err != nil {
 		return nil, err
 	}
@@ -263,14 +277,16 @@ func (p Precompile) RemoveKeychainAdminMethod(
 // UpdateKeychainMethod constructs MsgUpdateKeychain from args, passes it to msg server and packs corresponding abi output.
 func (p Precompile) UpdateKeychainMethod(
 	ctx sdk.Context,
-	origin common.Address,
+	contract *vm.Contract,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
-	msgUpdateKeychain, err := newMsgUpdateKeychain(method, args, origin)
+	msgSender := contract.Caller()
+
+	msgUpdateKeychain, err := newMsgUpdateKeychain(method, args, msgSender)
 	if err != nil {
 		return nil, err
 	}
@@ -285,7 +301,7 @@ func (p Precompile) UpdateKeychainMethod(
 		return nil, err
 	}
 
-	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &msgSender); err != nil {
 		return nil, err
 	}
 
@@ -295,7 +311,7 @@ func (p Precompile) UpdateKeychainMethod(
 // AddSpaceOwnerMethod constructs MsgAddSpaceOwner wrapped by MsgNewAction from args, passes it to msg server and packs corresponding abi output.
 func (p Precompile) AddSpaceOwnerMethod(
 	ctx sdk.Context,
-	origin common.Address,
+	contract *vm.Contract,
 	caller common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
@@ -303,7 +319,9 @@ func (p Precompile) AddSpaceOwnerMethod(
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
-	msgNewAction, err := newMsgAddSpaceOwner(args, origin, p.actkeeper.GetModuleAddress())
+	msgSender := contract.Caller()
+
+	msgNewAction, err := newMsgAddSpaceOwner(args, msgSender, p.actkeeper.GetModuleAddress())
 	if err != nil {
 		return nil, err
 	}
@@ -323,7 +341,7 @@ func (p Precompile) AddSpaceOwnerMethod(
 		return nil, err
 	}
 
-	if err := p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err := p.eventsRegistry.EmitEvents(ctx, stateDB, &msgSender); err != nil {
 		return nil, err
 	}
 
@@ -372,7 +390,7 @@ func (p Precompile) tryVoteAsSender(
 // RemoveSpaceOwnerMethod constructs MsgRemoveSpaceOwner wrapped by MsgNewAction from args, passes it to msg server and packs corresponding abi output.
 func (p Precompile) RemoveSpaceOwnerMethod(
 	ctx sdk.Context,
-	origin common.Address,
+	contract *vm.Contract,
 	caller common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
@@ -380,7 +398,9 @@ func (p Precompile) RemoveSpaceOwnerMethod(
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
-	msgNewAction, err := newMsgRemoveSpaceOwner(args, origin, p.actkeeper.GetModuleAddress())
+	msgSender := contract.Caller()
+
+	msgNewAction, err := newMsgRemoveSpaceOwner(args, msgSender, p.actkeeper.GetModuleAddress())
 	if err != nil {
 		return nil, err
 	}
@@ -400,7 +420,7 @@ func (p Precompile) RemoveSpaceOwnerMethod(
 		return nil, err
 	}
 
-	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &msgSender); err != nil {
 		return nil, err
 	}
 
@@ -410,7 +430,7 @@ func (p Precompile) RemoveSpaceOwnerMethod(
 // NewKeyRequestMethod constructs MsgNewKeyRequest wrapped by MsgNewAction from args, passes it to msg server and packs corresponding abi output.
 func (p Precompile) NewKeyRequestMethod(
 	ctx sdk.Context,
-	origin common.Address,
+	contract *vm.Contract,
 	caller common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
@@ -418,7 +438,9 @@ func (p Precompile) NewKeyRequestMethod(
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
-	msgNewAction, err := newMsgNewKeyRequest(method, args, origin, p.actkeeper.GetModuleAddress())
+	msgSender := contract.Caller()
+
+	msgNewAction, err := newMsgNewKeyRequest(method, args, msgSender, p.actkeeper.GetModuleAddress())
 	if err != nil {
 		return nil, err
 	}
@@ -438,7 +460,7 @@ func (p Precompile) NewKeyRequestMethod(
 		return nil, err
 	}
 
-	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &msgSender); err != nil {
 		return nil, err
 	}
 
@@ -448,7 +470,7 @@ func (p Precompile) NewKeyRequestMethod(
 // NewSignRequestMethod constructs MsgNewSignRequest wrapped by MsgNewAction from args, passes it to msg server and packs corresponding abi output.
 func (p Precompile) NewSignRequestMethod(
 	ctx sdk.Context,
-	origin common.Address,
+	contract *vm.Contract,
 	caller common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
@@ -456,7 +478,9 @@ func (p Precompile) NewSignRequestMethod(
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
-	msgNewAction, err := newMsgNewSignRequest(method, args, origin, p.actkeeper.GetModuleAddress())
+	msgSender := contract.Caller()
+
+	msgNewAction, err := newMsgNewSignRequest(method, args, msgSender, p.actkeeper.GetModuleAddress())
 	if err != nil {
 		return nil, err
 	}
@@ -476,7 +500,7 @@ func (p Precompile) NewSignRequestMethod(
 		return nil, err
 	}
 
-	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &msgSender); err != nil {
 		return nil, err
 	}
 
@@ -486,7 +510,7 @@ func (p Precompile) NewSignRequestMethod(
 // UpdateKeyMethod constructs MsgUpdateKey wrapped by MsgNewAction from args, passes it to msg server and packs corresponding abi output.
 func (p Precompile) UpdateKeyMethod(
 	ctx sdk.Context,
-	origin common.Address,
+	contract *vm.Contract,
 	caller common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
@@ -494,7 +518,9 @@ func (p Precompile) UpdateKeyMethod(
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
-	msgNewAction, err := newMsgUpdateKey(args, origin, p.actkeeper.GetModuleAddress())
+	msgSender := contract.Caller()
+
+	msgNewAction, err := newMsgUpdateKey(args, msgSender, p.actkeeper.GetModuleAddress())
 	if err != nil {
 		return nil, err
 	}
@@ -514,7 +540,7 @@ func (p Precompile) UpdateKeyMethod(
 		return nil, err
 	}
 
-	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &msgSender); err != nil {
 		return nil, err
 	}
 
@@ -524,7 +550,7 @@ func (p Precompile) UpdateKeyMethod(
 // UpdateSpaceMethod constructs MsgUpdateSpace wrapped by MsgNewAction from args, passes it to msg server and packs corresponding abi output.
 func (p Precompile) UpdateSpaceMethod(
 	ctx sdk.Context,
-	origin common.Address,
+	contract *vm.Contract,
 	caller common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
@@ -532,7 +558,9 @@ func (p Precompile) UpdateSpaceMethod(
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
-	msgNewAction, err := newMsgUpdateSpace(args, origin, p.actkeeper.GetModuleAddress())
+	msgSender := contract.Caller()
+
+	msgNewAction, err := newMsgUpdateSpace(args, msgSender, p.actkeeper.GetModuleAddress())
 	if err != nil {
 		return nil, err
 	}
@@ -552,7 +580,7 @@ func (p Precompile) UpdateSpaceMethod(
 		return nil, err
 	}
 
-	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &msgSender); err != nil {
 		return nil, err
 	}
 

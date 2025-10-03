@@ -42,7 +42,7 @@ type (
 		sdk.ConsAddress,
 	], Weight]
 
-	// QueueWeightCollection maps all the participants of the queues into
+	// QueuePriorityCollection maps all the participants of the queues into
 	// their respective [Priority].
 	QueuePriorityCollection = collections.Map[collections.Pair[
 		QueueID,

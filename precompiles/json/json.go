@@ -10,7 +10,6 @@ import (
 	evmcmn "github.com/cosmos/evm/precompiles/common"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	ethcmn "github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/tracing"
 	"github.com/ethereum/go-ethereum/core/vm"
 
 	wardencommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
@@ -20,10 +19,22 @@ var _ vm.PrecompiledContract = &Precompile{}
 
 const PrecompileAddress = "0x0000000000000000000000000000000000000904"
 
-// Embed abi json file to the executable binary. Needed when importing as dependency.
-//
-//go:embed abi.json
-var f embed.FS
+var (
+	// Embed abi json file to the executable binary. Needed when importing as dependency.
+	//
+	//go:embed abi.json
+	f   embed.FS
+	ABI abi.ABI
+)
+
+func init() {
+	var err error
+
+	ABI, err = evmcmn.LoadABI(f, "abi.json")
+	if err != nil {
+		panic(err)
+	}
+}
 
 // Precompile defines the precompiled contract for x/async.
 type Precompile struct {
@@ -32,30 +43,14 @@ type Precompile struct {
 	abiEncoder *wardencommon.AbiEncoder
 }
 
-// LoadABI loads the x/async ABI from the embedded abi.json file
-// for the x/async precompile.
-func LoadABI() (abi.ABI, error) {
-	return evmcmn.LoadABI(f, "abi.json")
-}
-
-func NewPrecompile(abiEncoder *wardencommon.AbiEncoder) (*Precompile, error) {
-	abi, err := LoadABI()
-	if err != nil {
-		return nil, err
-	}
-
-	p := Precompile{
+func NewPrecompile(abiEncoder *wardencommon.AbiEncoder) *Precompile {
+	return &Precompile{
 		Precompile: evmcmn.Precompile{
-			ABI:                  abi,
 			KvGasConfig:          storetypes.KVGasConfig(),
 			TransientKVGasConfig: storetypes.TransientGasConfig(),
 		},
 		abiEncoder: abiEncoder,
 	}
-
-	p.SetAddress(p.Address())
-
-	return &p, nil
 }
 
 // Address implements vm.PrecompiledContract.
@@ -73,7 +68,7 @@ func (p *Precompile) RequiredGas(input []byte) uint64 {
 
 	methodID := input[:4]
 
-	method, err := p.MethodById(methodID)
+	method, err := ABI.MethodById(methodID)
 	if err != nil {
 		// This should never happen since this method is going to fail during Run
 		return 0
@@ -82,16 +77,19 @@ func (p *Precompile) RequiredGas(input []byte) uint64 {
 	return p.Precompile.RequiredGas(input, p.IsTransaction(method))
 }
 
-// Run implements vm.PrecompiledContract.
-func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz []byte, err error) {
-	ctx, _, method, initialGas, args, err := p.RunSetup(evm, contract, readonly, p.IsTransaction)
+func (p Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) ([]byte, error) {
+	return p.RunNativeAction(evm, contract, func(ctx sdk.Context) ([]byte, error) {
+		return p.Execute(ctx, evm.StateDB, contract, readonly)
+	})
+}
+
+func (p Precompile) Execute(ctx sdk.Context, stateDB vm.StateDB, contract *vm.Contract, readOnly bool) ([]byte, error) {
+	method, args, err := evmcmn.SetupABI(ABI, contract, readOnly, p.IsTransaction)
 	if err != nil {
 		return nil, err
 	}
 
-	// This handles any out of gas errors that may occur during the execution of a precompile tx or query.
-	// It avoids panics and returns the out of gas error so the EVM can continue gracefully.
-	defer evmcmn.HandleGasError(ctx, contract, initialGas, &err)()
+	var bz []byte
 
 	switch method.Name {
 	// queries
@@ -101,17 +99,7 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 		bz, err = p.Parse(ctx, method, args)
 	}
 
-	if err != nil {
-		return nil, err
-	}
-
-	cost := ctx.GasMeter().GasConsumed() - initialGas
-
-	if !contract.UseGas(cost, nil, tracing.GasChangeCallPrecompiledContract) {
-		return nil, vm.ErrOutOfGas
-	}
-
-	return bz, nil
+	return bz, err
 }
 
 func (p *Precompile) IsTransaction(method *abi.Method) bool {

@@ -48,7 +48,7 @@ To get PUMPs, **complete tasks** in Warden:
 - Play in-app games
 - And more
 
-We're continuously expanding the task list with the new ways to earn.
+We're continuously expanding the task list with new ways to earn.
 
 To access all available tasks and see the PUMP points you can earn, simply go to the **Rewards** tab and scroll down:
 

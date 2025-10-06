@@ -6,12 +6,15 @@ sidebar_position: 5
 
 ## Overview
 
-In this section, you'll learn how to start **earning rewards** in Warden:
+In this section, you'll discover how to start **earning rewards** in Warden:
 
-- Create a **PumpKoin**—your own virtual currency.
-- Stay active in Warden to earn **PUMP points** and boost your coin's rank.
-- Top PUMP holders will gain priority access to new features and earn [WARD](https://docs.wardenprotocol.org/ward/introduction).
+1. [Create a coin](#create-your-coin): Launch your own virtual currency.
+2. [Earn PUMP points](#ear-pumps): Stay active in Warden to boost your coin's rank.
+3. [Earn WARD](#earn-ward): The top PUMP holders will earn rewards in the WARD token.
 
+:::tip
+The most active users will also gain priority access to upcoming features.
+:::
 
 ## Create your coin
 
@@ -27,46 +30,42 @@ Congratulations! Now you can start earning PUMP points.
 
 ## Earn PUMPs
 
+### What are PUMPs?
+
+**PUMP points** are your reward for activity in Warden. The more PUMPs you earn, the higher you coin climbs on the [leaderboard](#check-your-rank).
+
+The top PUMP holders will enjoy the following benefits:
+
+- [Earn WARD](#earn-ward)
+- Gain priority access to upcoming features
+
 ### Complete tasks
 
-Your activity in Warden generates **PUMP points**, boosting your coin. Top PUMP holders will [earn WARD](#earn-ward) and gain priority access to upcoming features.
+To get PUMPs, **complete tasks** in Warden:
 
-You can get PUMPs by performing various tasks such as swapping, using Agents, playing games, and much more. The actual reward per each task may vary dynamically depending on the task type and other conditions.
+- Swap
+- Use AI Agents
+- Play in-app games
+- And more
 
-To access tasks and view the current rewards, simply navigate to the **Rewards** tab and scroll down.
+We're continuously expanding the task list with the new ways to earn.
 
-The following tasks are available (we're constantly working on adding more): 
+To access all available tasks and see the PUMP points you can earn, simply go to the **Rewards** tab and scroll down:
 
-| Task                         | Description                                                 | Frequency       |
-| ---------------------------- | ----------------------------------------------------------- | --------------- |
-| **Daily Check-in**           | Log in to the app today                                     | Daily           |
-| **First Chat**               | Send at least one message                                   | Daily           |
-| **Play Games**               | Play a game to get 15 PUMPs                                 | Daily           |
-| **Token Swap**               | Swap your tokens via chat                                   | Daily           |
-| **Daily Swap Volume**        | Swap more, earn more!                                       | Daily           |
-| **Swap Bouns**               | Complete 5 swaps to earn a bonus                            | Daily           |
-| **Follow us on X**           | Become a follower @wardenprotocol                           | One-time        |
-| **Warden Your Own Research** | WYOR with the Messari Agent and get rewarded!               | Unlimited       |
-| **Messari Milestone**        | Earn milestone bonuses at 4, 8, and 10 tasks                | Milestone-based |
-| **Kaibot Daily Yap**         | Review your Kaito performance                               | Daily           |
-| **Kaibot Milestone**         | Earn milestone bonuses at 4, 8, and 10 Kaibot interactions  | Milestone-based |
-| **WachAI**                   | Verify tokens using WachAI                                  | Daily           |
-| **WachAI Milestone**         | Earn milestone bonuses at 4, 8, and 10 WachAI chats         | Milestone-based |
-| **Invite a fren**            | Invite a friend and get 75 PUMPs per referral               | One-time        |               
+XXX
 
 ### Tap to pump
 
-- **Tap Cost**: Each tap costs **$0.10** (deducted from user balance).
-- **Base Reward**: Each tap grants **10 PUMPs**.
-- **Random Boosts**:
-    - In every set of 10 taps, the user has a chance to trigger a boost (x10, x15, x20).
-    - Boost replaces the base reward for that tap (e.g., instead of 5 PUMPs, user receives 50, 75, or 100 PUMPs).
-    - After the first 10 taps, the chance for boosts continues at the same interval logic (every 10 taps).
+A fun way to collect more PUMPs is by playing the **Tap to Pump** game:
 
-Charging logic: we are using a strict payment hierarchy with USDC on Sol, Base, Ethereum, and then the native tokens on Solana, Base, Ethereum. If one fails, we try the next one.
+- Each tap costs **$0.10**.
+- Every tap grants you **10 PUMPs**.
+- Every 10 taps, you ulock a chance to hit a reward boost: **x10**, **x15**, or **x20**.
 
-Every 10 taps, you have a chance to trigger a boost: x10, x15, or x20.
-The boost multiplies your base PUMP rewards per tap.
+You can access the game from any tab:
+
+XXX
+
 
 ### Check your rank
 
@@ -77,6 +76,9 @@ XXX
 
 ## Earn WARD
 
-Warden is part of an ongoing **rewards campaign**, with up to **2.5%** of the [WARD token](https://docs.wardenprotocol.org/ward/introduction) supply (**$1M+** in current value) allocated to participants.
+Active Warden users can earn rewards in the [WARD token](https://docs.wardenprotocol.org/ward/introduction): simply [create your coin](#create-your-coin), [start earning PUMP points](#earn-pumps), and climb the ranks. The top PUMP holders will be eligible for rewards.
 
-Learn more about the rewards campaign: 👉 [The Great Pump Off](https://wardenprotocol.org/blog/great-pump-off)
+This is part of **The Great Pump Off**—an ongoing **rewards campaign**, with up to **2.5%** of WARD supply (**$1M+** in current value) allocated to participants. Designed by Warden, in collaboration with [Kaito](https://www.kaito.ai), this campaign is engineered to reward those who actively use Warden and drive community engagement:
+
+- Learn more about the rewards campaign 👉 [The Great Pump Off](https://wardenprotocol.org/blog/great-pump-off)
+- Join the campaign 👉 [Warden Protocol on Kaito](https://yaps.kaito.ai/warden)

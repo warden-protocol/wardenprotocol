@@ -32,7 +32,7 @@ Congratulations! Now you can start earning PUMP points.
 
 ### What are PUMPs?
 
-**PUMP points** are your reward for activity in Warden. The more PUMPs you earn, the higher you coin climbs on the [leaderboard](#check-your-rank).
+**PUMP points** are your reward for activity in Warden. The more PUMPs you earn, the higher your coin climbs on the [leaderboard](#check-your-rank).
 
 The top PUMP holders will enjoy the following benefits:
 
@@ -60,7 +60,7 @@ A fun way to collect more PUMPs is by playing the **Tap to Pump** game:
 
 - Each tap costs **$0.10**.
 - Every tap grants you **10 PUMPs**.
-- Every 10 taps, you ulock a chance to hit a reward boost: **x10**, **x15**, or **x20**.
+- Every 10 taps, you unlock a chance to hit a reward boost: **x10**, **x15**, or **x20**.
 
 You can access the game from any tab—simply click **Tap to PUMP** in the left menu:
 

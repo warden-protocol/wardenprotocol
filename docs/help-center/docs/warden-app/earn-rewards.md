@@ -52,7 +52,7 @@ We're continuously expanding the task list with the new ways to earn.
 
 To access all available tasks and see the PUMP points you can earn, simply go to the **Rewards** tab and scroll down:
 
-XXX
+![Create and grow your coin in Warden](../../static/img/warden-app/earn-rewards-2.png)
 
 ### Tap to pump
 
@@ -62,17 +62,16 @@ A fun way to collect more PUMPs is by playing the **Tap to Pump** game:
 - Every tap grants you **10 PUMPs**.
 - Every 10 taps, you ulock a chance to hit a reward boost: **x10**, **x15**, or **x20**.
 
-You can access the game from any tab:
+You can access the game from any tab—simply click **Tap to PUMP** in the left menu:
 
-XXX
+![Create and grow your coin in Warden](../../static/img/warden-app/earn-rewards-3.png)
 
 
 ### Check your rank
 
 To check your coin's rank, navigate to the **Rewards** tab and scroll down to the **PUMP Leaderboard**:
 
-XXX
-
+![Create and grow your coin in Warden](../../static/img/warden-app/earn-rewards-4.png)
 
 ## Earn WARD
 

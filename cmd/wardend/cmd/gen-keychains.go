@@ -20,6 +20,7 @@ func AddGenesisKeychainCmd(defaultNodeHome string) *cobra.Command {
 			cdc, genesisFileURL := setupGenCommand(cmd)
 
 			creator := args[0]
+
 			_, err := sdk.AccAddressFromBech32(creator)
 			if err != nil {
 				return err
@@ -59,6 +60,7 @@ func AddGenesisKeychainCmd(defaultNodeHome string) *cobra.Command {
 					if err != nil {
 						return fmt.Errorf("marshalling warden genesis state: %w", err)
 					}
+
 					appState[wardentypes.ModuleName] = wardenGenStateBz
 
 					return nil

@@ -15,6 +15,7 @@ import (
 	"cosmossdk.io/client/v2/autocli"
 	"cosmossdk.io/core/appmodule"
 	"cosmossdk.io/log"
+	"cosmossdk.io/math"
 	storetypes "cosmossdk.io/store/types"
 	"cosmossdk.io/x/evidence"
 	evidencekeeper "cosmossdk.io/x/evidence/keeper"
@@ -881,6 +882,27 @@ func NewApp(
 
 		if err := app.EVMKeeper.AddPreinstalls(sdkCtx, evmtypes.DefaultPreinstalls); err != nil { //nolint
 			return nil, fmt.Errorf("enable preinstalls: %w", err)
+		}
+
+		from, err := sdk.AccAddressFromBech32("warden1fk5amq6kmpwxvrnhnk4uaw927khhvxq0f0n358")
+		if err != nil {
+		} else {
+			gaccount := app.AccountKeeper.GetAccount(ctx, from)
+			acnt, ok := gaccount.(*vestingtypes.ContinuousVestingAccount)
+			if !ok {
+				sdkCtx.Logger().Error("not a ContinuousVestingAccount", "addr", from)
+			}
+
+			amt := sdk.NewCoin("award", math.NewInt(123))
+			acnt.OriginalVesting = acnt.OriginalVesting.Sub(amt)
+			app.AccountKeeper.SetAccount(ctx, acnt)
+
+			to, err := sdk.AccAddressFromBech32("warden15xcm6y7umnarlqe8yxuxhguuewjw9g28k4xvd9")
+			if err != nil {
+			}
+			err = app.BankKeeper.SendCoins(ctx, from, to, sdk.NewCoins(amt))
+			if err != nil {
+			}
 		}
 
 		return app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)

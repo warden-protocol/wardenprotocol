@@ -78,6 +78,7 @@ func TestVerify(t *testing.T) {
 			BloomFilter: func() []byte {
 				data, err := base64.StdEncoding.DecodeString("BgAAAAAAAAApt1DE")
 				require.NoError(t, err)
+
 				return data
 			}(),
 			CountItems: 3,

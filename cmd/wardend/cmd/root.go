@@ -92,6 +92,7 @@ func NewRootCmd() *cobra.Command {
 			cmd.SetErr(cmd.ErrOrStderr())
 
 			initClientCtx = initClientCtx.WithCmdContext(cmd.Context())
+
 			initClientCtx, err := client.ReadPersistentCommandFlags(initClientCtx, cmd.Flags())
 			if err != nil {
 				return err
@@ -111,6 +112,7 @@ func NewRootCmd() *cobra.Command {
 					EnabledSignModes:           enabledSignModes,
 					TextualCoinMetadataQueryFn: txmodule.NewGRPCCoinMetadataQueryFn(initClientCtx),
 				}
+
 				txConfig, err := tx.NewTxConfigWithOptions(
 					initClientCtx.Codec,
 					txConfigOpts,
@@ -132,8 +134,10 @@ func NewRootCmd() *cobra.Command {
 			}
 
 			evmChainID := wardendconfig.EVMChainID
+
 			if chainID != "" {
 				var err error
+
 				evmChainID, err = parseEVMChainID(chainID)
 				if err != nil {
 					return err
@@ -443,7 +447,7 @@ func getChainIDFromOpts(appOpts servertypes.AppOptions) (chainID string, err err
 		}
 	}
 
-	return
+	return chainID, err
 }
 
 func parseEVMChainID(chainID string) (uint64, error) {

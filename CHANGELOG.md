@@ -52,6 +52,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - oracle: Enable Slinky pre-blocker to store prices onchain.
 
+### Features (non-breaking)
+
+- Enable default cosmos/evm preinstalls (i.e. Create2, Multicall3).
+
 ### Bug Fixes
 
 - Fix `query-gas-limit` in `app.toml` being ignored.

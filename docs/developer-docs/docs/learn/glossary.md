@@ -118,7 +118,7 @@ Reasons for running a node include the following:
 
 An oracle is a third-party service that enables smart contracts to access real-life data feeds: prices, stock market data, weather conditions, etc. Warden is integrated with [Skip:Connect](https://docs.skip.build/connect/introduction)—an oracle service provided by Skip Protocol and offering mostly price data. Connect's data is [validated](#validator) by Warden's network and written onchain.
 
-Learn more: [Cosmos modules: `x/oracle`](cosmos-modules#xoracle).
+Learn more: [Modules: `x/oracle`](modules#xoracle).
 
 ---
 

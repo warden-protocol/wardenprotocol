@@ -51,8 +51,8 @@
         {"source":"/build-a-keychain/:path*","destination":"/", "statusCode": 301},
         {"source":"/category/operate-a-keychain","destination":"/", "statusCode": 301},
         {"source":"/category/implementations","destination":"/", "statusCode": 301},
-        {"source":"/learn/warden-protocol-modules/:path*","destination":"/learn/cosmos-modules", "statusCode": 301}, 
-        {"source":"/category/warden-protocol-modules","destination":"/learn/cosmos-modules", "statusCode": 301},       
+        {"source":"/learn/warden-protocol-modules/:path*","destination":"/learn/modules", "statusCode": 301}, 
+        {"source":"/category/warden-protocol-modules","destination":"/learn/modules", "statusCode": 301},       
         {"source":"/learn/interoperability","destination":"/", "statusCode": 301},
         {"source":"/operate-a-node/run-a-local-chain","destination":"/", "statusCode": 301},
         {"source":"/operate-a-node/chiado-testnet/:path*","destination":"/operate-a-node/introduction", "statusCode": 301},
@@ -68,6 +68,9 @@
         {"source":"/tokens/ward-token/distribution","destination":"/ward/distribution", "statusCode": 301},
         {"source":"/tokens/ward-token/incentives","destination":"/ward/incentives", "statusCode": 301},
         {"source":"/tokens/ward-token/supply","destination":"/ward/supply", "statusCode": 301},
-        {"source":"/category/ward-token","destination":"/ward/introduction", "statusCode": 301}
+        {"source":"/category/ward-token","destination":"/ward/introduction", "statusCode": 301},
+
+        {"source":"/learn/cosmos-modules/:path*","destination":"/learn/modules", "statusCode": 301}, 
+        {"source":"/category/cosmos-modules","destination":"/learn/modules", "statusCode": 301}
     ]
 }

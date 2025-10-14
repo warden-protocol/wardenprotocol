@@ -107,7 +107,7 @@ Use the top menu to navigate across the main sections of the docs and learn how 
 - **Learn**:
   - [Warden Manifesto](/learn/warden-manifesto): A Manifesto capturing Warden's mission
   - [SPEX](/learn/spex): An overview of our verifiability layer, SPEX
-  - [Cosmos modules](/learn/cosmos-modules): An overview of Cosmos modules we're using
+  - [Modules](/learn/modules): An overview of protocol modules
   - [Warden networks](/learn/warden-networks): A list of available networks
   - [Glossary](/learn/glossary): A list of key Warden terms with definitions
 - [Operate a node](/operate-a-node/introduction): Guides for node operators

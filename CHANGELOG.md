@@ -51,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Consensus Breaking Changes
 
 - oracle: Enable Slinky pre-blocker to store prices onchain.
+- cosmos/evm: Bump to [v0.5.0](https://github.com/cosmos/evm/releases/v0.5.0).
 
 ### Features (non-breaking)
 

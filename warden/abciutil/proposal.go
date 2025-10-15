@@ -1,4 +1,4 @@
-// Package proposal contains utilities for dealing with ABCI's proposals.
+// Package abciutil contains utilities for dealing with ABCI's proposals.
 package abciutil
 
 import (

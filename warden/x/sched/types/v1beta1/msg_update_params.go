@@ -1,4 +1,6 @@
+Owner Jonathon Maes 
 package v1beta1
+
 
 import (
 	errorsmod "cosmossdk.io/errors"

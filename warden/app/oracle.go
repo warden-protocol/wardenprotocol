@@ -56,7 +56,11 @@ func (app *App) setupSlinkyClient(appOpts types.AppOptions) {
 
 func (app *App) baseProposalHandler() *baseapp.DefaultProposalHandler {
 	abciProposalHandler := baseapp.NewDefaultProposalHandler(nil, app)
-	abciProposalHandler.SetSignerExtractionAdapter(evmmempool.NewEthSignerExtractionAdapter(sdkmempool.NewDefaultSignerExtractionAdapter()))
+	abciProposalHandler.SetSignerExtractionAdapter(
+		evmmempool.NewEthSignerExtractionAdapter(
+			sdkmempool.NewDefaultSignerExtractionAdapter(),
+		),
+	)
 
 	return abciProposalHandler
 }
@@ -242,7 +246,7 @@ func (app *App) setupABCILifecycle(
 	app.SetVerifyVoteExtensionHandler(veManager.VerifyVoteExtensionHandler())
 }
 
-func combinePreBlocker(a, b sdk.PreBlocker) sdk.PreBlocker { //nolint:unused
+func combinePreBlocker(a, b sdk.PreBlocker) sdk.PreBlocker { //nolint
 	return func(ctx sdk.Context, req *cometabci.RequestFinalizeBlock) (*sdk.ResponsePreBlock, error) {
 		defer func() {
 			if err := recover(); err != nil {

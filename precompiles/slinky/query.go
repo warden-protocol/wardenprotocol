@@ -7,8 +7,6 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/vm"
 
 	slinkytypes "github.com/warden-protocol/connect/pkg/types"
 	oracletypes "github.com/warden-protocol/connect/x/oracle/types"
@@ -23,8 +21,6 @@ const (
 // GetPriceQuery constructs GetPriceRequest from args, passes it to query server and packs response into corresponding abi output.
 func (p Precompile) GetPriceQuery(
 	ctx sdk.Context,
-	origin common.Address,
-	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {

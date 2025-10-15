@@ -1,4 +1,4 @@
-// Package arbitraryhttp provides a generalized HTTP Plugin that makes an arbitrary HTTP call.
+// Package http provides a generalized HTTP Plugin that makes an arbitrary HTTP call.
 // The input is ABI‑encoded with a target URL, HTTP method, and a request body in CBOR bytes.
 // The plugin fetches the HTTP response, attempts to decode the response as JSON, then re‑encodes it as CBOR,
 // and finally packs the result into an ABI‑encoded tuple for onchain interactions.

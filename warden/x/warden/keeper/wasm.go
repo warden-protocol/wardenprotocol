@@ -12,7 +12,6 @@ import (
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 )
 
-// - a collection of key-value pairs (key are strings, values are shield's AST nodes).
 func (k Keeper) ExecuteAnalyzer(ctx sdk.Context, contractAddr, callerAddr sdk.AccAddress, input []byte) ([]byte, map[string]*ast.Expression, error) {
 	msg, err := json.Marshal(newAnalyzerMsg(input))
 	if err != nil {

@@ -8,7 +8,10 @@ import (
 	evmtypes "github.com/cosmos/evm/x/vm/types"
 )
 
-func newSchedAnteHandler(options HandlerOptions) sdk.AnteHandler {
+func newSchedAnteHandler(ctx sdk.Context, options HandlerOptions) sdk.AnteHandler { //nolint:unused
+	evmParams := options.EvmKeeper.GetParams(ctx)
+	feemarketParams := options.FeeMarketKeeper.GetParams(ctx)
+
 	return func(ctx sdk.Context, tx sdk.Tx, simulate bool) (newCtx sdk.Context, err error) {
 		// This check prevents any external user to submit a transaction using the
 		// ExtensionOptionsCallbacks.
@@ -31,12 +34,12 @@ func newSchedAnteHandler(options HandlerOptions) sdk.AnteHandler {
 			return ctx, err
 		}
 
-		decUtils, err := evmanteevm.NewMonoDecoratorUtils(ctx, options.EvmKeeper)
+		decUtils, err := evmanteevm.NewMonoDecoratorUtils(ctx, options.EvmKeeper, &evmParams, &feemarketParams)
 		if err != nil {
 			return ctx, err
 		}
 
-		if err := evmanteevm.CheckGasWanted(ctx, options.FeeMarketKeeper, tx, decUtils.Rules.IsLondon); err != nil {
+		if err := evmanteevm.CheckGasWanted(ctx, options.FeeMarketKeeper, tx, decUtils.Rules.IsLondon, &feemarketParams); err != nil {
 			return ctx, err
 		}
 

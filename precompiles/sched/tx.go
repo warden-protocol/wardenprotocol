@@ -23,7 +23,6 @@ const (
 func (p *Precompile) ExecuteCallbacksMethod(
 	ctx sdk.Context,
 	evm *vm.EVM,
-	stateDB vm.StateDB,
 	method *abi.Method,
 	args any,
 ) ([]byte, error) {
@@ -73,7 +72,7 @@ func (p *Precompile) ExecuteCallbacksMethod(
 		}
 
 		// take a snapshot in case we need to rollback just this callback execution
-		snapshot := stateDB.Snapshot()
+		snapshot := evm.StateDB.Snapshot()
 
 		ret, leftOverGas, err := evm.Call(
 			common.HexToAddress(PrecompileAddress),
@@ -96,7 +95,7 @@ func (p *Precompile) ExecuteCallbacksMethod(
 
 		fees := sdk.NewCoins(sdk.NewCoin(params.EvmDenom, math.NewIntFromBigInt(feeAmt)))
 		if err := p.evmKeeper.DeductTxCostsFromUserBalance(ctx, fees, cbAddress); err != nil {
-			stateDB.RevertToSnapshot(snapshot)
+			evm.StateDB.RevertToSnapshot(snapshot)
 
 			if err := p.schedKeeper.SetFailed(ctx, id, fmt.Errorf("paying callback gas cost: %w", err)); err != nil {
 				return nil, err
@@ -118,7 +117,7 @@ func (p *Precompile) ExecuteCallbacksMethod(
 		return nil, err
 	}
 
-	if err := p.eventsRegistry.EmitEvents(ctx, stateDB, &evm.Origin); err != nil {
+	if err := p.eventsRegistry.EmitEvents(ctx, evm.StateDB, &evm.Origin); err != nil {
 		return nil, err
 	}
 

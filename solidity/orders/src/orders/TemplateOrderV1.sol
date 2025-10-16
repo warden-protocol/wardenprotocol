@@ -69,9 +69,7 @@ contract TemplateOrderV1 is AbstractOrderV1, IExecutionV1 {
 
     function executionData() external view returns (ExecutionData memory) {
         return ExecutionData({
-            caller: keyAddress,
-            instructions: commonExecutionData.instructions,
-            feeToken: commonExecutionData.feeToken
+            caller: keyAddress, instructions: commonExecutionData.instructions, feeToken: commonExecutionData.feeToken
         });
     }
 

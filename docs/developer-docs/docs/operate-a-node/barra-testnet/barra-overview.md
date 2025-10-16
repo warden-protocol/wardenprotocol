@@ -13,7 +13,7 @@ Barra is our new EVM testnet, currently available only to selected validators.
 | Release                                                                                 | Block height | Date               |
 | --------------------------------------------------------------------------------------- | ------------ | ------------------ |
 | [v0.7.0-rc4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0-rc4) | 0            | September 10, 2025 |
-| [v0.7.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.1)         | ?            | October 15, 2025   |
+| [v0.7.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.1)         | 0            | October 15, 2025   |
 
 ## Binary
 

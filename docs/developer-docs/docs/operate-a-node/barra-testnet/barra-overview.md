@@ -17,7 +17,7 @@ Barra is our new EVM testnet, currently available only to selected validators.
 
 ## Binary
 
-The latest binary version compatible with Barra is [wardend v0.7.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.1).
+The latest binary version compatible with Barra is [wardend v0.7.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.1).
 
 
 ## Endpoints

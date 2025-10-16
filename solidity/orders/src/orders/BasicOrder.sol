@@ -70,13 +70,7 @@ contract BasicOrder is AbstractOrderV0, IExecutionV0, ReentrancyGuard {
         }
     }
 
-    function execute(
-        uint256 nonce,
-        uint256 gas,
-        uint256,
-        uint256 maxPriorityFeePerGas,
-        uint256 maxFeePerGas
-    )
+    function execute(uint256 nonce, uint256 gas, uint256, uint256 maxPriorityFeePerGas, uint256 maxFeePerGas)
         external
         nonReentrant
         returns (bool, bytes32)

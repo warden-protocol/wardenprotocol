@@ -26,13 +26,7 @@ interface IExecutionV0 {
      * @param maxFeePerGas maxFeePerGas parameter in eth transaction.
      * @return A boolean value indicating parameter action was created and transaction hash.
      */
-    function execute(
-        uint256 nonce,
-        uint256 gas,
-        uint256 gasPrice,
-        uint256 maxPriorityFeePerGas,
-        uint256 maxFeePerGas
-    )
+    function execute(uint256 nonce, uint256 gas, uint256 gasPrice, uint256 maxPriorityFeePerGas, uint256 maxFeePerGas)
         external
         returns (bool, bytes32);
 

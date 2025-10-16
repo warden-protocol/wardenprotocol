@@ -73,11 +73,7 @@ contract OrderFactory is Ownable, ReentrancyGuard {
      * @param salt The unique salt provided by the frontend
      * @return order The computed address of the order
      */
-    function computeOrderAddress(
-        address origin,
-        bytes32 salt,
-        OrderType orderType
-    )
+    function computeOrderAddress(address origin, bytes32 salt, OrderType orderType)
         external
         view
         returns (address order)
@@ -151,8 +147,9 @@ contract OrderFactory is Ownable, ReentrancyGuard {
         internal
         returns (address)
     {
-        address orderAddress =
-            BASIC_ORDER_FACTORY.createBasicOrder(_orderData, _executionData, maxKeychainFees, _scheduler, salt);
+        address orderAddress = BASIC_ORDER_FACTORY.createBasicOrder(
+            _orderData, _executionData, maxKeychainFees, _scheduler, salt
+        );
 
         orders[orderAddress] = msg.sender;
 
@@ -180,8 +177,9 @@ contract OrderFactory is Ownable, ReentrancyGuard {
         internal
         returns (address)
     {
-        address orderAddress =
-            ADVANCED_ORDER_FACTORY.createAdvancedOrder(_orderData, _executionData, maxKeychainFees, _scheduler, salt);
+        address orderAddress = ADVANCED_ORDER_FACTORY.createAdvancedOrder(
+            _orderData, _executionData, maxKeychainFees, _scheduler, salt
+        );
 
         orders[orderAddress] = msg.sender;
 

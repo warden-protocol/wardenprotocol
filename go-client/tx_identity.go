@@ -9,7 +9,15 @@ import (
 	sdktypes "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/evm/crypto/ethsecp256k1"
 	"github.com/cosmos/go-bip39"
+
+	wardendconfig "github.com/warden-protocol/wardenprotocol/cmd/wardend/config"
 )
+
+func init() {
+	config := sdktypes.GetConfig()
+	wardendconfig.SetBech32Prefixes(config)
+	config.Seal()
+}
 
 var DefaultDerivationPath = "m/44'/60'/0'/0/0"
 

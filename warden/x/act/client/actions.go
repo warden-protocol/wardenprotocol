@@ -41,6 +41,7 @@ func RegisterActionCmd[T sdk.Msg](msg T, short string) *cobra.Command {
 			}
 
 			msg.Reset()
+
 			if err := populateFromFlags(msg, cmd, clientCtx.Codec); err != nil {
 				return err
 			}

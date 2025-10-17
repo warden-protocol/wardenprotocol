@@ -41,12 +41,15 @@ contain valid denominations.
 			config.SetRoot(clientCtx.HomeDir)
 
 			var kr keyring.Keyring
+
 			addr, err := sdktypes.AccAddressFromBech32(args[0])
 			if err != nil {
 				inBuf := bufio.NewReader(cmd.InOrStdin())
+
 				keyringBackend, _ := cmd.Flags().GetString(flags.FlagKeyringBackend)
 				if keyringBackend != "" && clientCtx.Keyring == nil {
 					var err error
+
 					kr, err = keyring.New(
 						sdktypes.KeyringServiceName(),
 						keyringBackend,
@@ -95,6 +98,7 @@ contain valid denominations.
 			}
 
 			genFile := config.GenesisFile()
+
 			appState, genDoc, err := genutiltypes.GenesisStateFromGenFile(genFile)
 			if err != nil {
 				return fmt.Errorf("failed to unmarshal genesis state: %w", err)
@@ -120,6 +124,7 @@ contain valid denominations.
 			if err != nil {
 				return fmt.Errorf("failed to convert accounts into any's: %w", err)
 			}
+
 			authGenState.Accounts = genAccs
 
 			authGenStateBz, err := clientCtx.Codec.MarshalJSON(&authGenState)

@@ -82,10 +82,7 @@ abstract contract AbstractOrderV1 {
         eip191Message = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n", len, message));
     }
 
-    function isValidQuote(
-        TypesV1.CommonExecutionData calldata commonExecutionData,
-        GetQuotePayload calldata _quote
-    )
+    function isValidQuote(TypesV1.CommonExecutionData calldata commonExecutionData, GetQuotePayload calldata _quote)
         external
         pure
         returns (bool)

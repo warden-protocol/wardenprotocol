@@ -62,13 +62,10 @@ contract CreateOrder is Script {
         });
         CommonTypes.Coin[] memory maxKeychainFees = new CommonTypes.Coin[](0);
         Types.BasicOrderData memory orderData = Types.BasicOrderData({
-            thresholdPrice: thresholdPrice,
-            priceCondition: priceCondition,
-            pricePair: pricePair
+            thresholdPrice: thresholdPrice, priceCondition: priceCondition, pricePair: pricePair
         });
         TypesV0.CommonExecutionData memory commonExecutionData = TypesV0.CommonExecutionData({
-            creatorDefinedTxFields: creatorDefinedTxFields,
-            signRequestData: signRequestData
+            creatorDefinedTxFields: creatorDefinedTxFields, signRequestData: signRequestData
         });
         vm.etch(ISLINKY_PRECOMPILE_ADDRESS, address(mSlinkyPrecompile).code);
         MockSlinkyPrecompile mockSlinkyPrecompile = MockSlinkyPrecompile(ISLINKY_PRECOMPILE_ADDRESS);
@@ -119,8 +116,7 @@ contract CreateOrder is Script {
             confidenceLimit: confidenceLimit
         });
         TypesV0.CommonExecutionData memory commonExecutionData = TypesV0.CommonExecutionData({
-            creatorDefinedTxFields: creatorDefinedTxFields,
-            signRequestData: signRequestData
+            creatorDefinedTxFields: creatorDefinedTxFields, signRequestData: signRequestData
         });
         vm.etch(ISLINKY_PRECOMPILE_ADDRESS, address(mSlinkyPrecompile).code);
         MockSlinkyPrecompile mockSlinkyPrecompile = MockSlinkyPrecompile(ISLINKY_PRECOMPILE_ADDRESS);

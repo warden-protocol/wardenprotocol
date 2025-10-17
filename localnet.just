@@ -26,6 +26,21 @@ preinstalls := '[
         "code":    "3373fffffffffffffffffffffffffffffffffffffffe14604657602036036042575f35600143038111604257611fff81430311604257611fff9006545f5260205ff35b5f5ffd5b5f35611fff60014303065500"
     }
 ]'
+denom_metadata := '[
+    {
+      "description": "The native token for Warden Protocol.",
+      "denom_units": [
+        { "denom": "award", "exponent": 0, "aliases": [] },
+        { "denom": "ward", "exponent": 18, "aliases": [] }
+      ],
+      "base": "award",
+      "display": "ward",
+      "name": "WARD",
+      "symbol": "WARD",
+      "uri": "",
+      "uri_hash": ""
+    }
+]'
 
 # run a single-node chain locally, use "bin" to specify the binary name
 start bin="wardend" install="true" deploy-contracts="false":
@@ -86,6 +101,7 @@ start bin="wardend" install="true" deploy-contracts="false":
     edit_genesis '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}'
     edit_genesis '.app_state.evm.preinstalls += {{preinstalls}}'
     edit_genesis '.consensus["params"]["abci"]["vote_extensions_enable_height"] = "2"'
+    edit_genesis '.app_state.bank.denom_metadata += {{denom_metadata}}'
     edit_genesis '.app_state["evm"]["params"]["evm_denom"]="award"'
     edit_genesis '.app_state["gov"]["params"]["voting_period"]="30s"'
     edit_genesis '.app_state["gov"]["params"]["expedited_voting_period"]="15s"'

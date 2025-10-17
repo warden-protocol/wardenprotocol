@@ -138,13 +138,7 @@ contract AdvancedOrder is AbstractOrderV0, IExecutionV0 {
         return _checkPriceCondition(oracleNormalized, predictedNormalized);
     }
 
-    function execute(
-        uint256 nonce,
-        uint256 gas,
-        uint256,
-        uint256 maxPriorityFeePerGas,
-        uint256 maxFeePerGas
-    )
+    function execute(uint256 nonce, uint256 gas, uint256, uint256 maxPriorityFeePerGas, uint256 maxFeePerGas)
         external
         override
         returns (bool, bytes32)
@@ -182,12 +176,7 @@ contract AdvancedOrder is AbstractOrderV0, IExecutionV0 {
         data = this.buildExecutionData(commonExecutionData.creatorDefinedTxFields);
     }
 
-    function _normalizePrices(
-        uint256 price1,
-        uint256 price2,
-        uint256 decimals1,
-        uint256 decimals2
-    )
+    function _normalizePrices(uint256 price1, uint256 price2, uint256 decimals1, uint256 decimals2)
         internal
         pure
         returns (uint256 normalizedPrice1, uint256 normalizedPrice2)

@@ -36,6 +36,7 @@ import (
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 	cosmosevmcmd "github.com/cosmos/evm/client"
 	"github.com/cosmos/evm/client/debug"
+	evmconfig "github.com/cosmos/evm/config"
 	cosmosevmkeyring "github.com/cosmos/evm/crypto/keyring"
 	cosmosevmserver "github.com/cosmos/evm/server"
 	srvflags "github.com/cosmos/evm/server/flags"
@@ -53,20 +54,12 @@ func NewRootCmd() *cobra.Command {
 	// we "pre"-instantiate the application for getting the injected/configured encoding configuration
 	// and the CLI options for the modules
 	// add keyring to autocli opts
-	temp := tempDir()
-	// cleanup temp dir after we are done with the tempApp, so we don't leave behind a
-	// new temporary directory for every invocation. See https://github.com/CosmWasm/wasmd/issues/2017
-	defer os.RemoveAll(temp)
-
-	noOpEvmAppOptions := func(_ uint64) error { return nil }
 	tempApp := app.NewApp(
 		log.NewNopLogger(),
 		dbm.NewMemDB(),
 		nil,
 		true,
-		simtestutil.NewAppOptionsWithFlagHome(temp),
-		wardendconfig.EVMChainID,
-		noOpEvmAppOptions,
+		simtestutil.EmptyAppOptions{},
 	)
 
 	initClientCtx := client.Context{}.
@@ -92,6 +85,7 @@ func NewRootCmd() *cobra.Command {
 			cmd.SetErr(cmd.ErrOrStderr())
 
 			initClientCtx = initClientCtx.WithCmdContext(cmd.Context())
+
 			initClientCtx, err := client.ReadPersistentCommandFlags(initClientCtx, cmd.Flags())
 			if err != nil {
 				return err
@@ -111,6 +105,7 @@ func NewRootCmd() *cobra.Command {
 					EnabledSignModes:           enabledSignModes,
 					TextualCoinMetadataQueryFn: txmodule.NewGRPCCoinMetadataQueryFn(initClientCtx),
 				}
+
 				txConfig, err := tx.NewTxConfigWithOptions(
 					initClientCtx.Codec,
 					txConfigOpts,
@@ -132,8 +127,10 @@ func NewRootCmd() *cobra.Command {
 			}
 
 			evmChainID := wardendconfig.EVMChainID
+
 			if chainID != "" {
 				var err error
+
 				evmChainID, err = parseEVMChainID(chainID)
 				if err != nil {
 					return err
@@ -155,17 +152,6 @@ func NewRootCmd() *cobra.Command {
 
 	if err := autoCliOpts.EnhanceRootCommand(rootCmd); err != nil {
 		panic(err)
-	}
-
-	if initClientCtx.ChainID != "" {
-		evmChainID, err := parseEVMChainID(initClientCtx.ChainID)
-		if err != nil {
-			panic(err)
-		}
-
-		if err := wardendconfig.EvmAppOptions(evmChainID); err != nil {
-			panic(err)
-		}
 	}
 
 	return rootCmd
@@ -208,7 +194,7 @@ func initRootCmd(rootCmd *cobra.Command, app *app.App) {
 		confixcmd.ConfigCommand(),
 		pruning.Cmd(sdkAppCreator, defaultNodeHome),
 		snapshot.Cmd(sdkAppCreator),
-		NewTestnetCmd(app.BasicModuleManager, banktypes.GenesisBalancesIterator{}),
+		NewTestnetCmd(app.BasicModuleManager, banktypes.GenesisBalancesIterator{}, appCreator{}),
 	)
 
 	// add Cosmos EVM flavored TM commands to start server, etc.
@@ -316,11 +302,6 @@ func newApp(
 		panic(err)
 	}
 
-	evmChainID, err := parseEVMChainID(chainID)
-	if err != nil {
-		panic(err)
-	}
-
 	snapshotStore, err := sdkserver.GetSnapshotStore(appOpts)
 	if err != nil {
 		panic(err)
@@ -350,8 +331,6 @@ func newApp(
 	return app.NewApp(
 		logger, db, traceStore, true,
 		appOpts,
-		evmChainID,
-		wardendconfig.EvmAppOptions,
 		baseappOptions...,
 	)
 }
@@ -391,11 +370,6 @@ func appExport(
 		return servertypes.ExportedApp{}, err
 	}
 
-	evmChainID, err := parseEVMChainID(chainID)
-	if err != nil {
-		return servertypes.ExportedApp{}, err
-	}
-
 	if height != -1 {
 		exampleApp = app.NewApp(
 			logger,
@@ -403,8 +377,6 @@ func appExport(
 			traceStore,
 			false,
 			appOpts,
-			evmChainID,
-			wardendconfig.EvmAppOptions,
 			baseapp.SetChainID(chainID),
 		)
 
@@ -418,8 +390,6 @@ func appExport(
 			traceStore,
 			true,
 			appOpts,
-			evmChainID,
-			wardendconfig.EvmAppOptions,
 			baseapp.SetChainID(chainID),
 		)
 	}
@@ -437,13 +407,13 @@ func getChainIDFromOpts(appOpts servertypes.AppOptions) (chainID string, err err
 		// If not available load from home
 		homeDir := cast.ToString(appOpts.Get(flags.FlagHome))
 
-		chainID, err = wardendconfig.GetChainIDFromHome(homeDir)
+		chainID, err = evmconfig.GetChainIDFromHome(homeDir)
 		if err != nil {
 			return "", err
 		}
 	}
 
-	return
+	return chainID, err
 }
 
 func parseEVMChainID(chainID string) (uint64, error) {
@@ -460,13 +430,4 @@ func parseEVMChainID(chainID string) (uint64, error) {
 	}
 
 	return evmChainID, nil
-}
-
-var tempDir = func() string {
-	dir, err := os.MkdirTemp("", "wardend")
-	if err != nil {
-		panic("failed to create temp dir: " + err.Error())
-	}
-
-	return dir
 }

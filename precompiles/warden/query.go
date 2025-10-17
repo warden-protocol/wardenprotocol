@@ -5,7 +5,6 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
 )
 
@@ -27,7 +26,6 @@ const (
 // AllKeysMethod constructs QueryAllKeysRequest from args, passes it to query server and packs response into corresponding abi output.
 func (p Precompile) AllKeysMethod(
 	ctx sdk.Context,
-	origin common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
@@ -57,7 +55,6 @@ func (p Precompile) AllKeysMethod(
 // KeyByIdMethod constructs QueryKeyByIdRequest from args, passes it to query server and packs response into corresponding abi output.
 func (p Precompile) KeyByIdMethod(
 	ctx sdk.Context,
-	origin common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
@@ -87,7 +84,6 @@ func (p Precompile) KeyByIdMethod(
 // KeysBySpaceIdMethod constructs QueryKeysBySpaceIdRequest from args, passes it to query server and packs response into corresponding abi output.
 func (p Precompile) KeysBySpaceIdMethod(
 	ctx sdk.Context,
-	origin common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
@@ -117,7 +113,6 @@ func (p Precompile) KeysBySpaceIdMethod(
 // KeyRequestMethod constructs QueryKeyRequestByIdRequest from args, passes it to query server and packs response into corresponding abi output.
 func (p Precompile) KeyRequestMethod(
 	ctx sdk.Context,
-	origin common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
@@ -147,7 +142,6 @@ func (p Precompile) KeyRequestMethod(
 // KeyRequestsMethod constructs QueryKeyRequestsRequest from args, passes it to query server and packs response into corresponding abi output.
 func (p Precompile) KeyRequestsMethod(
 	ctx sdk.Context,
-	origin common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
@@ -177,7 +171,6 @@ func (p Precompile) KeyRequestsMethod(
 // KeychainMethod constructs QueryKeychainByIdRequest from args, passes it to query server and packs response into corresponding abi output.
 func (p Precompile) KeychainMethod(
 	ctx sdk.Context,
-	origin common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
@@ -207,7 +200,6 @@ func (p Precompile) KeychainMethod(
 // KeychainsMethod constructs QueryKeychainsRequest from args, passes it to query server and packs response into corresponding abi output.
 func (p Precompile) KeychainsMethod(
 	ctx sdk.Context,
-	origin common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
@@ -237,7 +229,6 @@ func (p Precompile) KeychainsMethod(
 // SignRequestByIdMethod constructs QuerySignRequestByIdRequest from args, passes it to query server and packs response into corresponding abi output.
 func (p Precompile) SignRequestByIdMethod(
 	ctx sdk.Context,
-	origin common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
@@ -267,7 +258,6 @@ func (p Precompile) SignRequestByIdMethod(
 // SignRequestsMethod constructs QuerySignRequestsRequest from args, passes it to query server and packs response into corresponding abi output.
 func (p Precompile) SignRequestsMethod(
 	ctx sdk.Context,
-	origin common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
@@ -297,7 +287,6 @@ func (p Precompile) SignRequestsMethod(
 // SpaceByIdMethod constructs QuerySpaceByIdRequest from args, passes it to query server and packs response into corresponding abi output.
 func (p Precompile) SpaceByIdMethod(
 	ctx sdk.Context,
-	origin common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
@@ -327,7 +316,6 @@ func (p Precompile) SpaceByIdMethod(
 // SpacesMethod constructs QuerySpacesRequest from args, passes it to query server and packs response into corresponding abi output.
 func (p Precompile) SpacesMethod(
 	ctx sdk.Context,
-	origin common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
@@ -357,7 +345,6 @@ func (p Precompile) SpacesMethod(
 // SpacesByOwnerMethod constructs QuerySpacesByOwnerRequest from args, passes it to query server and packs response into corresponding abi output.
 func (p Precompile) SpacesByOwnerMethod(
 	ctx sdk.Context,
-	origin common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},

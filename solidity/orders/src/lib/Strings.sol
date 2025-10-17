@@ -47,11 +47,7 @@ library Strings {
      * not a properly
      * formatted address. See {parseAddress} requirements.
      */
-    function tryParseAddress(
-        string memory input,
-        uint256 begin,
-        uint256 end
-    )
+    function tryParseAddress(string memory input, uint256 begin, uint256 end)
         internal
         pure
         returns (bool success, address value)
@@ -75,11 +71,7 @@ library Strings {
      *
      * NOTE: This function will revert if the result does not fit in a `uint256`.
      */
-    function tryParseHexUint(
-        string memory input,
-        uint256 begin,
-        uint256 end
-    )
+    function tryParseHexUint(string memory input, uint256 begin, uint256 end)
         internal
         pure
         returns (bool success, uint256 value)

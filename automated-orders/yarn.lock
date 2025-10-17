@@ -1964,10 +1964,10 @@ axios@1.7.4:
     form-data "^4.0.0"
     proxy-from-env "^1.1.0"
 
-axios@^1.12.0, axios@^1.6.0:
-  version "1.12.0"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.12.0.tgz#11248459be05a5ee493485628fa0e4323d0abfc3"
-  integrity sha512-oXTDccv8PcfjZmPGlWsPSwtOJCZ/b6W5jAMCNcfwJbCzDckwG0jrYJFaWH1yvivfCXjVzV/SPDEhMB3Q+DSurg==
+axios@^1.12.1, axios@^1.6.0:
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.12.1.tgz#0747b39c5b615f81f93f2c138e6d82a71426937f"
+  integrity sha512-Kn4kbSXpkFHCGE6rBFNwIv0GQs4AvDT80jlveJDKFxjbTYMUeB4QtsdPCv6H8Cm19Je7IU6VFtRl2zWZI0rudQ==
   dependencies:
     follow-redirects "^1.15.6"
     form-data "^4.0.4"
@@ -3475,9 +3475,9 @@ vite-node@3.0.8:
     vite "^5.0.0 || ^6.0.0"
 
 "vite@^5.0.0 || ^6.0.0":
-  version "6.3.5"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-6.3.5.tgz#fec73879013c9c0128c8d284504c6d19410d12a3"
-  integrity sha512-cZn6NDFE7wdTpINgs++ZJ4N49W2vRp8LCKrn3Ob1kYNtOo21vfDoaV5GzBfLU4MovSAB8uNRm4jgzVQZ+mBzPQ==
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-6.4.0.tgz#cc26fce6fc4bb423b3a5e7bbeada7b3cf2d3ac9c"
+  integrity sha512-oLnWs9Hak/LOlKjeSpOwD6JMks8BeICEdYMJBf6P4Lac/pO9tKiv/XhXnAM7nNfSkZahjlCZu9sS50zL8fSnsw==
   dependencies:
     esbuild "^0.25.0"
     fdir "^6.4.4"

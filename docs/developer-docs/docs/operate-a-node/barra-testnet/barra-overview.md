@@ -10,13 +10,14 @@ Barra is our new EVM testnet, currently available only to selected validators.
 
 ## Version history
 
-| Release                                                                                 | Block height | Date               |
-| --------------------------------------------------------------------------------------- | ------------ | ------------------ |
-| [v0.7.0-rc4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0-rc4) | 0            | September 10, 2025 |
+| Release                                                                                 | Block height | Date               | Upgrade guide                        |
+| --------------------------------------------------------------------------------------- | ------------ | ------------------ | ------------------------------------ |
+| [v0.7.0-rc4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0-rc4) | 0            | September 10, 2025 | N/A                                  |
+| [v0.7.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0)         | 1233000      | October 21, 2025   |[Upgrade to v0.7.0](upgrade/v0.7.0)   |
 
 ## Binary
 
-The latest binary version compatible with Barra is [wardend v0.7.0-rc4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0-rc4).
+The latest binary version compatible with Barra is [wardend v0.7.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0).
 
 
 ## Endpoints

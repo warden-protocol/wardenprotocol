@@ -18,9 +18,6 @@ Warden Protocol aims to drive a sustainable equilibrium between supply and deman
 - **Operator bonds**: Operators of certain services must bond $WARD, reducing the circulating supply of $WARD and enhancing the protocol's collective security and stability.
 - **Governance**: $WARD will be used for community governance initiatives, creating a lasting need for a meaningful stake in Warden.
 
-## Demand levers
-A percentage of Warden revenue will be used to buy back $WARD, at the discretion of Warden Labs.
-
 ## Validator bonds
 
 To operate a validator on Warden Chain, validators will be required to hold a meaningful stake of $WARD.

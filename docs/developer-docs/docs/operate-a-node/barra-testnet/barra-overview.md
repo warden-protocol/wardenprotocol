@@ -34,7 +34,7 @@ We recommend using the EVM endpoint **for all interactions**.
 :::
 ```bash title="EVM WSS"
 # For apps that use WebSockets to communicate with the chain
-https://evm-ws.barra.wardenprotocol.org
+https://evm-ws.barra.wardenprotocol.org/
 ```
 ```bash title="RPC"
 # For interacting with the chain through RPC requests

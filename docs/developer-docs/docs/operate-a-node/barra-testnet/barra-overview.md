@@ -25,14 +25,13 @@ The latest binary version compatible with Barra is [wardend v0.7.1](https://gith
 
 To interact with the node, use the trusted Barra endpoints:
 
-:::tip
-We recommend using the EVM endpoint **for all interactions**.
-:::
-
 ```bash title="EVM"
 # For interaction with the EVM-compatible layer of the protocol
 https://evm.barra.wardenprotocol.org/
 ```
+:::tip
+We recommend using the EVM endpoint **for all interactions**.
+:::
 ```bash title="EVM WSS"
 # For apps that use WebSockets to communicate with the chain
 https://evm-ws.barra.wardenprotocol.org

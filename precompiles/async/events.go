@@ -19,7 +19,7 @@ const (
 func (p *Precompile) GetCreateTaskEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
 	var err error
 
-	event := p.Events[EventCreateTask]
+	event := ABI.Events[EventCreateTask]
 
 	topics := make([]ethcmn.Hash, 3)
 	topics[0] = event.ID

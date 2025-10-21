@@ -27,7 +27,7 @@ const (
 	EventActionStateChange = "ActionStateChange"
 )
 
-// Map EventCreateTemplate to eth CreateTemplate event and write to eth log.
+// GetCreateTemplateEvent maps EventCreateTemplate to eth CreateTemplate event and write to eth log.
 func (p *Precompile) GetCreateTemplateEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
 	b, err := parseCreateTemplateEvent(sdkEvent)
 	if err != nil {
@@ -39,7 +39,7 @@ func (p *Precompile) GetCreateTemplateEvent(ctx sdk.Context, writerAddress *ethc
 	}
 
 	topics := make([]ethcmn.Hash, 2)
-	event := p.Events[EventCreateTemplate]
+	event := ABI.Events[EventCreateTemplate]
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
@@ -73,7 +73,7 @@ func parseCreateTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	return &b, nil
 }
 
-// Map EventUpdateTemplate to eth UpdateTemplate event and write to eth log.
+// GetUpdateTemplateEvent maps EventUpdateTemplate to eth UpdateTemplate event and write to eth log.
 func (p *Precompile) GetUpdateTemplateEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
 	b, err := parseUpdateTemplateEvent(sdkEvent)
 	if err != nil {
@@ -85,7 +85,7 @@ func (p *Precompile) GetUpdateTemplateEvent(ctx sdk.Context, writerAddress *ethc
 	}
 
 	topics := make([]ethcmn.Hash, 2)
-	event := p.Events[EventUpdateTemplate]
+	event := ABI.Events[EventUpdateTemplate]
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
@@ -119,7 +119,7 @@ func parseUpdateTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	return &b, nil
 }
 
-// Map EventCreateAction to eth CreateAction event and write to eth log.
+// GetCreateActionEvent maps EventCreateAction to eth CreateAction event and write to eth log.
 func (p *Precompile) GetCreateActionEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
 	b, err := parseCreateActionEvent(sdkEvent)
 	if err != nil {
@@ -131,7 +131,7 @@ func (p *Precompile) GetCreateActionEvent(ctx sdk.Context, writerAddress *ethcmn
 	}
 
 	topics := make([]ethcmn.Hash, 2)
-	event := p.Events[EventCreateAction]
+	event := ABI.Events[EventCreateAction]
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
@@ -165,7 +165,7 @@ func parseCreateActionEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	return &b, nil
 }
 
-// Map EventActionVoted to eth ActionVoted event and write to eth log.
+// GetActionVotedEvent maps EventActionVoted to eth ActionVoted event and write to eth log.
 func (p *Precompile) GetActionVotedEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
 	b, err := parseActionVotedEvent(sdkEvent)
 	if err != nil {
@@ -177,7 +177,7 @@ func (p *Precompile) GetActionVotedEvent(ctx sdk.Context, writerAddress *ethcmn.
 	}
 
 	topics := make([]ethcmn.Hash, 2)
-	event := p.Events[EventActionVoted]
+	event := ABI.Events[EventActionVoted]
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
@@ -212,7 +212,7 @@ func parseActionVotedEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	return &b, nil
 }
 
-// Map EventActionStateChange to eth ActionStateChange event and write to eth log.
+// GetActionStateChangeEvent maps EventActionStateChange to eth ActionStateChange event and write to eth log.
 func (p *Precompile) GetActionStateChangeEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
 	b, err := parseActionStateChangeEvent(sdkEvent)
 	if err != nil {
@@ -224,7 +224,7 @@ func (p *Precompile) GetActionStateChangeEvent(ctx sdk.Context, writerAddress *e
 	}
 
 	topics := make([]ethcmn.Hash, 2)
-	event := p.Events[EventActionStateChange]
+	event := ABI.Events[EventActionStateChange]
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 

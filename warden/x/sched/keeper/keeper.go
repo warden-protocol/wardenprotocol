@@ -103,7 +103,7 @@ func (k Keeper) SetCallback(ctx context.Context, cb *types.Callback) (id uint64,
 	evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
 	acc := evmKeeper.GetAccountWithoutBalance(sdkCtx, address)
 
-	if acc == nil || !acc.IsContract() {
+	if acc == nil || !evmKeeper.IsContract(sdkCtx, address) {
 		return id, errorsmod.Wrapf(types.ErrInvalidCallback, "callback address is not a contract")
 	}
 

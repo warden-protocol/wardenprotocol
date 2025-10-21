@@ -37,6 +37,7 @@ func AddGenesisSlinkyMarketsCmd(defaultNodeHome string) *cobra.Command {
 					if err != nil {
 						return fmt.Errorf("marshalling warden genesis state: %w", err)
 					}
+
 					appState[marketmaptypes.ModuleName] = marketmapGenStateBz
 
 					// update oracle genesis state
@@ -51,14 +52,17 @@ func AddGenesisSlinkyMarketsCmd(defaultNodeHome string) *cobra.Command {
 							CurrencyPair:      market.Ticker.CurrencyPair,
 						}
 						id++
+
 						oracleGenState.CurrencyPairGenesis = append(oracleGenState.CurrencyPairGenesis, cp)
 					}
+
 					oracleGenState.NextId = id
 
 					oracleGenStateBz, err := cdc.MarshalJSON(&oracleGenState)
 					if err != nil {
 						return fmt.Errorf("marshalling warden genesis state: %w", err)
 					}
+
 					appState[oracletypes.ModuleName] = oracleGenStateBz
 
 					return nil

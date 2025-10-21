@@ -26,6 +26,7 @@ func (c *Test_AsyncPrecompile) Setup(t *testing.T, f *framework.F) {
 }
 
 // TODO(backsapc): Implement positive test cases with async sidecar integration.
+
 func (c *Test_AsyncPrecompile) Run(t *testing.T, _ *framework.F) {
 	t.Skip("x/async is disabled")
 

@@ -16,10 +16,18 @@ This page lists basic chain information: the **chain ID** and supported **endpoi
 <table>
   <tr>
     <td>**Binary**</td>
-    <td>[v0.7.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0)</td>
+    <td>[v0.7.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.1)</td>
   </tr>
   <tr>
     <td>**Endpoints**</td>
+    <tr>
+      <td>EVM</td>
+      <td>`https://evm.barra.wardenprotocol.org/`</td>
+    </tr>
+    <tr>
+      <td>EVM WSS</td>
+      <td>`https://evm-ws.barra.wardenprotocol.org/`</td>
+    </tr>
     <tr>
       <td>RPC</td>
       <td>`https://rpc.barra.wardenprotocol.org/`</td>
@@ -31,10 +39,6 @@ This page lists basic chain information: the **chain ID** and supported **endpoi
     <tr>
       <td>gRPC</td>
       <td>`https://grpc.barra.wardenprotocol.org/`</td>
-    </tr>
-    <tr>
-      <td>EVM</td>
-      <td>`https://evm.barra.wardenprotocol.org/`</td>
     </tr>
   </tr>
   <tr>

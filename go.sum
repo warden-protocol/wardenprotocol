@@ -1898,8 +1898,8 @@ github.com/valyala/fasttemplate v1.0.1/go.mod h1:UQGH1tvbgY+Nz5t2n7tXsz52dQxojPU
 github.com/valyala/fasttemplate v1.2.1/go.mod h1:KHLXt3tVN2HBp8eijSv/kGJopbvo7S+qRAEEKiv+SiQ=
 github.com/vbatts/tar-split v0.12.1 h1:CqKoORW7BUWBe7UL/iqTVvkTBOF8UvOMKOIZykxnnbo=
 github.com/vbatts/tar-split v0.12.1/go.mod h1:eF6B6i6ftWQcDqEn3/iGFRFRo8cBIMSJVOpnNdfTMFA=
-github.com/warden-protocol/connect v1.3.0 h1:Ez31iefcpg4d13oGyEM6JSNxwmRcEmy+xwlVqyJ29GE=
-github.com/warden-protocol/connect v1.3.0/go.mod h1:kVSqqm7IWNjj2H98t5BDxnxqA3cuilVKusT+7TlvP/c=
+github.com/warden-protocol/connect v1.3.1 h1:nnkPONp71SYtxm7JtYVqA3s0c6ZTOfKcx//O0C9GkoQ=
+github.com/warden-protocol/connect v1.3.1/go.mod h1:kVSqqm7IWNjj2H98t5BDxnxqA3cuilVKusT+7TlvP/c=
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=
 github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 h1:gEOO8jv9F4OT7lGCjxCBTO/36wtF6j2nSip77qHd4x4=
 github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1/go.mod h1:Ohn+xnUBiLI6FVj/9LpzZWtj1/D6lUovWYBkxHVV3aM=

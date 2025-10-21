@@ -55,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features (non-breaking)
 
 - Enable default cosmos/evm preinstalls (i.e. Create2, Multicall3).
+- Bump [`connect`](https://github.com/warden-protocol/connect) to v1.3.1.
 
 ### Bug Fixes
 

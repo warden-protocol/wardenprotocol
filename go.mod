@@ -63,7 +63,7 @@ require (
 	github.com/spf13/pflag v1.0.10
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.11.1
-	github.com/warden-protocol/connect v1.3.0
+	github.com/warden-protocol/connect v1.3.1
 	golang.org/x/image v0.32.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20250826171959-ef028d996bc1
 	google.golang.org/grpc v1.76.0

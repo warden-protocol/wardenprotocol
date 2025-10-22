@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/CosmWasm/wasmvm/v3/types"
 	"github.com/Jeffail/gabs/v2"
 	"github.com/stretchr/testify/require"
 
@@ -89,8 +90,21 @@ func Build(t *testing.T, wardendPath, savePath string, opts BuildOptions) {
 	}
 
 	genesis := b.Genesis()
+	denomMetadata := types.DenomMetadata{
+		Base: b.denom,
+		DenomUnits: []types.DenomUnit{
+			{Denom: b.denom},
+			{Denom: b.denom[1:], Exponent: 18},
+		},
+		Display: b.denom[1:],
+		Name:    b.denom[1:],
+		Symbol:  b.denom[1:],
+	}
+	genesis.Set("app_state.bank.denom_metadata", []any{denomMetadata})
+	genesis.Set("app_state.evm.params.evm_denom", b.denom)
 	genesis.Set("app_state.evm.params.active_static_precompiles", opts.Precompiles)
 	genesis.Set("app_state.feemarket.params.no_base_fee", true)
+	genesis.Set("app_state.feemarket.params.base_fee", "0")
 	genesis.Set("consensus.params.abci.vote_extensions_enable_height", "2")
 
 	if opts.EditGenesis != nil {

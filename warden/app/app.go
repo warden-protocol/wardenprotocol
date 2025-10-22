@@ -1268,7 +1268,8 @@ func registerProphetHandlers(appOpts servertypes.AppOptions) {
 	}
 
 	if cast.ToBool(appOpts.Get("veniceimg.enabled")) {
-		prophet.Register("veniceimg", veniceimg.New(cast.ToString(appOpts.Get("veniceimg.api-key"))))
+		prophet.Register("veniceimg", veniceimg.New(cast.ToString(appOpts.Get("veniceimg.venice-key")),
+			cast.ToString(appOpts.Get("veniceimg.storage-key"))))
 	}
 
 	prophetRegistered = true

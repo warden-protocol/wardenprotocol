@@ -3,63 +3,47 @@
   "app_name": "<appd>",
   "app_state": {
     "07-tendermint": null,
-    "act": {
-      "actions": [],
-      "params": {
-        "max_completed_time": "604800s",
-        "max_pending_time": "86400s",
-        "prune_check_block_frequency": "10000"
-      },
-      "templates": []
-    },
-    "async": {
-      "active_plugins": [],
-      "params": {
-        "max_task_timeout": "86400s",
-        "task_prune_timeout": "86400s"
-      }
-    },
     "auth": {
       "accounts": [
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "0",
-          "address": "warden1gcqz8aj88rlny23np24d405cjpt7w2nxl6lp5t",
+          "address": "warden1hqh2lu9ju20nn08tjue9y74nvxa5wpdu2hfxej",
           "pub_key": null,
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "1",
-          "address": "warden1adzuadgu8pf82qdsj5p3lf2vrv53r7vpahxxy3",
+          "address": "warden15cgrv3u4r78ce364y3wt8948n2lf2fn7cg345x",
           "pub_key": null,
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "2",
-          "address": "warden1kucvppe0edcsdddt07av546vgkpw9g5808zy62",
+          "address": "warden13k8x5e7svw8xmyu2uhngpqr6vav6xhanlq9cpj",
           "pub_key": null,
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "3",
-          "address": "warden1hm7g22zgyf56aawf3zz96r3ktcw7q9zcvfcyqk",
+          "address": "warden139ca6v9w6xfxh8mhht0nfkc6zqj4c0pjnchvk5",
           "pub_key": null,
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "4",
-          "address": "warden1dwrjp4zk2zjlguvthpwqk0r380na40ur5c2elh",
+          "address": "warden10muxfgk6s37tx3j02jewxyheuqwjrrncta0w5v",
           "pub_key": null,
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "5",
-          "address": "warden1vsxcgx2z7uze3h4zanpq803wlcr4fl3hrvqa6s",
+          "address": "warden1vf5fc624mp8dvcrl0089a55at9usp37qp3aa6j",
           "pub_key": null,
           "sequence": "0"
         }
@@ -78,7 +62,19 @@
     "bank": {
       "balances": [
         {
-          "address": "warden1gcqz8aj88rlny23np24d405cjpt7w2nxl6lp5t",
+          "address": "warden1vf5fc624mp8dvcrl0089a55at9usp37qp3aa6j",
+          "coins": []
+        },
+        {
+          "address": "warden10muxfgk6s37tx3j02jewxyheuqwjrrncta0w5v",
+          "coins": []
+        },
+        {
+          "address": "warden139ca6v9w6xfxh8mhht0nfkc6zqj4c0pjnchvk5",
+          "coins": []
+        },
+        {
+          "address": "warden13k8x5e7svw8xmyu2uhngpqr6vav6xhanlq9cpj",
           "coins": [
             {
               "amount": "10000000000000000000000000000000000000",
@@ -87,15 +83,7 @@
           ]
         },
         {
-          "address": "warden1vsxcgx2z7uze3h4zanpq803wlcr4fl3hrvqa6s",
-          "coins": []
-        },
-        {
-          "address": "warden1dwrjp4zk2zjlguvthpwqk0r380na40ur5c2elh",
-          "coins": []
-        },
-        {
-          "address": "warden1kucvppe0edcsdddt07av546vgkpw9g5808zy62",
+          "address": "warden15cgrv3u4r78ce364y3wt8948n2lf2fn7cg345x",
           "coins": [
             {
               "amount": "10000000000000000000000000000000000000",
@@ -104,11 +92,7 @@
           ]
         },
         {
-          "address": "warden1hm7g22zgyf56aawf3zz96r3ktcw7q9zcvfcyqk",
-          "coins": []
-        },
-        {
-          "address": "warden1adzuadgu8pf82qdsj5p3lf2vrv53r7vpahxxy3",
+          "address": "warden1hqh2lu9ju20nn08tjue9y74nvxa5wpdu2hfxej",
           "coins": [
             {
               "amount": "10000000000000000000000000000000000000",
@@ -117,7 +101,29 @@
           ]
         }
       ],
-      "denom_metadata": [],
+      "denom_metadata": [
+        {
+          "description": "",
+          "denom_units": [
+            {
+              "denom": "award",
+              "exponent": 0,
+              "aliases": null
+            },
+            {
+              "denom": "ward",
+              "exponent": 18,
+              "aliases": null
+            }
+          ],
+          "base": "award",
+          "display": "ward",
+          "name": "ward",
+          "symbol": "ward",
+          "uri": "",
+          "uri_hash": ""
+        }
+      ],
       "params": {
         "default_send_enabled": true,
         "send_enabled": []
@@ -178,7 +184,10 @@
         },
         "active_static_precompiles": null,
         "evm_channels": [],
-        "evm_denom": "atest",
+        "evm_denom": "award",
+        "extended_denom_options": {
+          "extended_denom": "aatom"
+        },
         "extra_eips": [],
         "history_serve_window": "8192"
       },
@@ -190,7 +199,7 @@
     "feemarket": {
       "block_gas": "0",
       "params": {
-        "base_fee": "1000000000.000000000000000000",
+        "base_fee": "0",
         "base_fee_change_denominator": 8,
         "elasticity_multiplier": 2,
         "enable_height": "0",
@@ -218,7 +227,7 @@
                 },
                 "public_key": {
                   "@type": "/cosmos.evm.crypto.v1.ethsecp256k1.PubKey",
-                  "key": "AoIJF97yQHQnSCwq+NYub7L6gZbF5KgRcLX82MGD0Q5R"
+                  "key": "A67isegN4JaauiIvvrs7OSxzBKkMhhwDjDqpKWjdvMoN"
                 },
                 "sequence": "0"
               }
@@ -227,7 +236,7 @@
           },
           "body": {
             "extension_options": [],
-            "memo": "a587c87739afa2c555eadf8b225cf7f389e31fa1@192.168.1.169:26656",
+            "memo": "8c7da7ef3c5420526b2e06311fe3fb391de81e87@192.168.1.128:26656",
             "messages": [
               {
                 "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
@@ -247,9 +256,9 @@
                 "min_self_delegation": "1",
                 "pubkey": {
                   "@type": "/cosmos.crypto.ed25519.PubKey",
-                  "key": "d2Xm88AHm/qgPsxkwMp0In/tziupAzRpKelu3YDf7GU="
+                  "key": "Ld/fRIFhUcGUeUfGfLKLR44T7ZVm5J700lYTK4vDDLc="
                 },
-                "validator_address": "wardenvaloper1gcqz8aj88rlny23np24d405cjpt7w2nxwpaym6",
+                "validator_address": "wardenvaloper1hqh2lu9ju20nn08tjue9y74nvxa5wpdumvtrkr",
                 "value": {
                   "amount": "1000000000000000000000",
                   "denom": "award"
@@ -262,7 +271,7 @@
             "unordered": false
           },
           "signatures": [
-            "8v2rKdAM4ZDhI6fIbfCSgI/9AN8/C35MfxZ4SaGgrFtP0W29Zq05vjELDLofGoTz6BYKrFy53RnPxWN5rXNnqgE="
+            "SfBLYXAnk9HlzQchNohsjdN11dl56d6+JRYyFqXq56hAXRyvOeVExP2lVNrn9eQzh7CiNGpmVUTLTSEtYI2MRwA="
           ]
         }
       ]
@@ -381,9 +390,6 @@
       "balances": [],
       "remainder": "0"
     },
-    "sched": {
-      "params": {}
-    },
     "slashing": {
       "missed_blocks": [],
       "params": {
@@ -433,28 +439,16 @@
         {
           "approve_admin_template_id": "0",
           "approve_sign_template_id": "0",
-          "creator": "warden1gcqz8aj88rlny23np24d405cjpt7w2nxl6lp5t",
+          "creator": "warden1hqh2lu9ju20nn08tjue9y74nvxa5wpdu2hfxej",
           "id": "1",
           "nonce": "0",
           "owners": [
-            "warden1gcqz8aj88rlny23np24d405cjpt7w2nxl6lp5t"
+            "warden1hqh2lu9ju20nn08tjue9y74nvxa5wpdu2hfxej"
           ],
           "reject_admin_template_id": "0",
           "reject_sign_template_id": "0"
         }
       ]
-    },
-    "wasm": {
-      "codes": [],
-      "contracts": [],
-      "params": {
-        "code_upload_access": {
-          "addresses": [],
-          "permission": "Everybody"
-        },
-        "instantiate_default_permission": "Everybody"
-      },
-      "sequences": []
     }
   },
   "app_version": "",
@@ -483,6 +477,6 @@
       }
     }
   },
-  "genesis_time": "2025-08-25T15:30:31.3077Z",
+  "genesis_time": "2025-10-22T13:32:09.313931Z",
   "initial_height": 1
 }

@@ -3,28 +3,12 @@
   "app_name": "<appd>",
   "app_state": {
     "07-tendermint": null,
-    "act": {
-      "actions": [],
-      "params": {
-        "max_completed_time": "604800s",
-        "max_pending_time": "86400s",
-        "prune_check_block_frequency": "10000"
-      },
-      "templates": []
-    },
-    "async": {
-      "active_plugins": [],
-      "params": {
-        "max_task_timeout": "86400s",
-        "task_prune_timeout": "86400s"
-      }
-    },
     "auth": {
       "accounts": [
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "0",
-          "address": "warden1sz7c8u4nl8cf3ljv64yfrnwgvk26d4rehtddrw",
+          "address": "warden1nqr6qzsgk8f56hzwjn38fud0l3flluhvw5xfe6",
           "pub_key": null,
           "sequence": "0"
         }
@@ -43,7 +27,7 @@
     "bank": {
       "balances": [
         {
-          "address": "warden1sz7c8u4nl8cf3ljv64yfrnwgvk26d4rehtddrw",
+          "address": "warden1nqr6qzsgk8f56hzwjn38fud0l3flluhvw5xfe6",
           "coins": [
             {
               "amount": "10000000000000000000000000000000000000",
@@ -52,7 +36,29 @@
           ]
         }
       ],
-      "denom_metadata": [],
+      "denom_metadata": [
+        {
+          "description": "",
+          "denom_units": [
+            {
+              "denom": "award",
+              "exponent": 0,
+              "aliases": null
+            },
+            {
+              "denom": "ward",
+              "exponent": 18,
+              "aliases": null
+            }
+          ],
+          "base": "award",
+          "display": "ward",
+          "name": "ward",
+          "symbol": "ward",
+          "uri": "",
+          "uri_hash": ""
+        }
+      ],
       "params": {
         "default_send_enabled": true,
         "send_enabled": []
@@ -113,7 +119,10 @@
         },
         "active_static_precompiles": null,
         "evm_channels": [],
-        "evm_denom": "atest",
+        "evm_denom": "award",
+        "extended_denom_options": {
+          "extended_denom": "aatom"
+        },
         "extra_eips": [],
         "history_serve_window": "8192"
       },
@@ -125,7 +134,7 @@
     "feemarket": {
       "block_gas": "0",
       "params": {
-        "base_fee": "1000000000.000000000000000000",
+        "base_fee": "0",
         "base_fee_change_denominator": 8,
         "elasticity_multiplier": 2,
         "enable_height": "0",
@@ -153,7 +162,7 @@
                 },
                 "public_key": {
                   "@type": "/cosmos.evm.crypto.v1.ethsecp256k1.PubKey",
-                  "key": "A4zBolUrl4be7KMYkpjPDz6xHXUs6eyHyLpFrK+jWVVy"
+                  "key": "AhP7MMtZa5ukacNApkFk+GI5e02kgnETTvkGlRqmwn/2"
                 },
                 "sequence": "0"
               }
@@ -162,7 +171,7 @@
           },
           "body": {
             "extension_options": [],
-            "memo": "6945f3e30b02b9e34673acc22a18c3688ed57a19@192.168.1.169:26656",
+            "memo": "26951ad3c76482e5e7d787df8a0efc8bc295dc7b@192.168.1.128:26656",
             "messages": [
               {
                 "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
@@ -182,9 +191,9 @@
                 "min_self_delegation": "1",
                 "pubkey": {
                   "@type": "/cosmos.crypto.ed25519.PubKey",
-                  "key": "D0OheB8ExttHy/V/K/QjdBgfsozhQFgwiUYv5atC7CI="
+                  "key": "8tJVBWqQOx0pWi0n+7WUrOsq/fIn5c1hGrcHOHXpiP0="
                 },
-                "validator_address": "wardenvaloper1sz7c8u4nl8cf3ljv64yfrnwgvk26d4rexs0gvl",
+                "validator_address": "wardenvaloper1nqr6qzsgk8f56hzwjn38fud0l3flluhvl0yvkt",
                 "value": {
                   "amount": "1000000000000000000000",
                   "denom": "award"
@@ -197,7 +206,7 @@
             "unordered": false
           },
           "signatures": [
-            "NgYKgmvAxOIfTfXICMFsALy0201GKKHxCYRscCECrBsflsFnTtTnm0UYn5VYCtNInkJOSgg4hopU2sJLITlGwwE="
+            "OEOcC5IecS8X+EznLaMyMoN7+TdDorcBsKNAMh7yHjw+vfM8SIvlwtU00Vat7rWw2Lqvn0tKd0VbV+UB5VH5qwE="
           ]
         }
       ]
@@ -316,9 +325,6 @@
       "balances": [],
       "remainder": "0"
     },
-    "sched": {
-      "params": {}
-    },
     "slashing": {
       "missed_blocks": [],
       "params": {
@@ -357,27 +363,7 @@
       "total_escrowed": []
     },
     "upgrade": {},
-    "vesting": {},
-    "warden": {
-      "key_requests": [],
-      "keychains": [],
-      "keys": [],
-      "params": {},
-      "sign_requests": [],
-      "spaces": []
-    },
-    "wasm": {
-      "codes": [],
-      "contracts": [],
-      "params": {
-        "code_upload_access": {
-          "addresses": [],
-          "permission": "Everybody"
-        },
-        "instantiate_default_permission": "Everybody"
-      },
-      "sequences": []
-    }
+    "vesting": {}
   },
   "app_version": "",
   "chain_id": "warden_1337-1",
@@ -405,6 +391,6 @@
       }
     }
   },
-  "genesis_time": "2025-08-25T15:30:22.942637Z",
+  "genesis_time": "2025-10-22T13:32:07.749747Z",
   "initial_height": 1
 }

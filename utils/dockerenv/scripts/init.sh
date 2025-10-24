@@ -6,7 +6,7 @@ CHAIN_NAME=${1:-"devnet_12345-1"}
 NUM_VALS=${2:-"3"}
 TOKEN=${3:-"award"}
 WARDEN_IMAGE="ghcr.io/warden-protocol/wardenprotocol/wardend"
-WARDEN_VERSION="089403ef"
+WARDEN_VERSION="b6ec9b11"
 FAUCET_VERSION="faa3f578"
 KMS_VERSION="6e5af4ec"
 # SPACEWARD_VERSION="ecbbba5"
@@ -38,7 +38,7 @@ ENVIRONMENT="""WARDEND_MINIMUM_GAS_PRICES: "0award"
       WARDEND_JSON_RPC_ENABLE: true
       WARDEND_KEYRING_BACKEND: test
       WARDEND_HOME: /data/.warden"""
-ASYNC_PLUGINS="echo http pricepred venice quantkit"
+# ASYNC_PLUGINS="echo http pricepred venice quantkit"
 if [[ "$COSMOVISOR" == "true" ]]; then
   ENTRYPOINT='entrypoint: ["/data/.warden/cosmovisor/bin/cosmovisor","run","start"]'
   ENVIRONMENT="$ENVIRONMENT
@@ -91,9 +91,9 @@ for (( i=0; i < $NUM_VALS; i++ )); do
     $WARDEN_IMAGE:$WARDEN_VERSION \
     -c "sleep 10000s" > /dev/null 2>&1
     
-  docker exec "val-$i" /bin/bash -c "apt update ; apt install jq curl -y && wardend init --chain-id $CHAIN_NAME validator-$i && wardend keys add val$i --keyring-backend test && mkdir -p $CONFIG_FOLDER/gentx" > /dev/null 2>&1
+  docker exec "val-$i" /bin/bash -c "apk add jq curl && wardend init --chain-id $CHAIN_NAME validator-$i && wardend keys add val$i --keyring-backend test && mkdir -p $CONFIG_FOLDER/gentx" > /dev/null 2>&1
   ADDRESSES+=" "$(docker exec "val-$i" /bin/bash -c "wardend keys show val$i -a --keyring-backend test") > /dev/null 2>&1
-  NODE_IDS+=$(docker exec "val-$i" /bin/bash -c "wardend tendermint show-node-id")"@dockerenv-val-$i-1:26656," > /dev/null 2>&1
+  NODE_IDS+=$(docker exec "val-$i" /bin/bash -c "wardend comet show-node-id")"@dockerenv-val-$i-1:26656," > /dev/null 2>&1
 done
 
 # Add all validators to genesis
@@ -129,10 +129,10 @@ jq '.app_state[\"feemarket\"][\"params\"][\"elasticity_multiplier\"]=\"1000\"' $
 jq '.app_state[\"evm\"][\"params\"][\"evm_denom\"]=\"award\"' $CONFIG_FOLDER/genesis.json > tmp/genesis.json && mv tmp/genesis.json $CONFIG_FOLDER/genesis.json"""
 
 # Add asyn plungins to genesis
-for plugin in $ASYNC_PLUGINS; do
-  echo -e "${GREEN}Adding async plugin: ${NC} $plugin"
-  docker exec val-0 /bin/bash -c "wardend genesis add-genesis-plugin $plugin" > /dev/null 2>&1
-done
+# for plugin in $ASYNC_PLUGINS; do
+#   echo -e "${GREEN}Adding async plugin: ${NC} $plugin"
+#   docker exec val-0 /bin/bash -c "wardend genesis add-genesis-plugin $plugin" > /dev/null 2>&1
+# done
 
 echo "$GENESIS_PARAMS" | while read -r param; do
   echo -e "${GREEN}Changing genesis param: ${NC} $param"
@@ -143,6 +143,7 @@ done
 echo -e "${GREEN}Creating gentxs ${NC}"
 docker cp val-0:$CONFIG_FOLDER/genesis.json /tmp/genesis.json > /dev/null 2>&1
 for (( i=0; i < $NUM_VALS; i++ )); do
+  docker exec val-$i /bin/bash -c "wardend config set client chain-id $CHAIN_NAME" > /dev/null 2>&1
   docker cp /tmp/genesis.json val-$i:$CONFIG_FOLDER/genesis.json > /dev/null 2>&1
   docker exec val-$i /bin/bash -c "wardend genesis gentx val$i 30000000000000000000000000$TOKEN --commission-rate 0.1 --commission-max-rate 0.2 --commission-max-change-rate 0.1 --chain-id $CHAIN_NAME --keyring-backend test" > /dev/null 2>&1
 done

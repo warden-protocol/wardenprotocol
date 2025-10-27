@@ -18,7 +18,7 @@ Before you start, complete the following prerequisites:
 
 - [Install Go](https://go.dev/doc/install) 1.25 or higher.
 - Make sure you have the following shell tools installed: `wget`, `sed`, `curl`, `jq`.
-- We recommend running public testnet nodes on machines with the following characteristics:
+- We recommend running public nodes on machines with the following characteristics:
   - at least 4 cores
   - 16GB of RAM
   - 300GB of disk space
@@ -47,7 +47,7 @@ The following list shows the files and fields you need to adjust. You can do it 
   minimum-gas-prices = "10award"
   ```
   ```toml
-  evm-chain-id = 9191
+  evm-chain-id = 8765
   ```
 - `client.toml`   
   Set the chain ID:

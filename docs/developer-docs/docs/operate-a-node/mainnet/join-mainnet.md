@@ -57,7 +57,7 @@ The following list shows the files and fields you need to adjust. You can do it 
 - `config.toml`   
   Add [seed nodes](https://github.com/cosmos/chain-registry/blob/master/wardenprotocol/chain.json) and adjust consensus parameters:
   ```toml
-  seeds = "7dbf2c58286b59aae1d9c121f1cee59fc21a59ef@54.220.127.230:26656,02810bc9ed25af587213a4ddb1fa4ab3a0e9978d@54.74.49.211:266566", "e5ce023918478f61a3606e93b9642ca24e027328@63.33.179.20:26656"
+  seeds = "7dbf2c58286b59aae1d9c121f1cee59fc21a59ef@54.220.127.230:26656,02810bc9ed25af587213a4ddb1fa4ab3a0e9978d@54.74.49.211:26656","e5ce023918478f61a3606e93b9642ca24e027328@63.33.179.20:26656"
   ```
   ```toml
   timeout_propose = "1s"
@@ -79,7 +79,7 @@ cd $HOME/.warden/config
 sed -i.bak 's|^\s*minimum-gas-prices\s*=.*|minimum-gas-prices = "10award"|' app.toml
 sed -i.bak 's|^\s*evm-chain-id\s*=.*|evm-chain-id = 8765|' app.toml
 sed -i.bak 's|^\s*chain-id\s*=.*|chain-id = "warden_8765-1"|' client.toml
-sed -i.bak 's|^\s*seeds\s*=.*|seeds = "7dbf2c58286b59aae1d9c121f1cee59fc21a59ef@54.220.127.230:26656,02810bc9ed25af587213a4ddb1fa4ab3a0e9978d@54.74.49.211:266566,e5ce023918478f61a3606e93b9642ca24e027328@63.33.179.20:26656"|' config.toml
+sed -i.bak 's|^\s*seeds\s*=.*|seeds = "7dbf2c58286b59aae1d9c121f1cee59fc21a59ef@54.220.127.230:26656,02810bc9ed25af587213a4ddb1fa4ab3a0e9978d@54.74.49.211:26656,e5ce023918478f61a3606e93b9642ca24e027328@63.33.179.20:26656"|' config.toml
 sed -i.bak 's|^\s*timeout_propose\s*=.*|timeout_propose = "1s"|' config.toml
 sed -i.bak 's|^\s*timeout_propose_delta\s*=.*|timeout_propose_delta = "200ms"|' config.toml
 sed -i.bak 's|^\s*timeout_prevote\s*=.*|timeout_prevote = "500ms"|' config.toml

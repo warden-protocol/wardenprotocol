@@ -48,6 +48,9 @@ https://api.wardenprotocol.org/
 # For data streaming
 https://grpc.wardenprotocol.org/
 ```
+:::note
+You can also find these endpoints on GitHub in [chain.json](https://github.com/cosmos/chain-registry/blob/master/wardenprotocol/chain.json).
+:::
 
 ## Chain ID
 

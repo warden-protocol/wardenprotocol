@@ -40,7 +40,7 @@ wardend keys show KEY_NAME --address
 
 ## 2. Get WARD
 
-In the next steps, you'll register your new validator by submitting a `create-validator` transaction. Transactions consume gas, so you need to fund your newly created address from the first step.
+In the next steps, you'll register your new validator by submitting a `create-validator` transaction. Transactions consume gas, so you need to buy **WARD**, funding your newly created address.
 
 To verify your balance, use this command:
 

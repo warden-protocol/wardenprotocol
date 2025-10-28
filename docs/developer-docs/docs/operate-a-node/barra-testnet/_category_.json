@@ -1,8 +1,8 @@
 {
-  "position": 3,
+  "position": 4,
   "label": "Barra testnet",
   "collapsible": true,
-  "collapsed": false,
+  "collapsed": true,
   "link": {
     "type": "generated-index",
     "title": "Barra testnet"

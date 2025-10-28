@@ -1,11 +1,11 @@
 {
   "position": 3,
-  "label": "Upgrade",
+  "label": "Mainnet",
   "collapsible": true,
-  "collapsed": true,
+  "collapsed": false,
   "link": {
     "type": "generated-index",
-    "title": "Upgrade"
+    "title": "Mainnet"
   },
   "customProps": {}
 }

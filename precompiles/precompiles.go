@@ -20,7 +20,7 @@ func WardenPrecompilesAddresses() []string {
 	}
 }
 
-// Single point of all wardenprotocol precompiles initialization, including precompiles and events registry.
+// NewWardenPrecompiles initializes all Warden Protocol precompiles and the events registry.
 func NewWardenPrecompiles(
 	bankKeeper evmcmn.BankKeeper,
 	oraclekeeper oraclekeeper.Keeper,
@@ -29,18 +29,10 @@ func NewWardenPrecompiles(
 	precompiles := make(map[ethcmn.Address]vm.PrecompiledContract)
 	eventsRegistry := cmn.NewEthEventsRegistry()
 
-	newSlinkyPrecompile, err := slinkyprecompile.NewPrecompile(oraclekeeper, eventsRegistry)
-	if err != nil {
-		return nil, err
-	}
-
+	newSlinkyPrecompile := slinkyprecompile.NewPrecompile(oraclekeeper, eventsRegistry)
 	precompiles[newSlinkyPrecompile.Address()] = newSlinkyPrecompile
 
-	newJsonPrecompile, err := jsonprecompile.NewPrecompile(cmn.NewAbiEncoder())
-	if err != nil {
-		return nil, err
-	}
-
+	newJsonPrecompile := jsonprecompile.NewPrecompile(cmn.NewAbiEncoder())
 	precompiles[newJsonPrecompile.Address()] = newJsonPrecompile
 
 	return precompiles, nil

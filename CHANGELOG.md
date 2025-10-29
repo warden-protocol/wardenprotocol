@@ -46,6 +46,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 
+## [v0.7.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.2) - 2025-10-XX
+
+### Consensus Breaking Changes
+
+- oracle: Enable Slinky pre-blocker to store prices onchain.
+- cosmos/evm: Bump to [v0.5.0](https://github.com/cosmos/evm/releases/v0.5.0).
+
+### Features (non-breaking)
+
+- Enable default cosmos/evm preinstalls (i.e. Create2, Multicall3).
+- Bump [`connect`](https://github.com/warden-protocol/connect) to v1.3.1.
+
+### Bug Fixes
+
+- Fix `query-gas-limit` in `app.toml` being ignored.
+
+## [v0.7.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.1) - 2025-10-15
+
+This upgrade doesn't require a full network upgrade. The nodes can switch to the new binary independently.
+
+### Bug Fixes
+
+- Upgrade CometBFT to v0.38.19. Fixes [GHSA-hrhf-2vcr-ghch](https://github.com/cometbft/cometbft/security/advisories/GHSA-hrhf-2vcr-ghch).
+
 ## [v0.7.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0) - 2025-09-22
 
 ### Consensus Breaking Changes

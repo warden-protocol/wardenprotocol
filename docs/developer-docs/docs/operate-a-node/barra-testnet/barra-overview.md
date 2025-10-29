@@ -5,40 +5,50 @@ sidebar_position: 1
 # Barra overview
 
 :::important
-Barra is our new testnet, currently available only to selected validators. It's a vanilla Cosmos chain with EVM support.
+Barra is our new EVM testnet, currently available only to selected validators.
 :::
 
 ## Version history
 
-| Release                                                                                 | Block height | Date               |
-| --------------------------------------------------------------------------------------- | ------------ | ------------------ |
-| [v0.7.0-rc4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0-rc4) | 0            | September 10, 2025 |
+| Release                                                                                 | Block height | Date               | Upgrade guide                        |
+| --------------------------------------------------------------------------------------- | ------------ | ------------------ | ------------------------------------ |
+| [v0.7.0-rc4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0-rc4) | 0            | September 10, 2025 | N/A                                  |
+| [v0.7.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0)         | 1233000      | October 21, 2025   |[Upgrade to v0.7.0](upgrade/v0.7.0)   |
+| [v0.7.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.1)         | 1233001      | October 21, 2025   |[Upgrade to v0.7.1](upgrade/v0.7.1)   |
+| [v0.7.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.2)         | 1310000      | October 24, 2025   |[Upgrade to v0.7.2](upgrade/v0.7.2)   |
 
 ## Binary
 
-The latest binary version compatible with Barra is [wardend v0.7.0-rc4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0-rc4).
+The latest binary version compatible with Barra is [wardend v0.7.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.2).
 
 
 ## Endpoints
 
-To interact with the node, use trusted Barra endpoints:
-
-```bash title="RPC"
-https://rpc.barra.wardenprotocol.org/
-```
-
-```bash title="REST"
-https://api.barra.wardenprotocol.org/
-```
-
-```bash title="gRPC"
-https://grpc.barra.wardenprotocol.org/
-```
+To interact with the node, use the trusted Barra endpoints below.
+:::tip
+We recommend using the EVM endpoint **for all interactions**.
+:::
 
 ```bash title="EVM"
+# For interaction with the EVM-compatible layer of the protocol
 https://evm.barra.wardenprotocol.org/
 ```
-
+```bash title="EVM WSS"
+# For apps that use WebSockets to communicate with the chain
+https://evm-ws.barra.wardenprotocol.org/
+```
+```bash title="RPC"
+# For interacting with the chain through RPC requests
+https://rpc.barra.wardenprotocol.org/
+```
+```bash title="REST"
+# For querying chain data in frontend applications
+https://api.barra.wardenprotocol.org/
+```
+```bash title="gRPC"
+# For data streaming
+https://grpc.barra.wardenprotocol.org/
+```
 :::note
 You can also find these endpoints on GitHub in [chain.json](https://github.com/warden-protocol/networks/blob/main/testnets/barra/chain.json).
 :::

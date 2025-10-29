@@ -1,6 +1,7 @@
+# Make sure that all the paths listed here are also present in .gitignore.
+# Failing to do so might cause the wardend version to contain a "-dirty" flag
+# when built from inside docker images.
 **docker-compose.yml
-**Dockerfile
-**Dockerfile**
 **node_modules
 **build
 **dist

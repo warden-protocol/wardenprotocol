@@ -289,6 +289,36 @@ cache-preimage = false
 # EVMChainID is the EIP-155 compatible replay protection chain ID. This is separate from the Cosmos chain ID.
 evm-chain-id = 1337
 
+# MinTip defines the minimum priority fee for the mempool.
+min-tip = 0
+
+# GethMetricsAddress defines the addr to bind the geth metrics server to. Default 127.0.0.1:8100.
+geth-metrics-address = "127.0.0.1:8100"
+
+# Mempool configuration for EVM transactions
+[evm.mempool]
+
+# PriceLimit is the minimum gas price to enforce for acceptance into the pool (in wei)
+price-limit = 1
+
+# PriceBump is the minimum price bump percentage to replace an already existing transaction (nonce)
+price-bump = 10
+
+# AccountSlots is the number of executable transaction slots guaranteed per account
+account-slots = 16
+
+# GlobalSlots is the maximum number of executable transaction slots for all accounts
+global-slots = 5120
+
+# AccountQueue is the maximum number of non-executable transaction slots permitted per account
+account-queue = 64
+
+# GlobalQueue is the maximum number of non-executable transaction slots for all accounts
+global-queue = 1024
+
+# Lifetime is the maximum amount of time non-executable transaction are queued
+lifetime = "3h0m0s"
+
 ###############################################################################
 ###                           JSON RPC Configuration                        ###
 ###############################################################################
@@ -356,9 +386,6 @@ enable-indexer = false
 # MetricsAddress defines the EVM Metrics server address to bind to. Pass --metrics in CLI to enable
 # Prometheus metrics path: /debug/metrics/prometheus
 metrics-address = "127.0.0.1:6065"
-
-# Upgrade height for fix of revert gas refund logic when transaction reverted.
-fix-revert-gas-refund-height = 0
 
 # Maximum number of requests in a batch.
 batch-request-limit = 1000

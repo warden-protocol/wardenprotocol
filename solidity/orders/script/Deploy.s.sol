@@ -74,7 +74,14 @@ contract Deploy is Script {
         vm.writeJson(out, path);
     }
 
-    function deployWithCreate2(bytes32 salt, bytes memory initCode, string memory name) internal returns (address) {
+    function deployWithCreate2(
+        bytes32 salt,
+        bytes memory initCode,
+        string memory name
+    )
+        internal
+        returns (address)
+    {
         Create2 create2;
         if (create2Address == address(0)) {
             create2 = new Create2();

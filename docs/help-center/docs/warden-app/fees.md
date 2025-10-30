@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 8
+sidebar_position: 9
 ---
 
 # Fees
@@ -63,4 +63,15 @@ Agents charge it in the first available currency, based on this priority:
 - **USDC** on Solana, Base, or Ethereum
 - **SOL** on Solana
 - **ETH** on Base or Ethereum
+:::
+
+## Betflix fees
+
+Trading with [Betflix](play-betflix) incurs the following fees:
+
+- Wins: **15%**
+- Losses: **5%**
+
+:::note
+The remaining amount from losing bets goes to the community treasury (currently $2,000).
 :::

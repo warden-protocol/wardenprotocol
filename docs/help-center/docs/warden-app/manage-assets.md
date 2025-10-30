@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 7
+sidebar_position: 5
 ---
 
 # Manage assets
@@ -15,7 +15,7 @@ You can access your balances and activity in the [wallet](manage-your-wallet):
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. Click the wallet icon in the top-right corner.
 3. You'll see the **Assets** tab with a detailed breakdown of your balances.
-4. To explore your activity history and transaction details, navigate to the **Activity** tab.
+4. To explore your activity history and transaction details, open the **Activity** tab.
 
 Alternatively, you can ask the default [Warden AMA Agent](explore-ai-agents#warden-ama) about your balances.
 

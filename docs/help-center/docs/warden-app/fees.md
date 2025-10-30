@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 8
+sidebar_position: 9
 ---
 
 # Fees
@@ -8,9 +8,22 @@ sidebar_position: 8
 
 In this article, you'll find a detailed breakdown of fees applied to [swaps & transfers](manage-assets#send-or-swap-assets) and other interactions on Warden. Please note that some fees may vary depending on the [AI Agent](explore-ai-agents) and the [network](/#supported-networks).
 
+## Platform fee
+
+In certain cases, Warden charges the platform fee:
+
+| Fee type      | Amount | Currency           | Description                                              |
+| ------------- | -------|--------------------| -------------------------------------------------------- |
+| Platform fee  | 0.85%  | input/output token | A percentage charged by Warden                           |
+
+This fee applies to the following Agents:
+
+- [Levva](explore-ai-agents#levva)
+- All Agents that perform [swaps](#swap-fees)
+
 ## Transfer fees
 
-All transfers incur this fee:
+All transfers incur the gas fee:
 
 | Fee type      | Amount | Currency    | Description                                              |
 | ------------- | -------|-------------| -------------------------------------------------------- |
@@ -23,7 +36,7 @@ All swaps incur these fees:
 | Fee type      | Amount | Currency           | Description                                              |
 | ------------- | -------|--------------------| -------------------------------------------------------- |
 | Gas fee       | varies | native coin        | A fee paid to the network for processing the transaction |
-| Platform fee  | 0.85%  | input/output token | A percentage charged by Warden     
+| Platform fee  | 0.85%  | input/output token | A percentage charged by Warden                           |
 
 ## deBridge fees
 
@@ -50,4 +63,19 @@ Agents charge it in the first available currency, based on this priority:
 - **USDC** on Solana, Base, or Ethereum
 - **SOL** on Solana
 - **ETH** on Base or Ethereum
+:::
+
+## Betflix fees
+
+Trading with [Betflix](play-betflix) incurs the following fees:
+
+- Wins: **15%**
+- Losses: **5%**
+
+:::note
+The remaining amount from losing bets goes to the community treasury (currently $2,000).
+:::
+
+:::tip
+We're currently running a campaign that lets you play Betflix with **zero fees**.
 :::

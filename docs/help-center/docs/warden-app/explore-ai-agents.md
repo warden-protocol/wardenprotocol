@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 4
+sidebar_position: 6
 ---
 
 # Explore AI Agents
@@ -15,7 +15,7 @@ In the sections below, you'll find the list of available Agents—and more are c
 You can explore and select Agents in the **Agent Hub**:
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
-2. In the left menu, navigate to the **Agents** tab.
+2. In the left menu, open the **Agents** tab.
 3. Select an Agent. If required, review and accept the legal terms.
 4. After selecting an Agent, you'll be taken to the [Chats tab](use-the-chat#start-chatting).
 5. Make sure you've [funded your wallet](manage-assets#deposit-assets) on one of the chains supported by the chosen Agent.
@@ -48,7 +48,7 @@ Networks:
 - **Base**
 - **BNB Smart Chain (BSC)**
 
-Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees).
+Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees)
 
 ### Uniswap Trading API
 
@@ -66,7 +66,7 @@ Networks:
 - **Base**
 - **BNB Smart Chain (BSC)**
 
-Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees).
+Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees)
 
 :::note
 To start using this Agent, you need to read and agree to the Uniswap Labs terms of service and privacy policy.
@@ -82,9 +82,9 @@ Just specify the amount and other details in the chat, and the Agent will do the
 - Swap tokens for each other
 - Send SOL or any token to a destination address
 
-Networks: **Solana**.
+Networks: **Solana**
 
-Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees).
+Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees)
 
 ### deBridge
 
@@ -104,7 +104,7 @@ Tokens:
 - **BNB**
 - **USDC**
 
-Fees: [deBridge fees](fees#debridge-fees).
+Fees: [deBridge fees](fees#debridge-fees)
 
 ### Base Farmer
 
@@ -121,7 +121,15 @@ Tokens:
 - **USDC**
 - **VIRTUAL**
 
-Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees).
+Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees)
+
+### Levva
+
+The **Levva** Agent is an AI-powered portfolio manager tailoring investment strategies to your goals and automating yield optimization. This Agent can assist with analyzing your wallet, swapping tokens, managing positions, checking market news, and more.
+
+Networks: **Base**
+
+Fees: [swap fees](fees#swap-fees)
 
 ## Research Agents
 
@@ -133,7 +141,7 @@ The **Messari Deep Research** Agent integrates with [Messari](https://messari.io
 
 Use this Agent to research any blockchain project with detailed, real-time insight: discover trending tokens on a specific chain, generate meme coin reports, analyze NFT market dynamics, and much more.
 
-Fees: [research Agent fees](fees#research-agent-fees).
+Fees: [research Agent fees](fees#research-agent-fees)
 
 ### Kaibot
 
@@ -146,7 +154,7 @@ Fees: [research Agent fees](fees#research-agent-fees).
 
 To start using Kaibot, provide your X handle. If your handle is already linked to the Warden account, Kaibot will fetch it automatically.
 
-Fees: [research Agent fees](fees#research-agent-fees).
+Fees: [research Agent fees](fees#research-agent-fees)
 
 ### WachAI
 
@@ -155,15 +163,14 @@ Fees: [research Agent fees](fees#research-agent-fees).
 - **Address- and chain-based verification**: You provide WachAI with the token's address and the blockchain it resides on. This method is highly accurate, as token addresses are unique.
 - **Ticker-based verification**: You provide WachAI with a token's ticker, and the Agent fetches verification data. This method is less reliable due to possible duplicates in token tickers.
 
-Fees: [research Agent fees](fees#research-agent-fees).
+Fees: [research Agent fees](fees#research-agent-fees)
 
 ## Coming soon
 
 The Agent lineup keeps growing. Here's what to expect next:
 
-- **Levva**
-- **Travel Agent**
 - **Intelligent DCA**
+- **Travel Agent**
 - **ApexLiquid**
 - **The Quantfather**
 - **Venice**

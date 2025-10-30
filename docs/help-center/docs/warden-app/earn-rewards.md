@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 5
+sidebar_position: 7
 ---
 
 # Earn rewards
@@ -21,7 +21,7 @@ The most active users will also gain priority access to upcoming features.
 To create your **PumpKoin**, take these steps:
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
-2. In the left menu, navigate to the **Rewards** tab.
+2. In the left menu, open the **Rewards** tab.
 3. Then simply name your coin.
 
 Congratulations! Now you can start earning PUMP points.
@@ -66,10 +66,15 @@ You can access the game from any tab—simply click **Tap to PUMP** in the left 
 
 ![Create and grow your coin in Warden](../../static/img/warden-app/earn-rewards-3.png)
 
+### Play Betflix
+
+You can earn PUMPs if you climb the leaderboards in **Betflix**, our trading game.
+
+Learn more: [Play Betflix](play-betflix).
 
 ### Check your rank
 
-To check your coin's rank, navigate to the **Rewards** tab and scroll down to the **PUMP Leaderboard**:
+To check your coin's rank, open the **Rewards** tab and scroll down to the **PUMP Leaderboard**:
 
 ![Create and grow your coin in Warden](../../static/img/warden-app/earn-rewards-4.png)
 

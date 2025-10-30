@@ -75,3 +75,7 @@ Trading with [Betflix](play-betflix) incurs the following fees:
 :::note
 The remaining amount from losing bets goes to the community treasury (currently $2,000).
 :::
+
+:::tip
+We're currently running a campaign that lets you play Betflix with **zero fees**.
+:::

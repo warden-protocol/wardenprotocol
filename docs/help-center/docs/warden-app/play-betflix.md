@@ -27,6 +27,10 @@ Gameplay details:
 - All bets incur fees. Learn more: [Betflix fees](fees#betflix-fees).
 - [Top traders](#check-your-stats) earn bonuses and [PUMPs](earn-rewards#earn-pumps).
 
+:::tip
+We're currently running a campaign that lets you play Betflix with **zero fees**.
+:::
+
 ## Start playing
 
 To start playing, you need **USDC on Solana**—starting from **$6**:

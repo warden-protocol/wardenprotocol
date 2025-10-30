@@ -63,7 +63,7 @@ To switch to your main wallet at any time, select **Main Account** from the top 
 
 ## Check your stats
 
-Each swipe adds to your hourly, daily, and weekly **leaderbords**, ranked by profit and streaks. Top traders earn bonuses, tokens, and [PUMPs](earn-rewards#earn-pumps).
+Each swipe adds to your hourly, daily, and weekly **leaderboards**, ranked by profit and streaks. Top traders earn bonuses, tokens, and [PUMPs](earn-rewards#earn-pumps).
 
 You can view your game statistics in your Betflix wallet, on the right of the **Betflix** tab:
 

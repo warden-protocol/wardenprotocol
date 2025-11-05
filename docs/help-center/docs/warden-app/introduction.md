@@ -35,8 +35,9 @@ Within Warden, you can do the following:
 2. [Manage your wallet](warden-app/manage-your-wallet)
 3. [Manage assets](warden-app/manage-assets)
 4. [Explore AI Agents](warden-app/explore-ai-agents)
-5. [Earn rewards](warden-app/earn-rewards)
-6. [Play Betflix](warden-app/play-betflix)
+5. [Trade](warden-app/trade)
+6. [Earn rewards](warden-app/earn-rewards)
+7. [Play Betflix](warden-app/play-betflix)
 
 ![The main features of Warden](../../static/img/warden-app/introduction-1.png)
 
@@ -48,6 +49,7 @@ At the moment, Warden supports the following networks:
 - **Solana**
 - **Base**
 - **BNB Smart Chain (BSC)**
+- **Arbitrum**
 
 More chains are coming soon—stay tuned!
 

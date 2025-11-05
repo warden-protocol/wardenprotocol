@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 8
+sidebar_position: 9
 ---
 
 # Play Betflix
@@ -8,7 +8,9 @@ sidebar_position: 8
 
 You can trade with **Betflix**, Warden's Tinder-style prediction game.
 
-More trading experiences are coming soon—stay tuned!
+:::tip
+Warden also supports advanced trading tools. Learn more in the [Trade](trade) section.
+:::
 
 ## Rules
 

@@ -47,6 +47,7 @@ Networks:
 - **Solana**
 - **Base**
 - **BNB Smart Chain (BSC)**
+- **Arbitrum**
 
 Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees)
 
@@ -96,6 +97,7 @@ Networks:
 - **Base**
 - **Solana**
 - **BNB Smart Chain (BSC)**
+- **Arbitrum**
 
 Tokens:
 
@@ -114,7 +116,10 @@ The **Base Farmer** Agent assists you with managing your tokens on the Base chai
 - Swaps tokens using [Uniswap](https://app.uniswap.org)
 - Transfers tokens
 
-Networks: **Base**
+Networks:
+
+- **Base**
+- **Arbitrum**
 
 Tokens:
 
@@ -127,7 +132,10 @@ Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees)
 
 The **Levva** Agent is an AI-powered portfolio manager tailoring investment strategies to your goals and automating yield optimization. This Agent can assist with analyzing your wallet, swapping tokens, managing positions, checking market news, and more.
 
-Networks: **Base**
+Networks:
+
+- **Base**
+- **Arbitrum**
 
 Fees: [swap fees](fees#swap-fees)
 
@@ -151,6 +159,7 @@ Networks:
 - **Ethereum**
 - **Base**
 - **BNB Smart Chain (BSC)**
+- **Arbitrum**
 
 Fees: [swap fees](fees#swap-fees)
 

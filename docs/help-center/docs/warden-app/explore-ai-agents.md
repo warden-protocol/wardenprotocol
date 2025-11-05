@@ -131,6 +131,30 @@ Networks: **Base**
 
 Fees: [swap fees](fees#swap-fees)
 
+### Intelligent DCA
+
+The **Intelligent DCA** Agent automates recurring token swaps on [Uniswap](https://app.uniswap.org), helping you accumulate crypto over time through Dollar Cost Averaging (DCA). You can either spend or receive a fixed amount of a token at the following intervals: 5m, 1h, 1d, 1w, 30d.
+
+:::note
+**Dollar Cost Averaging (DCA)** is a long-term investment strategy where you invest a fixed amount of money into a particular asset at regular intervals. As a result, you buy more units of the asset when prices are low and fewer units when prices are high, averaging out the cost of your investments over time.
+:::
+
+The DCA Agent can perform the following intelligent tasks:
+
+- Automatically select the chain with the highest balance (if none is specified).
+- Determine the optimal swap type for your strategy.
+- List, monitor, and deactivate your existing DCA tasks on demand. 
+- Search for tokens and retrieve detailed information about them.
+
+Networks:
+
+- **Ethereum**
+- **Base**
+- **BNB Smart Chain (BSC)**
+
+Fees: [swap fees](fees#swap-fees)
+
+
 ## Research Agents
 
 Research Agents focus on collecting and analyzing data.
@@ -169,8 +193,7 @@ Fees: [research Agent fees](fees#research-agent-fees)
 
 The Agent lineup keeps growing. Here's what to expect next:
 
-- **Intelligent DCA**
-- **Travel Agent**
+- **Travel**
 - **ApexLiquid**
 - **The Quantfather**
 - **Venice**

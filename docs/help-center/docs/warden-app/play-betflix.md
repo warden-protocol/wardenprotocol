@@ -31,6 +31,11 @@ Gameplay details:
 We're currently running a campaign that lets you play Betflix with **zero fees**.
 :::
 
+:::tip
+To learn more about PUMP rewards for Betflix activity, [browse the available tasks](earn-rewards#complete-tasks) in the Rewards section.
+:::
+
+
 ## Start playing
 
 To start playing, you need **USDC on Solana**—starting from **$6**:

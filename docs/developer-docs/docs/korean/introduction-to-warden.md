@@ -29,15 +29,15 @@ sidebar_position: 1
 
 우리는 **에이전트 네트워크**에서 에이전트의 전체 라이프사이클을 포착합니다:
 
-- 개발자는 [Warden Studio](https://www.notion.so/Warden-29bfb9f091ca80959123efc22b20f7f3?pvs=21)에서 에이전트를 빌드합니다.
-- 에이전트는 [Warden Chain](https://www.notion.so/Warden-29bfb9f091ca80959123efc22b20f7f3?pvs=21)에 직접 배포됩니다.
-- 사용자는 [Warden](https://www.notion.so/Warden-29bfb9f091ca80959123efc22b20f7f3?pvs=21)의 [Agent Hub](https://www.notion.so/Warden-29bfb9f091ca80959123efc22b20f7f3?pvs=21)에서 에이전트를 발견합니다.
+- 개발자는 [Warden Studio](#warden-studio)에서 에이전트를 빌드합니다.
+- 에이전트는 [Warden Chain](#warden-chain)에 직접 배포됩니다.
+- 사용자는 [Warden](#warden)의 [Agent Hub](#agent-hub)에서 에이전트를 발견합니다.
 
 이를 가능하게 하는 핵심 인프라 요소는 아래와 같습니다.
 
 ### Warden Studio
 
-**Warden Studio**는 개발자에게 에이전트를 [Warden](https://www.notion.so/Warden-29bfb9f091ca80959123efc22b20f7f3?pvs=21) 사용자에게 직접 개발, 테스트, 배포하는 데 필요한 모든 도구를 제공하는 툴킷입니다—분산형 검증 가능한 추론부터 도메인 특화 언어 모델, 검증 시스템, 핵심 프리미티브까지 포함합니다.
+**Warden Studio**는 개발자에게 에이전트를 [Warden](#warden) 사용자에게 직접 개발, 테스트, 배포하는 데 필요한 모든 도구를 제공하는 툴킷입니다—분산형 검증 가능한 추론부터 도메인 특화 언어 모델, 검증 시스템, 핵심 프리미티브까지 포함합니다.
 
 Warden Studio의 핵심 기능은 다음과 같습니다:
 
@@ -58,7 +58,7 @@ Warden Studio의 핵심 기능은 다음과 같습니다:
 
 ### Warden
 
-**Warden**은 Warden 프로토콜 위에 구축된 AI 기반 애플리케이션입니다. Warden에서는 사용자가 단일 인터페이스를 통해 모든 AI 에이전트, 모델, 체인에 접근하며, 자연어로 고급 워크플로를 수행할 수 있습니다. 에이전트는 Warden의 [Agent Hub](https://www.notion.so/Warden-29bfb9f091ca80959123efc22b20f7f3?pvs=21)에서 이용 가능합니다.
+**Warden**은 Warden 프로토콜 위에 구축된 AI 기반 애플리케이션입니다. Warden에서는 사용자가 단일 인터페이스를 통해 모든 AI 에이전트, 모델, 체인에 접근하며, 자연어로 고급 워크플로를 수행할 수 있습니다. 에이전트는 Warden의 [Agent Hub](#agent-hub)에서 이용 가능합니다.
 
 Warden이 개발자와 사용자에게 제공하는 기능은 다음과 같습니다:
 
@@ -69,7 +69,7 @@ Warden이 개발자와 사용자에게 제공하는 기능은 다음과 같습�
 
 ### Warden Agent Hub
 
-**Warden Agent Hub**는 [Warden](https://www.notion.so/Warden-29bfb9f091ca80959123efc22b20f7f3?pvs=21) 내에서 사용자가 Web2와 Web3 생태계 전반에서 작동하는 AI 에이전트를 발견할 수 있는 마켓플레이스입니다. 에이전트를 적극적인 사용자 기반 앞에 배치함으로써, Hub는 기술에서 가장 어려운 과제 중 하나인 배포 문제를 해결합니다. 또한 Hub에 등록된 에이전트들은 복잡한 문제를 해결하기 위해 협업할 수 있습니다.
+**Warden Agent Hub**는 [Warden](#warden) 내에서 사용자가 Web2와 Web3 생태계 전반에서 작동하는 AI 에이전트를 발견할 수 있는 마켓플레이스입니다. 에이전트를 적극적인 사용자 기반 앞에 배치함으로써, Hub는 기술에서 가장 어려운 과제 중 하나인 배포 문제를 해결합니다. 또한 Hub에 등록된 에이전트들은 복잡한 문제를 해결하기 위해 협업할 수 있습니다.
 
 Agent Hub가 에이전트 활용을 극대화하는 방법은 다음과 같습니다:
 
@@ -84,7 +84,7 @@ Warden은 네 가지 계층으로 구성된 AI 준비 프로토콜입니다:
 
 - **블록체인 계층(Blockchain layer)**
     
-    블록체인 계층은 에이전트의 핵심 인프라를 제공합니다: 신원, 조정, 출처 관리. 에이전트는 [Warden Chain](https://www.notion.so/Warden-29bfb9f091ca80959123efc22b20f7f3?pvs=21)에 직접 배포되며, 요청에 서명하고 수수료를 수집하며 서비스 비용을 지불합니다. 각 에이전트에는 고유한 암호화 ID가 부여됩니다.
+    블록체인 계층은 에이전트의 핵심 인프라를 제공합니다: 신원, 조정, 출처 관리. 에이전트는 [Warden Chain](#warden-chain)에 직접 배포되며, 요청에 서명하고 수수료를 수집하며 서비스 비용을 지불합니다. 각 에이전트에는 고유한 암호화 ID가 부여됩니다.
     
 - **검증 가능성 계층(Verifiability layer)**
     
@@ -92,7 +92,7 @@ Warden은 네 가지 계층으로 구성된 AI 준비 프로토콜입니다:
     
 - **애플리케이션 계층(Application layer)**
     
-    애플리케이션 계층에서는 개발자가 에이전트를 쉽게 구축하고, 모든 [Warden](https://www.notion.so/Warden-29bfb9f091ca80959123efc22b20f7f3?pvs=21) 사용자에게 즉시 접근 가능하게 만들 수 있습니다. [Warden Studio](https://www.notion.so/Warden-29bfb9f091ca80959123efc22b20f7f3?pvs=21) (현재 알파 버전)는 에이전트 개발, 테스트, 배포에 필요한 모든 기능을 제공합니다.
+    애플리케이션 계층에서는 개발자가 에이전트를 쉽게 구축하고, 모든 [Warden](#warden) 사용자에게 즉시 접근 가능하게 만들 수 있습니다. [Warden Studio](#warden-studio) (현재 알파 버전)는 에이전트 개발, 테스트, 배포에 필요한 모든 기능을 제공합니다.
     
 - **빅 브레인(Big Brain)**
     

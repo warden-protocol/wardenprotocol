@@ -31,7 +31,7 @@ sidebar_position: 1
 
 - 개발자는 [Warden Studio](#warden-studio)에서 에이전트를 빌드합니다.
 - 에이전트는 [Warden Chain](#warden-chain)에 직접 배포됩니다.
-- 사용자는 [Warden](#warden)의 [Agent Hub](#agent-hub)에서 에이전트를 발견합니다.
+- 사용자는 [Warden](#warden)의 [Agent Hub](#warden-agent-hub)에서 에이전트를 발견합니다.
 
 이를 가능하게 하는 핵심 인프라 요소는 아래와 같습니다.
 
@@ -58,7 +58,7 @@ Warden Studio의 핵심 기능은 다음과 같습니다:
 
 ### Warden
 
-**Warden**은 Warden 프로토콜 위에 구축된 AI 기반 애플리케이션입니다. Warden에서는 사용자가 단일 인터페이스를 통해 모든 AI 에이전트, 모델, 체인에 접근하며, 자연어로 고급 워크플로를 수행할 수 있습니다. 에이전트는 Warden의 [Agent Hub](#agent-hub)에서 이용 가능합니다.
+**Warden**은 Warden 프로토콜 위에 구축된 AI 기반 애플리케이션입니다. Warden에서는 사용자가 단일 인터페이스를 통해 모든 AI 에이전트, 모델, 체인에 접근하며, 자연어로 고급 워크플로를 수행할 수 있습니다. 에이전트는 Warden의 [Agent Hub](#warden-agent-hub)에서 이용 가능합니다.
 
 Warden이 개발자와 사용자에게 제공하는 기능은 다음과 같습니다:
 

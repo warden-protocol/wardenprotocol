@@ -97,7 +97,7 @@ const config: Config = {
                 {
                     type: "docSidebar",
                     sidebarId: "korean",
-                    label: "KOR",
+                    label: "KR",
                     position: "left"
                 },
                 {

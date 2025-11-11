@@ -95,6 +95,12 @@ const config: Config = {
                     position: "left",
                 },
                 {
+                    type: "docSidebar",
+                    sidebarId: "korean",
+                    label: "KR",
+                    position: "left"
+                },
+                {
                     href: "https://discord.com/invite/wardenprotocol",
                     label: "Discord",
                     position: "right",

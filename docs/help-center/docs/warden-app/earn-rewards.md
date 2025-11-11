@@ -68,7 +68,7 @@ You can access the game from any tab—simply click **Tap to PUMP** in the left 
 
 ### Play Betflix
 
-You can earn PUMPs if you climb the leaderboards in **Betflix**, our trading game.
+You can earn additional PUMPs by playing **Betflix**, our trading game.
 
 Learn more: [Play Betflix](play-betflix).
 

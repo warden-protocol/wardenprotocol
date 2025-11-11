@@ -191,9 +191,12 @@ Fees: [research Agent fees](fees#research-agent-fees)
 
 ### CoinGecko
 
-**CoinGecko** is an Agent that provides [CoinGecko](https://www.coingecko.com) information on Price, MarketCap, FDV, Circulating supply, and trading volumes for specific coins.
+**CoinGecko** is an Agent that integrates with [CoinGecko](https://www.coingecko.com) to deliver insights and analytics on cryptocurrencies. You can analyze up to **two coins**. To compare **three or more tokens**, use [Messari Deep Research](#messari-deep-research).
 
-The Agent provides data for maximum 2 coins. If you need to analyze 3 or more tokens, use [Messari](#messari-deep-research).
+The Agent supports two key functions:
+
+- Data retrieval: current price, market cap, volume, and other metrics
+- Coin analysis: performance and risk assessment, general takeaways, and comparative insights
 
 Fees: none
 

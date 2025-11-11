@@ -25,7 +25,7 @@ Gameplay details:
 - The bet is fixed: **$2** per round with fixed **100x leverage**.
 - Supported coins: **DOGE**, **PEPE**, **BONK**, **WIF**, **SHIB**, **TRUMP**, and more.
 - All bets incur fees. Learn more: [Betflix fees](fees#betflix-fees).
-- [Top traders](#check-your-stats) earn bonuses and [PUMPs](earn-rewards#earn-pumps).
+- Top traders [earn PUMPs](#earn-pumps).
 
 :::tip
 We're currently running a campaign that lets you play Betflix with **zero fees**.
@@ -59,15 +59,26 @@ You can move funds between your [main Warden wallet](manage-your-wallet) and you
 To switch to your main wallet at any time, select **Main Account** from the top menu.
 :::
 
-![Start playing Betflix in Warden](../../static/img/warden-app/play-betflix-2.png)
+![Manage Betflix wallet in Warden](../../static/img/warden-app/play-betflix-2.png)
+
+## Earn PUMPs
+
+By playing Betflix, you join the **League of Traders**: each swipe contributes to your **hourly**, **daily**, and **weekly** rankings, based on profit and streaks.
+
+Top traders earn [PUMPs](earn-rewards#earn-pumps)—points that reward your activity in Warden:
+
+- Hourly League: 1st–3rd rank
+- Daily League: 1st–5th rank
+- Weekly League: 1st–5th rank
+
+[Check your stats](#check-your-stats) to view leaderboards and see the exact rewards for each rank.
 
 ## Check your stats
 
-Each swipe adds to your hourly, daily, and weekly **leaderboards**, ranked by profit and streaks. Top traders earn bonuses, tokens, and [PUMPs](earn-rewards#earn-pumps).
+You can view the game statistics in your Betflix wallet, located on the right of the **Betflix** tab:
 
-You can view your game statistics in your Betflix wallet, on the right of the **Betflix** tab:
+- View your [League of Traders](#earn-pumps) ranking in the **Leaderboard** tab. You can select the **Hourly**, **Daily**, or **Weekly** league.
+- To see rewards for each rank, click the information icon next to the winners list.
+- To review your recent plays and results, switch to **Your Bets**.
 
-- Check your ranking in the **Leaderboard** tab. You can filter it by **1h**, **24h**, or **7d**.
-- Review your recent plays and results in the **Your Bets** tab.
-
-![Start playing Betflix in Warden](../../static/img/warden-app/play-betflix-3.png)
+![Check Betflix stats in Warden](../../static/img/warden-app/play-betflix-3.png)

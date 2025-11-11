@@ -69,7 +69,7 @@ Top traders earn [PUMPs](earn-rewards#earn-pumps)—points that reward your acti
 
 - Hourly League: 1st–3rd rank
 - Daily League: 1st–5th rank
-- Weekly league: 1st–5th rank
+- Weekly League: 1st–5th rank
 
 [Check your stats](#check-your-stats) to view leaderboards and see the exact rewards for each rank.
 

@@ -222,7 +222,7 @@ Networks:
 Fees: none
 
 :::tip
-For active portfolio management that integrates analytics with automated investment, try the [Levva Agent](#levva-agent).
+For active portfolio management that integrates analytics with automated investment, try the [Levva Agent](#levva).
 :::
 
 ## Coming soon

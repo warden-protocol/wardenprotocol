@@ -154,7 +154,6 @@ Networks:
 
 Fees: [swap fees](fees#swap-fees)
 
-
 ## Research Agents
 
 Research Agents focus on collecting and analyzing data.
@@ -184,14 +183,14 @@ Fees: [research Agent fees](fees#research-agent-fees)
 
 **WachAI** is an Agent that performs token verification. It uses the following methods:
 
-- **Address- and chain-based verification**: You provide WachAI with the token's address and the blockchain it resides on. This method is highly accurate, as token addresses are unique.
-- **Ticker-based verification**: You provide WachAI with a token's ticker, and the Agent fetches verification data. This method is less reliable due to possible duplicates in token tickers.
+- Address- and chain-based verification: You provide WachAI with the token's address and the blockchain it resides on. This method is highly accurate, as token addresses are unique.
+- Ticker-based verification: You provide WachAI with a token's ticker, and the Agent fetches verification data. This method is less reliable due to possible duplicates in token tickers.
 
 Fees: [research Agent fees](fees#research-agent-fees)
 
 ### CoinGecko
 
-**CoinGecko** is an Agent that integrates with [CoinGecko](https://www.coingecko.com) to deliver insights and analytics on cryptocurrencies. You can analyze up to **two coins**. To compare **three or more tokens**, use [Messari Deep Research](#messari-deep-research).
+**CoinGecko** is an Agent that integrates with [CoinGecko](https://www.coingecko.com) to deliver insights and analytics on cryptocurrencies. You can analyze up to **2 coins**.
 
 The Agent supports two key functions:
 
@@ -200,11 +199,38 @@ The Agent supports two key functions:
 
 Fees: none
 
+:::tip
+To compare **3 or more tokens**, use [Messari Deep Research](#messari-deep-research).
+:::
+
+### Portfolio Analysis Agent
+
+The **Portfolio Analysis Agent** analyzes cryptocurrency portfolios based on provided EVM and Solana wallet addresses. If you don't provide an address, the Agent will use your Warden wallet and analyze tokens on all chains.
+
+This Agent can do the following:
+
+- Portfolio performance analysis over a specified time period
+- Token breakdown: current values, price changes, and performance metrics
+- Token analysis showing top gaining and losing tokens in the overall market
+- Quantitative insights: total portfolio value changes and percentage changes
+
+Networks:
+
+- **Solana**
+- All EVM-compatible networks
+
+Fees: none
+
+:::tip
+For active portfolio management that integrates analytics with automated investment, try the [Levva Agent](#levva).
+:::
+
 ## Coming soon
 
 The Agent lineup keeps growing. Here's what to expect next:
 
-- **Travel**
+- **Caesar Agent**
+- **Travel Agent**
 - **ApexLiquid**
 - **The Quantfather**
 - **Venice**

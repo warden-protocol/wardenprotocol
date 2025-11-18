@@ -19,7 +19,7 @@ In certain cases, Warden charges the platform fee:
 This fee applies to the following actions:
 
 - All [swaps](#swap-fees)
-- All [deBridge transactions](#debridge)
+- All [deBridge transactions](#debridge-fees)
 
 ## Transfer fee
 

@@ -85,7 +85,7 @@ Tokens:
 - **BNB**
 - **USDC**
 
-Fees: [deBridge fees](fees#debridge)
+Fees: [deBridge fees](fees#debridge-fees)
 
 ### Intelligent DCA
 
@@ -206,7 +206,7 @@ The Agent supports two key functions:
 Fees: none
 
 :::tip
-To compare **3 or more tokens**, use [Messari fees](#messari-fees).
+To compare **3 or more tokens**, use [Messari fees](#messari-fee).
 :::
 
 ### Kaibot

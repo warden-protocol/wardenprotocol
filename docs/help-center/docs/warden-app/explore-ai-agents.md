@@ -206,7 +206,7 @@ The Agent supports two key functions:
 Fees: none
 
 :::tip
-To compare **3 or more tokens**, use [Messari fees](#messari-fee).
+To compare **3 or more tokens**, use [Messari](#messari-deep-research).
 :::
 
 ### Kaibot

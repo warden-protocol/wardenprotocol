@@ -18,7 +18,7 @@ You can access Agent chats anytime by navigating to the **Chats** tab in the lef
 
 ![Ask the Warden AMA Agent to swap an asset](../../static/img/warden-app/use-the-chat-1.png)
 
-When you log in to [Warden](https://app.wardenprotocol.org), a new conversation with the AI-powered [Warden AMA Agent](explore-ai-agents#warden-ama) opens automatically.
+When you log in to [Warden](https://app.wardenprotocol.org), a new conversation with the AI-powered [Warden AMA Agent](explore-ai-agents#warden-ama-agent) opens automatically.
 
 To start interacting, just type your request in the chat box. For example, to perform a transaction, [fund your wallet](manage-assets#deposit-assets) and ask Warden to [send or swap an asset](manage-assets#send-or-swap-assets).
 

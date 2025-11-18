@@ -143,7 +143,7 @@ Learn more: [SPEX](spex).
 
 Staking is the process of participating in the proof-of-stake (PoS) consensus mechanism. [Validators](#validator) and [delegators](#delegator) stake their [WARD tokens](#ward-token) for a chance to validate blocks and transactions and earn staking rewards.
 
-The consensus mechanism chooses validators based on their [weight](#validators-weight). If a validator is successful, its delegators will earn rewards too. If a validator is slashed, the delegator’s stake will be slashed. Staking also allows validators and delegators to participate in [governance](#governance).
+The consensus mechanism chooses validators based on their [weight](#validators-weight). If a validator is successful, its delegators will earn rewards too. If a validator is slashed, the delegator's stake will be slashed. Staking also allows validators and delegators to participate in [governance](#governance).
 
 ---
 
@@ -157,7 +157,7 @@ Validators act on behalf of their [delegators](#delegator) and earn [commissions
 
 ## Validator's commission
 
-A validator’s commission is the percentage of [staking](#staking) rewards earned by a validator's pool that the validator retains. The rest is distributed to [delegators](#delegator). Validators can configure their own commissions, but only once, when initially declaring candidacy. The following parameters are available:
+A validator's commission is the percentage of [staking](#staking) rewards earned by a validator's pool that the validator retains. The rest is distributed to [delegators](#delegator). Validators can configure their own commissions, but only once, when initially declaring candidacy. The following parameters are available:
 
 - An initial commission
 - A maximum daily commission change rate
@@ -181,7 +181,7 @@ The verifiability layer of [Warden Protocol](#warden-protocol) uses blockchain, 
 
 ## Unbonded validator
 
-An unbonded validator is an inactive validator that isn't signing blocks. Unbonded validators can't be slashed and can’t earn rewards.
+An unbonded validator is an inactive validator that isn't signing blocks. Unbonded validators can't be slashed and can't earn rewards.
 
 See also: [Bonded validator](#bonded-validator), [Unbonding validator](#unbonding-validator).
 

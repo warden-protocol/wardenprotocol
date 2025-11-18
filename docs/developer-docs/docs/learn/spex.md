@@ -8,7 +8,7 @@ sidebar_position: 3
 
 **Statistical Proof of Execution (SPEX)** is a sampling-based verifiable computing protocol that ensures the integrity of computational tasks through probabilistic guarantees. This includes tasks with potentially non-deterministic outputs, such as those involving large language models (LLMs) or stochastic training pipelines.
 
-On Warden, SPEX is used as a **verifiability layer** for AI. This protocol verifies that the selected model was actually used and that its outputs haven’t been tampered with, mitigating the risk of dishonest execution by operators or compromised infrastructure.
+On Warden, SPEX is used as a **verifiability layer** for AI. This protocol verifies that the selected model was actually used and that its outputs haven't been tampered with, mitigating the risk of dishonest execution by operators or compromised infrastructure.
 
 ## Key features
 

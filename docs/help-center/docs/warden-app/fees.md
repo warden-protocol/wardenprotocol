@@ -16,12 +16,13 @@ In certain cases, Warden charges the platform fee:
 | ------------- | -------|--------------------| -------------------------------------------------------- |
 | Platform fee  | 0.85%  | input/output token | A percentage charged by Warden                           |
 
-This fee applies to the following Agents:
+This fee applies to the following actions:
 
-- [Levva](explore-ai-agents#levva)
-- All Agents that perform [swaps](#swap-fees)
+- All [swaps](#swap-fees)
+- All [deBridge transactions](#debridge)
+- Reports by [Levva](explore-ai-agents#levva)
 
-## Transfer fees
+## Transfer fee
 
 All transfers incur the gas fee:
 
@@ -38,33 +39,6 @@ All swaps incur these fees:
 | Gas fee       | varies | native coin        | A fee paid to the network for processing the transaction |
 | Platform fee  | 0.85%  | input/output token | A percentage charged by Warden                           |
 
-## deBridge fees
-
-All [deBridge](explore-ai-agents#debridge) transactions incur these fees:
-
-| Fee type               | Amount                       | Currency            | Description                                                      |
-| -----------------------| -----------------------------|---------------------| ---------------------------------------------------------------- |
-| Gas fee                | varies                       | native coin         | A fee paid to the source network for processing the transaction  |
-| deBridge flat fee      | fixed; periodically adjusted | native coin         | A fee paid to deBridge validators for processing the transaction |
-| deBridge protocol fee  | 0.04%                        | input token         | A percentage charged by the deBridge protocol                    |
-| Platform fee           | 0.85%                        | input/output token  | A percentage charged by Warden
-
-## Research Agent fees
-
-All reports provided by [research Agents](explore-ai-agents#research-agents) incur the following fee:
-
-| Fee type      | Amount   | Currency     | Description                                              |
-| ------------- | -------- |--------------| -------------------------------------------------------- |
-| Agent fee     | 0.25 USD | USDC/SOL/ETH | A fee paid to the Agent per report                       |
-
-:::note
-Agents charge it in the first available currency, based on this priority:
-
-- **USDC** on Solana, Base, or Ethereum
-- **SOL** on Solana
-- **ETH** on Base or Ethereum
-:::
-
 ## Betflix fees
 
 Trading with [Betflix](play-betflix) incurs the following fees:
@@ -79,3 +53,56 @@ The remaining amount from losing bets goes to the community treasury (currently 
 :::tip
 We're currently running a campaign that lets you play Betflix with **zero fees**.
 :::
+
+## Agent fees
+
+In this section, you'll find additional Agent-specific fees.
+
+Typically, Agents charge them in the first available currency, based on this priority:
+
+- **USDC** on Solana, Base, or Ethereum
+- **SOL** on Solana
+- **ETH** on Base or Ethereum
+
+### Caesar Agents
+
+All [Casesar Agent](explore-ai-agents#caesar-agent) and [Casesar The Scientist](explore-ai-agents#caesar-the-scientist) prompts include the following fees:
+
+| Fee type      | Amount   | Currency     | Description                                              |
+| ------------- | -------- |--------------| -------------------------------------------------------- |
+| Agent fee     | 0.40 USD | USDC/SOL/ETH | A fee paid to the Agent per prompt                       |
+
+### deBridge
+
+All [deBridge](explore-ai-agents#debridge) transactions incur these fees:
+
+| Fee type               | Amount                       | Currency            | Description                                                      |
+| -----------------------| -----------------------------|---------------------| ---------------------------------------------------------------- |
+| Gas fee                | varies                       | native coin         | A fee paid to the source network for processing the transaction  |
+| deBridge flat fee      | fixed; periodically adjusted | native coin         | A fee paid to deBridge validators for processing the transaction |
+| deBridge protocol fee  | 0.04%                        | input token         | A percentage charged by the deBridge protocol                    |
+| Platform fee           | 0.85%                        | input/output token  | A percentage charged by Warden                                   |
+
+### Kaibot
+
+All reports provided by [Kaibot](explore-ai-agents#kaibot) incur the following fee:
+
+| Fee type      | Amount   | Currency     | Description                                              |
+| ------------- | -------- |--------------| -------------------------------------------------------- |
+| Agent fee     | 0.01 USD | USDC/SOL/ETH | A fee paid to the Agent per report                       |
+
+### Messari Deep Research
+
+All reports provided by [Messari Deep Research](explore-ai-agents#messari-deep-research) incur the following fee:
+
+| Fee type      | Amount   | Currency     | Description                                              |
+| ------------- | -------- |--------------| -------------------------------------------------------- |
+| Agent fee     | 0.25 USD | USDC/SOL/ETH | A fee paid to the Agent per report                       |
+
+### WachAI
+
+All reports provided by [WachAI](explore-ai-agents#wachai) incur the following fee:
+
+| Fee type      | Amount   | Currency     | Description                                              |
+| ------------- | -------- |--------------| -------------------------------------------------------- |
+| Agent fee     | 0.25 USD | USDC/SOL/ETH | A fee paid to the Agent per report                       |

@@ -26,11 +26,7 @@ Alternatively, you can access Agents directly from the **Chats** tab. Use the dr
 
 ![Manage AI chats in Warden](../../static/img/warden-app/use-the-chat-3.png)
 
-## Asset management Agents
-
-These Agents allow you to send, swap, bridge, and stake your assets.
-
-### Warden AMA
+## Warden AMA Agent
 
 The **Warden AMA** Agent is the default Agent you see when logging in to Warden. It's not displayed in the Agent Hub, but you can always switch to it in the [Chats tab](use-the-chat#start-chatting).
 
@@ -48,43 +44,28 @@ Networks:
 - **Base**
 - **BNB Smart Chain (BSC)**
 
-Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees)
+Fees: [swap](fees#swap-fees) and [transfer fee](fees#transfer-fee)
 
-### Uniswap Trading API
+## Asset management Agents
 
-The **Uniswap Trading API** allows sending and swapping tokens on the supported chains through [Uniswap](https://app.uniswap.org)—a decentralized crypto exchange built on Ethereum. Swaps are fully non-custodial: they're handled directly from your wallet without any third party holding your assets.
+These Agents allow you to send, swap, bridge, and stake your assets.
 
-Just specify the network, currency pair, and amount in the chat, and the Agent will do the rest:
+### Base Farmer
 
-- Swap ETH for any token
-- Exchange tokens for each other
-- Send ETH or any token to a destination address
+The **Base Farmer** Agent assists you with managing your tokens on the Base chain:
 
-Networks:
+- Checks balances
+- Swaps tokens using [Uniswap](https://app.uniswap.org)
+- Transfers tokens
 
-- **Ethereum**
-- **Base**
-- **BNB Smart Chain (BSC)**
+Networks: **Base**
 
-Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees)
+Tokens:
 
-:::note
-To start using this Agent, you need to read and agree to the Uniswap Labs terms of service and privacy policy.
-:::
+- **USDC**
+- **VIRTUAL**
 
-### Jupiter
-
-The **Jupiter** Agent integrates with the [Jupiter Exchange](https://jup.ag)—a decentralized exchange (DEX) aggregator built on the Solana blockchain. This is the only Agent you need to send and swap any Solana tokens.
-
-Just specify the amount and other details in the chat, and the Agent will do the rest:
-
-- Swap SOL for any Solana token
-- Swap tokens for each other
-- Send SOL or any token to a destination address
-
-Networks: **Solana**
-
-Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees)
+Fees: [swap](fees#swap-fees) and [transfer fee](fees#transfer-fee)
 
 ### deBridge
 
@@ -104,32 +85,7 @@ Tokens:
 - **BNB**
 - **USDC**
 
-Fees: [deBridge fees](fees#debridge-fees)
-
-### Base Farmer
-
-The **Base Farmer** Agent assists you with managing your tokens on the Base chain:
-
-- Checks balances
-- Swaps tokens using [Uniswap](https://app.uniswap.org)
-- Transfers tokens
-
-Networks: **Base**
-
-Tokens:
-
-- **USDC**
-- **VIRTUAL**
-
-Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fees)
-
-### Levva
-
-The **Levva** Agent is an AI-powered portfolio manager tailoring investment strategies to your goals and automating yield optimization. This Agent can assist with analyzing your wallet, swapping tokens, managing positions, checking market news, and more.
-
-Networks: **Base**
-
-Fees: [swap fees](fees#swap-fees)
+Fees: [deBridge fees](fees#debridge)
 
 ### Intelligent DCA
 
@@ -154,39 +110,82 @@ Networks:
 
 Fees: [swap fees](fees#swap-fees)
 
+### Jupiter
+
+The **Jupiter** Agent integrates with the [Jupiter Exchange](https://jup.ag)—a decentralized exchange (DEX) aggregator built on the Solana blockchain. This is the only Agent you need to send and swap any Solana tokens.
+
+Just specify the amount and other details in the chat, and the Agent will do the rest:
+
+- Swap SOL for any Solana token
+- Swap tokens for each other
+- Send SOL or any token to a destination address
+
+Networks: **Solana**
+
+Fees: [swap](fees#swap-fees) and [transfer fee](fees#transfer-fee)
+
+### Levva
+
+The **Levva** Agent is an AI-powered portfolio manager tailoring investment strategies to your goals and automating yield optimization. This Agent can assist with analyzing your wallet, swapping tokens, managing positions, checking market news, and more.
+
+Networks: **Base**
+
+Fees: [swap fees](fees#swap-fees), [platform fee](fees#platform-fee) (for reports)
+
+### Uniswap Trading API
+
+The **Uniswap Trading API** allows sending and swapping tokens on the supported chains through [Uniswap](https://app.uniswap.org)—a decentralized crypto exchange built on Ethereum. Swaps are fully non-custodial: they're handled directly from your wallet without any third party holding your assets.
+
+Just specify the network, currency pair, and amount in the chat, and the Agent will do the rest:
+
+- Swap ETH for any token
+- Exchange tokens for each other
+- Send ETH or any token to a destination address
+
+Networks:
+
+- **Ethereum**
+- **Base**
+- **BNB Smart Chain (BSC)**
+
+Fees: [swap](fees#swap-fees) and [transfer fee](fees#transfer-fee)
+
+:::note
+To start using this Agent, you need to read and agree to the Uniswap Labs terms of service and privacy policy.
+:::
+
 ## Research Agents
 
 Research Agents focus on collecting and analyzing data.
 
-### Messari Deep Research
+### Caesar Agent
 
-The **Messari Deep Research** Agent integrates with [Messari](https://messari.io)—the leading provider of crypto market intelligence products that help professionals navigate the Web3 space.
+The **Caesar Agent** integrates with the [Caesar API](https://docs.caesar.xyz/get-started/introduction) to deliver cutting-edge research on financial and prediction markets.
 
-Use this Agent to research any blockchain project with detailed, real-time insight: discover trending tokens on a specific chain, generate meme coin reports, analyze NFT market dynamics, and much more.
+This Agent can do the following:
 
-Fees: [research Agent fees](fees#research-agent-fees)
+- Discover markets and platforms based on user criteria—for example, low-risk and low-fee
+- Compare prediction or crypto platforms by usability, fees, and features
+- Summarize effective strategies and insights from real-world examples
+- Provide step-by-step guidance for using tools and interpreting market data
+- Create personalized plans for tracking market trends
+- And more
 
-### Kaibot
+Fees: [Caesar Agents fees](fees#caesar-agents)
 
-**Kaibot** is a conversational AI Agent that analyzes a user's Twitter/X handle and recent activity to provide personalized feedback on their social media performance:
+### Caesar The Scientist
 
-- Summaries of recent tweets for the last 7–30 days
-- Engagement metrics (likes, replies, retweets)
-- Relative position on the [Kaito leaderboard](https://docs.kaito.ai/kaito-connect-infofi-network/yapper-leaderboard) (without exposing internal score)
-- Tailored recommendations to increase impact
+**Caesar The Scientist** integrates with the [Caesar API](https://docs.caesar.xyz/get-started/introduction) to deliver deep scientific research.
 
-To start using Kaibot, provide your X handle. If your handle is already linked to the Warden account, Kaibot will fetch it automatically.
+Supported capabilities include the following:
 
-Fees: [research Agent fees](fees#research-agent-fees)
+- Perform deep scientific research across biology, bioinformatics, and biotechnology
+- Summarize recent findings from peer-reviewed scientific literature 
+- Compare studies and experimental results across related research areas
+- Identify and describe analytical techniques for specific scientific tasks
+- Explain complex scientific workflows step-by-step
 
-### WachAI
-
-**WachAI** is an Agent that performs token verification. It uses the following methods:
-
-- Address- and chain-based verification: You provide WachAI with the token's address and the blockchain it resides on. This method is highly accurate, as token addresses are unique.
-- Ticker-based verification: You provide WachAI with a token's ticker, and the Agent fetches verification data. This method is less reliable due to possible duplicates in token tickers.
-
-Fees: [research Agent fees](fees#research-agent-fees)
+Fees: [Caesar Agents fees](fees#caesar-agents)
 
 ### CoinGecko
 
@@ -202,6 +201,27 @@ Fees: none
 :::tip
 To compare **3 or more tokens**, use [Messari Deep Research](#messari-deep-research).
 :::
+
+### Kaibot
+
+**Kaibot** is a conversational AI Agent that analyzes a user's Twitter/X handle and recent activity to provide personalized feedback on their social media performance:
+
+- Summaries of recent tweets for the last 7–30 days
+- Engagement metrics (likes, replies, retweets)
+- Relative position on the [Kaito leaderboard](https://docs.kaito.ai/kaito-connect-infofi-network/yapper-leaderboard) (without exposing internal score)
+- Tailored recommendations to increase impact
+
+To start using Kaibot, provide your X handle. If your handle is already linked to the Warden account, Kaibot will fetch it automatically.
+
+Fees: [Agent fee](fees#kaibot)
+
+### Messari Deep Research
+
+The **Messari Deep Research** Agent integrates with [Messari](https://messari.io)—the leading provider of crypto market intelligence products that help professionals navigate the Web3 space.
+
+Use this Agent to research any blockchain project with detailed, real-time insight: discover trending tokens on a specific chain, generate meme coin reports, analyze NFT market dynamics, and much more.
+
+Fees: [Messari Deep Research fees](fees#messari-deep-research)
 
 ### Portfolio Analysis Agent
 
@@ -225,12 +245,21 @@ Fees: none
 For active portfolio management that integrates analytics with automated investment, try the [Levva Agent](#levva).
 :::
 
+### WachAI
+
+**WachAI** is an Agent that performs token verification. It uses the following methods:
+
+- Address- and chain-based verification: You provide WachAI with the token's address and the blockchain it resides on. This method is highly accurate, as token addresses are unique.
+- Ticker-based verification: You provide WachAI with a token's ticker, and the Agent fetches verification data. This method is less reliable due to possible duplicates in token tickers.
+
+Fees: [research Agent fees](fees#wachai)
+
 ## Coming soon
 
 The Agent lineup keeps growing. Here's what to expect next:
 
-- **Caesar Agent**
-- **Travel Agent**
+- **Google Assistant**
+- **Travel**
 - **ApexLiquid**
 - **The Quantfather**
 - **Venice**

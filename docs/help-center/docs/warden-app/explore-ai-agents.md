@@ -128,9 +128,16 @@ Fees: [swap](fees#swap-fees) and [transfer fee](fees#transfer-fee)
 
 The **Levva** Agent is an AI-powered portfolio manager tailoring investment strategies to your goals and automating yield optimization. This Agent can assist with analyzing your wallet, swapping tokens, managing positions, checking market news, and more.
 
-Networks: **Base**
+Networks:
 
-Fees: [swap fees](fees#swap-fees), [platform fee](fees#platform-fee) (for reports)
+- **Base**
+- **Ethereum**
+
+Fees: [swap fees](fees#swap-fees)
+
+:::note
+The default network is Base. To manage your portfolio on Ethereum, you need specify it explicitly.
+:::
 
 ### Uniswap Trading API
 
@@ -171,7 +178,7 @@ This Agent can do the following:
 - Create personalized plans for tracking market trends
 - And more
 
-Fees: [Caesar Agents fees](fees#caesar-agents)
+Fees: [Caesar fee](fees#caesar-fee)
 
 ### Caesar The Scientist
 
@@ -185,7 +192,7 @@ Supported capabilities include the following:
 - Identify and describe analytical techniques for specific scientific tasks
 - Explain complex scientific workflows step-by-step
 
-Fees: [Caesar Agents fees](fees#caesar-agents)
+Fees: [Caesar fee](fees#caesar-fee)
 
 ### CoinGecko
 
@@ -199,7 +206,7 @@ The Agent supports two key functions:
 Fees: none
 
 :::tip
-To compare **3 or more tokens**, use [Messari Deep Research](#messari-deep-research).
+To compare **3 or more tokens**, use [Messari fees](#messari-fees).
 :::
 
 ### Kaibot
@@ -213,7 +220,7 @@ To compare **3 or more tokens**, use [Messari Deep Research](#messari-deep-resea
 
 To start using Kaibot, provide your X handle. If your handle is already linked to the Warden account, Kaibot will fetch it automatically.
 
-Fees: [Agent fee](fees#kaibot)
+Fees: [Kaibot fee](fees#kaibot-fee)
 
 ### Messari Deep Research
 
@@ -221,7 +228,7 @@ The **Messari Deep Research** Agent integrates with [Messari](https://messari.io
 
 Use this Agent to research any blockchain project with detailed, real-time insight: discover trending tokens on a specific chain, generate meme coin reports, analyze NFT market dynamics, and much more.
 
-Fees: [Messari Deep Research fees](fees#messari-deep-research)
+Fees: [Messari fee](fees#messari-fee)
 
 ### Portfolio Analysis Agent
 
@@ -252,7 +259,7 @@ For active portfolio management that integrates analytics with automated investm
 - Address- and chain-based verification: You provide WachAI with the token's address and the blockchain it resides on. This method is highly accurate, as token addresses are unique.
 - Ticker-based verification: You provide WachAI with a token's ticker, and the Agent fetches verification data. This method is less reliable due to possible duplicates in token tickers.
 
-Fees: [research Agent fees](fees#wachai)
+Fees: [WachAI fee](fees#wachai-fee)
 
 ## Coming soon
 

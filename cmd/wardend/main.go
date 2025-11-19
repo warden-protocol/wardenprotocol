@@ -24,5 +24,6 @@ func main() {
 func setupSDKConfig() {
 	config := sdk.GetConfig()
 	wardendconfig.SetBech32Prefixes(config)
+	wardendconfig.SetBip44CoinType(config)
 	config.Seal()
 }

@@ -46,7 +46,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 
-## [v0.7.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.2) - 2025-10-XX
+## [v0.7.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.3) - 2025-11-19
+
+### Bug Fixes
+
+- wardend: fix wrong coin_type in the HD derivation path, causing mnemonics to being derived into the wrong private keys and addresses
+
+## [v0.7.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.2) - 2025-10-21
 
 ### Consensus Breaking Changes
 

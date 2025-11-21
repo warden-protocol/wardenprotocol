@@ -76,7 +76,7 @@ All reports provided by [Kaibot](explore-ai-agents#kaibot) incur the following f
 
 | Fee type      | Amount   | Currency                             | Description                        |
 | ------------- | -------- |--------------------------------------| ---------------------------------- |
-| Agent fee     | 0.01 USD | [USDC/SOL/ETH](#currency-priorities) | A fee paid to the Agent per report |
+| Agent fee     | 0.25 USD | [USDC/SOL/ETH](#currency-priorities) | A fee paid to the Agent per report |
 
 ### Messari fee
 

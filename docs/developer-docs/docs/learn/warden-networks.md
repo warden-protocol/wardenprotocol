@@ -15,7 +15,7 @@ This page lists basic chain information: the **chain ID** and supported **endpoi
 <table>
   <tr>
     <td>**Binary**</td>
-    <td>[v0.7.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.2)</td>
+    <td>[v0.7.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.3)</td>
   </tr>
   <tr>
     <td>**Endpoints**</td>
@@ -60,7 +60,7 @@ This page lists basic chain information: the **chain ID** and supported **endpoi
 <table>
   <tr>
     <td>**Binary**</td>
-    <td>[v0.7.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.2)</td>
+    <td>[v0.7.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.3)</td>
   </tr>
   <tr>
     <td>**Endpoints**</td>

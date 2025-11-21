@@ -74,7 +74,9 @@ See also: [Unbonding validator](#unbonding-validator), [Unbonded validator](#unb
 
 ## Community Agent
 
-A Community Agent is an [AI Agent](#ai-agent) built by any developer outside of Warden and published on [Warden Agent Hub](#warden-agent-hub) through [Warden Studio](#warden-studio). Community Agents can implement any Web3 or Web2 workflows such as research, trading, DeFi operations, productivity, and more.
+A Community Agent is an [AI Agent](#ai-agent) built by any developer outside of Warden and published on [Warden Chain](#warden-chain) through [Warden Studio](#warden-studio). Users discover Community Agents in [Warden Agent Hub](#warden-agent-hub). 
+
+Such Agents can implement any Web3 or Web2 workflows: research, trading, DeFi operations, productivity, and more.
 
 ---
 
@@ -253,4 +255,4 @@ Learn more: [Manifesto](warden-manifesto).
 
 ## Warden Studio
 
-Warden Studio (now in Alpha) is a toolkit that provides builders everything they need to develop, test, and publish [Community Agents](#community-agent) directly to [Warden](#warden) users. Upon publication, Warden Studio generates [Agent Passports](#agent-passport).
+Warden Studio (now in Alpha) is a toolkit that provides builders with everything they need to develop, test, and publish [Community Agents](#community-agent) directly to [Warden](#warden) users. Upon publication, Warden Studio generates [Agent Passports](#agent-passport).

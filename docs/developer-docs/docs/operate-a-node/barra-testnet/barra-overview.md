@@ -16,11 +16,17 @@ Barra is our new EVM testnet, currently available only to selected validators.
 | [v0.7.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0)         | 1233000      | October 21, 2025   |[Upgrade to v0.7.0](upgrade/v0.7.0)   |
 | [v0.7.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.1)         | 1233001      | October 21, 2025   |[Upgrade to v0.7.1](upgrade/v0.7.1)   |
 | [v0.7.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.2)         | 1310000      | October 24, 2025   |[Upgrade to v0.7.2](upgrade/v0.7.2)   |
+| [v0.7.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.3)         | 1310001      | November 19, 2025  |[Upgrade to v0.7.3](upgrade/v0.7.3)   |
+
+:::warning
+If you used **v0.7.2** to generate keys (addresses), generate new keys using **v0.7.3** or newer and move any existing funds threre.
+
+**Keys generated with v0.7.2 are not valid anymore.**
+:::
 
 ## Binary
 
-The latest binary version compatible with Barra is [wardend v0.7.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.2).
-
+The latest binary version compatible with Barra is [wardend v0.7.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.3).
 
 ## Endpoints
 

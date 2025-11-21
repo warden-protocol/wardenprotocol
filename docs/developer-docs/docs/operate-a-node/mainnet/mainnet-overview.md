@@ -10,16 +10,22 @@ Mainnet is our new EVM network, currently available only to selected validators.
 
 ## Version history
 
-| Release                                                                                 | Block height | Date               | Upgrade guide                        |
-| --------------------------------------------------------------------------------------- | ------------ | ------------------ | ------------------------------------ |
-| [v0.7.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0)         | 0            | October 21, 2025   | N/A                                  |
-| [v0.7.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.1)         | 0            | October 21, 2025   |[Upgrade to v0.7.1](upgrade/v0.7.1)   |
-| [v0.7.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.2)         | 745500       | October 24, 2025   |[Upgrade to v0.7.2](upgrade/v0.7.2)   |
+| Release                                                                         | Block height | Date              | Upgrade guide                        |
+| ------------------------------------------------------------------------------- | ------------ | ----------------- | ------------------------------------ |
+| [v0.7.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.0) | 0            | October 21, 2025  | N/A                                  |
+| [v0.7.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.1) | 0            | October 21, 2025  |[Upgrade to v0.7.1](upgrade/v0.7.1)   |
+| [v0.7.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.2) | 745500       | October 24, 2025  |[Upgrade to v0.7.2](upgrade/v0.7.2)   |
+| [v0.7.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.3) | 745501       | November 19, 2025 |[Upgrade to v0.7.3](upgrade/v0.7.3)   |
+
+:::warning
+If you used **v0.7.2** to generate keys (addresses), generate new keys using **v0.7.3** or newer and move any existing funds threre.
+
+**Keys generated with v0.7.2 are not valid anymore.**
+:::
 
 ## Binary
 
-The latest binary version compatible with Mainnet is [wardend v0.7.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.2).
-
+The latest binary version compatible with Mainnet is [wardend v0.7.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.3).
 
 ## Endpoints
 

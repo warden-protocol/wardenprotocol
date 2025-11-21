@@ -74,7 +74,7 @@ See also: [Unbonding validator](#unbonding-validator), [Unbonded validator](#unb
 
 ## Community Agent
 
-A Community Agent is an [AI Agent](#ai-agent) built by any developer outside of Warden and published on [Warden Agent Hub](#warden-agent-hub) through [Warden Studio](#warden-studio). Community Agents can implement any functionality: research, trading, DeFi operations, productivity workflows, and so on.
+A Community Agent is an [AI Agent](#ai-agent) built by any developer outside of Warden and published on [Warden Agent Hub](#warden-agent-hub) through [Warden Studio](#warden-studio). Community Agents can implement any Web3 or Web2 workflows such as research, trading, DeFi operations, productivity, and more.
 
 ---
 

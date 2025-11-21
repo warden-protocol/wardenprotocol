@@ -4,6 +4,10 @@ sidebar_position: 1
 
 # Introduction
 
+:::important
+To quickly get started with publishing an Agent on Warden, explore the examples and documentation in our GitHub repository: [`community-agents`](https://github.com/warden-protocol/community-agents).
+:::
+
 ## Warden Agents
 
 An **AI Agent** is an AI-driven program capable of executing both offchain and onchain operations. Agents turn simple chat commands into complex actions—such as bridging, minting, trading, staking, or performing in-depth research.
@@ -33,24 +37,28 @@ We encourage developers to participate in the **Agent Builder Incentive Programm
 - [Register for the programme](https://docs.google.com/forms/d/e/1FAIpQLSdwTR0BL8-T3LLbJt6aIyjuEYjMAmJPMdwffwHcyW6gskDQsg/viewform).
 - To learn more, see [Agent Builder Incentive Programme](https://wardenprotocol.org/blog/agent-builder-incentive-programme) and [FAQ](https://wardenprotocol.notion.site/agent-builder-incentive-faq).
 
-You can build almost any Agents: research, trading, DeFi, productivity, and more. The only requirement is that you must use [LangGraph](https://www.langchain.com/langgraph).
+You can build almost any Agent: research, trading, DeFi, productivity, and more. The only requirement is that you must use [LangGraph](https://www.langchain.com/langgraph).
 
 ## Start building
 
 To begin building Community Agents, follow these steps:
 
-1. Clone/fork the GitHub repository containing examples and documentation: [`community-agents`](https://github.com/warden-protocol/community-agents).
-2. Join the developer channel in our Discord for support: [`#developers`](https://discord.com/channels/1199357852666560654/1222892775876333629).
-3. Extend and adapt any example to build your own [LangGraph](https://www.langchain.com/langgraph) Agent.
-4. Deploy your Agent on [LangGraph Cloud](https://docs.langchain.com/langsmith/deployment-quickstart) or on your own infrastructure.
-5. Submit a pull request to the repository, listing your Agent in [`README.md`](http://README.md). 
+1. Clone/fork our GitHub repository with examples and documentation: [`community-agents`](https://github.com/warden-protocol/community-agents).
+2. Extend and adapt any example to build your own [LangGraph](https://www.langchain.com/langgraph) Agent.
+3. Deploy your Agent on [LangGraph Cloud](https://docs.langchain.com/langsmith/deployment-quickstart) or on your own infrastructure.
+4. Submit a pull request to the repository, listing your Agent in [`README.md`](https://github.com/warden-protocol/community-agents/blob/main/README.md). 
+
+Within your Agent, you can implement any **Web3 or Web2 workflow** and any **custom functionality**: your Agent can connect to APIs, use databases, tools, and so on.
+
+To earn extra [rewards](#builder-incentives), ship clean code and great docs. Innovative or under-served categories will get additional recognition and funding.
 
 :::tip
-We'll soon launch our developer toolkit, [Warden Studio](/learn/glossary#warden-studio). Once it's available, you'll be able to register your Agent directly through the Studio.
+If you get stuck or have any questions, join the developer channel in our Discord: [`#developers`](https://discord.com/channels/1199357852666560654/1222892775876333629).
 :::
 
-You can build almost any Agents (research, trading, DeFi, productivity) and implement any custom functionality. Your Agent can connect to APIs, use databases, tools, and so on. To earn extra [rewards](#builder-incentives), ship clean code and great docs. Innovative or under-served categories will get additional recognition and funding.
-
+:::note
+We'll soon launch our developer toolkit, [Warden Studio](/learn/glossary#warden-studio). Once it's available, you'll be able to register your Agent directly through the Studio.
+:::
 
 ## Technical limitations
 

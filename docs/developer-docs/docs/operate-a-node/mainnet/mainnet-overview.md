@@ -18,7 +18,7 @@ Mainnet is our new EVM network, currently available only to selected validators.
 | [v0.7.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.3) | 745501       | November 19, 2025 |[Upgrade to v0.7.3](upgrade/v0.7.3)   |
 
 :::warning
-If you used **v0.7.2** to generate keys (addresses), generate new keys using **v0.7.3** or newer and move any existing funds threre.
+If you used **v0.7.2** to generate keys (addresses), generate new keys using **v0.7.3** or newer and move any existing funds there.
 
 **Keys generated with v0.7.2 are not valid anymore.**
 :::

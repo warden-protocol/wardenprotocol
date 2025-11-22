@@ -30,7 +30,7 @@ Then you need to integrate the Connect sidecar into your setup. To run Connect w
 slinky
 ```
 
-Note that some default values may need to change depending on how you’ve set up your node and the sidecar.
+Note that some default values may need to change depending on how you've set up your node and the sidecar.
 
 ## 3. Configure wardend
 

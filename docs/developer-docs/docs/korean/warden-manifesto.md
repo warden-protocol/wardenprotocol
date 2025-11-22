@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Warden 선언문
 
-![Warden Manifesto: The Global Agent network](../../static/img/manifesto-cover.png)
+![Warden Manifesto: The global Agent Network](../../static/img/manifesto-cover.png)
 
 ## *Warden—에이전트 경제를 위한 네트워크*
 
@@ -41,7 +41,7 @@ sidebar_position: 2
 
 - **먼저 사용자를 확보(Win users first)**: 에이전트가 깨진 암호화폐 UX를 어떻게 해결할 수 있는지 보여줍니다 (*단순히 말하는 것이 아니라 보여주기*). 이를 통해 사용자는 단일 인터페이스에서 모든 체인, 앱, 모델에 접근할 수 있으며—진정한 AI 기반 암호화폐 만능 앱을 제공합니다.
 - **개발자를 위해 레일 개방(Open the rails to builders)**: 큰 규모의 참여 사용자 기반을 확보한 후, Warden Studio를 개방합니다: 에이전트를 만드는 허브입니다. 개발자는 여기서 신원, 지갑 접근, 신뢰 메커니즘, 수익화 도구를 갖춘 온체인 또는 오프체인 에이전트를 구축하고 배포할 수 있습니다. 사용된 프레임워크와 관계없이, 이 에이전트들은 즉시 우리의 네트워크에 연결될 수 있습니다.
-- **에이전트 네트워크 활성화(Power the Agent network)**: 에이전트에게 온체인 신원, 신뢰, 수익화, 배포 레일을 제공하여 수백만 사용자가 접근할 수 있게 합니다—에이전트가 번영하는 데 필요한 글로벌 네트워크를 구축하는 것입니다.
+- **에이전트 네트워크 활성화(Power the Agent Network)**: 에이전트에게 온체인 신원, 신뢰, 수익화, 배포 레일을 제공하여 수백만 사용자가 접근할 수 있게 합니다—에이전트가 번영하는 데 필요한 글로벌 네트워크를 구축하는 것입니다.
 
 ### 우리의 비밀 무기: 배포를 장악하다
 
@@ -67,13 +67,13 @@ sidebar_position: 2
 
 ## 기술
 
-### 에이전트 네트워크
+### Warden Agent Network
 
-![The Agent Network: layers](../../static/img/manifesto-3.png)
+![Warden Agent Network: layers](../../static/img/manifesto-3.png)
 
 우리는 에이전트 네트워크에서 에이전트의 전체 라이프사이클을 포착합니다. 이것이 우리의 북극성입니다: 생성에서 글로벌 채택에 이르기까지, 모든 단계에서 Warden은 가치를 더합니다. Warden Studio는 창작자에게 자신의 에이전트를 개발하고 출시하는 데 필요한 도구를 제공합니다. Warden Chain은 에이전트에 신원, 신뢰, 결제 레일을 제공하여 기계 속도로 협업할 수 있게 합니다. Warden Agent Hub는 기술에서 가장 어려운 과제인 배포 문제를 해결합니다. 마지막으로, Warden 우리의 플래그십 앱은 전면 창구로서 수백만 명의 사용자가 매일 에이전트를 발견하고 상호작용하는 곳입니다.
 
-![The Agent Network: components](../../static/img/manifesto-4.png)
+![Warden Agent Network: components](../../static/img/manifesto-4.png)
 
 ### Warden Studio
 
@@ -129,7 +129,7 @@ Warden Agent Hub는 기술에서 가장 어려운 문제인 배포 문제를 해
 
 ## Warden 로드맵
 
-![Warden's Roadmap](../../static/img/manifesto-8.png)
+![Warden's roadmap](../../static/img/manifesto-8.png)
 
 우리는 야심찬 로드맵을 가지고 있습니다:
 

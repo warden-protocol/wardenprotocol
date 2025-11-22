@@ -25,11 +25,13 @@ sidebar_position: 1
 - **기관 에이전트(Institutional Agents)**: 이 에이전트들은 실시간으로 포트폴리오를 관리하고, 동적 리스크 제어를 적용하며, 해킹으로부터 보호합니다.
 - **생태계 에이전트(Ecosystem Agents)**: 블록체인 생태계의 핵심 참여자입니다. 네트워크 위험을 모니터링하고, 제안을 선별하며, 거버넌스를 지원합니다.
 
-## 에이전트 네트워크
+어떤 개발자든 커뮤니티 에이전트(Community Agent) 를 만들어 Warden에 등록할 수 있으며, 이를 통해 전체 사용자 기반에 제공하고 생태계의 기능을 더욱 확장할 수 있습니다.
+
+## Warden Agent Network
 
 우리는 **에이전트 네트워크**에서 에이전트의 전체 라이프사이클을 포착합니다:
 
-- 개발자는 [Warden Studio](#warden-studio)에서 에이전트를 빌드합니다.
+- 개발자들은 [Warden Studio](#warden-studio)에서 커뮤니티 에이전트를 개발합니다.
 - 에이전트는 [Warden Chain](#warden-chain)에 직접 배포됩니다.
 - 사용자는 [Warden](#warden)의 [Agent Hub](#warden-agent-hub)에서 에이전트를 발견합니다.
 

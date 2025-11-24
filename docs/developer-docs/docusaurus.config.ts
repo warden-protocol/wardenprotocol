@@ -90,9 +90,21 @@ const config: Config = {
                 },
                 {
                     type: "docSidebar",
+                    sidebarId: "publishAgent",
+                    label: "Publish an Agent",
+                    position: "left",
+                },
+                {
+                    type: "docSidebar",
                     sidebarId: "ward",
                     label: "$WARD",
                     position: "left",
+                },
+                {
+                    type: "docSidebar",
+                    sidebarId: "korean",
+                    label: "KR",
+                    position: "right"
                 },
                 {
                     href: "https://discord.com/invite/wardenprotocol",

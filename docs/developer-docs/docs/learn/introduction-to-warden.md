@@ -10,7 +10,7 @@ slug: /
 
 **Warden Protocol** is the full-stack framework powering the **AI Agent** economy. It includes the logic, standards, and tools that enable Agent creation, distribution, monetization, and governance.
 
-Agents today are fragmented across frameworks and custom stacks, all facing the same limits: no monetization, no shared infrastructure, and no scalable way to reach users. Warden addresses this by enabling a **global Agent network**—the full-stack foundation for the Agent economy.
+Agents today are fragmented across frameworks and custom stacks, all facing the same limits: no monetization, no shared infrastructure, and no scalable way to reach users. Warden addresses this by enabling a **global Agent Network**—the full-stack foundation for the Agent economy.
 
 We start with users rather than infrastructure, delivering [Warden](https://wardenprotocol.org/)—an AI-powered **Everything App** for crypto, built on Warden Protocol. In Warden, users access all AI Agents, models, and chains through a single interface, performing advanced workflows in natural language.
 
@@ -27,11 +27,13 @@ Below is a curated list of Agents we currently focus on:
 - **Institutional Agents**: These Agents manage portfolios in real time, apply dynamic risk controls, and guard against hacks.
 - **Ecosystem Agents**: Core participants in blockchain ecosystems. They monitor networks for risks, curate proposals, and support governance.
 
-## The Agent network
+Any developer can build a **Community Agent** and register it on Warden, making it available to the entire user base and extending the capabilities of the ecosystem.
 
-We capture the entire lifecycle of Agents in our **Agent network**:
+## Warden Agent Network
 
-- Developers build Agents in [Warden Studio](#warden-studio).
+We capture the entire lifecycle of Agents in our **Agent Network**:
+
+- Developers build Community Agents in [Warden Studio](#warden-studio).
 - Agents are published directly on [Warden Chain](#warden-chain).
 - Users discover Agents in [Warden](#warden)'s [Agent Hub](#warden-agent-hub).
 
@@ -111,6 +113,7 @@ Use the top menu to navigate across the main sections of the docs and learn how 
   - [Warden networks](/learn/warden-networks): A list of available networks
   - [Glossary](/learn/glossary): A list of key Warden terms with definitions
 - [Operate a node](/operate-a-node/introduction): Guides for node operators
+- [Publish an Agent](/publish-an-agent/introduction): An introduction for Community Agent builders
 - [$WARD](/ward/introduction): A detailed overview of Warden tokenomics
 
 You can also visit Warden's **Help Center** to find user guides for our applications:

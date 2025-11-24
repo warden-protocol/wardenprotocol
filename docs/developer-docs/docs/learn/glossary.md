@@ -24,14 +24,6 @@ See also: [Agent Passport](#agent-passport).
 
 *This feature is coming soon.*
 
-## Agent network
-
-The Agent network is the infrastructure that supports the entire lifecycle of [AI Agents](#ai-agent). It provides the full-stack foundation for the Agent economy, unifying Agents that would otherwise remain fragmented across frameworks and custom stacks without reaching users.
-
-The core elements of the Agent network are [Warden Studio](#warden-studio), [Warden Chain](#warden-chain), [Warden Agent Hub](#warden-agent-hub), and [Warden](#warden).
-
----
-
 ## Agent Passport
 
 An Agent Passport is an ensemble of [Agent Identity](#agent-identity), the corresponding [Agent Card](#agent-card) information, and the Agent's monetization settings. In [Warden Studio](#warden-studio), developers provide these details when registering Agents, and the system automatically generates Passports upon publication.
@@ -44,9 +36,9 @@ An Agent Passport is an ensemble of [Agent Identity](#agent-identity), the corre
 
 An AI Agent is an AI-driven program that supports both offchain and onchain operations. Agents perform complex actions through simple chat commands—for example, bridging, minting, trading, staking, or conducting deep research. At the moment, we focus on financial, autopilot, institutional (custodial), and ecosystem Agents.
 
-[Warden Protocol](#warden-protocol) manages the entire life cycle of Agents in the [Agent network](#agent-network):
+[Warden Protocol](#warden-protocol) manages the entire life cycle of Agents in [Warden Agent Network](#warden-agent-network):
 
-- Developers build Agents in [Warden Studio](#warden-studio).
+- Developers build [Community Agents](#community-agent) in [Warden Studio](#warden-studio).
 - Agents are published directly on [Warden Chain](#warden-chain).
 - Users discover Agents in [Warden](#warden)'s [Agent Hub](#warden-agent-hub).
 
@@ -77,6 +69,14 @@ The blockchain layer provides the core infrastructure for [AI Agents](#ai-agent)
 A bonded validator is an active validator participating in consensus ([staking](#staking)). Bonded validators validate transactions, propose blocks, and earn rewards for their contributions to the network.
 
 See also: [Unbonding validator](#unbonding-validator), [Unbonded validator](#unbonded-validator).
+
+---
+
+## Community Agent
+
+A Community Agent is an [AI Agent](#ai-agent) built by any developer outside of Warden and published on [Warden Chain](#warden-chain) through [Warden Studio](#warden-studio). Users discover Community Agents in [Warden Agent Hub](#warden-agent-hub). 
+
+Such Agents can implement any Web3 or Web2 workflows: research, trading, DeFi operations, productivity, and more.
 
 ---
 
@@ -143,7 +143,7 @@ Learn more: [SPEX](spex).
 
 Staking is the process of participating in the proof-of-stake (PoS) consensus mechanism. [Validators](#validator) and [delegators](#delegator) stake their [WARD tokens](#ward-token) for a chance to validate blocks and transactions and earn staking rewards.
 
-The consensus mechanism chooses validators based on their [weight](#validators-weight). If a validator is successful, its delegators will earn rewards too. If a validator is slashed, the delegator’s stake will be slashed. Staking also allows validators and delegators to participate in [governance](#governance).
+The consensus mechanism chooses validators based on their [weight](#validators-weight). If a validator is successful, its delegators will earn rewards too. If a validator is slashed, the delegator's stake will be slashed. Staking also allows validators and delegators to participate in [governance](#governance).
 
 ---
 
@@ -157,7 +157,7 @@ Validators act on behalf of their [delegators](#delegator) and earn [commissions
 
 ## Validator's commission
 
-A validator’s commission is the percentage of [staking](#staking) rewards earned by a validator's pool that the validator retains. The rest is distributed to [delegators](#delegator). Validators can configure their own commissions, but only once, when initially declaring candidacy. The following parameters are available:
+A validator's commission is the percentage of [staking](#staking) rewards earned by a validator's pool that the validator retains. The rest is distributed to [delegators](#delegator). Validators can configure their own commissions, but only once, when initially declaring candidacy. The following parameters are available:
 
 - An initial commission
 - A maximum daily commission change rate
@@ -181,7 +181,7 @@ The verifiability layer of [Warden Protocol](#warden-protocol) uses blockchain, 
 
 ## Unbonded validator
 
-An unbonded validator is an inactive validator that isn't signing blocks. Unbonded validators can't be slashed and can’t earn rewards.
+An unbonded validator is an inactive validator that isn't signing blocks. Unbonded validators can't be slashed and can't earn rewards.
 
 See also: [Bonded validator](#bonded-validator), [Unbonding validator](#unbonding-validator).
 
@@ -210,11 +210,21 @@ Warden is an AI-driven application built on [Warden Protocol](#warden-protocol).
 Try it out: [Warden](https://app.wardenprotocol.org).  
 Learn more: [Warden documentation](https://help.wardenprotocol.org).
 
+---
+
 ## Warden Agent Hub
 
 Warden Agent Hub is a marketplace in [Warden](#warden) where users discover [AI Agents](#ai-agent) operating across Web2 and Web3 ecosystems. By putting Agents in front of an engaged user base, the Hub solves the toughest challenge in tech: distribution. Moreover, Agents listed here can collaborate to solve complex problems.
 
 Learn more: [Warden documentation](https://help.wardenprotocol.org/warden-app/explore-ai-agents).  
+
+---
+
+## Warden Agent Network
+
+Warden Agent Network is the infrastructure that supports the entire lifecycle of [AI Agents](#ai-agent). It provides the full-stack foundation for the Agent economy, unifying Agents that would otherwise remain fragmented across frameworks and custom stacks without reaching users.
+
+The core elements of the Agent Network are [Warden Studio](#warden-studio), [Warden Chain](#warden-chain), [Warden Agent Hub](#warden-agent-hub), and [Warden](#warden).
 
 ---
 
@@ -245,4 +255,4 @@ Learn more: [Manifesto](warden-manifesto).
 
 ## Warden Studio
 
-Warden Studio (now in Alpha) is a toolkit that provides builders everything they need to develop, test, and publish [AI Agents](#ai-agent) directly to [Warden](#warden) users. Upon publication, Warden Studio generates [Agent Passports](#agent-passport).
+Warden Studio (now in Alpha) is a toolkit that provides builders with everything they need to develop, test, and publish [Community Agents](#community-agent) directly to [Warden](#warden) users. Upon publication, Warden Studio generates [Agent Passports](#agent-passport).

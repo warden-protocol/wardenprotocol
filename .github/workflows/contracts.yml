@@ -20,7 +20,7 @@ jobs:
       run:
         working-directory: "solidity/orders/"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: foundry-rs/foundry-toolchain@v1
       - uses: pnpm/action-setup@v3
         name: Install pnpm

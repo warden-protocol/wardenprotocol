@@ -23,7 +23,7 @@ This fee applies to the following actions:
 
 ## Transfer fee
 
-All transfers are subject the gas fee:
+All transfers are subject to the gas fee:
 
 | Fee type      | Amount | Currency    | Description                                              |
 | ------------- | -------|-------------| -------------------------------------------------------- |
@@ -49,7 +49,7 @@ When you open a [perp position](trade), the following fees are charged:
 
 ## Betflix fees
 
-Trading with [Betflix](play-betflix) include the following fees:
+Trading with [Betflix](play-betflix) includes the following fees:
 
 | Fee type      | Amount   | Currency      | Description                        |
 | ------------- | -------- |---------------| ---------------------------------- |

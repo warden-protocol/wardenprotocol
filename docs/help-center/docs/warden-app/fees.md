@@ -23,7 +23,7 @@ This fee applies to the following actions:
 
 ## Transfer fee
 
-All transfers incur the gas fee:
+All transfers are subject the gas fee:
 
 | Fee type      | Amount | Currency    | Description                                              |
 | ------------- | -------|-------------| -------------------------------------------------------- |
@@ -31,7 +31,7 @@ All transfers incur the gas fee:
 
 ## Swap fees
 
-All swaps incur these fees:
+All swaps include these fees:
 
 | Fee type      | Amount | Currency           | Description                                              |
 | ------------- | -------|--------------------| -------------------------------------------------------- |
@@ -40,16 +40,16 @@ All swaps incur these fees:
 
 ## Trade fees
 
-All [trades](trade) incur these fees:
+When you open a [perp position](trade), the following fees are charged:
 
 | Fee type         | Amount | Currency         | Description                              |
 | ---------------- | ------ |------------------| ---------------------------------------- |
-| Hyperliquid fee  | 0.05%  | USDC on Arbitrum | A fee paid to Hyperliquid for each trade |
-| Warden trade fee | 0.01   | USDC on Arbitrum | A fee paid to Warden for each trade      |
+| Hyperliquid fee  | 0.045% | USDC on Arbitrum | A fee paid to Hyperliquid for each trade |
+| Warden trade fee | 0.025  | USDC on Arbitrum | A fee paid to Warden for each trade      |
 
 ## Betflix fees
 
-Trading with [Betflix](play-betflix) incurs the following fees:
+Trading with [Betflix](play-betflix) include the following fees:
 
 | Fee type      | Amount   | Currency      | Description                        |
 | ------------- | -------- |---------------| ---------------------------------- |
@@ -70,7 +70,7 @@ In this section, you'll find additional Agent-specific fees.
 
 ### deBridge fees
 
-All [deBridge](explore-ai-agents#debridge) transactions incur these fees:
+All [deBridge](explore-ai-agents#debridge) transactions include the following fees:
 
 | Fee type               | Amount                       | Currency            | Description                                                      |
 | -----------------------| -----------------------------|---------------------| ---------------------------------------------------------------- |
@@ -81,7 +81,7 @@ All [deBridge](explore-ai-agents#debridge) transactions incur these fees:
 
 ### Kaibot fee
 
-All reports provided by [Kaibot](explore-ai-agents#kaibot) incur the following fee:
+All reports provided by [Kaibot](explore-ai-agents#kaibot) are subject to this fee:
 
 | Fee type      | Amount   | Currency                             | Description                        |
 | ------------- | -------- |--------------------------------------| ---------------------------------- |
@@ -89,7 +89,7 @@ All reports provided by [Kaibot](explore-ai-agents#kaibot) incur the following f
 
 ### Messari fee
 
-All reports provided by [Messari Deep Research](explore-ai-agents#messari-deep-research) incur the following fee:
+All reports provided by [Messari Deep Research](explore-ai-agents#messari-deep-research) are subject to this fee:
 
 | Fee type      | Amount   | Currency                             | Description                        |
 | ------------- | -------- |--------------------------------------| ---------------------------------- |
@@ -97,7 +97,7 @@ All reports provided by [Messari Deep Research](explore-ai-agents#messari-deep-r
 
 ### WachAI fee
 
-All reports provided by [WachAI](explore-ai-agents#wachai) incur the following fee:
+All reports provided by [WachAI](explore-ai-agents#wachai) are subject to this fee:
 
 | Fee type      | Amount   | Currency                             | Description                        |
 | ------------- | -------- |--------------------------------------| ---------------------------------- |

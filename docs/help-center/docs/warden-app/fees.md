@@ -45,7 +45,7 @@ When you open a [perp position](trade), the following fees are charged:
 | Fee type         | Amount | Currency                            | Description                              |
 | ---------------- | ------ |-------------------------------------| ---------------------------------------- |
 | Hyperliquid fee  | 0.045% | USDC on any of the supported chains | A fee paid to Hyperliquid for each trade |
-| Warden trade fee | 0.025  | USDC on any of the supported chains | A fee paid to Warden for each trade      |
+| Warden trade fee | 0.025% | USDC on any of the supported chains | A fee paid to Warden for each trade      |
 
 ## Betflix fees
 

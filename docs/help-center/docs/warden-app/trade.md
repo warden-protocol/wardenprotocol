@@ -178,7 +178,7 @@ A **position** is your participation (exposure) in a [perp](#trade-perp). If you
 
 #### Market order
 
-An **market order** is an instruction to open a [position](#position) in a [perp](#trade-perp) immediately at the best available perp price.
+A **market order** is an instruction to open a [position](#position) in a [perp](#trade-perp) immediately at the best available perp price.
 
 #### Limit order
 
@@ -189,7 +189,7 @@ An **limit order** is an instruction to open a [position](#position) in a [perp]
 
 #### Spot price
 
-**Spot price** is the current market price at which an token can be immediately bought or sold.
+**Spot price** is the current market price at which a token can be immediately bought or sold.
 
 #### Margin
 

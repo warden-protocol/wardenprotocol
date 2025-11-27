@@ -6,9 +6,9 @@ sidebar_position: 7
 
 ## Overview
 
-In Warden, you can use **perpetual contracts** (**trade perps**) to trade on future price movements of underlying token without actually owning them. A the moment, Warden supports [Hyperliquid](https://hyperfoundation.org) perps.
+In Warden, you can use **perpetual contracts** (**trade perps**) to trade on future price movements of underlying token without actually owning them. At the moment, Warden supports [Hyperliquid](https://hyperfoundation.org) perps.
 
-Warden's **AI Trading Terminal** brings real-time market analysis tools directly into your trading screen so you make informed decisions before placing a trade. This includes AI signals, and order book, and a chart with technical indicators and drawing tools.
+Warden's **AI Trading Terminal** brings real-time market analysis tools directly into your trading screen so you make informed decisions before placing a trade. This includes AI signals, an order book, and a chart with technical indicators and drawing tools.
 
 This guide explains how to open and manage your positions, manage the trading wallet, and use market analysis tools. To learn more about perps and the related concepts, see [Perpetual trading](#perpetual-trading).
 
@@ -29,11 +29,11 @@ Want to trade just for fun? Try [Betflix](play-betflix).
 
 You'll see the Terminal interface, where you can do the following:
 
-1. Select token pairs
+1. Select a perp to trade
 2. [Manage the trading wallet](#manage-the-trading-wallet)
 3. [Analyze the market](#analyze-the-market)
 4. [Create an order](#2-create-an-order)
-5. [Manage your trades](#3-manage-your-trade)
+5. [Manage your trade](#3-manage-your-trade)
 
 ![AI Trading Terminal in Warden](../../static/img/warden-app/trade-1.png)
 
@@ -45,7 +45,7 @@ To start trading, you need **USDC** on **Ethereum**, **Arbitrum**, **Base**, or 
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. If you don't have USDC, [deposit it to your main wallet](manage-assets#deposit-assets).
-3. In the left menu, open the **Trade** tab to access the [AI Trading Terminal](#ai-trading-terminal).
+3. In the left menu, open the **Trade** tab to [access the AI Trading Terminal](#access-the-trading-terminal).
 4. Click the wallet icon at the top right to open the [trading wallet](#manage-the-trading-wallet).
 5. In the trading wallet, click **Deposit** and add USDC from your main wallet.
 
@@ -55,23 +55,23 @@ To start trading, you need **USDC** on **Ethereum**, **Arbitrum**, **Base**, or 
 
 An **order** is an instruction for opening a [position](#position) (participating in a perpetual contract). Warden supports both [market](#market-order) and [limit orders](#limit-order).
 
-Once you have funds in your trading wallet, you can create an order. [Open the AI Trading Terminal](#ai-trading-terminal) and do this:
+Once you have funds in your trading wallet, you can create an order. [Open the AI Trading Terminal](#access-the-trading-terminal) and do this:
 
 1. If it's your first trade, click **Start Trading** and confirm your consent.
-3. Select a token pair from the drop-down menu at the top left.
+2. Select a token pair from the drop-down menu at the top left.
 3. In the configuration panel at the right, set your [order parameters](#order-parameters).
 4. Click **Long**/**Short** at the bottom of the configuration panel.
 5. Review your order details and confirm opening a position.
 
 :::note Notes
-- Tokens are always paired with **USDC**.
-- Before selecting a token, you can [analyze the market](#analyze-the-market).
+- Tokens are always paired with **USDC**. Selecting a pair determines the perp you'll trade.
+- Before selecting a perp, you can [analyze the market](#analyze-the-market).
 - Opening a position is subject to [trade fees](fees#trade-fees).
 :::
 
 ![Create an order in Warden](../../static/img/warden-app/trade-3.png)
 
-### 3. Manage your trades
+### 3. Manage your trade
 
 After you [create an order](#2-create-an-order), the following will happen:
 - A market order will open a position immediately at the best available perp price.
@@ -81,7 +81,7 @@ After you [create an order](#2-create-an-order), the following will happen:
 Long orders execute at the target price or lower, shorts execute at the target price or higher.
 :::
 
-In the [AI Trading Terminal](#ai-trading-terminal), you can track and manage your positions and pending limit order. See the tabs in the bottom panel:
+In the [AI Trading Terminal](#access-the-trading-terminal), you can track and manage your positions and pending limit order. See the tabs in the bottom panel:
 
 - **Positions**: Access your open positions.
 - **Orders**: Access your pending limit orders.
@@ -115,7 +115,7 @@ When [creating an order](#2-create-an-order), you can set the following paramete
     - **Stop Loss**: The lower price where your position closes to cut losses. This helps prevent [liquidation](#liquidation).
 
 :::note
-You can adjust **Auto-Close** even after creating an order. See [Manage your trades](#3-manage-your-trade).
+You can adjust **Auto-Close** even after creating an order. See [Manage your trade](#3-manage-your-trade).
 :::
 
 There are also additional parameters that are automatically calculated based on your settings:
@@ -154,7 +154,7 @@ When depositing, you see your consolidated balance across all supported chains.
 
 ## Analyze the market
 
-In the [AI Trading Terminal](#ai-trading-terminal), you can access various market analysis tools helping your make informed decisions on your trades:
+In the [AI Trading Terminal](#access-the-trading-terminal), you can access various market analysis tools helping you make informed decisions on your trades:
 
 - **The live chart** displays perp price movements. It supports multiple chart types, technical indicators, drawing tools, and more.
 - **The order book** shows real-time perp market liquidity. The market data for the chart and order book is provided by [Hyperliquid](https://hyperfoundation.org).

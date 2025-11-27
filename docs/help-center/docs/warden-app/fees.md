@@ -40,7 +40,7 @@ All swaps include these fees:
 
 ## Trade fees
 
-When you open a [perp position](trade), the following fees are charged from your [trading wallet](play-betflix#trade#manage-the-trading-wallet):
+When you open a [perp position](trade), the following fees are charged from your [trading wallet](trade#manage-the-trading-wallet):
 
 | Fee type         | Amount | Currency  | Description                              |
 | ---------------- | ------ | --------- | ---------------------------------------- |

@@ -182,7 +182,7 @@ A **market order** is an instruction to open a [position](#position) in a [perp]
 
 #### Limit order
 
-An **limit order** is an instruction to open a [position](#position) in a [perp](#trade-perp) when its price reaches your preferred price or better:
+A **limit order** is an instruction to open a [position](#position) in a [perp](#trade-perp) when its price reaches your preferred price or better:
 
 - Long orders execute at the target price or lower.
 - Short orders execute at the target price or higher.

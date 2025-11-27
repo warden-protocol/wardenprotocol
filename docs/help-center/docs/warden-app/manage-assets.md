@@ -63,5 +63,5 @@ In Warden, you can send or swap assets using simple **chat commands**:
 Before you start, keep in mind this:
 
 - When specifying the recipient, you can refer to your [favorite addresses](manage-your-wallet#configure-the-wallet) by name.
-- All swaps and transfers incur fees: see the [Fees](fees) section for details.
+- All swaps and transfers are subject to fees: see the [Fees](fees) section for details.
 - You can use any other [asset management Agent](explore-ai-agents#asset-management-agents).

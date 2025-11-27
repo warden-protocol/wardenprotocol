@@ -33,7 +33,9 @@ You'll see the Terminal interface, where you can do the following:
 2. [Manage the trading wallet](#manage-the-trading-wallet)
 3. [Analyze the market](#analyze-the-market)
 4. [Create an order](#2-create-an-order)
-5. [Manage your position](#3-manage-your-trade)
+5. [Manage your trades](#3-manage-your-trade)
+
+![AI Trading Terminal in Warden](../../static/img/warden-app/trade-1.png)
 
 ## Manage trades
 
@@ -67,7 +69,7 @@ Once you have funds in your trading wallet, you can create an order. [Open the A
 - Opening a position is subject to [trade fees](fees#trade-fees).
 :::
 
-![Open a perp position in Warden](../../static/img/warden-app/trade-3.png)
+![Create an order in Warden](../../static/img/warden-app/trade-3.png)
 
 ### 3. Manage your trades
 
@@ -159,6 +161,7 @@ In the [AI Trading Terminal](#ai-trading-terminal), you can access various marke
 - **Messari Signals** powered by [Messari](https://messari.io) are AI-generated token reports. For deeper insights, use the  [Messari Deep Research](explore-ai-agents#messari-deep-research) Agent.
 
 ![Analyze the perpetual trading market in Warden](../../static/img/warden-app/trade-7.png)
+![See perps on a live chart in Warden](../../static/img/warden-app/trade-8.png)
 
 ## Perpetual trading
 

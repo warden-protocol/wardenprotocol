@@ -26,7 +26,7 @@ sidebar_position: 10
 
 **New features**
 
-- [Trading](trading): Introduced the AI Trading Terminal for perpetual trading. The Terminal supports the following features:
+- [Trading](trade): Introduced the AI Trading Terminal for perpetual trading. The Terminal supports the following features:
   - Market and limit orders
   - Easy order and position management
   - A dedicated trading wallet supporting USDC deposits from multiple chains

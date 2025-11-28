@@ -73,7 +73,7 @@ Selecting a pair determines the perp you'll trade. Tokens are always paired with
 :::
 
 ![Create an order in Warden](../../static/img/warden-app/trade-3.png)
-![Create an order in Warden](../../static/img/warden-app/trade-33.png)
+![Create an order in Warden](../../static/img/warden-app/trade-4.png)
 
 ### 3. Manage your trade
 
@@ -102,7 +102,7 @@ To manage an open position or a limit order, click the **Manage** button next to
 Next to each position, you can see its [liquidation price](#liquidation). You can avoid liquidation by enabling [Auto-Close](#order-parameters).
 :::
 
-![Track and manage your perp positions in Warden](../../static/img/warden-app/trade-4.png)
+![Track and manage your perp positions in Warden](../../static/img/warden-app/trade-5.png)
 
 ### Order parameters
 
@@ -136,8 +136,8 @@ Warden stores your perpetual trading balance in a separate **trading wallet**. T
 
 To switch between the main and trading wallets at any time, click the wallet icon at the top right and select **Main Account** or **Trading**. When you're in the **Trade** tab, the trading wallet is selected automatically.
 
-![Access the trading wallet in Warden](../../static/img/warden-app/trade-5.png)
-![Switch between the main and trading wallets in Warden](../../static/img/warden-app/trade-6.png)
+![Access the trading wallet in Warden](../../static/img/warden-app/trade-6.png)
+![Switch between the main and trading wallets in Warden](../../static/img/warden-app/trade-7.png)
 
 The trading wallet holds its balance in **USDC** on **Arbitrum**, but you can fund it from almost any of the supported chains (see below), as long as you have USDC in your main wallet. This is how to move funds between your wallets:
 
@@ -167,8 +167,8 @@ In the [AI Trading Terminal](#access-the-trading-terminal), you can access vario
 - **The order book** shows real-time perp market liquidity. The market data for the chart and order book is provided by [Hyperliquid](https://hyperfoundation.org).
 - **Messari Signals** powered by [Messari](https://messari.io) are AI-generated token reports. For deeper insights, use the  [Messari Deep Research](explore-ai-agents#messari-deep-research) Agent.
 
-![Analyze the perpetual trading market in Warden](../../static/img/warden-app/trade-7.png)
-![See perps on a live chart in Warden](../../static/img/warden-app/trade-8.png)
+![Analyze the perpetual trading market in Warden](../../static/img/warden-app/trade-8.png)
+![See perps on a live chart in Warden](../../static/img/warden-app/trade-9.png)
 
 ## Perpetual trading
 

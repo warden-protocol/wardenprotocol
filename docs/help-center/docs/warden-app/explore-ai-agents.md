@@ -43,8 +43,9 @@ Networks:
 - **Solana**
 - **Base**
 - **BNB Smart Chain (BSC)**
+- **Arbitrum**
 
-Fees: [swap](fees#swap-fees) and [transfer fee](fees#transfer-fee)
+Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fee)
 
 ## Asset management Agents
 
@@ -60,12 +61,15 @@ The **Base Farmer** Agent assists you with managing your tokens on the Base chai
 
 Networks: **Base**
 
+- **Base**
+- **Arbitrum**
+
 Tokens:
 
 - **USDC**
 - **VIRTUAL**
 
-Fees: [swap](fees#swap-fees) and [transfer fee](fees#transfer-fee)
+Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fee)
 
 ### deBridge
 
@@ -77,6 +81,7 @@ Networks:
 - **Base**
 - **Solana**
 - **BNB Smart Chain (BSC)**
+- **Arbitrum**
 
 Tokens:
 
@@ -107,6 +112,7 @@ Networks:
 - **Ethereum**
 - **Base**
 - **BNB Smart Chain (BSC)**
+- **Arbitrum**
 
 Fees: [swap fees](fees#swap-fees)
 
@@ -122,7 +128,7 @@ Just specify the amount and other details in the chat, and the Agent will do the
 
 Networks: **Solana**
 
-Fees: [swap](fees#swap-fees) and [transfer fee](fees#transfer-fee)
+Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fee)
 
 ### Levva
 
@@ -154,8 +160,9 @@ Networks:
 - **Ethereum**
 - **Base**
 - **BNB Smart Chain (BSC)**
+- **Arbitrum**
 
-Fees: [swap](fees#swap-fees) and [transfer fee](fees#transfer-fee)
+Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fee)
 
 :::note
 To start using this Agent, you need to read and agree to the Uniswap Labs terms of service and privacy policy.

@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 8
+sidebar_position: 9
 ---
 
 # Play Betflix
@@ -8,7 +8,11 @@ sidebar_position: 8
 
 You can trade with **Betflix**, Warden's Tinder-style prediction game.
 
-More trading experiences are coming soon—stay tuned!
+Note that Betflix balance is kept [in a separate wallet](#manage-betflix-wallet).
+
+:::tip
+Warden also supports advanced trading tools. Learn more in the [Trade](trade) section.
+:::
 
 ## Rules
 
@@ -24,42 +28,23 @@ Gameplay details:
 - To play, you need **USDC on Solana**.
 - The bet is fixed: **$2** per round with fixed **100x leverage**.
 - Supported coins: **DOGE**, **PEPE**, **BONK**, **WIF**, **SHIB**, **TRUMP**, and more.
-- All bets incur fees. Learn more: [Betflix fees](fees#betflix-fees).
+- All bets are subject to fees. Learn more: [Betflix fees](fees#betflix-fees).
 - Top traders [earn PUMPs](#earn-pumps).
-
-:::tip
-We're currently running a campaign that lets you play Betflix with **zero fees**.
-:::
 
 ## Start playing
 
-To start playing, you need **USDC on Solana**—starting from **$6**:
+To start playing, you need **USDC on Solana** (**$6** or more):
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. If you don't have USDC on Solana, [deposit it to your main wallet](manage-assets#deposit-assets).
 3. In the left menu, open the **Betflix** tab.
-4. In the right panel, click **Deposit** and add USDC from your main wallet.
+4. In the right panel, you'll see [Betflix wallet](#manage-betflix-wallet). Click **Deposit** and add USDC from your main wallet.
 5. Start playing:
    - Swipe right → Go long
    - Swipe left → Go short
    - Swipe up → Don't trade
 
 ![Start playing Betflix in Warden](../../static/img/warden-app/play-betflix-1.png)
-
-## Deposit & withdraw
-
-**Betflix wallet** is always visible in the right panel of the **Betflix** tab. It supports only **USDC on Solana**.
-
-You can move funds between your [main Warden wallet](manage-your-wallet) and your Betflix wallet:
-
-- To deposit USDC (starting from **$6**), click **Deposit**.
-- To withdraw USDC (starting from **$1**), click **Withdraw**.
-
-:::tip
-To switch to your main wallet at any time, select **Main Account** from the top menu.
-:::
-
-![Manage Betflix wallet in Warden](../../static/img/warden-app/play-betflix-2.png)
 
 ## Earn PUMPs
 
@@ -81,4 +66,23 @@ You can view the game statistics in your Betflix wallet, located on the right of
 - To see rewards for each rank, click the information icon next to the winners list.
 - To review your recent plays and results, switch to **Your Bets**.
 
-![Check Betflix stats in Warden](../../static/img/warden-app/play-betflix-3.png)
+![Check Betflix stats in Warden](../../static/img/warden-app/play-betflix-2.png)
+
+## Manage Betflix wallet
+
+Warden stores your Betflix balance in a separate **Betflix wallet**. This protects assets in the [main Warden wallet](manage-your-wallet).
+
+When you're in the **Betflix** tab, Betflix wallet is shown in the right panel by default. To switch between the main and Betflix wallets at any time, select **Main Account** or **Bets** from the drop-down menu at the top.
+
+![Manage Betflix wallet in Warden](../../static/img/warden-app/play-betflix-3.png)
+
+The Betflix wallet holds its balance in **USDC** on **Solana**. This is how to move funds between your wallets:
+
+1. Open the trading wallet.
+2. Click **Deposit** or **Withdraw**.
+3. Enter the amount and confirm. Deposits start from **$6**, and withdrawals from **$1**.
+4. Warden will transfer USDC from or to your main wallet.
+
+:::tip
+To deposit, make sure your [main wallet](manage-your-wallet) has **USDC on Solana**.
+:::

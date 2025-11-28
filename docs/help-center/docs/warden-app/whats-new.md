@@ -10,7 +10,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 ## November 28, 2025
 
-**New features**
+#### New features
 
 - [Trading](trade): Introduced the AI Trading Terminal for perpetual trading. The Terminal supports the following features:
   - Market and limit orders
@@ -21,14 +21,14 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 ## November 25, 2025
 
-**New features**
+#### New features
 
 - [Betflix](play-betflix): Added new coins—**Anoma** and **Aster**.
 
-**Improvements**
+#### Improvements
 - [Portfolio Analysis Agent](explore-ai-agents#portfolio-analysis-agent): Improved visuals, presets, and timeframe selection.
 
-**Fixes**
+#### Fixes
 
 - [The AI chat interface](use-the-chat): Removed auto-complete suggestions from all Agents except for Warden AMA.
 - [Portfolio Analysis Agent](explore-ai-agents#portfolio-analysis-agent): Fixed timeframe issues and the UI text.

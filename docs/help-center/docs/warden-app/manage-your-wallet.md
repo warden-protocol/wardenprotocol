@@ -17,6 +17,11 @@ To access your wallet, simply do this:
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. Click the wallet icon in the top-right corner.
 
+:::tip
+In addition to the main Warden wallet described here, there are separate wallets used for **trading** and for **Betflix**. Learn more: [trading wallet](trade#manage-the-trading-wallet), [Betflix wallet](play-betflix#manage-betflix-wallet).
+:::
+
+
 ![Access your wallet in Warden](../../static/img/warden-app/manage-your-wallet-1.png)
 ![View your wallet in Warden](../../static/img/warden-app/manage-your-wallet-2.png)
 

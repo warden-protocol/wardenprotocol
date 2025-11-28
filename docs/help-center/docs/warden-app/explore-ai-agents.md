@@ -43,6 +43,7 @@ Networks:
 - **Solana**
 - **Base**
 - **BNB Smart Chain (BSC)**
+- **Arbitrum**
 
 Fees: [swap](fees#swap-fees) and [transfer fee](fees#transfer-fee)
 
@@ -58,7 +59,10 @@ The **Base Farmer** Agent assists you with managing your tokens on the Base chai
 - Swaps tokens using [Uniswap](https://app.uniswap.org)
 - Transfers tokens
 
-Networks: **Base**
+Networks:
+
+- **Base**
+- **Arbitrum**
 
 Tokens:
 
@@ -77,6 +81,7 @@ Networks:
 - **Base**
 - **Solana**
 - **BNB Smart Chain (BSC)**
+- **Arbitrum**
 
 Tokens:
 
@@ -107,6 +112,7 @@ Networks:
 - **Ethereum**
 - **Base**
 - **BNB Smart Chain (BSC)**
+- **Arbitrum**
 
 Fees: [swap fees](fees#swap-fees)
 
@@ -154,6 +160,7 @@ Networks:
 - **Ethereum**
 - **Base**
 - **BNB Smart Chain (BSC)**
+- **Arbitrum**
 
 Fees: [swap](fees#swap-fees) and [transfer fee](fees#transfer-fee)
 

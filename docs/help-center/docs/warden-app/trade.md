@@ -63,13 +63,17 @@ Once you have funds in your trading wallet, you can create an order. [Open the A
 4. Click **Long**/**Short** at the bottom of the configuration panel.
 5. Review your order details and confirm opening a position.
 
-:::note Notes
-- Tokens are always paired with **USDC**. Selecting a pair determines the perp you'll trade.
+:::note
+Selecting a pair determines the perp you'll trade. Tokens are always paired with **USDC**: BTC-USDC, ETH-USDC, and so on.
+:::
+
+:::tip Tips
 - Before selecting a perp, you can [analyze the market](#analyze-the-market).
-- Opening a position is subject to [trade fees](fees#trade-fees).
+- To see only [builder-deployed perps](https://hyperliquid.gitbook.io/hyperliquid-docs/hyperliquid-improvement-proposals-hips/hip-3-builder-deployed-perpetuals), filter the pair list by **HIP-3**.
 :::
 
 ![Create an order in Warden](../../static/img/warden-app/trade-3.png)
+![Create an order in Warden](../../static/img/warden-app/trade-33.png)
 
 ### 3. Manage your trade
 
@@ -77,8 +81,9 @@ After you [create an order](#2-create-an-order), the following will happen:
 - A market order will open a position immediately at the best available perp price.
 - A limit order will open a position only when the perp price reaches your target price.
 
-:::note
-Long orders execute at the target price or lower, shorts execute at the target price or higher.
+:::note Notes
+- Opening a position is subject to [trade fees](fees#trade-fees).
+- Long limit orders execute at the target price or lower, shorts execute at the target price or higher.
 :::
 
 In the [AI Trading Terminal](#access-the-trading-terminal), you can track and manage your positions and pending limit order. See the tabs in the bottom panel:
@@ -93,7 +98,7 @@ To manage an open position or a limit order, click the **Manage** button next to
 - To close your position or cancel order, click **Close**/**Cancel Order** and confirm. You'll see the closed position in the **History** tab.
 - To cancel all orders, click **Cancel All** in the **Orders** tab.
 
-:::note
+:::tip
 Next to each position, you can see its [liquidation price](#liquidation). You can avoid liquidation by enabling [Auto-Close](#order-parameters).
 :::
 
@@ -114,7 +119,7 @@ When [creating an order](#2-create-an-order), you can set the following paramete
     - **Take Profit**: The upper price where your position closes to secure profit.
     - **Stop Loss**: The lower price where your position closes to cut losses. This helps prevent [liquidation](#liquidation).
 
-:::note
+:::tip
 You can adjust **Auto-Close** even after creating an order. See [Manage your trade](#3-manage-your-trade).
 :::
 
@@ -127,30 +132,32 @@ There are also additional parameters that are automatically calculated based on 
 
 ## Manage the trading wallet
 
-Your perpetual trading balance is kept in **USDC** within a separate **trading wallet**. This protects assets in the [main Warden wallet](manage-your-wallet) from being liquidated.
+Warden stores your perpetual trading balance in a separate **trading wallet**. This protects assets in the [main Warden wallet](manage-your-wallet) from being [liquidated](#liquidation).
 
 To switch between the main and trading wallets at any time, click the wallet icon at the top right and select **Main Account** or **Trading**. When you're in the **Trade** tab, the trading wallet is selected automatically.
 
-This is how to move funds between your wallets:
+![Access the trading wallet in Warden](../../static/img/warden-app/trade-5.png)
+![Switch between the main and trading wallets in Warden](../../static/img/warden-app/trade-6.png)
 
-- To deposit USDC from the main wallet (starting from **$6**), click **Deposit**.
-- To withdraw USDC to the main wallet (starting from **$5**), click **Withdraw**.
+The trading wallet holds its balance in **USDC** on **Arbitrum**, but you can fund it from almost any of the supported chains (see below), as long as you have USDC in your main wallet. This is how to move funds between your wallets:
+
+1. Open the trading wallet.
+2. Click **Deposit** or **Withdraw**.
+3. Enter the amount and confirm. Deposits start from **$6**, and withdrawals from **$5**.
+4. Warden will transfer USDC from or to your main wallet.
 
 :::tip
-You can deposit **USDC** from the following chains:
+To deposit, make sure your [main wallet](manage-your-wallet) has **USDC** on these chains:
 
 - **Ethereum**
 - **Arbitrum**
 - **Base**
-- **BNB Smart Chain (BSC**)
+- **BNB Smart Chain (BSC)**
 :::
 
 :::note
-When depositing, you see your consolidated balance across all supported chains.
+When depositing, you'll see your **consolidated USDC balance** across all these chains. Depositing on Arbitrum is a native transaction, so it's the fastest. Deposits from other chains are **automatically bridged to Arbitrum**. You don't have to handle gas fees or bridging—Warden does everything for you. 
 :::
-
-![Access the trading wallet in Warden](../../static/img/warden-app/trade-5.png)
-![Switch between the main and trading wallets in Warden](../../static/img/warden-app/trade-6.png)
 
 ## Analyze the market
 

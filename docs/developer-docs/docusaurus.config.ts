@@ -102,7 +102,7 @@ const config: Config = {
                 },
                 {
                     href: "https://help.wardenprotocol.org",
-                    label: "Warden",
+                    label: "User guides",
                     position: "right",
                 },
                 {

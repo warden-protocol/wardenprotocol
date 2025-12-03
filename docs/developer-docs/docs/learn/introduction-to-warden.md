@@ -4,7 +4,7 @@ id: home-doc
 slug: /
 ---
 
-# Introduction to Warden
+# Introduction to Warden Protocol
 
 ## Warden Protocol
 

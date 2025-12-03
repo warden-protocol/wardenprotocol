@@ -101,20 +101,27 @@ const config: Config = {
                     position: "left",
                 },
                 {
+                    href: "https://help.wardenprotocol.org",
+                    label: "User guides",
+                    position: "right",
+                },
+                {
+                    'aria-label': 'Discord Invite',
+                    'className': 'navbar--discord-link',
+                    'href': 'https://discord.com/invite/wardenprotocol',
+                    'position': 'right',
+                },
+                {
+                    'aria-label': 'GitHub Repository',
+                    'className': 'navbar--github-link',
+                    'href': 'https://github.com/warden-protocol/wardenprotocol',
+                    'position': 'right',
+                },
+                {
                     type: "docSidebar",
                     sidebarId: "korean",
                     label: "KR",
                     position: "right"
-                },
-                {
-                    href: "https://discord.com/invite/wardenprotocol",
-                    label: "Discord",
-                    position: "right",
-                },
-                {
-                    href: "https://github.com/warden-protocol/wardenprotocol",
-                    label: "GitHub",
-                    position: "right",
                 },
             ],
         },

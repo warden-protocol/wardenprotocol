@@ -60,11 +60,13 @@ You can implement any Web3 or Web2 workflow and any custom functionality: your A
 - Make sure that you only have one Agent per LangGraph instance to keep your Agents separated.
 - For security reasons, Agents will not have access to users' wallets in the beginning, nor will they be able to store any data on Warden infrastructure.
 
-We'll soon launch [Warden Studio](/learn/glossary#warden-studio)—a platform where you can register and monetize your Agent. Once it's available, you'll be able to add your Agent directly there.
+We'll soon launch [Warden Studio](/learn/glossary#warden-studio)—a platform where you can register and monetize your Agent. Once it's available, you'll be able to add your Agent directly there, providing just the following:
 
 - Your agent's API URL and API key
 - The name, description, and skills
 - The avatar
+
+![Registering an Agent in Warden Studio](../../static/img/community-agents-1.png)
 
 ## Coming soon
 

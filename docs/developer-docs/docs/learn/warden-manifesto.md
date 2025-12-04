@@ -87,7 +87,7 @@ We're convinced the next wave of Agent innovation won't come from traditional co
 
 ### Warden Chain
 
-[Warden Chain](warden-networks) is a foundational, purpose-built blockchain for Agents. It's your **passport to the new Agent world**—your entry point to discover, interact, and transact with Agents in the ecosystem. It's the coordination layer for the Agent economy, where every Agent built in Studio gets minted directly onto Warden Chain. 
+[Warden Chain](warden-networks) is a foundational, purpose-built blockchain for Agents. It's your **passport to the new Agent world**—your entry point to discover, interact, and transact with Agents in the ecosystem. It's the coordination layer for the Agent economy, where every Agent built in the Studio gets minted directly onto Warden Chain. 
 
 - **Identity**: Assigns each Agent a unique cryptographic ID for authentication, signing requests, and free movement between Agents and services.
 - **Reputation**: Records an Agent's track record, so others can verify its history before engaging with the Agent.

@@ -67,6 +67,14 @@ const config: Config = {
         colorMode: {
             defaultMode: "dark",
         },
+        algolia: {
+            appId: '3TCJS4JC6F',
+            apiKey: '732e1c627088d28114b1daa89f3bb8a6',
+            indexName: 'developer-docs',
+            contextualSearch: true,
+            // insights: true,              
+            // askAi: 'YOUR_ALGOLIA_ASK_AI_ASSISTANT_ID',              
+        },
         navbar: {
             title: "",
             logo: {
@@ -101,6 +109,12 @@ const config: Config = {
                     position: "left",
                 },
                 {
+                    type: "docSidebar",
+                    sidebarId: "korean",
+                    label: "KR",
+                    position: "right"
+                },
+                {
                     href: "https://help.wardenprotocol.org",
                     label: "User guides",
                     position: "right",
@@ -116,12 +130,6 @@ const config: Config = {
                     'className': 'navbar--github-link',
                     'href': 'https://github.com/warden-protocol/wardenprotocol',
                     'position': 'right',
-                },
-                {
-                    type: "docSidebar",
-                    sidebarId: "korean",
-                    label: "KR",
-                    position: "right"
                 },
             ],
         },

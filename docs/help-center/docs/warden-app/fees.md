@@ -65,7 +65,7 @@ We manage deposits from other chains through [OneBalance](https://www.onebalance
 All withdrawals are subject to a flat fee paid to [Hyperliquid](https://hyperliquid.gitbook.io/hyperliquid-docs/hypercore/bridge) on Arbitrum:
 
 | Fee type       | Amount | Currency | Description                                             |
-| ---------------| ------ | -------- | ------------------------------------------------------- |
+| -------------- | ------ | -------- | ------------------------------------------------------- |
 | Withdrawal fee | 1      | USDC     | A fee paid to Hyperliquid for processing the withdrawal |
 
 ## Betflix fees

@@ -40,12 +40,33 @@ All swaps include these fees:
 
 ## Trade fees
 
-When you open a [perp position](trade), the following fees are charged from your [trading wallet](trade#manage-the-trading-wallet):
+For each [perp trade](trade) (order execution), the following fees are charged from your [trading wallet](trade#manage-the-trading-wallet):
 
-| Fee type         | Amount | Currency  | Description                              |
-| ---------------- | ------ | --------- | ---------------------------------------- |
-| Hyperliquid fee  | 0.045% | USDC      | A fee paid to Hyperliquid for each trade |
-| Warden trade fee | 0.025% | USDC      | A fee paid to Warden for each trade      |
+| Fee type         | Amount | Currency | Description                              |
+| ---------------- | ------ | -------- | ---------------------------------------- |
+| Hyperliquid fee  | 0.045% | USDC     | A fee paid to Hyperliquid for each trade |
+| Warden trade fee | 0.025% | USDC     | A fee paid to Warden for each trade      |
+
+## Trading wallet fees
+
+When you deposit to your [trading wallet](trade#manage-the-trading-wallet) from Arbitrum, you pay only for the native bridge:
+
+| Fee type         | Amount | Currency | Description                                           |
+| ---------------- | ------ | -------- | ----------------------------------------------------- |
+| Arbitrum gas fee | varies | USDC     | A fee paid to Arbitrum for processing the transaction |
+
+Withdrawing to Arbitrum is subject to a flat fee:
+
+| Fee type           | Amount | Currency | Description                                           |
+| ------------------ | ------ | -------- | ----------------------------------------------------- |
+| Withdrawal gas fee | 1      | USDC     | A flat fee for covering Arbitrum gas                  |
+
+As to other chains, we manage deposits and withdrawals through [OneBalance](https://www.onebalance.io), charging dynamic fees:
+
+| Fee type    | Amount | Currency | Description                                              |
+| ----------- | ------ | -------- | -------------------------------------------------------- |
+| Gas fee     | varies | USDC     | The underlying bridge/network gas (source + destination) |
+| Service fee | varies | USDC     | A service fee for handling the transaction               |
 
 ## Betflix fees
 

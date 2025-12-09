@@ -19,7 +19,6 @@ const config: Config = {
     projectName: "wardenprotocol", // Usually your repo name.
 
     onBrokenLinks: "throw",
-    onBrokenMarkdownLinks: "warn",
 
     // Even if you don't use internationalization, you can use this field to set
     // useful metadata like html lang. For example, if your site is Chinese, you
@@ -31,6 +30,9 @@ const config: Config = {
 
     markdown: {
         mermaid: true,
+        hooks: {
+            onBrokenMarkdownLinks: "warn",
+        },
     },
     themes: ["@docusaurus/theme-mermaid"],
 
@@ -63,6 +65,14 @@ const config: Config = {
         colorMode: {
             defaultMode: "dark",
         },
+        algolia: {
+            appId: '3TCJS4JC6F',
+            apiKey: '732e1c627088d28114b1daa89f3bb8a6',
+            indexName: 'help-center',
+            contextualSearch: true,
+            // insights: true,              
+            // askAi: 'YOUR_ALGOLIA_ASK_AI_ASSISTANT_ID',              
+        },
         navbar: {
             title: "",
             logo: {
@@ -72,26 +82,28 @@ const config: Config = {
                 srcDark: "img/logo-dark.svg",
             },
             items: [
-                        {
-                         type: "docSidebar",
-                         sidebarId: "wardenapp",
-                         label: "Warden",
-                         position: "left",
-                        },
                 {
-                    href: "https://discord.com/invite/warden",
-                    label: "Discord",
-                    position: "right",
-                },
-                {
-                    href: "https://github.com/warden-protocol/wardenprotocol",
-                    label: "GitHub",
-                    position: "right",
+                    type: "docSidebar",
+                    sidebarId: "wardenapp",
+                    label: "Warden",
+                    position: "left",
                 },
                 {
                     href: "https://docs.wardenprotocol.org",
-                    label: "Dev docs",
+                    label: "Warden Protocol",
                     position: "right",
+                },
+                {
+                    'aria-label': 'Discord Invite',
+                    'className': 'navbar--discord-link',
+                    'href': 'https://discord.com/invite/wardenprotocol',
+                    'position': 'right',
+                },
+                {
+                    'aria-label': 'GitHub Repository',
+                    'className': 'navbar--github-link',
+                    'href': 'https://github.com/warden-protocol/wardenprotocol',
+                    'position': 'right',
                 },
             ],
         },

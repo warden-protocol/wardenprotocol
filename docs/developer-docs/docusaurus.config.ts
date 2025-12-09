@@ -67,6 +67,14 @@ const config: Config = {
         colorMode: {
             defaultMode: "dark",
         },
+        algolia: {
+            appId: '3TCJS4JC6F',
+            apiKey: '732e1c627088d28114b1daa89f3bb8a6',
+            indexName: 'developer-docs',
+            contextualSearch: true,
+            // insights: true,              
+            // askAi: 'YOUR_ALGOLIA_ASK_AI_ASSISTANT_ID',              
+        },
         navbar: {
             title: "",
             logo: {
@@ -107,14 +115,21 @@ const config: Config = {
                     position: "right"
                 },
                 {
-                    href: "https://discord.com/invite/wardenprotocol",
-                    label: "Discord",
+                    href: "https://help.wardenprotocol.org",
+                    label: "User guides",
                     position: "right",
                 },
                 {
-                    href: "https://github.com/warden-protocol/wardenprotocol",
-                    label: "GitHub",
-                    position: "right",
+                    'aria-label': 'Discord Invite',
+                    'className': 'navbar--discord-link',
+                    'href': 'https://discord.com/invite/wardenprotocol',
+                    'position': 'right',
+                },
+                {
+                    'aria-label': 'GitHub Repository',
+                    'className': 'navbar--github-link',
+                    'href': 'https://github.com/warden-protocol/wardenprotocol',
+                    'position': 'right',
                 },
             ],
         },

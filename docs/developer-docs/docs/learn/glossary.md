@@ -255,4 +255,4 @@ Learn more: [Manifesto](warden-manifesto).
 
 ## Warden Studio
 
-Warden Studio (now in Alpha) is a toolkit that provides builders with everything they need to develop, test, and publish [Community Agents](#community-agent) directly to [Warden](#warden) users. Upon publication, Warden Studio generates [Agent Passports](#agent-passport).
+Warden Studio (now in Alpha) is a platform where developers can register and monetize their [Community Agents](#community-agent), publishing them directly to [Warden](#warden) users. Upon publication, Warden Studio generates [Agent Passports](#agent-passport).

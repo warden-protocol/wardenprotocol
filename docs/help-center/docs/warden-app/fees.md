@@ -57,9 +57,9 @@ When you deposit to your [trading wallet](trade#manage-the-trading-wallet) from 
 
 Withdrawing to Arbitrum is subject to a flat fee:
 
-| Fee type           | Amount | Currency | Description                                           |
-| ------------------ | ------ | -------- | ----------------------------------------------------- |
-| Withdrawal gas fee | 1      | USDC     | A flat fee for covering Arbitrum gas                  |
+| Fee type       | Amount | Currency | Description                                             |
+| ---------------| ------ | -------- | ------------------------------------------------------- |
+| Withdrawal fee | 1      | USDC     | A fee paid to Hyperliquid for processing the withdrawal |
 
 As to other chains, we manage deposits and withdrawals through [OneBalance](https://www.onebalance.io), charging dynamic fees:
 

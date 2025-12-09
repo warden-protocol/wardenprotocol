@@ -55,18 +55,18 @@ When you deposit to your [trading wallet](trade#manage-the-trading-wallet) from 
 | ---------------- | ------ | -------- | ----------------------------------------------------- |
 | Arbitrum gas fee | varies | USDC     | A fee paid to Arbitrum for processing the transaction |
 
-Withdrawing to Arbitrum is subject to a flat fee:
-
-| Fee type       | Amount | Currency | Description                                             |
-| ---------------| ------ | -------- | ------------------------------------------------------- |
-| Withdrawal fee | 1      | USDC     | A fee paid to Hyperliquid for processing the withdrawal |
-
-As to other chains, we manage deposits and withdrawals through [OneBalance](https://www.onebalance.io), charging dynamic fees:
+We manage deposits from other chains through [OneBalance](https://www.onebalance.io), charging dynamic fees:
 
 | Fee type    | Amount | Currency | Description                                              |
 | ----------- | ------ | -------- | -------------------------------------------------------- |
 | Gas fee     | varies | USDC     | The underlying bridge/network gas (source + destination) |
 | Service fee | varies | USDC     | A service fee for handling the transaction               |
+
+All withdrawals are subject to a flat fee paid to [Hyperliquid](https://hyperliquid.gitbook.io/hyperliquid-docs/hypercore/bridge):
+
+| Fee type       | Amount | Currency | Description                                             |
+| ---------------| ------ | -------- | ------------------------------------------------------- |
+| Withdrawal fee | 1      | USDC     | A fee paid to Hyperliquid for processing the withdrawal |
 
 ## Betflix fees
 

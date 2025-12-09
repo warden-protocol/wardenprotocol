@@ -72,26 +72,28 @@ const config: Config = {
                 srcDark: "img/logo-dark.svg",
             },
             items: [
-                        {
-                         type: "docSidebar",
-                         sidebarId: "wardenapp",
-                         label: "Warden",
-                         position: "left",
-                        },
                 {
-                    href: "https://discord.com/invite/warden",
-                    label: "Discord",
-                    position: "right",
-                },
-                {
-                    href: "https://github.com/warden-protocol/wardenprotocol",
-                    label: "GitHub",
-                    position: "right",
+                    type: "docSidebar",
+                    sidebarId: "wardenapp",
+                    label: "Warden",
+                    position: "left",
                 },
                 {
                     href: "https://docs.wardenprotocol.org",
-                    label: "Dev docs",
+                    label: "Warden Protocol",
                     position: "right",
+                },
+                {
+                    'aria-label': 'Discord Invite',
+                    'className': 'navbar--discord-link',
+                    'href': 'https://discord.com/invite/wardenprotocol',
+                    'position': 'right',
+                },
+                {
+                    'aria-label': 'GitHub Repository',
+                    'className': 'navbar--github-link',
+                    'href': 'https://github.com/warden-protocol/wardenprotocol',
+                    'position': 'right',
                 },
             ],
         },

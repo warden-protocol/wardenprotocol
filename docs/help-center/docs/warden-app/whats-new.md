@@ -12,12 +12,13 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 #### New features
 
-- [Agent Hub](explore-ai-agents#access-agents): Introduced the **Community** tab where you can access **Community Agents**...
-- Added new Community Agents: [Caesar Agent](explore-ai-agents#caesar-agent) and [Caesar The Scientist](explore-ai-agents#caesar-the-scientist).
+- [The Agent Hub](explore-ai-agents): Introduced the **Community** tab where you can access Community Agents built by our developer community.
+- [Community Agents](explore-ai-agents#community-agents): Added [Crypto Research by Caesar](explore-ai-agents#crypto-research-by-caesar) and [Deep Research by Caesar](explore-ai-agents#crypto-research-by-caesar).
+- [Agents Credits](manage-your-wallets#agents-credits): Added a wallet holding credits for Agents.
 
 #### Improvements
 
-- XXX
+- [Betflix](play-betflix): XXX
 
 #### Fixes
 
@@ -27,7 +28,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 #### New features
 
-- [Trading](trade): Introduced the AI Trading Terminal for perpetual trading. The Terminal supports the following features:
+- [Trading](trade): Introduced the **AI Trading Terminal** for perpetual trading. The Terminal supports the following features:
   - Market and limit orders
   - Easy order and position management
   - A dedicated trading wallet supporting USDC deposits from multiple chains

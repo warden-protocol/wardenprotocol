@@ -53,7 +53,7 @@ To start trading, you need **USDC** on **Ethereum**, **Arbitrum**, **Base**, or 
 
 ### 2. Create an order
 
-An **order** is an instruction for opening a [position](#position) (participating in a perpetual contract). Warden supports both [market](#market-order) and [limit orders](#limit-order).
+An **order** is an instruction to buy or sell a perpetual contract. Warden supports **market** and **limit orders** ([learn more](#order)).
 
 Once you have funds in your trading wallet, you can create an order. [Open the AI Trading Terminal](#access-the-trading-terminal) and do this:
 
@@ -77,20 +77,18 @@ Selecting a pair determines the perp you'll trade. Tokens are always paired with
 
 ### 3. Manage your trade
 
-After you [create an order](#2-create-an-order), the following will happen:
-- A market order will open a position immediately at the best available perp price.
-- A limit order will open a position only when the perp price reaches your target price.
+After you [create an order](#2-create-an-order), it **executes (fills)**. Execution may open new [positions](#position), modify existing ones, or partially close them. It's subject to [trade fees](fees#trade-fees).
 
 :::note Notes
-- Opening a position is subject to [trade fees](fees#trade-fees).
-- Long limit orders execute at the target price or lower, shorts execute at the target price or higher.
+- Market orders fill immediately at the best available price, and limit orders fill when the price reaches your target price ([learn more](#order)).
+- Perps use a single combined position per token. For example, if you already have a position in BTC and place another BTC order in the same direction, the fill will update the size of the position and your effective leverage.
 :::
 
-In the [AI Trading Terminal](#access-the-trading-terminal), you can track and manage your positions and pending limit order. See the tabs in the bottom panel:
+In the [AI Trading Terminal](#access-the-trading-terminal), you can track and manage your positions and orders. See the tabs in the bottom panel:
 
-- **Positions**: Access your open positions.
-- **Orders**: Access your pending limit orders.
-- **History**: View your closed positions.
+- **Positions**: Your open positions—the resulting perp exposure.
+- **Orders**: Your orders that aren't fully executed yet. This includes unfilled parts of partially filled limit orders.
+- **History**: Filled and cancelled orders.
 
 To manage an open position or a limit order, click the **Manage** button next to it. You can do the following:
 
@@ -109,11 +107,11 @@ Next to each position, you can see its [liquidation price](#liquidation). You ca
 When [creating an order](#2-create-an-order), you can set the following parameters in the configuration panel:
 
 - **Long**/**Short**: A setting indicating whether your position will benefit when the [spot price](#spot-price) moves up (long) or down (short).
-- **Order Type**:
-  - **Market**: Orders that open positions immediately at the best available perp price.
-  - **Limit**: Orders that open positions at a price you set (or better).
-- **Price**: The price at which you wish to open your position. Long orders execute at the target price or lower, shorts execute at the target price or higher. This option is available only for limit orders. 
-- **Amount**: The token amount to trade, set in USDC. This will become your security deposit, or [margin](#margin).
+- **Order Type**: The order type.
+  - **Market**: Orders that fill immediately at the best available perp price.
+  - **Limit**: Orders that fill at a price you set (or better).
+- **Price** (only for limit orders): The price at which you wish to open your position. Long orders fill at the target price or lower, and shorts at the target price or higher.
+- **Amount**: The token amount to trade, set in USDC.
 - **Leverage**: Your [leverage](#leverage)—a multiplier defining how strongly the token's price movements affect your gains and losses. It can be **2–40x** depending on the token.
 - **Auto-Close**: Automatically close your position when the market price reaches the thresholds you set:
     - **Take Profit**: The upper price where your position closes to secure profit.
@@ -123,26 +121,41 @@ When [creating an order](#2-create-an-order), you can set the following paramete
 You can adjust **Auto-Close** even after creating an order. See [Manage your trade](#3-manage-your-trade).
 :::
 
+:::note
+When you enable **Auto-Close** (**Take Profit**/**Stop Loss**), Warden creates additional conditional orders that work alongside your main order.
+:::
+
 There are also additional parameters that are automatically calculated based on your settings:
 
+- **Margin**: Your security deposit ([learn more](#margin)).
 - **Entry**: The estimated price at which your position will open if executed now, based on the current market conditions.
 - **Liquidation price**: The price at which your position will automatically close to prevent further losses.
 - **Size**: The total value of your position, determined by your margin and leverage.
-- **Est. fee**: The total fee charged for opening a position. See [trade fees](fees#trade-fees).
+- **Est. fee**: The total fee charged for executing an order. See [trade fees](fees#trade-fees).
 
 ## Manage the trading wallet
+
+### Access the wallet
 
 Warden stores your perpetual trading balance in a separate **trading wallet**. This protects assets in the [main Warden wallet](manage-your-wallet) from being [liquidated](#liquidation).
 
 To switch between the main and trading wallets at any time, click the wallet icon at the top right and select **Main Account** or **Trading**. When you're in the **Trade** tab, the trading wallet is selected automatically.
 
+:::tip
+The balance you see is always your **withdrawable amount**.
+:::
+
 ![Access the trading wallet in Warden](../../static/img/warden-app/trade-6.png)
 ![Switch between the main and trading wallets in Warden](../../static/img/warden-app/trade-7.png)
 
-The trading wallet holds its balance in **USDC** on **Arbitrum**, but you can fund it from almost any of the supported chains (see below), as long as you have USDC in your main wallet. This is how to move funds between your wallets:
+### Move funds
+
+The trading wallet holds its balance in **USDC** on **Arbitrum**, but you can fund it from almost any of the supported chains (see below), as long as you have USDC in your main wallet.
+
+This is how to move funds between your wallets:
 
 1. Open the trading wallet.
-2. Click **Deposit** or **Withdraw**.
+2. Click **Deposit** or **Withdraw**. Both transactions are subject to [fees](fees#trading-wallet-fees).
 3. Enter the amount and confirm. Deposits start from **$6**, and withdrawals from **$5**.
 4. Warden will transfer USDC from or to your main wallet.
 
@@ -156,7 +169,7 @@ To deposit, make sure your [main wallet](manage-your-wallet) has **USDC** on the
 :::
 
 :::note
-When depositing, you'll see your **consolidated USDC balance** across all these chains. Depositing on Arbitrum is a native transaction, so it's the fastest. Deposits from other chains are **automatically bridged to Arbitrum**. You don't have to handle gas fees or bridging—Warden does everything for you. 
+When depositing, you'll see your **consolidated USDC balance** across all these chains. Depositing on Arbitrum is a native transaction, so it's the fastest. Deposits from other chains are **automatically bridged to Arbitrum**. You don't have to handle [gas fees](fees#trading-wallet-fees) or bridging—Warden does everything for you.
 :::
 
 ## Analyze the market
@@ -164,8 +177,12 @@ When depositing, you'll see your **consolidated USDC balance** across all these 
 In the [AI Trading Terminal](#access-the-trading-terminal), you can access various market analysis tools helping you make informed decisions on your trades:
 
 - **The live chart** displays perp price movements. It supports multiple chart types, technical indicators, drawing tools, and more.
-- **The order book** shows real-time perp market liquidity. The market data for the chart and order book is provided by [Hyperliquid](https://hyperfoundation.org).
+- **The order book** A real-time list of all active buy and sell orders. It shows available amounts at each price level, letting you see market liquidity and the spread between bids and asks.
 - **Messari Signals** powered by [Messari](https://messari.io) are AI-generated token reports. For deeper insights, use the  [Messari Deep Research](explore-ai-agents#messari-deep-research) Agent.
+
+:::note
+The market data for the chart and order book is provided by [Hyperliquid](https://hyperfoundation.org).
+:::
 
 ![Analyze the perpetual trading market in Warden](../../static/img/warden-app/trade-8.png)
 ![See perps on a live chart in Warden](../../static/img/warden-app/trade-9.png)
@@ -181,26 +198,18 @@ A **trade perp** (**perpetual contract**) is a never-expiring derivative that tr
 
 #### Position
 
-A **position** is your participation (exposure) in a [perp](#trade-perp). If you take a **long** position, that means you expect the token's [spot price](#spot-price) to increase and will profit from it. **Short** positions profit when the price moves down.
+A **position** is your participation (exposure) in a [perp](#trade-perp), typically [leveraged](#leverage). Positions are created or changed when your [orders](#order) are executed (filled). There are two position types you can take:
 
-#### Market order
+- A **long** position means you expect the [spot price](#spot-price) to increase and will profit from it.
+- A **Short** position will profit when the price moves down.
 
-A **market order** is an instruction to open a [position](#position) in a [perp](#trade-perp) immediately at the best available perp price.
-
-#### Limit order
-
-A **limit order** is an instruction to open a [position](#position) in a [perp](#trade-perp) when its price reaches your preferred price or better:
-
-- Long orders execute at the target price or lower.
-- Short orders execute at the target price or higher.
-
-#### Spot price
-
-**Spot price** is the current market price at which a token can be immediately bought or sold.
+:::note
+Perps use a single combined position per token. For example, if you already have a position in BTC and place another BTC order in the same direction, the fill will update the effective leverage and size (total value) of the position.
+:::
 
 #### Margin
 
-**Margin** is the security deposit that keeps your [positions](#position) open. If your margin drops too low because the position is losing money, a [liquidation](#liquidation) will happen: Warden will automatically close the position.
+**Margin** is the security deposit that keeps your [positions](#position) open. If your margin drops too low because the position is losing money, a [liquidation](#liquidation) will happen: Warden will automatically close the position. Note that Warden uses **cross-margin**: there is one shared margin pool for all positions.
 
 #### Leverage
 
@@ -209,6 +218,14 @@ A **limit order** is an instruction to open a [position](#position) in a [perp](
 :::warning
 Trading with leverage amplifies gains and losses, increasing the risk of [liquidation](#liquidation).
 :::
+
+#### Liquidation
+
+**Liquidation** happens when losses on your [leveraged position](#leverage) reduce your [margin](#margin) to the point where it can no longer cover the risk. To prevent your balance from going negative, Warden automatically closes your position and finalizes the loss.
+
+#### Spot price
+
+The **spot price** is the current market price at which a token can be immediately bought or sold. The [perp](#trade-perp) price remains close to the spot price as a result of [funding rates](#funding-rates).
 
 #### Funding rates
 
@@ -221,6 +238,17 @@ Trading with leverage amplifies gains and losses, increasing the risk of [liquid
 No action is needed: Warden handles these payments automatically.
 :::
 
-#### Liquidation
+#### Order
 
-**Liquidation** happens when losses on your [leveraged position](#leverage) reduce your [margin](#margin) to the point where it can no longer cover the risk. To prevent your balance from going negative, Warden automatically closes your position and finalizes the loss.
+An **order** is an instruction to buy or sell a [perp](#trade-perp). Executing (filling) an order may open new [positions](#position), modify existing ones, or partially close them. It's subject to [trade fees](fees#trade-fees).
+
+Warden supports two order types with different fill conditions:
+
+- A **market order** fills immediately at the best available price.
+- A **limit order** fills when its price reaches your selected price or better:
+  - Long orders fill at the target price or lower.
+  - Short orders fill at the target price or higher.
+
+:::note
+Limit orders rest on the [order book](#analyze-the-market) until they can execute. Your order fills only if there are enough buyers or sellers at the target price to match the size of your order. If only part of the size is matched, the order fills partially.
+:::

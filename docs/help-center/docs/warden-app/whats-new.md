@@ -8,6 +8,21 @@ sidebar_position: 10
 
 Here you'll find the latest Warden release highlights, including new features, improvements, and bug fixes. This section helps you quickly see what's changed and how it can enhance your experience.
 
+## December 10, 2025
+
+#### New features
+
+- [Agent Hub](explore-ai-agents#access-agents): Introduced the **Community** tab where you can access **Community Agents**...
+- Added new Community Agents: [Caesar Agent](explore-ai-agents#caesar-agent) and [Caesar The Scientist](explore-ai-agents#caesar-the-scientist).
+
+#### Improvements
+
+- XXX
+
+#### Fixes
+
+- XXX
+
 ## November 28, 2025
 
 #### New features

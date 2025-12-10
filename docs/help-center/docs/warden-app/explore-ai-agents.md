@@ -8,6 +8,11 @@ sidebar_position: 6
 
 Explore the **Agent Hub** to unlock the full potential of Warden with **AI Agents**! They allow you to swap, bridge, research, and much more through a simple chat interface.
 
+We support two Agent types:
+
+- **Verified Warden Agents**: See the [Warden AMA Agent](#warden-ama-agent), [asset management Agents](#asset-management-agents), and [research Agents](#research-agents).
+- **Warden Community Agents**: See [Community Agents](#community-agents).
+
 In the sections below, you'll find the list of available Agents—and more are coming soon!
 
 ## Access Agents
@@ -16,7 +21,7 @@ You can explore and select Agents in the **Agent Hub**:
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. In the left menu, open the **Agents** tab.
-3. Select an Agent. If required, review and accept the legal terms.
+3. Select an Agent. Use the **Verified**/**Community** tabs to switch between agent types.
 4. After selecting an Agent, you'll be taken to the [Chats tab](use-the-chat#start-chatting).
 5. Make sure you've [funded your wallet](manage-assets#deposit-assets) on one of the chains supported by the chosen Agent.
 
@@ -172,35 +177,6 @@ To start using this Agent, you need to read and agree to the Uniswap Labs terms 
 
 Research Agents focus on collecting and analyzing data.
 
-### Caesar Agent
-
-The **Caesar Agent** integrates with the [Caesar API](https://docs.caesar.xyz/get-started/introduction) to deliver cutting-edge research on financial and prediction markets.
-
-This Agent can do the following:
-
-- Discover markets and platforms based on user criteria—for example, low-risk and low-fee
-- Compare prediction or crypto platforms by usability, fees, and features
-- Summarize effective strategies and insights from real-world examples
-- Provide step-by-step guidance for using tools and interpreting market data
-- Create personalized plans for tracking market trends
-- And more
-
-Fees: [Caesar fee](fees#caesar-fee)
-
-### Caesar The Scientist
-
-**Caesar The Scientist** integrates with the [Caesar API](https://docs.caesar.xyz/get-started/introduction) to deliver deep scientific research.
-
-Supported capabilities include the following:
-
-- Perform deep scientific research across biology, bioinformatics, and biotechnology
-- Summarize recent findings from peer-reviewed scientific literature 
-- Compare studies and experimental results across related research areas
-- Identify and describe analytical techniques for specific scientific tasks
-- Explain complex scientific workflows step-by-step
-
-Fees: [Caesar fee](fees#caesar-fee)
-
 ### CoinGecko
 
 **CoinGecko** is an Agent that integrates with [CoinGecko](https://www.coingecko.com) to deliver insights and analytics on cryptocurrencies. You can analyze up to **2 coins**.
@@ -267,6 +243,39 @@ For active portfolio management that integrates analytics with automated investm
 - Ticker-based verification: You provide WachAI with a token's ticker, and the Agent fetches verification data. This method is less reliable due to possible duplicates in token tickers.
 
 Fees: [WachAI fee](fees#wachai-fee)
+
+## Community Agents
+
+**Community Agents** are...
+
+### Caesar Agent
+
+The **Caesar Agent** integrates with the [Caesar API](https://docs.caesar.xyz/get-started/introduction) to deliver cutting-edge research on financial and prediction markets.
+
+This Agent can do the following:
+
+- Discover markets and platforms based on user criteria—for example, low-risk and low-fee
+- Compare prediction or crypto platforms by usability, fees, and features
+- Summarize effective strategies and insights from real-world examples
+- Provide step-by-step guidance for using tools and interpreting market data
+- Create personalized plans for tracking market trends
+- And more
+
+Fees: [Caesar fee](fees#caesar-fee)
+
+### Caesar The Scientist
+
+**Caesar The Scientist** integrates with the [Caesar API](https://docs.caesar.xyz/get-started/introduction) to deliver deep scientific research.
+
+Supported capabilities include the following:
+
+- Perform deep scientific research across biology, bioinformatics, and biotechnology
+- Summarize recent findings from peer-reviewed scientific literature 
+- Compare studies and experimental results across related research areas
+- Identify and describe analytical techniques for specific scientific tasks
+- Explain complex scientific workflows step-by-step
+
+Fees: [Caesar fee](fees#caesar-fee)
 
 ## Coming soon
 

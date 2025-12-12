@@ -20,7 +20,7 @@ You can access your wallets from any Warden tab:
 3. This will open the wallet panel at the right.
 4. Use the menu at the top of the wallet to switch between your accounts:
    - **Main account**: [Your main account](#the-main-account)
-   - **Agent Credits**: [The Agent Credits wallet](#agents-credits)
+   - **Agents Credits**: [The Agents Credits wallet](#agents-credits)
    - **Trading**: [The trading wallet](#trading)
    - **Bets**: [The Betflix wallet](#betflix)
 
@@ -147,13 +147,13 @@ You can fund your dedicated wallets only from the [main account](#the-main-accou
 
 ### Agents Credits
 
-The **Agents Credits wallet** is a dedicated place where Warden stores your **Agent Credits**, which are used to pay certain [AI Agents](explore-ai-agents). The balance is held as **USDC on Base**.
+The **Agents Credits wallet** is a dedicated place where Warden stores your **Agents Credits**, which are used to pay certain [AI Agents](explore-ai-agents). The balance is held as **USDC on Base**.
 
 This is how you can fund this wallet from the [main account](#the-main-account):
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. Click the wallet icon in the top-right corner.
-3. Make sure that **Agent Credits** is selected.
+3. Make sure that **Agents Credits** is selected.
 4. Click **Deposit**.
 3. Enter the amount and confirm.
 

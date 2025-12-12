@@ -68,7 +68,7 @@ The **Base Farmer** Agent assists you with managing your tokens on the Base chai
 - Swaps tokens using [Uniswap](https://app.uniswap.org)
 - Transfers tokens
 
-Networks: **Base**
+Networks:
 
 - **Base**
 - **Arbitrum**

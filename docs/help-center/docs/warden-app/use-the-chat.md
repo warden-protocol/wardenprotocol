@@ -24,7 +24,7 @@ You can access Agent chats anytime by navigating to the **Chats** tab in the lef
 
 To start interacting, just type your request in the chat box.
 
-For example, to perform a transaction, [fund your wallet](manage-your-wallets#deposit) and ask the Warden AMA Agent to send or swap an asset.
+For example, to perform a transaction, [fund your wallet](manage-your-wallets#deposit) and ask the Warden AMA Agent to [send or swap an asset](manage-your-wallets#send-or-swap).
 
 :::note
 Transactions are subject to [transfer](fees#transfer-fee) and [swap fees](fees#swap-fees).

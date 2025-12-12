@@ -32,7 +32,7 @@ Alternatively, you can access Agents directly from the **Chats** tab. Use the dr
 ![Manage AI chats in Warden](../../static/img/warden-app/use-the-chat-3.png)
 
 :::tip
-Interacting with some of the Agents is subject to fees. Before starting, you may need to [fund your main account](manage-your-wallets#deposit) or the [Agents credits wallet](manage-your-wallets#agents-credits). See the requirements for each Agent below.
+Interacting with some of the Agents is subject to fees. Before starting, you may need to [fund your main account](manage-your-wallets#deposit) or the [Agents Credits wallet](manage-your-wallets#agents-credits). See the requirements for each Agent below.
 :::
 
 ## Warden AMA Agent
@@ -239,7 +239,7 @@ This Agent can do the following:
 - Create personalized plans for tracking market trends
 - And more
 
-To use this Agent, you need to fund your [Agents credits wallet](manage-your-wallets#agents-credits).
+To use this Agent, you need to fund your [Agents Credits wallet](manage-your-wallets#agents-credits).
 
 Fees: [Caesar fees](fees#caesar-fees).
 
@@ -255,7 +255,7 @@ Supported capabilities include the following:
 - Explain complex scientific workflows step-by-step
 - And more
 
-To use this Agent, you need to fund your [Agents credits wallet](manage-your-wallets#agents-credits).
+To use this Agent, you need to fund your [Agents Credits wallet](manage-your-wallets#agents-credits).
 
 Fees: [Caesar fees](fees#caesar-fees).
 

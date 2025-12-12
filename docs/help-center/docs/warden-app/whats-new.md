@@ -8,21 +8,13 @@ sidebar_position: 10
 
 Here you'll find the latest Warden release highlights, including new features, improvements, and bug fixes. This section helps you quickly see what's changed and how it can enhance your experience.
 
-## December 10, 2025
+## December 9, 2025
 
 #### New features
 
 - [The Agent Hub](explore-ai-agents): Introduced the **Community** tab where you can access Community Agents built by our developer community.
 - [Community Agents](explore-ai-agents#community-agents): Added [Crypto Research by Caesar](explore-ai-agents#crypto-research-by-caesar) and [Deep Research by Caesar](explore-ai-agents#crypto-research-by-caesar).
 - [Agents Credits](manage-your-wallets#agents-credits): Added a wallet holding credits for Agents.
-
-#### Improvements
-
-- [Betflix](play-betflix): XXX
-
-#### Fixes
-
-- XXX
 
 ## November 28, 2025
 

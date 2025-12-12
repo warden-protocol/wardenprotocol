@@ -8,7 +8,7 @@ sidebar_position: 8
 
 This guide explains how to manage your Warden wallets:
 
-- [The main account](#the-main-account): The main wallet for managing your funds on all the supported chains.
+- [The main account](#the-main-account): The main wallet holding your assets on the supported chains.
 - [Dedicated wallets](#dedicated-wallets): Special wallets used for Agent and trading fees.
 
 ## Access your wallets
@@ -18,7 +18,11 @@ You can access your wallets from any Warden tab:
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. Click the wallet icon in the top-right corner.
 3. This will open the wallet panel at the right.
-4. To switch between wallets, use the menu at the top of the wallet.
+4. Use the menu at the top of the wallet to switch between your accounts:
+   - **Main account**: [Your main account](#the-main-account)
+   - **Agent Credits**: [The Agent Credits wallet](#agents-credits)
+   - **Trading**: [The trading wallet](#trading)
+   - **Bets**: [The Betflix wallet](#betflix)
 
 ![Access your wallet in Warden](../../static/img/warden-app/manage-your-wallet-1.png)
 ![View your wallet in Warden](../../static/img/warden-app/manage-your-wallet-2.png)
@@ -53,11 +57,13 @@ To view and unlink your linked wallets, see the [account settings](#configure).
 
 ### Send or swap
 
-In Warden, you can send or swap assets using simple **chat commands**:
+You can send or swap assets in your main account using simple **chat commands**:
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. Make sure your [main account is funded](#deposit).
-3. In the **Chats** tab, ask the [Warden AMA Agent](explore-ai-agents#warden-ama-agent) to **send** or **swap** an asset.
+3. Initiate a transaction. There are two ways to do it:
+   - In the main account, click **Swap**/**Send**. This will start a chat.
+   - In the **Chats** tab, ask the [Warden AMA Agent](explore-ai-agents#warden-ama-agent) to send or swap an asset.
 4. Provide the required details and confirm the transaction in the chat.
 5. The Agent will share the transaction details with you.
 
@@ -74,15 +80,14 @@ Transactions are subject to [transfer](fees#transfer-fee) and [swap fees](fees#s
 
 ![Send or swap assets using the Warden AMA Agent](../../static/img/warden-app/manage-assets-3.png)
 
-### View your activity
+### View your assets
 
 To view your balances and activity, do this:
 
-1. [Open the wallet](#access-your-wallets).
-2. Make sure that **Main Account** is selected.
-3. See your balances and activity on the **Assets** and **Activity** tabs.
+1. [Open the main account](#access-your-wallets).
+2. See the **Assets** and **Activity** tabs.
 
-Alternatively, you can ask the default [Warden AMA Agent](explore-ai-agents#warden-ama-agent) about your balances.
+Alternatively, you can go to the **Chats** tab ask the default [Warden AMA Agent](explore-ai-agents#warden-ama-agent) about your balances.
 
 ![View your balance and activity in Warden](../../static/img/warden-app/manage-assets-1.png)
 
@@ -141,18 +146,34 @@ To copy your wallet address (the public key), take these steps:
 You can fund your dedicated wallets only from the [main account](#the-main-account).
 :::
 
-### Agents credits
+### Agents Dredits
 
-The **Agents credits wallet** is a dedicated place where Warden stores your credits...
+The **Agents Credits wallet** is a dedicated place where Warden stores your **Agent Credits**, which are used to pay certain [AI Agents](explore-ai-agents). The balance is held as **USDC on Base**.
+
+This is how you can fund this wallet from the [main account](#the-main-account):
+
+1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
+2. Click the wallet icon in the top-right corner.
+3. Make sure that **Agent Credits** is selected.
+4. Click **Deposit**.
+3. Enter the amount and confirm.
+
+:::tip
+To deposit, make sure your main account has **USDC on Base**.
+:::
+
+:::warning
+ At the moment, withdrawals aren't allowed.
+:::
 
 ### Trading
 
-The **trading wallet** is a dedicated place where Warden stores your [perpetual trading](#trading) balance to protect assets in the [main account](#the-main-account).
+The **trading wallet** is a dedicated place where Warden stores your perpetual trading balance to protect assets in the [main account](#the-main-account).
 
-Learn more: [Manage the trading wallet](trade#manage-the-trading-wallet).
+Learn more: [Perpetual trading](trade#manage-the-trading-wallet).
 
 ### Betflix
 
-The **Betflix wallet** is a dedicated place where Warden stores your [Betflix](play-betflix) balance to protect assets in the [main account](#the-main-account).
+The **Betflix wallet** is a dedicated place where Warden stores your Betflix balance to protect assets in the [main account](#the-main-account).
 
-Learn more: [Manage the Betflix wallet](play-betflix#manage-the-betflix-wallet).
+Learn more: [Play Betflix](play-betflix#manage-the-betflix-wallet).

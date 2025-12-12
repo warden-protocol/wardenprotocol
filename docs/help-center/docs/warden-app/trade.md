@@ -139,7 +139,7 @@ There are also additional parameters that are automatically calculated based on 
 
 Warden stores your perpetual trading balance in a separate **trading wallet**, held as **USDC on Arbitrum**. This protects assets in your [main account](manage-your-wallets#the-main-account) from being [liquidated](#liquidation).
 
-To switch between the main and trading wallets at any time, click the wallet icon at the top right and select **Main Account** or **Trading**. When you're in the **Trade** tab, the trading wallet is selected automatically.
+To switch between the main and trading wallets at any time, click the wallet icon at the top right and select **Trading** or **Main Account**.
 
 :::note
 The balance you see here is only your **withdrawable amount**.

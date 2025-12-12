@@ -74,7 +74,7 @@ You can view the game statistics in your Betflix wallet, located on the right of
 
 Warden stores your Betflix balance in a separate **Betflix wallet**, held as **USDC on Solana**. This protects assets in your [main account](manage-your-wallets#the-main-account).
 
-When you open the **Betflix** tab, the Betflix wallet automatically opens in the right panel. To switch between the main and Betflix wallets at any time, select **Main Account** or **Bets** from the drop-down menu at the top:
+To switch between the main and Betflix wallets at any time, , click the wallet icon at the top right and select **Main Account** or **Bets** at the top of the wallet:
 
 ![Manage the Betflix wallet in Warden](../../static/img/warden-app/play-betflix-3.png)
 

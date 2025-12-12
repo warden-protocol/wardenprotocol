@@ -52,13 +52,15 @@ If you get stuck or have any questions, join the developer channel in our Discor
 
 ## Requirements
 
-You can implement any Web3 or Web2 workflow and any custom functionality: your Agent can connect to APIs, use databases, tools, and so on. Please keep in mind the following requirements and technical limitations:
+You can implement any Web3 or Web2 workflow and any custom functionality: your Agent can connect to APIs, use databases, tools, and so on.
+
+**To qualify for rewards**, please keep in mind the following requirements and technical limitations:
 
 - At the moment, you must use [LangGraph](https://www.langchain.com/langgraph). Support for more frameworks is coming soon.
 - You can host your Agent on LangGraph Cloud or on your own infrastructure.
 - Make sure that your Agent is accessible through an API. **No UI is required**.
 - Make sure that you only have one Agent per LangGraph instance to keep your Agents separated.
-- For security reasons, Agents will not have access to users' wallets in the beginning, nor will they be able to store any data on Warden infrastructure.
+- For security reasons, Agents will not have access to users' wallets, nor will they be able to store any data on Warden infrastructure. These limitations will be removed in the next phase of Warden Agent Hub in the beginning of 2026.
 
 We'll soon launch [Warden Studio](/learn/glossary#warden-studio)—a platform where you can register and monetize your Agent. Once it's available, you'll be able to add your Agent directly there, providing just the following:
 

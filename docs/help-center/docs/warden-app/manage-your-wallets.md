@@ -164,7 +164,7 @@ To deposit, make sure your main account has **USDC on Base**.
 :::
 
 :::warning
- At the moment, withdrawals aren't allowed.
+Currently, withdrawals aren't allowed.
 :::
 
 ![Deposit to the Agents Credits wallet in Warden](../../static/img/warden-app/manage-your-wallets-credits-1.png)

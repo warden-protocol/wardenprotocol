@@ -6,7 +6,7 @@ sidebar_position: 5
 
 ## Overview
 
-In Warden, you can use **perpetual contracts** (**trade perps**) to trade on future price movements of underlying token without actually owning them. At the moment, Warden supports [Hyperliquid](https://hyperfoundation.org) perps.
+In Warden, you can use **perpetual contracts** (**trade perps**) to trade on future price movements of underlying token without actually owning them. Currently, Warden supports [Hyperliquid](https://hyperfoundation.org) perps.
 
 Warden's **AI Trading Terminal** brings real-time market analysis tools directly into your trading screen so you make informed decisions before placing a trade. This includes AI signals, an order book, and a chart with technical indicators and drawing tools.
 

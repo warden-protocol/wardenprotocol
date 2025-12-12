@@ -34,7 +34,7 @@ An Agent Passport is an ensemble of [Agent Identity](#agent-identity), the corre
 
 ## AI Agent
 
-An AI Agent is an AI-driven program that supports both offchain and onchain operations. Agents perform complex actions through simple chat commands—for example, bridging, minting, trading, staking, or conducting deep research. At the moment, we focus on financial, autopilot, institutional (custodial), and ecosystem Agents.
+An AI Agent is an AI-driven program that supports both offchain and onchain operations. Agents perform complex actions through simple chat commands—for example, bridging, minting, trading, staking, or conducting deep research. Currently, we focus on financial, autopilot, institutional (custodial), and ecosystem Agents.
 
 [Warden Protocol](#warden-protocol) manages the entire life cycle of Agents in [Warden Agent Network](#warden-agent-network):
 

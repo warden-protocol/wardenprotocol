@@ -42,7 +42,7 @@ Within Warden, you can do the following:
 
 ## Supported networks
 
-At the moment, Warden supports the following networks:
+Currently, Warden supports the following networks:
 
 - **Ethereum**
 - **Solana**

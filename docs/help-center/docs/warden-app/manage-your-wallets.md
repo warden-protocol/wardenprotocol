@@ -153,9 +153,9 @@ This is how you can fund this wallet from the [main account](#the-main-account):
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. Click the wallet icon in the top-right corner.
-3. Make sure that **Agents Credits** is selected.
+3. Select **Agents Credits**.
 4. Click **Deposit**.
-3. Enter the amount and confirm.
+3. Enter the amount and confirm.F
 
 Once you interact with an Agent using Agent Credits, you'll see your activity right in the wallet.
 

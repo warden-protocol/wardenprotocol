@@ -91,5 +91,3 @@ This is how to move funds between your Betflix wallet and the main account:
 :::tip
 To deposit, make sure your main account has **USDC on Solana**.
 :::
-
-![Deposit to the Betflix wallet in Warden](../../static/img/warden-app/play-betflix-5.png)

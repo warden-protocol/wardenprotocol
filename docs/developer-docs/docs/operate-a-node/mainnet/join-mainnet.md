@@ -57,7 +57,7 @@ The following list shows the files and fields you need to adjust. You can do it 
 - `config.toml`   
   Add [seed nodes](https://github.com/cosmos/chain-registry/blob/master/wardenprotocol/chain.json) and adjust consensus parameters:
   ```toml
-  seeds = "7dbf2c58286b59aae1d9c121f1cee59fc21a59ef@54.220.127.230:26656,02810bc9ed25af587213a4ddb1fa4ab3a0e9978d@54.74.49.211:26656","e5ce023918478f61a3606e93b9642ca24e027328@63.33.179.20:26656"
+  seeds = "7dbf2c58286b59aae1d9c121f1cee59fc21a59ef@54.220.127.230:26656,02810bc9ed25af587213a4ddb1fa4ab3a0e9978d@54.74.49.211:26656,e5ce023918478f61a3606e93b9642ca24e027328@63.33.179.20:26656"
   ```
   ```toml
   timeout_propose = "1s"

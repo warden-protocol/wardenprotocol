@@ -87,7 +87,7 @@ To view your balances and activity, do this:
 1. [Open the main account](#access-your-wallets).
 2. See the **Assets** and **Activity** tabs.
 
-Alternatively, you can go to the **Chats** tab ask the default [Warden AMA Agent](explore-ai-agents#warden-ama-agent) about your balances.
+Alternatively, you can go to the **Chats** tab and ask the default [Warden AMA Agent](explore-ai-agents#warden-ama-agent) about your balances.
 
 ![View your balance and activity in Warden](../../static/img/warden-app/manage-your-wallets-main-2.png)
 
@@ -155,7 +155,7 @@ This is how you can fund this wallet from the [main account](#the-main-account):
 2. Click the wallet icon in the top-right corner.
 3. Select **Agents Credits**.
 4. Click **Deposit**.
-3. Enter the amount and confirm.F
+5. Enter the amount and confirm.
 
 Once you interact with an Agent using Agent Credits, you'll see your activity right in the wallet.
 

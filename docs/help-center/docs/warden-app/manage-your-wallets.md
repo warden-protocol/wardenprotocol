@@ -160,7 +160,7 @@ This is how you can fund this wallet from the [main account](#the-main-account):
 Once you interact with an Agent using Agent Credits, you'll see your activity right in the wallet.
 
 :::tip
-To deposit, make sure your main account has **USDC on Base**.
+To deposit and pay for gas, make sure your main account has **USDC and ETH** on **Base**.
 :::
 
 :::warning

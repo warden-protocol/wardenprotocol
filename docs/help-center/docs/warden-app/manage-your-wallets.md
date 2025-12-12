@@ -24,8 +24,8 @@ You can access your wallets from any Warden tab:
    - **Trading**: [The trading wallet](#trading)
    - **Bets**: [The Betflix wallet](#betflix)
 
-![Access your wallet in Warden](../../static/img/warden-app/manage-your-wallet-1.png)
-![View your wallet in Warden](../../static/img/warden-app/manage-your-wallet-2.png)
+![Access your wallet in Warden](../../static/img/warden-app/manage-your-wallets-1.png)
+![View your wallet in Warden](../../static/img/warden-app/manage-your-wallets-2.png)
 
 ## The main account
 
@@ -52,8 +52,8 @@ To deposit an asset, take the following steps:
 To view and unlink your linked wallets, see the [account settings](#configure).
 :::
 
-![Access your wallet in Warden](../../static/img/warden-app/manage-your-wallet-1.png)
-![Deposit assets in Warden](../../static/img/warden-app/manage-assets-2.png)
+![Access your wallets in Warden](../../static/img/warden-app/manage-your-wallets-1.png)
+![Select the main account in Warden](../../static/img/warden-app/manage-your-wallets-main-1.png)
 
 ### Send or swap
 
@@ -78,7 +78,7 @@ Transactions are subject to [transfer](fees#transfer-fee) and [swap fees](fees#s
 - You can check your history in the wallet's **Activity** tab.
 :::
 
-![Send or swap assets using the Warden AMA Agent](../../static/img/warden-app/manage-assets-3.png)
+![Send or swap assets using the Warden AMA Agent](../../static/img/warden-app/quick-start-1.png)
 
 ### View your assets
 
@@ -89,13 +89,13 @@ To view your balances and activity, do this:
 
 Alternatively, you can go to the **Chats** tab ask the default [Warden AMA Agent](explore-ai-agents#warden-ama-agent) about your balances.
 
-![View your balance and activity in Warden](../../static/img/warden-app/manage-assets-1.png)
+![View your balance and activity in Warden](../../static/img/warden-app/manage-your-wallets-main-2.png)
 
 ### Configure
 
 To access your Warden account settings, [open any wallet](#access-your-wallets) and click the gear icon at the top:
 
-![Access your wallet settings in Warden](../../static/img/warden-app/manage-your-wallet-5.png)
+![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-3.png)
 
 The following settings are available:
 
@@ -105,7 +105,7 @@ The following settings are available:
   - Link and unlink Web3 wallets (for [depositing assets](#deposit)).
   - Add an authentication method.
 
-![The available wallet settings in Warden](../../static/img/warden-app/manage-your-wallet-6.png)
+![The available wallet settings in Warden](../../static/img/warden-app/manage-your-wallets-main-4.png)
 
 ### Get the private key
 
@@ -124,19 +124,18 @@ Never share your private key with anyone. It grants full access to your assets.
 You can use your private key to export the wallet. To learn more, see [Privy docs](https://privy-io.notion.site/Transferring-your-account-9dab9e16c6034a7ab1ff7fa479b02828).
 :::
 
-![Access your wallet settings in Warden](../../static/img/warden-app/manage-your-wallet-5.png)
-![Copy your private key in Warden](../../static/img/warden-app/manage-your-wallet-7.png)
+![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-3.png)
+![Copy your private key in Warden](../../static/img/warden-app/manage-your-wallets-main-5.png)
 
 ### Get the address
 
 To copy your wallet address (the public key), take these steps:
 
-1. [Open any wallet](#access-your-wallets).
+1. [Open the main wallet](#access-your-wallets).
 2. Click **Addresses**.
 3. Select an address associated with the desired network.
 
-![Access your addresses in Warden](../../static/img/warden-app/manage-your-wallet-3.png)
-![Copy a wallet address in Warden](../../static/img/warden-app/manage-your-wallet-4.png)
+![Access your addresses in Warden](../../static/img/warden-app/manage-your-wallets-main-6.png)
 
 ## Dedicated wallets
 
@@ -146,7 +145,7 @@ To copy your wallet address (the public key), take these steps:
 You can fund your dedicated wallets only from the [main account](#the-main-account).
 :::
 
-### Agents Dredits
+### Agents Credits
 
 The **Agents Credits wallet** is a dedicated place where Warden stores your **Agent Credits**, which are used to pay certain [AI Agents](explore-ai-agents). The balance is held as **USDC on Base**.
 
@@ -158,6 +157,8 @@ This is how you can fund this wallet from the [main account](#the-main-account):
 4. Click **Deposit**.
 3. Enter the amount and confirm.
 
+Once you interact with an Agent using Agent Credits, you'll see your activity right in the wallet.
+
 :::tip
 To deposit, make sure your main account has **USDC on Base**.
 :::
@@ -165,6 +166,8 @@ To deposit, make sure your main account has **USDC on Base**.
 :::warning
  At the moment, withdrawals aren't allowed.
 :::
+
+![Deposit to the Agents Credits wallet in Warden](../../static/img/warden-app/manage-your-wallets-credits-1.png)
 
 ### Trading
 

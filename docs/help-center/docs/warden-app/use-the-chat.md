@@ -30,7 +30,7 @@ For example, to perform a transaction, [fund your wallet](manage-your-wallets#de
 Transactions are subject to [transfer](fees#transfer-fee) and [swap fees](fees#swap-fees).
 :::
 
-![Send or swap assets using the Warden AMA Agent](../../static/img/warden-app/manage-assets-3.png)
+![Send or swap assets using the Warden AMA Agent](../../static/img/warden-app/quick-start-1.png)
 
 ## Select an AI Agent
 
@@ -48,7 +48,7 @@ You can easily manage your chats using the buttons at the top of the screen:
 - To create a new chat, click the **+** button.
 - To open or delete a previous thread, use the history drop-down menu.
 
-![Manage AI chats in Warden](../../static/img/warden-app/use-the-chat-4.png)
+![Manage AI chats in Warden](../../static/img/warden-app/use-the-chat-3.png)
 ![Manage existing threads in Warden](../../static/img/warden-app/use-the-chat-5.png)
 
 ## Explore the dashboard

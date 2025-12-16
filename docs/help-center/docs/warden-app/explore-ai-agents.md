@@ -26,9 +26,9 @@ Alternatively, you can access Agents directly from the **Chats** tab. Use the dr
 
 ![Manage AI chats in Warden](../../static/img/warden-app/use-the-chat-3.png)
 
-## Warden AMA Agent
+## Warden Agent
 
-The **Warden AMA** Agent is the default Agent you see when logging in to Warden. It's not displayed in the Agent Hub, but you can always switch to it in the [Chats tab](use-the-chat#start-chatting).
+The **Warden Agent** is the default Agent you see when logging in to Warden. It's not displayed in the Agent Hub, but you can always switch to it in the [Chats tab](use-the-chat#start-chatting).
 
 This Agent performs all your Web3 transactions and handles other tasks:
 

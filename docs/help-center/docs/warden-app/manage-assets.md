@@ -17,7 +17,7 @@ You can access your balances and activity in the [wallet](manage-your-wallet):
 3. You'll see the **Assets** tab with a detailed breakdown of your balances.
 4. To explore your activity history and transaction details, open the **Activity** tab.
 
-Alternatively, you can ask the default [Warden AMA Agent](explore-ai-agents#warden-ama-agent) about your balances.
+Alternatively, you can ask the default [Warden Agent](explore-ai-agents#warden-agent) about your balances.
 
 :::tip
 Funds for **trading** and for **Betflix** are kept separately from your main balance. Learn more: [trading wallet](trade#manage-the-trading-wallet), [Betflix wallet](play-betflix#manage-betflix-wallet).
@@ -54,11 +54,11 @@ In Warden, you can send or swap assets using simple **chat commands**:
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. Make sure your [wallet is funded](#deposit-assets).
-3. In the [Chats tab](use-the-chat#start-chatting), ask the [Warden AMA Agent](explore-ai-agents#warden-ama-agent) to **send** or **swap** an asset.
+3. In the [Chats tab](use-the-chat#start-chatting), ask the [Warden Agent](explore-ai-agents#warden-agent) to **send** or **swap** an asset.
 4. Provide the required details and confirm the transaction in the chat.
 5. The Agent will share the transaction details with you. You can also check your [activity history](#view-the-balance--activity).
 
-![Send or swap assets using the Warden AMA Agent](../../static/img/warden-app/manage-assets-3.png)
+![Send or swap assets using the Warden Agent](../../static/img/warden-app/manage-assets-3.png)
 
 Before you start, keep in mind this:
 

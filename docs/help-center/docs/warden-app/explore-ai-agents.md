@@ -10,7 +10,7 @@ Explore the **Agent Hub** to unlock the full potential of Warden with **AI Agent
 
 We support the following Agents:
 
-- [Warden AMA Agent](#warden-ama-agent): The default Agent for managing your assets.
+- [Warden Agent](#warden-agent): The default Agent for managing your assets.
 - [Verified Warden Agents](#verified-warden-agents): Agents created and verified by Warden.
 - [Community Agents](#community-agents): Agents built by our developer community. [You can participate too!](https://wardenprotocol.org/blog/agent-builder-incentive-programme)
 
@@ -35,9 +35,9 @@ Alternatively, you can access Agents directly from the **Chats** tab. Use the dr
 Interacting with some of the Agents is subject to fees. Before starting, you may need to [fund your main account](manage-your-wallets#deposit) or the [Agents Credits wallet](manage-your-wallets#agents-credits). See the requirements for each Agent below.
 :::
 
-## Warden AMA Agent
+## Warden Agent
 
-The **Warden AMA** Agent is the default Agent you see when logging in to Warden. It's not displayed in the Agent Hub, but you can always switch to it in the **Chats** tab.
+The **Warden Agent** is the default Agent you see when logging in to Warden. It's not displayed in the Agent Hub, but you can always switch to it in the **Chats** tab.
 
 This Agent performs all your Web3 transactions and handles other tasks:
 

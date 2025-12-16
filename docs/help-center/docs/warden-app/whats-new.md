@@ -38,7 +38,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 #### Fixes
 
-- [The AI chat interface](use-the-chat): Removed auto-complete suggestions from all Agents except for Warden AMA.
+- [The AI chat interface](use-the-chat): Removed auto-complete suggestions from all Agents except for the Warden Agent.
 - [Portfolio Analysis Agent](explore-ai-agents#portfolio-analysis-agent): Fixed timeframe issues and the UI text.
 - [Betflix](play-betflix): Fixed visuals.
 - [CoinGecko](explore-ai-agents#coingecko): Fixed the UI text.

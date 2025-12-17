@@ -13,13 +13,19 @@ Here you'll find the latest Warden release highlights, including new features, i
 #### New features
 
 - [Trading](trade): The live chart now displays active and historical trades, with active trades manageable from the chart.
+- [Betflix](play-betflix):
+  - Added new coins: **POWER**, **1000LUNC**, **LUNA2**, **FARTCOIN**, **WLD**, and **ZEC**.
+  - Added support for different fixed bets: **$2**/**5**/**10**.
 
 #### Improvements
 
 - [Trading](trade): Improved the limit order UI and general UI text.
+- [Betflix](play-betflix): Improved the UI.
+
 #### Fixes
 
 - [Trading](trade): Fixed issues with order creation and configuration, HIP-3 perps, and various UI components.
+- [Betflix](play-betflix): Fixed UI issues.
 
 ## November 28, 2025
 

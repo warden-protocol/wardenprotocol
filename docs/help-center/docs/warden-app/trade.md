@@ -77,7 +77,7 @@ Selecting a pair determines the perp you'll trade. Tokens are usually paired wit
 
 ### 3. Manage your trade
 
-After you [create an order](#2-create-an-order), it **executes (fills)**. Execution may open new [positions](#position), modify existing ones, or partially close them. It's subject to [trade fees](fees#trade-fees).
+After you [create an order](#2-create-an-order), it **executes (fills)**. Execution may open new [positions](#position), modify existing ones, or partially close them. Opening positions is subject to [trading fees](fees#trading-fees).
 
 :::note Notes
 - Market orders fill immediately at the best available price, and limit orders fill when the price reaches your target price ([learn more](#order)).
@@ -130,9 +130,9 @@ There are also additional parameters that are automatically calculated based on 
 
 - **Margin**: Your security deposit ([learn more](#margin)).
 - **Entry**: The estimated price at which your position would open if your order were executed now.
-- **Liquidation price**: The price at which your position will automatically close to prevent further losses.
+- **Liquidation**: The price at which your position will be automatically closes to prevent further losses.
 - **Size**: The total value of your position, determined by your margin and leverage.
-- **Est. fee**: The total fee charged for executing an order. See [trade fees](fees#trade-fees).
+- **Est. fee**: The total fee for opening a position. See [trading fees](fees#trading-fees).
 
 ## Manage the trading wallet
 
@@ -200,10 +200,12 @@ A **trade perp** (**perpetual contract**) is a never-expiring derivative that tr
 
 #### Position
 
-A **position** is your participation (exposure) in a [perp](#trade-perp), typically [leveraged](#leverage). Positions are created or changed when your [orders](#order) are executed (filled). There are two position types you can take:
+A **position** is your participation (exposure) in a [perp](#trade-perp), typically with [leverage](#leverage). Positions are created or changed when [orders](#order) are executed (filled). Opening positions on Warden is subject to [trading fees](fees#trading-fees).
 
-- A **long** position means you expect the [spot price](#spot-price) to increase and will profit from it.
-- A **Short** position will profit when the price moves down.
+There are two position types you can take:
+
+- A **long position** means you expect the [spot price](#spot-price) to increase and will profit from it.
+- A **short position** will profit when the price moves down.
 
 :::note
 Perps use a single combined position per token. For example, if you already have a position in BTC and place another BTC order in the same direction, the fill will update the effective leverage and size (total value) of the position.
@@ -242,7 +244,7 @@ No action is needed: Warden handles these payments automatically.
 
 #### Order
 
-An **order** is an instruction to buy or sell a [perp](#trade-perp). Executing (filling) an order may open new [positions](#position), modify existing ones, or partially close them. It's subject to [trade fees](fees#trade-fees).
+An **order** is an instruction to buy or sell a [perp](#trade-perp). Executing (filling) an order may open new [positions](#position), modify existing ones, or partially close them.
 
 Warden supports two order types with different fill conditions:
 

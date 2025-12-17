@@ -19,7 +19,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 - [Trading](trade): Improved the limit order UI and general UI text.
 #### Fixes
 
-- [Trading](trade):  Fixed issues with order creation and configuration, HIP-3 perps, and various UI components.
+- [Trading](trade): Fixed issues with order creation and configuration, HIP-3 perps, and various UI components.
 
 ## November 28, 2025
 

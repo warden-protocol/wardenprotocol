@@ -130,7 +130,7 @@ There are also additional parameters that are automatically calculated based on 
 
 - **Margin**: Your security deposit ([learn more](#margin)).
 - **Entry**: The estimated price at which your position would open if your order were executed now.
-- **Liquidation**: The price at which your position will be automatically closes to prevent further losses.
+- **Liquidation**: The price at which your position will be automatically closed to prevent further losses.
 - **Size**: The total value of your position, determined by your margin and leverage.
 - **Est. fee**: The total fee for opening a position. See [trading fees](fees#trading-fees).
 

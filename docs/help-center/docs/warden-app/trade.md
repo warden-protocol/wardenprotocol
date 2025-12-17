@@ -64,7 +64,7 @@ Once you have funds in your trading wallet, you can create an order. [Open the A
 5. Review your order details and confirm opening a position.
 
 :::note
-Selecting a pair determines the perp you'll trade. Tokens are always paired with **USDC**: BTC-USDC, ETH-USDC, and so on.
+Selecting a pair determines the perp you'll trade. Tokens are usually paired with **USDC** or **USDH**: BTC-USDC, ETH-USDC, OPENAI-USDC and so on.
 :::
 
 :::tip Tips
@@ -90,17 +90,18 @@ In the [AI Trading Terminal](#access-the-trading-terminal), you can track and ma
 - **Orders**: Your orders that aren't fully executed yet. This includes unfilled parts of partially filled limit orders.
 - **History**: Filled and cancelled orders.
 
+![Track and manage your perp positions in Warden](../../static/img/warden-app/trade-5.png)
+
 To manage an open position or a limit order, click the **Manage** button next to it. You can do the following:
 
 - Enable or disable **Auto-Close**, setting **Take Profit** and **Stop Loss** if needed. 
 - To close your position or cancel order, click **Close**/**Cancel Order** and confirm. You'll see the closed position in the **History** tab.
 - To cancel all orders, click **Cancel All** in the **Orders** tab.
 
-:::tip
-Next to each position, you can see its [liquidation price](#liquidation). You can avoid liquidation by enabling [Auto-Close](#order-parameters).
+:::tip Tips
+- Next to each position, you can see its [liquidation price](#liquidation). You can avoid liquidation by enabling [Auto-Close](#order-parameters).
+- You can also manage your active trades and view historical trades on the [live chart](#analyze-the-market).
 :::
-
-![Track and manage your perp positions in Warden](../../static/img/warden-app/trade-5.png)
 
 ### Order parameters
 
@@ -128,7 +129,7 @@ When you enable **Auto-Close** (**Take Profit**/**Stop Loss**), Warden creates a
 There are also additional parameters that are automatically calculated based on your settings:
 
 - **Margin**: Your security deposit ([learn more](#margin)).
-- **Entry**: The estimated price at which your position will open if executed now, based on the current market conditions.
+- **Entry**: The estimated price at which your position would open if your order were executed now.
 - **Liquidation price**: The price at which your position will automatically close to prevent further losses.
 - **Size**: The total value of your position, determined by your margin and leverage.
 - **Est. fee**: The total fee charged for executing an order. See [trade fees](fees#trade-fees).
@@ -176,7 +177,7 @@ When depositing, you'll see your **consolidated USDC balance** across all these 
 
 In the [AI Trading Terminal](#access-the-trading-terminal), you can access various market analysis tools helping you make informed decisions on your trades:
 
-- **The live chart** displays perp price movements. It supports multiple chart types, technical indicators, drawing tools, and more.
+- **The live chart** displays perp price movements. It supports multiple chart types, technical indicators, drawing tools, and more. Here you can also view your historical trades and [manage your active trades](#3-manage-your-trade).
 - **The order book** A real-time list of all active buy and sell orders. It shows available amounts at each price level, letting you see market liquidity and the spread between bids and asks.
 - **Messari Signals** powered by [Messari](https://messari.io) are AI-generated token reports. For deeper insights, use the  [Messari Deep Research](explore-ai-agents#messari-deep-research) Agent.
 
@@ -185,7 +186,8 @@ The market data for the chart and order book is provided by [Hyperliquid](https:
 :::
 
 ![Analyze the perpetual trading market in Warden](../../static/img/warden-app/trade-8.png)
-![See perps on a live chart in Warden](../../static/img/warden-app/trade-9.png)
+![Use technical indicators on the trading live chart in Warden](../../static/img/warden-app/trade-9.png)
+![See your positions on the trading live chart in Warden](../../static/img/warden-app/trade-10.png)
 
 ## Perpetual trading
 

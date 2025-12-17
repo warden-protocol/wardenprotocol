@@ -8,6 +8,19 @@ sidebar_position: 10
 
 Here you'll find the latest Warden release highlights, including new features, improvements, and bug fixes. This section helps you quickly see what's changed and how it can enhance your experience.
 
+## December 17, 2025
+
+#### New features
+
+- [Trading](trade): The live chart now displays active and historical trades, with active trades manageable from the chart.
+
+#### Improvements
+
+- [Trading](trade): Improved the limit order UI and general UI text.
+#### Fixes
+
+- [Trading](trade):  Fixed issues with order creation and configuration, HIP-3 perps, and various UI components.
+
 ## November 28, 2025
 
 #### New features
@@ -26,6 +39,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 - [Betflix](play-betflix): Added new coins—**Anoma** and **Aster**.
 
 #### Improvements
+
 - [Portfolio Analysis Agent](explore-ai-agents#portfolio-analysis-agent): Improved visuals, presets, and timeframe selection.
 
 #### Fixes

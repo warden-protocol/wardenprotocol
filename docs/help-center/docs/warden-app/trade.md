@@ -64,7 +64,7 @@ Once you have funds in your trading wallet, you can create an order. [Open the A
 5. Review your order details and confirm opening a position.
 
 :::note
-Selecting a pair determines the perp you'll trade. Tokens are always paired with **USDC**: BTC-USDC, ETH-USDC, and so on.
+Selecting a pair determines the perp you'll trade. Tokens are usually paired with **USDC** or **USDH**: BTC-USDC, ETH-USDC, OPENAI-USDC and so on.
 :::
 
 :::tip Tips
@@ -77,7 +77,7 @@ Selecting a pair determines the perp you'll trade. Tokens are always paired with
 
 ### 3. Manage your trade
 
-After you [create an order](#2-create-an-order), it **executes (fills)**. Execution may open new [positions](#position), modify existing ones, or partially close them. It's subject to [trade fees](fees#trade-fees).
+After you [create an order](#2-create-an-order), it **executes (fills)**. Execution may open new [positions](#position), modify existing ones, or partially close them. Opening positions is subject to [trading fees](fees#trading-fees).
 
 :::note Notes
 - Market orders fill immediately at the best available price, and limit orders fill when the price reaches your target price ([learn more](#order)).
@@ -90,17 +90,18 @@ In the [AI Trading Terminal](#access-the-trading-terminal), you can track and ma
 - **Orders**: Your orders that aren't fully executed yet. This includes unfilled parts of partially filled limit orders.
 - **History**: Filled and cancelled orders.
 
+![Track and manage your perp positions in Warden](../../static/img/warden-app/trade-5.png)
+
 To manage an open position or a limit order, click the **Manage** button next to it. You can do the following:
 
 - Enable or disable **Auto-Close**, setting **Take Profit** and **Stop Loss** if needed. 
 - To close your position or cancel order, click **Close**/**Cancel Order** and confirm. You'll see the closed position in the **History** tab.
 - To cancel all orders, click **Cancel All** in the **Orders** tab.
 
-:::tip
-Next to each position, you can see its [liquidation price](#liquidation). You can avoid liquidation by enabling [Auto-Close](#order-parameters).
+:::tip Tips
+- Next to each position, you can see its [liquidation price](#liquidation). You can avoid liquidation by enabling [Auto-Close](#order-parameters).
+- You can also manage your active trades and view historical trades on the [live chart](#analyze-the-market).
 :::
-
-![Track and manage your perp positions in Warden](../../static/img/warden-app/trade-5.png)
 
 ### Order parameters
 
@@ -128,10 +129,10 @@ When you enable **Auto-Close** (**Take Profit**/**Stop Loss**), Warden creates a
 There are also additional parameters that are automatically calculated based on your settings:
 
 - **Margin**: Your security deposit ([learn more](#margin)).
-- **Entry**: The estimated price at which your position will open if executed now, based on the current market conditions.
-- **Liquidation price**: The price at which your position will automatically close to prevent further losses.
+- **Entry**: The estimated price at which your position would open if your order were executed now.
+- **Liquidation**: The price at which your position will be automatically closed to prevent further losses.
 - **Size**: The total value of your position, determined by your margin and leverage.
-- **Est. fee**: The total fee charged for executing an order. See [trade fees](fees#trade-fees).
+- **Est. fee**: The total fee for opening a position. See [trading fees](fees#trading-fees).
 
 ## Manage the trading wallet
 
@@ -189,7 +190,7 @@ Each withdrawal is subject to a [Hyperliquid fee](fees#trading-wallet-fees) of *
 
 In the [AI Trading Terminal](#access-the-trading-terminal), you can access various market analysis tools helping you make informed decisions on your trades:
 
-- **The live chart** displays perp price movements. It supports multiple chart types, technical indicators, drawing tools, and more.
+- **The live chart** displays perp price movements. It supports multiple chart types, technical indicators, drawing tools, and more. Here you can also view your historical trades and [manage your active trades](#3-manage-your-trade).
 - **The order book** A real-time list of all active buy and sell orders. It shows available amounts at each price level, letting you see market liquidity and the spread between bids and asks.
 - **Messari Signals** powered by [Messari](https://messari.io) are AI-generated token reports. For deeper insights, use the  [Messari Deep Research](explore-ai-agents#messari-deep-research) Agent.
 
@@ -198,7 +199,8 @@ The market data for the chart and order book is provided by [Hyperliquid](https:
 :::
 
 ![Analyze the perpetual trading market in Warden](../../static/img/warden-app/trade-8.png)
-![See perps on a live chart in Warden](../../static/img/warden-app/trade-9.png)
+![Use technical indicators on the trading live chart in Warden](../../static/img/warden-app/trade-9.png)
+![See your positions on the trading live chart in Warden](../../static/img/warden-app/trade-10.png)
 
 ## Perpetual trading
 
@@ -211,10 +213,12 @@ A **trade perp** (**perpetual contract**) is a never-expiring derivative that tr
 
 #### Position
 
-A **position** is your participation (exposure) in a [perp](#trade-perp), typically [leveraged](#leverage). Positions are created or changed when your [orders](#order) are executed (filled). There are two position types you can take:
+A **position** is your participation (exposure) in a [perp](#trade-perp), typically with [leverage](#leverage). Positions are created or changed when [orders](#order) are executed (filled). Opening positions on Warden is subject to [trading fees](fees#trading-fees).
 
-- A **long** position means you expect the [spot price](#spot-price) to increase and will profit from it.
-- A **Short** position will profit when the price moves down.
+There are two position types you can take:
+
+- A **long position** means you expect the [spot price](#spot-price) to increase and will profit from it.
+- A **short position** will profit when the price moves down.
 
 :::note
 Perps use a single combined position per token. For example, if you already have a position in BTC and place another BTC order in the same direction, the fill will update the effective leverage and size (total value) of the position.
@@ -253,7 +257,7 @@ No action is needed: Warden handles these payments automatically.
 
 #### Order
 
-An **order** is an instruction to buy or sell a [perp](#trade-perp). Executing (filling) an order may open new [positions](#position), modify existing ones, or partially close them. It's subject to [trade fees](fees#trade-fees).
+An **order** is an instruction to buy or sell a [perp](#trade-perp). Executing (filling) an order may open new [positions](#position), modify existing ones, or partially close them.
 
 Warden supports two order types with different fill conditions:
 

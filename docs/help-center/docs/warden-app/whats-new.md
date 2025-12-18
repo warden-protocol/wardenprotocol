@@ -16,6 +16,25 @@ Here you'll find the latest Warden release highlights, including new features, i
 - [Community Agents](explore-ai-agents#community-agents): Added [Crypto Research by Caesar](explore-ai-agents#crypto-research-by-caesar) and [Deep Research by Caesar](explore-ai-agents#deep-research-by-caesar).
 - [Agents Credits](manage-your-wallets#agents-credits): Added a wallet holding credits for Agents.
 
+## December 17, 2025
+
+#### New features
+
+- [Trading](trade): The live chart now displays active and historical trades, with active trades manageable from the chart.
+- [Betflix](play-betflix):
+  - Added new coins: **POWER**, **1000LUNC**, **LUNA2**, **FARTCOIN**, **WLD**, and **ZEC**.
+  - Added support for different fixed bets: **$2**/**5**/**10**.
+
+#### Improvements
+
+- [Trading](trade): Improved the limit order UI and general UI text.
+- [Betflix](play-betflix): Improved the UI.
+
+#### Fixes
+
+- [Trading](trade): Fixed issues with order creation and configuration, HIP-3 perps, and various UI components.
+- [Betflix](play-betflix): Fixed UI issues.
+
 ## November 28, 2025
 
 #### New features
@@ -34,6 +53,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 - [Betflix](play-betflix): Added new coins—**Anoma** and **Aster**.
 
 #### Improvements
+
 - [Portfolio Analysis Agent](explore-ai-agents#portfolio-analysis-agent): Improved visuals, presets, and timeframe selection.
 
 #### Fixes

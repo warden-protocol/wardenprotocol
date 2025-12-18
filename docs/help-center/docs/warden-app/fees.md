@@ -38,9 +38,9 @@ All swaps include these fees:
 | Gas fee       | varies | native coin        | A fee paid to the network for processing the transaction |
 | Platform fee  | 0.85%  | input/output token | A percentage charged by Warden                           |
 
-## Trade fees
+## Trading fees
 
-For each [perp trade](trade) (order execution), the following fees are charged from your [trading wallet](trade#manage-the-trading-wallet):
+For opening a [perpetual trading position](trade), the following fees are charged from your [trading wallet](trade#manage-the-trading-wallet):
 
 | Fee type         | Amount | Currency         | Description                    |
 | ---------------- | ------ | ---------------- | -----------------------------  |

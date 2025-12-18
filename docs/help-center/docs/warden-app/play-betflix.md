@@ -26,7 +26,7 @@ The rules of Betflix are very simple:
 Gameplay details:
 
 - To play, you need **USDC on Solana**.
-- The bet is fixed: **$2** per round with fixed **100x leverage**.
+- The bet is fixed: **$2**/**5**/**10** per round with fixed **100x leverage**.
 - Supported coins: **DOGE**, **PEPE**, **BONK**, **WIF**, **SHIB**, **TRUMP**, and more.
 - All bets are subject to fees. Learn more: [Betflix fees](fees#betflix-fees).
 - Top traders [earn PUMPs](#earn-pumps).
@@ -40,6 +40,7 @@ To start playing, you need **USDC on Solana** (**$6** or more):
 3. In the left menu, open the **Betflix** tab.
 4. In the right panel, you'll see the [Betflix wallet](#manage-the-betflix-wallet). Click **Deposit** and add USDC from your main account.
 5. Start playing:
+   - Choose your bet: **$2**/**5**/**10**
    - Swipe right → Go long
    - Swipe left → Go short
    - Swipe up → Don't trade

@@ -261,7 +261,7 @@ Fees: [Caesar fees](fees#caesar-fees).
 
 ### Portfolio Analysis Agent
 
-The **Portfolio Analysis Agent** analyzes cryptocurrency portfolios based on provided EVM and Solana wallet addresses. If you don't provide an address, the Agent will use your Warden wallet and analyze tokens on all chains.
+The **Portfolio Analysis Agent** integrates with [CoinGecko](https://www.coingecko.com) and [Alchemy](https://www.alchemy.com) to analyze cryptocurrency portfolios based on provided EVM and Solana wallet addresses. If you don't provide an address, the Agent will use your Warden wallet and analyze tokens on all chains.
 
 This Agent can do the following:
 

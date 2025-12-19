@@ -91,13 +91,13 @@ In this section, you'll find additional Agent-specific fees.
 All prompts for [Crypto Research by Caesar](explore-ai-agents#crypto-research-by-caesar) are subject to the following fee, charged from your [Agents Credits wallet](manage-your-wallets#agents-credits):
 
 | Fee type      | Amount | Currency     | Description                        |
-| ------------- | ------ |------------- | ---------------------------------- |
+| ------------- | ------ | ------------ | ---------------------------------- |
 | Agent fee     | 0.40   | USDC on Base | A fee paid to the Agent per prompt |
 
 When you prompt [Deep Research by Caesar](explore-ai-agents#deep-research-by-caesar), it charges this fee from your Agent Credits wallet:
 
 | Fee type      | Amount | Currency     | Description                        |
-| ------------- | ------ |------------- | ---------------------------------- |
+| ------------- | ------ | ------------ | ---------------------------------- |
 | Agent fee     | 0.80   | USDC on Base | A fee paid to the Agent per prompt |
 
 ### deBridge fees

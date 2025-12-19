@@ -22,8 +22,8 @@ Note that $WARD distribution will be characterized by the following:
 
 ## Distribution description
 
-| Category | % | Description | Circulating |
-|--|--|--|--|
+| Category | %  | Description | Circulating |
+| -------- | -- | ----------- | ----------- |
 | Public goods | 10% | Incentivized testnet and genesis airdrop, and ongoing public good initiatives | 19.4M available at genesis, with accelerated vesting to 64M within the first 6 months and full vesting to 100M over 30 months |
 | Ecosystem & community | 12% | Allocated for initiatives that contribute to Warden Protocol's ecosystem and community projects | 20M at genesis with linear vest over 30 months |
 | Liquidity | 5% | Liquidity provisioning on exchanges at listing date | Available at genesis |

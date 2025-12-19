@@ -6,11 +6,11 @@ sidebar_position: 6
 
 ## $WARD supply details
 
-| Property | Details |
-|-|--|
-| Token | WARD |
+| Property             | Details            |
+| -------------------- | ------------------ |
+| Token                | WARD               |
 | Initial total supply | 1,000,000,000 WARD |
-| Decimals | 6 |
+| Decimals             | 6                  |
 
 
 ## $WARD emissions
@@ -19,13 +19,13 @@ On mainnet launch, which will operate under a Proof-of-Authority framework, ther
 
 Upon evolution to the Proof-of-Stake framework, an **emission** of WARD tokens commences, with a programmatic emission based on the proportion of $WARD tokens staked relative to the total supply. This will operate based on preset parameters:
 
-| Parameter | Value  |
-|--|--|
-| Initial issuance |8%  |
-| Maximum annual issuance | 10%  |
-| Minimum annual issuance | 1% |
-| Target $WARD staked | 65% |
-| Inflation rate of change | 100% |
+| Parameter                | Value  |
+| ------------------------ | ------ |
+| Initial issuance         | 8%     |
+| Maximum annual issuance  | 10%    |
+| Minimum annual issuance  | 1%     |
+| Target $WARD staked      | 65%    |
+| Inflation rate of change | 100%   |
 
 ## Issuance rate
 As above, Warden Protocol adjusts the $WARD **issuance rate** based on the actual staking ratio relative to the target:

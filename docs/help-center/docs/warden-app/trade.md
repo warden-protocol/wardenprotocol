@@ -1,12 +1,12 @@
 ﻿---
-sidebar_position: 7
+sidebar_position: 5
 ---
 
 # Trade
 
 ## Overview
 
-In Warden, you can use **perpetual contracts** (**trade perps**) to trade on future price movements of underlying token without actually owning them. At the moment, Warden supports [Hyperliquid](https://hyperfoundation.org) perps.
+In Warden, you can use **perpetual contracts** (**trade perps**) to trade on future price movements of underlying token without actually owning them. Currently, Warden supports [Hyperliquid](https://hyperfoundation.org) perps.
 
 Warden's **AI Trading Terminal** brings real-time market analysis tools directly into your trading screen so you make informed decisions before placing a trade. This includes AI signals, an order book, and a chart with technical indicators and drawing tools.
 
@@ -41,13 +41,13 @@ You'll see the Terminal interface, where you can do the following:
 
 ### 1. Prepare funds
 
-To start trading, you need **USDC** on **Ethereum**, **Arbitrum**, **Base**, or **BSC** (**$5** or more):
+To start trading, you need **USDC** on **Arbitrum**, **Ethereum**, **Base**, or **BSC** (**$6** or more):
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
-2. If you don't have USDC, [deposit it to your main wallet](manage-assets#deposit-assets).
+2. If you don't have USDC, [deposit it to your main account](manage-your-wallets#deposit).
 3. In the left menu, open the **Trade** tab to [access the AI Trading Terminal](#access-the-trading-terminal).
 4. Click the wallet icon at the top right to open the [trading wallet](#manage-the-trading-wallet).
-5. In the trading wallet, click **Deposit** and add USDC from your main wallet.
+5. In the trading wallet, click **Deposit** and add USDC from your main account.
 
 ![Prepare funds for perpetual trading in Warden](../../static/img/warden-app/trade-2.png)
 
@@ -136,41 +136,54 @@ There are also additional parameters that are automatically calculated based on 
 
 ## Manage the trading wallet
 
-### Access the wallet
+### Access
 
-Warden stores your perpetual trading balance in a separate **trading wallet**. This protects assets in the [main Warden wallet](manage-your-wallet) from being [liquidated](#liquidation).
+Warden stores your perpetual trading balance in a separate **trading wallet**, held as **USDC on Arbitrum**. This protects assets in your [main account](manage-your-wallets#the-main-account) from being [liquidated](#liquidation).
 
-To switch between the main and trading wallets at any time, click the wallet icon at the top right and select **Main Account** or **Trading**. When you're in the **Trade** tab, the trading wallet is selected automatically.
+To switch between the main and trading wallets at any time, click the wallet icon at the top right and select **Trading** or **Main Account**.
 
-:::tip
-The balance you see is always your **withdrawable amount**.
+:::note
+The balance you see here is only your **withdrawable amount**.
 :::
 
 ![Access the trading wallet in Warden](../../static/img/warden-app/trade-6.png)
 ![Switch between the main and trading wallets in Warden](../../static/img/warden-app/trade-7.png)
 
-### Move funds
+### Deposit
 
-The trading wallet holds its balance in **USDC** on **Arbitrum**, but you can fund it from almost any of the supported chains (see below), as long as you have USDC in your main wallet.
-
-This is how to move funds between your wallets:
+The trading wallet holds its balance on **Arbitrum**, but you can fund it from almost any of the supported chains (see below), as long as you have **USDC** in your main account:
 
 1. Open the trading wallet.
-2. Click **Deposit** or **Withdraw**. Both transactions are subject to [fees](fees#trading-wallet-fees).
-3. Enter the amount and confirm. Deposits start from **$6**, and withdrawals from **$5**.
-4. Warden will transfer USDC from or to your main wallet.
+2. Click **Deposit**.
+3. Enter the amount and confirm. Deposits start from **$6**.
+4. Warden will transfer USDC from your main account.
+
+Depositing is [subject to fees](fees#trading-wallet-fees), which vary depending on the chain.
 
 :::tip
-To deposit, make sure your [main wallet](manage-your-wallet) has **USDC** on these chains:
+To deposit, make sure your main account has **USDC** on these chains:
 
-- **Ethereum**
 - **Arbitrum**
+- **Ethereum**
 - **Base**
 - **BNB Smart Chain (BSC)**
 :::
 
 :::note
-When depositing, you'll see your **consolidated USDC balance** across all these chains. Depositing on Arbitrum is a native transaction, so it's the fastest. Deposits from other chains are **automatically bridged to Arbitrum**. You don't have to handle [gas fees](fees#trading-wallet-fees) or bridging—Warden does everything for you.
+When depositing, you'll see your **consolidated USDC balance** across all the supported chains. Depositing on Arbitrum is a **native transaction**, so it's the fastest. Deposits from other chains are **automatically bridged to Arbitrum**. You don't have to handle gas fees or bridging—Warden does everything for you.
+:::
+
+### Withdraw
+
+The balance you see in the trading wallet is your **withdrawable amount** of **USDC on Arbitrum**. This is how you can withdraw to the main account:
+
+1. Open the trading wallet.
+2. Click **Withdraw**.
+3. Enter the amount and confirm. Withdrawals start from **$2**.
+4. Warden will transfer USDC to your main account.
+
+:::warning
+Each withdrawal is subject to a [Hyperliquid fee](fees#trading-wallet-fees) of **1 USDC**.
 :::
 
 ## Analyze the market

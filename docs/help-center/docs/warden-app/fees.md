@@ -1,12 +1,12 @@
 ﻿---
-sidebar_position: 10
+sidebar_position: 9
 ---
 
 # Fees
 
 ## Overview
 
-In this article, you'll find a detailed breakdown of fees applied to [swaps & transfers](manage-assets#send-or-swap-assets) and other interactions on Warden. Please note that some fees may vary depending on the [AI Agent](explore-ai-agents) and the [network](/#supported-networks).
+In this article, you'll find a detailed breakdown of fees applied to [swaps & transfers](manage-your-wallets#send-or-swap) and other interactions on Warden. Please note that some fees may vary depending on the [AI Agent](explore-ai-agents) and the [network](/#supported-networks).
 
 ## Platform fee
 
@@ -42,20 +42,20 @@ All swaps include these fees:
 
 For opening a [perpetual trading position](trade), the following fees are charged from your [trading wallet](trade#manage-the-trading-wallet):
 
-| Fee type         | Amount | Currency | Description                              |
-| ---------------- | ------ | -------- | ---------------------------------------- |
-| Hyperliquid fee  | 0.045% | USDC     | A fee paid to Hyperliquid for each trade |
-| Warden trade fee | 0.025% | USDC     | A fee paid to Warden for each trade      |
+| Fee type         | Amount | Currency         | Description                    |
+| ---------------- | ------ | ---------------- | -----------------------------  |
+| Hyperliquid fee  | 0.045% | USDC on Arbitrum | A fee paid to Hyperliquid      |
+| Warden trade fee | 0.025% | USDC on Arbitrum | A percentage charged by Warden |
 
 ## Trading wallet fees
 
-When you deposit to your [trading wallet](trade#manage-the-trading-wallet) from Arbitrum, you pay only for the native bridge:
+When depositing to your [trading wallet](trade#manage-the-trading-wallet) from Arbitrum, you pay only for the native bridge:
 
-| Fee type         | Amount | Currency | Description                                           |
-| ---------------- | ------ | -------- | ----------------------------------------------------- |
-| Arbitrum gas fee | varies | USDC     | A fee paid to Arbitrum for processing the transaction |
+| Fee type | Amount | Currency         | Description                          |
+| -------- | ------ | ---------------- | ------------------------------------ |
+| Gas fee  | varies | USDC on Arbitrum | A fee for processing the transaction |
 
-We manage deposits from other chains through [OneBalance](https://www.onebalance.io), charging dynamic fees:
+We automatically bridge deposits from other chains through [OneBalance](https://www.onebalance.io), charging dynamic fees:
 
 | Fee type    | Amount | Currency | Description                                              |
 | ----------- | ------ | -------- | -------------------------------------------------------- |
@@ -64,18 +64,18 @@ We manage deposits from other chains through [OneBalance](https://www.onebalance
 
 All withdrawals are subject to a flat fee paid to [Hyperliquid](https://hyperliquid.gitbook.io/hyperliquid-docs/hypercore/bridge) on Arbitrum:
 
-| Fee type       | Amount | Currency | Description                                             |
-| -------------- | ------ | -------- | ------------------------------------------------------- |
-| Withdrawal fee | 1      | USDC     | A fee paid to Hyperliquid for processing the withdrawal |
+| Fee type       | Amount | Currency         | Description               |
+| -------------- | ------ | ---------------- | ------------------------- |
+| Withdrawal fee | 1      | USDC on Arbitrum | A fee paid to Hyperliquid |
 
 ## Betflix fees
 
-Trading with [Betflix](play-betflix) includes the following fees, charged from your [Betflix wallet](play-betflix#manage-betflix-wallet):
+Trading with [Betflix](play-betflix) includes the following fees, charged from your [Betflix wallet](play-betflix#manage-the-betflix-wallet):
 
-| Fee type      | Amount   | Currency  | Description                        |
-| ------------- | -------- | --------- | ---------------------------------- |
-| Win fee       | 15%      | USDC      | A fee paid to Warden for each win  |
-| Loss fee      | 5%       | USDC      | A fee paid to Warden for each loss |
+| Fee type      | Amount   | Currency       | Description                        |
+| ------------- | -------- | -------------- | ---------------------------------- |
+| Win fee       | 15%      | USDC on Solana | A fee paid to Warden for each win  |
+| Loss fee      | 5%       | USDC on Solana | A fee paid to Warden for each loss |
 
 :::note
 The remaining amount from losing bets goes to the community treasury (currently $2,000).
@@ -84,6 +84,21 @@ The remaining amount from losing bets goes to the community treasury (currently 
 ## Agent fees
 
 In this section, you'll find additional Agent-specific fees.
+
+
+### Caesar fees
+
+All prompts for [Crypto Research by Caesar](explore-ai-agents#crypto-research-by-caesar) are subject to the following fee, charged from your [Agents Credits wallet](manage-your-wallets#agents-credits):
+
+| Fee type      | Amount | Currency     | Description                        |
+| ------------- | ------ | ------------ | ---------------------------------- |
+| Agent fee     | 0.40   | USDC on Base | A fee paid to the Agent per prompt |
+
+When you prompt [Deep Research by Caesar](explore-ai-agents#deep-research-by-caesar), it charges this fee from your Agent Credits wallet:
+
+| Fee type      | Amount | Currency     | Description                        |
+| ------------- | ------ | ------------ | ---------------------------------- |
+| Agent fee     | 0.80   | USDC on Base | A fee paid to the Agent per prompt |
 
 ### deBridge fees
 

@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 6
+sidebar_position: 4
 ---
 
 # Explore AI Agents
@@ -8,7 +8,13 @@ sidebar_position: 6
 
 Explore the **Agent Hub** to unlock the full potential of Warden with **AI Agents**! They allow you to swap, bridge, research, and much more through a simple chat interface.
 
-In the sections below, you'll find the list of available Agents—and more are coming soon!
+We support the following Agents:
+
+- [Warden Agent](#warden-agent): The default Agent for managing your assets.
+- [Verified Warden Agents](#verified-warden-agents): Agents created and verified by Warden.
+- [Community Agents](#community-agents): Agents built by our developer community. [You can participate too!](https://wardenprotocol.org/blog/agent-builder-incentive-programme)
+
+In the sections below, you'll find the full list of available Agents—and more are [coming soon](#coming-soon)!
 
 ## Access Agents
 
@@ -16,23 +22,26 @@ You can explore and select Agents in the **Agent Hub**:
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. In the left menu, open the **Agents** tab.
-3. Select an Agent. If required, review and accept the legal terms.
-4. After selecting an Agent, you'll be taken to the [Chats tab](use-the-chat#start-chatting).
-5. Make sure you've [funded your wallet](manage-assets#deposit-assets) on one of the chains supported by the chosen Agent.
+3. Select an Agent. Use the **Verified**/**Community** tabs to switch between Agent types.
+4. After selecting an Agent, you'll be taken to the **Chats** tab.
 
 ![The Agent Hub in Warden](../../static/img/warden-app/explore-ai-agents-1.png)
-
+ 
 Alternatively, you can access Agents directly from the **Chats** tab. Use the drop-down menu at the top to switch quickly between the Agents:
 
 ![Manage AI chats in Warden](../../static/img/warden-app/use-the-chat-3.png)
 
+:::tip
+Interacting with some of the Agents is subject to fees. Before starting, you may need to [fund your main account](manage-your-wallets#deposit) or the [Agents Credits wallet](manage-your-wallets#agents-credits). See the requirements for each Agent below.
+:::
+
 ## Warden Agent
 
-The **Warden Agent** is the default Agent you see when logging in to Warden. It's not displayed in the Agent Hub, but you can always switch to it in the [Chats tab](use-the-chat#start-chatting).
+The **Warden Agent** is the default Agent you see when logging in to Warden. It's not displayed in the Agent Hub, but you can always switch to it in the **Chats** tab.
 
 This Agent performs all your Web3 transactions and handles other tasks:
 
-- [Sends or swaps](manage-assets#send-or-swap-assets) tokens on all the supported chains
+- [Sends or swaps](manage-your-wallets#send-or-swap) tokens on all the supported chains
 - Checks your balances
 - Generates an image based on a text description
 - Answers any questions about Warden and the [Warden Protocol](https://docs.wardenprotocol.org)
@@ -45,11 +54,11 @@ Networks:
 - **BNB Smart Chain (BSC)**
 - **Arbitrum**
 
-Fees: [swap](fees#swap-fees) and [transfer fee](fees#transfer-fee)
+Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fee).
 
-## Asset management Agents
+## Verified Warden Agents
 
-These Agents allow you to send, swap, bridge, and stake your assets.
+**Verified Warden Agents** are AI Agents created and verified by Warden.
 
 ### Base Farmer
 
@@ -69,7 +78,22 @@ Tokens:
 - **USDC**
 - **VIRTUAL**
 
-Fees: [swap](fees#swap-fees) and [transfer fee](fees#transfer-fee)
+Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fee).
+
+### CoinGecko
+
+**CoinGecko** is an Agent that integrates with [CoinGecko](https://www.coingecko.com) to deliver insights and analytics on cryptocurrencies. You can analyze up to **2 coins**.
+
+The Agent supports two key functions:
+
+- Data retrieval: current price, market cap, volume, and other metrics
+- Coin analysis: performance and risk assessment, general takeaways, and comparative insights
+
+Fees: none.
+
+:::tip
+To compare **3 or more tokens**, use [Messari](#messari-deep-research).
+:::
 
 ### deBridge
 
@@ -90,7 +114,7 @@ Tokens:
 - **BNB**
 - **USDC**
 
-Fees: [deBridge fees](fees#debridge-fees)
+Fees: [deBridge fees](fees#debridge-fees).
 
 ### Intelligent DCA
 
@@ -114,7 +138,7 @@ Networks:
 - **BNB Smart Chain (BSC)**
 - **Arbitrum**
 
-Fees: [swap fees](fees#swap-fees)
+Fees: [swap fees](fees#swap-fees).
 
 ### Jupiter
 
@@ -128,7 +152,20 @@ Just specify the amount and other details in the chat, and the Agent will do the
 
 Networks: **Solana**
 
-Fees: [swap](fees#swap-fees) and [transfer fee](fees#transfer-fee)
+Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fee).
+
+### Kaibot
+
+**Kaibot** is a conversational AI Agent that analyzes a user's Twitter/X handle and recent activity to provide personalized feedback on their social media performance:
+
+- Summaries of recent tweets for the last 7–30 days
+- Engagement metrics (likes, replies, retweets)
+- Relative position on the [Kaito leaderboard](https://docs.kaito.ai/kaito-connect-infofi-network/yapper-leaderboard) (without exposing internal score)
+- Tailored recommendations to increase impact
+
+To start using Kaibot, provide your X handle. If your handle is already linked to the Warden account, Kaibot will fetch it automatically.
+
+Fees: [Kaibot fee](fees#kaibot-fee).
 
 ### Levva
 
@@ -139,11 +176,19 @@ Networks:
 - **Base**
 - **Ethereum**
 
-Fees: [swap fees](fees#swap-fees)
+Fees: [swap fees](fees#swap-fees).
 
 :::note
 The default network is Base. To manage your portfolio on Ethereum, you need specify it explicitly.
 :::
+
+### Messari Deep Research
+
+The **Messari Deep Research** Agent integrates with [Messari](https://messari.io)—the leading provider of crypto market intelligence products that help professionals navigate the Web3 space.
+
+Use this Agent to research any blockchain project with detailed, real-time insight: discover trending tokens on a specific chain, generate meme coin reports, analyze NFT market dynamics, and much more.
+
+Fees: [Messari fee](fees#messari-fee).
 
 ### Uniswap Trading API
 
@@ -162,51 +207,65 @@ Networks:
 - **BNB Smart Chain (BSC)**
 - **Arbitrum**
 
-Fees: [swap](fees#swap-fees) and [transfer fee](fees#transfer-fee)
+Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fee).
 
 :::note
 To start using this Agent, you need to read and agree to the Uniswap Labs terms of service and privacy policy.
 :::
 
-## Research Agents
+### WachAI
 
-Research Agents focus on collecting and analyzing data.
+**WachAI** is an Agent that performs token verification. It uses the following methods:
 
-### CoinGecko
+- Address- and chain-based verification: You provide WachAI with the token's address and the blockchain it resides on. This method is highly accurate, as token addresses are unique.
+- Ticker-based verification: You provide WachAI with a token's ticker, and the Agent fetches verification data. This method is less reliable due to possible duplicates in token tickers.
 
-**CoinGecko** is an Agent that integrates with [CoinGecko](https://www.coingecko.com) to deliver insights and analytics on cryptocurrencies. You can analyze up to **2 coins**.
+Fees: [WachAI fee](fees#wachai-fee).
 
-The Agent supports two key functions:
+## Community Agents
 
-- Data retrieval: current price, market cap, volume, and other metrics
-- Coin analysis: performance and risk assessment, general takeaways, and comparative insights
+**Community Agents** are AI Agents built by our developer community. [You can participate too!](https://wardenprotocol.org/blog/agent-builder-incentive-programme)
 
-Fees: none
+### Crypto Research by Caesar
+
+**Crypto Research by Caesar** integrates with the [Caesar API](https://docs.caesar.xyz/get-started/introduction) to deliver in-depth analysis of projects, trends, and blockchain data for smarter decisions.
+
+This Agent can do the following:
+
+- Discover markets and platforms based on user criteria—for example, low-risk and low-fee
+- Compare prediction or crypto platforms by usability, fees, and features
+- Summarize effective strategies and insights from real-world examples
+- Provide step-by-step guidance for using tools and interpreting market data
+- Create personalized plans for tracking market trends
+- And more
+
+To use this Agent, you need to fund your [Agents Credits wallet](manage-your-wallets#agents-credits).
+
+Fees: [Caesar fees](fees#caesar-fees).
 
 :::tip
-To compare **3 or more tokens**, use [Messari](#messari-deep-research).
+Caesar works best for research where the impact of the latest news and events is highest.
 :::
 
-### Kaibot
+### Deep Research by Caesar
 
-**Kaibot** is a conversational AI Agent that analyzes a user's Twitter/X handle and recent activity to provide personalized feedback on their social media performance:
+**Deep Research by Caesar** integrates with the [Caesar API](https://docs.caesar.xyz/get-started/introduction) to deliver advanced analysis, evidence-based reasoning, and data interpretation.
 
-- Summaries of recent tweets for the last 7–30 days
-- Engagement metrics (likes, replies, retweets)
-- Relative position on the [Kaito leaderboard](https://docs.kaito.ai/kaito-connect-infofi-network/yapper-leaderboard) (without exposing internal score)
-- Tailored recommendations to increase impact
+Supported capabilities include the following:
 
-To start using Kaibot, provide your X handle. If your handle is already linked to the Warden account, Kaibot will fetch it automatically.
+- Summarize recent findings from peer-reviewed scientific literature 
+- Compare studies and experimental results across related research areas
+- Identify and describe analytical techniques for specific scientific tasks
+- Explain complex scientific workflows step-by-step
+- And more
 
-Fees: [Kaibot fee](fees#kaibot-fee)
+To use this Agent, you need to fund your [Agents Credits wallet](manage-your-wallets#agents-credits).
 
-### Messari Deep Research
+Fees: [Caesar fees](fees#caesar-fees).
 
-The **Messari Deep Research** Agent integrates with [Messari](https://messari.io)—the leading provider of crypto market intelligence products that help professionals navigate the Web3 space.
-
-Use this Agent to research any blockchain project with detailed, real-time insight: discover trending tokens on a specific chain, generate meme coin reports, analyze NFT market dynamics, and much more.
-
-Fees: [Messari fee](fees#messari-fee)
+:::tip
+Caesar works best for research where the impact of the latest news and events is highest.
+:::
 
 ### Portfolio Analysis Agent
 
@@ -224,26 +283,17 @@ Networks:
 - **Solana**
 - All EVM-compatible networks
 
-Fees: none
+Fees: none.
 
 :::tip
 For active portfolio management that integrates analytics with automated investment, try the [Levva Agent](#levva).
 :::
 
-### WachAI
-
-**WachAI** is an Agent that performs token verification. It uses the following methods:
-
-- Address- and chain-based verification: You provide WachAI with the token's address and the blockchain it resides on. This method is highly accurate, as token addresses are unique.
-- Ticker-based verification: You provide WachAI with a token's ticker, and the Agent fetches verification data. This method is less reliable due to possible duplicates in token tickers.
-
-Fees: [WachAI fee](fees#wachai-fee)
-
 ## Coming soon
 
 The Agent lineup keeps growing. Here's what to expect next:
 
-- **Caesar Agent**
+- **Anime Agent**
 - **Google Assistant**
 - **Travel**
 - **ApexLiquid**

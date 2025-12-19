@@ -56,7 +56,7 @@ You can implement any Web3 or Web2 workflow and any custom functionality: your A
 
 **To qualify for rewards**, please keep in mind the following requirements and technical limitations:
 
-- At the moment, you must use [LangGraph](https://www.langchain.com/langgraph). Support for more frameworks is coming soon.
+- Currently, you must use [LangGraph](https://www.langchain.com/langgraph). Support for more frameworks is coming soon.
 - You can host your Agent on LangGraph Cloud or on your own infrastructure.
 - Make sure that your Agent is accessible through an API. **No UI is required**.
 - Make sure that you only have one Agent per LangGraph instance to keep your Agents separated.

@@ -8,6 +8,14 @@ sidebar_position: 10
 
 Here you'll find the latest Warden release highlights, including new features, improvements, and bug fixes. This section helps you quickly see what's changed and how it can enhance your experience.
 
+## December 18, 2025
+
+#### New features
+
+- [The Agent Hub](explore-ai-agents): Introduced the **Community** tab where you can access Community Agents built by our developer community.
+- [Community Agents](explore-ai-agents#community-agents): Added [Crypto Research by Caesar](explore-ai-agents#crypto-research-by-caesar) and [Deep Research by Caesar](explore-ai-agents#deep-research-by-caesar).
+- [Agents Credits](manage-your-wallets#agents-credits): Added a wallet holding credits for Agents.
+
 ## December 17, 2025
 
 #### New features
@@ -31,7 +39,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 #### New features
 
-- [Trading](trade): Introduced the AI Trading Terminal for perpetual trading. The Terminal supports the following features:
+- [Trading](trade): Introduced the **AI Trading Terminal** for perpetual trading. The Terminal supports the following features:
   - Market and limit orders
   - Easy order and position management
   - A dedicated trading wallet supporting USDC deposits from multiple chains

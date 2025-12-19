@@ -12,16 +12,25 @@ Use simple commands to send and swap your assets, check your balance, or ask que
 
 You can start chatting with the default **Warden Agent** or select another [AI Agent](explore-ai-agents), as described in the sections below.
 
-## Start chatting
+## Access the chat
+
+When you log in to [Warden](https://app.wardenprotocol.org), a new conversation with the AI-powered [Warden Agent](explore-ai-agents#warden-agent) opens automatically.
 
 You can access Agent chats anytime by navigating to the **Chats** tab in the left menu:
 
 ![Ask the Warden Agent to swap an asset](../../static/img/warden-app/use-the-chat-1.png)
 
-When you log in to [Warden](https://app.wardenprotocol.org), a new conversation with the AI-powered [Warden Agent](explore-ai-agents#warden-agent) opens automatically.
+## Start chatting
 
-To start interacting, just type your request in the chat box. For example, to perform a transaction, [fund your wallet](manage-assets#deposit-assets) and ask Warden to [send or swap an asset](manage-assets#send-or-swap-assets).
+To start interacting, just type your request in the chat box.
 
+For example, to perform a transaction, [fund your wallet](manage-your-wallets#deposit) and ask the Warden Agent to [send or swap an asset](manage-your-wallets#send-or-swap).
+
+:::note
+Transactions are subject to [transfer](fees#transfer-fee) and [swap fees](fees#swap-fees).
+:::
+
+![Send or swap assets using the Warden Agent](../../static/img/warden-app/quick-start-1.png)
 
 ## Select an AI Agent
 
@@ -39,7 +48,7 @@ You can easily manage your chats using the buttons at the top of the screen:
 - To create a new chat, click the **+** button.
 - To open or delete a previous thread, use the history drop-down menu.
 
-![Manage AI chats in Warden](../../static/img/warden-app/use-the-chat-4.png)
+![Manage AI chats in Warden](../../static/img/warden-app/use-the-chat-3.png)
 ![Manage existing threads in Warden](../../static/img/warden-app/use-the-chat-5.png)
 
 ## Explore the dashboard

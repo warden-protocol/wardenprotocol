@@ -9,9 +9,9 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #6f7f3a;
-  --ifm-color-primary-dark: #5f6d32;
-  --ifm-color-primary-darker: #879a4a;
+  --ifm-color-primary: #879a4a;
+  --ifm-color-primary-dark: #6f7f3a;
+  --ifm-color-primary-darker: #5f6d32;
   --ifm-color-primary-darkest: #0e0601;
   --ifm-color-primary-light: #160a01;
   --ifm-color-primary-lighter: #170a01;
@@ -134,7 +134,7 @@ html[data-theme='dark'] .navbar--github-link:before {
   --docsearch-footer-background: var(--ifm-background-color);
   /* Other */
   --docsearch-muted-color: var(--ifm-color-secondary-darkest);
-  --docsearch-container-background: rgb(0, 0, 0, 0.4);
+  --docsearch-container-background: rgba(0, 0, 0, 0.4);
   /* Key icons */
   --docsearch-key-background: var(--ifm-color-emphasis-200);
   --docsearch-key-color: var(--ifm-color-secondary-darkest);
@@ -164,7 +164,7 @@ html[data-theme='dark'] .navbar--github-link:before {
   --docsearch-footer-background: var(--ifm-background-color);
   /* Other */
   --docsearch-muted-color: var(--ifm-color-secondary-darkest);
-  --docsearch-container-background: rgb(0, 0, 0, 0.7);
+  --docsearch-container-background: rgba(0, 0, 0, 0.7);
   /* Key icons */
   --docsearch-key-background: var(--ifm-color-emphasis-200);
   --docsearch-key-color: var(--ifm-color-secondary-darkest);

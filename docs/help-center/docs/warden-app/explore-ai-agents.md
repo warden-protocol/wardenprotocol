@@ -243,6 +243,10 @@ To use this Agent, you need to fund your [Agents Credits wallet](manage-your-wal
 
 Fees: [Caesar fees](fees#caesar-fees).
 
+:::tip
+Caesar works best for research where the impact of the latest news and events is highest.
+:::
+
 ### Deep Research by Caesar
 
 **Deep Research by Caesar** integrates with the [Caesar API](https://docs.caesar.xyz/get-started/introduction) to deliver advanced analysis, evidence-based reasoning, and data interpretation.
@@ -258,6 +262,10 @@ Supported capabilities include the following:
 To use this Agent, you need to fund your [Agents Credits wallet](manage-your-wallets#agents-credits).
 
 Fees: [Caesar fees](fees#caesar-fees).
+
+:::tip
+Caesar works best for research where the impact of the latest news and events is highest.
+:::
 
 ### Portfolio Analysis Agent
 

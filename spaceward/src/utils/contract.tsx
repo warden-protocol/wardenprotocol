@@ -4,6 +4,7 @@ import { useSetChain } from "@web3-onboard/react";
 import { isHex } from "viem";
 import { waitForTransactionReceipt } from "viem/actions";
 import type { useWriteContract } from "wagmi";
+import type { QueryClient } from "@tanstack/react-query";
 
 type WriteContractData = Awaited<
 	ReturnType<ReturnType<typeof useWriteContract>["writeContractAsync"]>
@@ -71,6 +72,9 @@ export async function handleContractWrite(
 	client?: Client,
 	options?: {
 		toast?: Partial<ToasterToast>;
+		queryClient?: QueryClient;
+		address?: `0x${string}`;
+		chainId?: number;
 	},
 ) {
 	const { id, update } = toast({
@@ -103,6 +107,27 @@ export async function handleContractWrite(
 				description:
 					options?.toast?.description ?? "Transaction successful",
 			});
+
+			// Invalidate wallet balance query after successful transaction
+			if (options?.queryClient && options?.address && options?.chainId) {
+				options.queryClient.invalidateQueries({
+					predicate: (query) => {
+						const key = query.queryKey;
+						if (!Array.isArray(key) || key[0] !== "balance") {
+							return false;
+						}
+						const params = key[1];
+						return (
+							typeof params === "object" &&
+							params !== null &&
+							"address" in params &&
+							(params as any).address === options.address &&
+							"chainId" in params &&
+							(params as any).chainId === options.chainId
+						);
+					},
+				});
+			}
 
 			return receipt;
 		} else {

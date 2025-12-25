@@ -88,7 +88,7 @@ In the [AI Trading Terminal](#access-the-trading-terminal), you can track and ma
 
 - **Positions**: Your open positions—the resulting perp exposure.
 - **Orders**: Your orders that aren't fully executed yet. This includes unfilled parts of partially filled limit orders.
-- **History**: Filled and cancelled orders.
+- **History**: Filled and canceled orders.
 
 ![Track and manage your perp positions in Warden](../../static/img/warden-app/trade-5.png)
 

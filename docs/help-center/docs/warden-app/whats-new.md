@@ -8,6 +8,20 @@ sidebar_position: 10
 
 Here you'll find the latest Warden release highlights, including new features, improvements, and bug fixes. This section helps you quickly see what's changed and how it can enhance your experience.
 
+## December 23, 2025
+
+#### Improvements
+
+- [Betflix](play-betflix): Added a default bet amount.
+
+#### Fixes
+
+- [Trading](trade): 
+  - Fixed issues with withdrawals and canceling orders.
+  - Fixed UI issues.
+- [Warden Agent](explore-ai-agents#warden-agent): Resolved the endless approve cycle and double messaging.
+- Other: Corrected token price fetching and handling.
+
 ## December 18, 2025
 
 #### New features

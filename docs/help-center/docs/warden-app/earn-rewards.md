@@ -30,14 +30,18 @@ Congratulations! Now you can start earning PUMP points.
 
 ## Earn PUMPs
 
-### What are PUMPs?
+### Check your rank
 
-**PUMP points** are your reward for activity in Warden. The more PUMPs you earn, the higher your coin climbs on the [leaderboard](#check-your-rank).
+**PUMP points** are your reward for activity in Warden. The more PUMPs you earn, the higher your coin climbs on the leaderboard.
 
 The top PUMP holders will enjoy the following benefits:
 
 - [Earn WARD](#earn-ward)
 - Gain priority access to upcoming features
+
+To check your coin's rank, open the **Rewards** tab and scroll down to the **PUMP Leaderboard**:
+
+![Create and grow your coin in Warden](../../static/img/warden-app/earn-rewards-4.png)
 
 ### Complete tasks
 
@@ -66,17 +70,14 @@ You can access the game from any tab—simply click **Tap to PUMP** in the left 
 
 ![Create and grow your coin in Warden](../../static/img/warden-app/earn-rewards-3.png)
 
-### Play Betflix
+### Trade
 
-You can earn additional PUMPs by playing **Betflix**, our trading game.
+To earn additional PUMPs, join **League of Traders** and climb its leaderbords.
 
-Learn more: [Play Betflix](play-betflix).
+You can either participate in perpetual trading or play our trading game:
 
-### Check your rank
-
-To check your coin's rank, open the **Rewards** tab and scroll down to the **PUMP Leaderboard**:
-
-![Create and grow your coin in Warden](../../static/img/warden-app/earn-rewards-4.png)
+- [Trade](trade#earn-pumps)
+- [Play Betflix](play-betflix#earn-pumps)
 
 ## Earn WARD
 

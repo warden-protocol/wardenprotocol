@@ -139,7 +139,7 @@ There are also additional parameters that are automatically calculated based on 
 In the [AI Trading Terminal](#access-the-trading-terminal), you can access various market analysis tools helping you make informed decisions on your trades:
 
 - **The live chart** displays perp price movements. It supports multiple chart types, technical indicators, drawing tools, and more. Here you can also view your historical trades and [manage your active trades](#3-manage-your-trade).
-- **The order book** A real-time list of all active buy and sell orders. It shows available amounts at each price level, letting you see market liquidity and the spread between bids and asks.
+- **The order book** is a real-time list of all active buy and sell orders. It shows available amounts at each price level, letting you see market liquidity and the spread between bids and asks.
 - **Messari Signals** powered by [Messari](https://messari.io) are AI-generated token reports. For deeper insights, use the  [Messari Deep Research](explore-ai-agents#messari-deep-research) Agent.
 
 :::note
@@ -155,8 +155,8 @@ The market data for the chart and order book is provided by [Hyperliquid](https:
 By trading, you join the **League of Traders**: each order contributes to the following rankings:
 
 - **Weekly PnL**
-- **Weekly PnL**
-- **Monthly Volume**
+- **Weekly Volume**
+- **Monthly PnL**
 - **Monthly Volume**
 
 Top traders earn [PUMPs](earn-rewards#earn-pumps)—points that reward your activity in Warden:

@@ -72,7 +72,7 @@ You can access the game from any tab—simply click **Tap to PUMP** in the left 
 
 ### Trade
 
-To earn additional PUMPs, join **League of Traders** and climb its leaderbords.
+To earn additional PUMPs, join **League of Traders** and climb its leaderboards.
 
 You can either participate in perpetual trading or play our trading game:
 

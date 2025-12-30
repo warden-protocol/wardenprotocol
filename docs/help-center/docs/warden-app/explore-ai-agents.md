@@ -71,12 +71,11 @@ The **Base Farmer** Agent assists you with managing your tokens on the Base chai
 Networks:
 
 - **Base**
-- **Arbitrum**
 
 Tokens:
 
+- **ETH**
 - **USDC**
-- **VIRTUAL**
 
 Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fee).
 

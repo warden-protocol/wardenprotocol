@@ -53,21 +53,11 @@ By playing Betflix, you join the **League of Traders**: each swipe contributes t
 
 Top traders earn [PUMPs](earn-rewards#earn-pumps)—points that reward your activity in Warden:
 
-- Hourly League: 1st–3rd rank
-- Daily League: 1st–5th rank
-- Weekly League: 1st–5th rank
+- Hourly league: 1st–3rd ranks
+- Daily league: 1st–5th ranks
+- Weekly league: 1st–5th ranks
 
-[Check your stats](#check-your-stats) to view leaderboards and see the exact rewards for each rank.
-
-## Check your stats
-
-You can view the game statistics in your Betflix wallet, located on the right of the **Betflix** tab:
-
-- View your [League of Traders](#earn-pumps) ranking in the **Leaderboard** tab. You can select the **Hourly**, **Daily**, or **Weekly** league.
-- To see rewards for each rank, click the information icon next to the winners list.
-- To review your recent plays and results, switch to **Your Bets**.
-
-![Check Betflix stats in Warden](../../static/img/warden-app/play-betflix-2.png)
+[Check your stats](#check-your-stats) in the Betflix wallet to view all leaderboards and the exact rewards.
 
 ## Manage the Betflix wallet
 
@@ -92,3 +82,14 @@ This is how to move funds between your Betflix wallet and the main account:
 :::tip
 To deposit, make sure your main account has **USDC on Solana**.
 :::
+
+### Check your stats
+
+In the Betflix wallet, you can also view the game statistics:
+
+- The **Leaderboard** tab displays your [League of Traders](#earn-pumps) ranking:
+  - You can select the **Hourly**, **Daily**, or **Weekly** leagues.
+  - To see rewards for each rank, click the information icon next to the winners list.
+- The **Bets** tab displays your recent plays and results.
+
+![Check Betflix stats in Warden](../../static/img/warden-app/play-betflix-2.png)

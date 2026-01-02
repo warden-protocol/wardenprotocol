@@ -35,7 +35,7 @@ You'll see the Terminal interface, where you can do the following:
 4. [Create an order](#2-create-an-order)
 5. [Manage your trade](#3-manage-your-trade)
 
-![AI Trading Terminal in Warden](../../static/img/warden-app/trade-1.png)
+![AI Trading Terminal in Warden](../../static/img/warden-app/trade-terminal.png)
 
 ## Manage trades
 
@@ -49,7 +49,7 @@ To start trading, you need **USDC** on **Arbitrum**, **Ethereum**, **Base**, or 
 4. Click the wallet icon at the top right to open the [trading wallet](#manage-the-trading-wallet).
 5. In the trading wallet, click **Deposit** and add USDC from your main account.
 
-![Prepare funds for perpetual trading in Warden](../../static/img/warden-app/trade-2.png)
+![Prepare funds for perpetual trading in Warden](../../static/img/warden-app/trade-funds.png)
 
 ### 2. Create an order
 
@@ -72,8 +72,8 @@ Selecting a pair determines the perp you'll trade. Tokens are usually paired wit
 - To see only [builder-deployed perps](https://hyperliquid.gitbook.io/hyperliquid-docs/hyperliquid-improvement-proposals-hips/hip-3-builder-deployed-perpetuals), filter the pair list by **HIP-3**.
 :::
 
-![Create an order in Warden](../../static/img/warden-app/trade-3.png)
-![Create an order in Warden](../../static/img/warden-app/trade-4.png)
+![Create an order in Warden](../../static/img/warden-app/trade-order-1.png)
+![Create an order in Warden](../../static/img/warden-app/trade-order-2.png)
 
 ### 3. Manage your trade
 
@@ -90,7 +90,7 @@ In the [AI Trading Terminal](#access-the-trading-terminal), you can track and ma
 - **Orders**: Your orders that aren't fully executed yet. This includes unfilled parts of partially filled limit orders.
 - **History**: Filled and canceled orders.
 
-![Track and manage your perp positions in Warden](../../static/img/warden-app/trade-5.png)
+![Track and manage your perp positions in Warden](../../static/img/warden-app/trade-positions.png)
 
 To manage an open position or a limit order, click the **Manage** button next to it. You can do the following:
 
@@ -134,6 +134,38 @@ There are also additional parameters that are automatically calculated based on 
 - **Size**: The total value of your position, determined by your margin and leverage.
 - **Est. fee**: The total fee for opening a position. See [trading fees](fees#trading-fees).
 
+## Analyze the market
+
+In the [AI Trading Terminal](#access-the-trading-terminal), you can access various market analysis tools helping you make informed decisions on your trades:
+
+- **The live chart** displays perp price movements. It supports multiple chart types, technical indicators, drawing tools, and more. Here you can also view your historical trades and [manage your active trades](#3-manage-your-trade).
+- **The order book** is a real-time list of all active buy and sell orders. It shows available amounts at each price level, letting you see market liquidity and the spread between bids and asks.
+- **Messari Signals** powered by [Messari](https://messari.io) are AI-generated token reports. For deeper insights, use the  [Messari Deep Research](explore-ai-agents#messari-deep-research) Agent.
+
+:::note
+The market data for the chart and order book is provided by [Hyperliquid](https://hyperfoundation.org).
+:::
+
+![Analyze the perpetual trading market in Warden](../../static/img/warden-app/trade-market-1.png)
+![Use technical indicators on the trading live chart in Warden](../../static/img/warden-app/trade-market-2.png)
+![See your positions on the trading live chart in Warden](../../static/img/warden-app/trade-market-3.png)
+
+## Earn PUMPs
+
+By trading, you join the **League of Traders**: each order contributes to the following rankings:
+
+- **Weekly PnL**
+- **Weekly Volume**
+- **Monthly PnL**
+- **Monthly Volume**
+
+Top traders earn [PUMPs](earn-rewards#earn-pumps)—points that reward your activity in Warden:
+
+- Weekly Pnl & Volume leagues: 1st–5th ranks
+- Monthly Pnl & Volume leagues: 1st–5th ranks
+
+[Check your stats](#check-your-stats) in the trading wallet to view all leaderboards and the exact rewards.
+
 ## Manage the trading wallet
 
 ### Access
@@ -146,8 +178,8 @@ To switch between the main and trading wallets at any time, click the wallet ico
 The balance you see here is only your **withdrawable amount**.
 :::
 
-![Access the trading wallet in Warden](../../static/img/warden-app/trade-6.png)
-![Switch between the main and trading wallets in Warden](../../static/img/warden-app/trade-7.png)
+![Access the trading wallet in Warden](../../static/img/warden-app/trade-wallet-1.png)
+![Switch between the main and trading wallets in Warden](../../static/img/warden-app/trade-wallet-2.png)
 
 ### Deposit
 
@@ -186,21 +218,14 @@ The balance you see in the trading wallet is your **withdrawable amount** of **U
 Each withdrawal is subject to a [Hyperliquid fee](fees#trading-wallet-fees) of **1 USDC**.
 :::
 
-## Analyze the market
+### Check your stats
 
-In the [AI Trading Terminal](#access-the-trading-terminal), you can access various market analysis tools helping you make informed decisions on your trades:
+In the trading wallet, you can also view your statistics:
 
-- **The live chart** displays perp price movements. It supports multiple chart types, technical indicators, drawing tools, and more. Here you can also view your historical trades and [manage your active trades](#3-manage-your-trade).
-- **The order book** A real-time list of all active buy and sell orders. It shows available amounts at each price level, letting you see market liquidity and the spread between bids and asks.
-- **Messari Signals** powered by [Messari](https://messari.io) are AI-generated token reports. For deeper insights, use the  [Messari Deep Research](explore-ai-agents#messari-deep-research) Agent.
-
-:::note
-The market data for the chart and order book is provided by [Hyperliquid](https://hyperfoundation.org).
-:::
-
-![Analyze the perpetual trading market in Warden](../../static/img/warden-app/trade-8.png)
-![Use technical indicators on the trading live chart in Warden](../../static/img/warden-app/trade-9.png)
-![See your positions on the trading live chart in Warden](../../static/img/warden-app/trade-10.png)
+- The **Leaderboard** tab displays your [League of Traders](#earn-pumps) ranking:
+  - You can select the **Weekly** and **Monthly** leagues, **PnL** or **Volume**.
+  - To see rewards for each rank, click the information icon next to the winners list.
+- The **Activity** tab displays your activity in the wallet.
 
 ## Perpetual trading
 

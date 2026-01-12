@@ -171,7 +171,7 @@ To view all leaderboards and the exact rewards, [check your trading wallet](#che
 
 :::note Notes
 - You earn a reward in PUMPs each time your position is closed. Distributions run every 15 minutes, so leaderboard stats may update with a delay.
-- Reward = **trade volume x 30 (1$ = 30 PUMPs) x a multiplier**.
+- Reward = **trade volume x 30 ($1 = 30 PUMPs) x a multiplier**.
 - Trade volume = **price x size x leverage**.
 - The multiplier is based on your all-time total trade volume:
   - 1x for volume > 100

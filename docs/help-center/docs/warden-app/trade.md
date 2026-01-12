@@ -10,7 +10,7 @@ In Warden, you can use **perpetual contracts** (**trade perps**) to trade on fut
 
 Warden's **AI Trading Terminal** brings real-time market analysis tools directly into your trading screen so you make informed decisions before placing a trade. This includes AI signals, an order book, and a chart with technical indicators and drawing tools.
 
-This guide explains how to open and manage your positions, manage the trading wallet, and use market analysis tools. To learn more about perps and the related concepts, see [Perpetual trading](#perpetual-trading).
+This guide explains how to open and manage your positions, manage the trading wallet, and use market analysis tools. To learn more about perps and the related concepts, see [Perpetual trading glossary](#perpetual-trading-glossary).
 
 :::warning
 Perpetual Trading involves significant risk, including potential loss of all funds due to leverage and volatility, and may not suit all users.
@@ -30,10 +30,11 @@ Want to trade just for fun? Try [Betflix](play-betflix).
 You'll see the Terminal interface, where you can do the following:
 
 1. Select a perp to trade
-2. [Manage the trading wallet](#manage-the-trading-wallet)
-3. [Analyze the market](#analyze-the-market)
-4. [Create an order](#2-create-an-order)
-5. [Manage your trade](#3-manage-your-trade)
+2. [Create an order](#2-create-an-order)
+3. [Manage your trade](#3-manage-your-trade)
+4. [Analyze the market](#analyze-the-market)
+5. [Earn PUMPs](#earn-pumps)
+6. [Manage the trading wallet](#manage-the-trading-wallet)
 
 ![AI Trading Terminal in Warden](../../static/img/warden-app/trade-terminal.png)
 
@@ -164,7 +165,20 @@ Top traders earn [PUMPs](earn-rewards#earn-pumps)—points that reward your acti
 - Weekly Pnl & Volume leagues: 1st–5th ranks
 - Monthly Pnl & Volume leagues: 1st–5th ranks
 
-[Check your stats](#check-your-stats) in the trading wallet to view all leaderboards and the exact rewards.
+To view all leaderboards and the exact rewards, [check your trading wallet](#check-your-stats) or click the League of Traders icon at the top right:
+
+![Access the Pro League of Traders in Warden](../../static/img/warden-app/trade-pumps.png)
+
+:::note Notes
+- You earn a reward in PUMPs each time your position is closed. Distributions run every 15 minutes, so leaderboard stats may update with a delay.
+- Reward = **trade volume x 30 (1$ = 30 PUMPs) x a multiplier**.
+- Trade volume = **price x size x leverage**.
+- The multiplier is based on your all-time total trade volume:
+  - 1x for volume > 100
+  - 2x for volume > 500
+  - 3x for volume > 1000
+  - 5x for volume > 10000
+:::
 
 ## Manage the trading wallet
 
@@ -227,7 +241,9 @@ In the trading wallet, you can also view your statistics:
   - To see rewards for each rank, click the information icon next to the winners list.
 - The **Activity** tab displays your activity in the wallet.
 
-## Perpetual trading
+![Check trading stats in Warden](../../static/img/warden-app/trade-wallet-3.png)
+
+## Perpetual trading glossary
 
 #### Trade perp
 

@@ -153,31 +153,29 @@ The market data for the chart and order book is provided by [Hyperliquid](https:
 
 ## Earn PUMPs
 
-By trading, you join the **League of Traders**: each order contributes to the following rankings:
+Once your all-time total trade volume reaches **$100**, you qualify to join the **League of Traders** and start receiving [PUMPs](earn-rewards#earn-pumps)—points that reward your activity in Warden.
 
-- **Weekly PnL**
-- **Weekly Volume**
-- **Monthly PnL**
-- **Monthly Volume**
+You're rewarded each time your position is closed: 
 
-Top traders earn [PUMPs](earn-rewards#earn-pumps)—points that reward your activity in Warden:
+- Reward (PUMPs) = **trade volume (USD) x 30 x your multiplier**.
+- Trade volume = **price x size x leverage**.
+- The multiplier is based on your total trade volume:
+  - 1x for volume > $100
+  - 2x for volume > $500
+  - 3x for volume > $1,000
+  - 5x for volume > $10,000
 
-- Weekly Pnl & Volume leagues: 1st–5th ranks
-- Monthly Pnl & Volume leagues: 1st–5th ranks
+In the **League of Traders**, there are two **weekly** and two **monthly** leaderboards based on **PnL** and **volume**. Top traders in each ranking earn extra PUMPs:
+
+- Weekly PnL & Volume leagues: 1st–5th ranks
+- Monthly PnL & Volume leagues: 1st–5th ranks
 
 To view all leaderboards and the exact rewards, [check your trading wallet](#check-your-stats) or click the League of Traders icon at the top right:
 
 ![Access the Pro League of Traders in Warden](../../static/img/warden-app/trade-pumps.png)
 
-:::note Notes
-- You earn a reward in PUMPs each time your position is closed. Distributions run every 15 minutes, so leaderboard stats may update with a delay.
-- Reward = **trade volume x 30 (30 PUMPs per $1) x a multiplier**.
-- Trade volume = **price x size x leverage**.
-- The multiplier is based on your all-time total trade volume:
-  - 1x for volume > 100
-  - 2x for volume > 500
-  - 3x for volume > 1000
-  - 5x for volume > 10000
+:::note
+Distributions run every 15 minutes, so leaderboard stats may update with a delay.
 :::
 
 ## Manage the trading wallet

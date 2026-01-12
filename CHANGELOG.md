@@ -46,6 +46,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 
+## [v0.7.4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.4) - 2026-01-12
+
+### Consensus Breaking Changes
+
+- x/erc20: enable WARD mapping to `0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE`
+- cosmos/evm: bump to [v0.5.1](https://github.com/cosmos/evm/releases/v0.5.1)
+
+### Features (non-breaking)
+
+### Bug Fixes
+
 ## [v0.7.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.3) - 2025-11-19
 
 ### Bug Fixes

@@ -8,10 +8,10 @@ sidebar_position: 9
 
 Registration for the [WARD](https://docs.wardenprotocol.org/ward/introduction) airdrop is going live.
 
-You can sign up through the **Airdrop Registration Portal** in Warden. Before, you may need to prepare your account—follow this guide to learn more.
+You can sign up through the **Airdrop Registration Portal** in Warden. Before registering, you may need to prepare your account—follow this guide to learn more.
 
 :::warning
-Make sure that you only access the Airdrop Portal through [Warden](https://app.wardenprotocol.org). Do not click in any external or social link. 
+Make sure that you only access the Airdrop Portal through [Warden](https://app.wardenprotocol.org). Do not click any external or social links. 
 :::
 
 ## Important information
@@ -36,7 +36,7 @@ Before registering on the Airdrop Portal, link your X account to your Warden acc
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. Click the wallet icon at the top right. This will open your account.
-3. Go to to **Settings** by clicking the gear icon.
+3. Go to **Settings** by clicking the gear icon.
 4. In the **Login** section, link your X (Twitter) account to your Warden account.
 
 Once linked, we'll track the mindshare you generated during the Kaito Pre-TGE campaign. Remember: the Kaito campaign required use of Warden.
@@ -83,10 +83,10 @@ Before registering on the Airdrop Portal, link your wallets containing these ass
 
 Every **ambassador** needs to link their X and Discord accounts:
 
-2. Log in: 👉 [Warden](https://app.wardenprotocol.org)
-3. Click the wallet icon at the top right. This will open your account.
-4. Go to **Settings** by clicking the gear icon.
-5. In the **Login** section, link your X (Twitter) and Discord.
+1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
+2. Click the wallet icon at the top right. This will open your account.
+3. Go to **Settings** by clicking the gear icon.
+4. In the **Login** section, link your X (Twitter) and Discord.
 
 ![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-4.png)
 ![Link your X and Discord accounts in Warden](../../static/img/warden-app/airdrop-3.png)

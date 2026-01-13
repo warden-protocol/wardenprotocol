@@ -65,7 +65,7 @@ Once you have funds in your trading wallet, you can create an order. [Open the A
 5. Review your order details and confirm opening a position.
 
 :::note
-Selecting a pair determines the perp you'll trade. Tokens are usually paired with **USDC** or **USDH**: BTC-USDC, ETH-USDC, OPENAI-USDC and so on.
+Selecting a pair determines the perp you'll trade. Tokens (base currencies) are usually paired with **USDC** or **USDH**: BTC-USDC, ETH-USDC, OPENAI-USDC, and so on.
 :::
 
 :::tip Tips
@@ -132,7 +132,7 @@ There are also additional parameters that are automatically calculated based on 
 - **Margin**: Your security deposit ([learn more](#margin)).
 - **Entry**: The estimated price at which your position would open if your order were executed now.
 - **Liquidation**: The price at which your position will be automatically closed to prevent further losses.
-- **Size**: The total value of your position, determined by your margin and leverage.
+- **Size**: The total value (overall exposure) of your position, determined by your margin and leverage.
 - **Est. fee**: The total fee for opening a position. See [trading fees](fees#trading-fees).
 
 ## Analyze the market
@@ -155,15 +155,15 @@ The market data for the chart and order book is provided by [Hyperliquid](https:
 
 Once your all-time total trade volume reaches **$100**, you qualify to join the **League of Traders** and start receiving [PUMPs](earn-rewards#earn-pumps)—points that reward your activity in Warden.
 
-You're rewarded each time your position is closed: 
+You earn rewards for every position closed within a **15-minute** cycle (when PUMPs are distributed):
 
 - Reward (PUMPs) = **trade volume (USD) x 30 x your multiplier**.
-- Trade volume = **price x size x leverage**.
+- Trade volume  = **price x size (base currency) x leverage**.
 - The multiplier is based on your total trade volume:
-  - 1x for volume > $100
-  - 2x for volume > $500
-  - 3x for volume > $1,000
-  - 5x for volume > $10,000
+  - 1x for volume >= $100
+  - 2x for volume >= $500
+  - 3x for volume >= $1,000
+  - 5x for volume >= $10,000
 
 In the **League of Traders**, there are two **weekly** and two **monthly** leaderboards based on **PnL** and **volume**. Top traders in each ranking earn extra PUMPs:
 
@@ -175,7 +175,7 @@ To view all leaderboards and the exact rewards, [check your trading wallet](#che
 ![Access the Pro League of Traders in Warden](../../static/img/warden-app/trade-pumps.png)
 
 :::note
-Distributions run every 15 minutes, so leaderboard stats may update with a delay.
+Since distributions of PUMPs run at 15-minute intervals, leaderboard stats may update with a delay.
 :::
 
 ## Manage the trading wallet
@@ -306,5 +306,5 @@ Warden supports two order types with different fill conditions:
   - Short orders fill at the target price or higher.
 
 :::note
-Limit orders rest on the [order book](#analyze-the-market) until they can execute. Your order fills only if there are enough buyers or sellers at the target price to match the size of your order. If only part of the size is matched, the order fills partially.
+Limit orders rest on the [order book](#analyze-the-market) until they can execute. Your order fills only if there are enough buyers or sellers at the target price to match the amount placed on the order book. If only part of the amount is matched, the order fills partially.
 :::

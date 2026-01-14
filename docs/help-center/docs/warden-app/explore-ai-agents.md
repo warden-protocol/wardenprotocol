@@ -225,6 +225,12 @@ Fees: [WachAI fee](fees#wachai-fee).
 
 **Community Agents** are AI Agents built by our developer community. [You can participate too!](https://wardenprotocol.org/blog/agent-builder-incentive-programme)
 
+### Anime Agent
+
+The **Anime Agent** generates images in anime style. You can use it to instantly design anime heroes, waifus, battles, and fantasy landscapes.
+
+Fees: none.
+
 ### Crypto Research by Caesar
 
 **Crypto Research by Caesar** integrates with the [Caesar API](https://docs.caesar.xyz/get-started/introduction) to deliver in-depth analysis of projects, trends, and blockchain data for smarter decisions.
@@ -292,7 +298,6 @@ For active portfolio management that integrates analytics with automated investm
 
 The Agent lineup keeps growing. Here's what to expect next:
 
-- **Anime Agent**
 - **Google Assistant**
 - **Travel**
 - **ApexLiquid**

@@ -57,7 +57,10 @@ Top traders earn [PUMPs](earn-rewards#earn-pumps)—points that reward your acti
 - Daily league: 1st–5th ranks
 - Weekly league: 1st–5th ranks
 
-[Check your stats](#check-your-stats) in the Betflix wallet to view all leaderboards and the exact rewards.
+To view all leaderboards and the exact rewards, [check your Betflix wallet](#check-your-stats) or click the League of Traders icon at the top right:
+
+![Access the Betflix League of Traders in Warden](../../static/img/warden-app/play-betflix-2.png)
+
 
 ## Manage the Betflix wallet
 
@@ -92,4 +95,4 @@ In the Betflix wallet, you can also view the game statistics:
   - To see rewards for each rank, click the information icon next to the winners list.
 - The **Bets** tab displays your recent plays and results.
 
-![Check Betflix stats in Warden](../../static/img/warden-app/play-betflix-2.png)
+![Check Betflix stats in Warden](../../static/img/warden-app/play-betflix-5.png)

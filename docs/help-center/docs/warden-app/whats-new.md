@@ -8,11 +8,31 @@ sidebar_position: 11
 
 Here you'll find the latest Warden release highlights, including new features, improvements, and bug fixes. This section helps you quickly see what's changed and how it can enhance your experience.
 
+## January 7, 2026
+
+#### New features
+
+- [Intelligent DCA](explore-ai-agents#intelligent-dca): Added ability to permanently remove Uniswap/DCA tasks from workflows. Task lists automatically filter out previously removed tasks.
+
+#### Fixes
+
+- [Agent Hub](explore-ai-agents#access-agents): A minor UI fix.
+- [Messari Deep Research](explore-ai-agents#messari-deep-research): Resolved an issue with conversation history handling.
+
 ## December 30, 2025
 
 #### New features
 
 - [Trading](trade): Introduced the [League of Traders](trade#earn-pumps) with PUMP rewards.
+- [Anime Agent](explore-ai-agents#anime-agent): Added a new Agent generating images in anime style.
+
+#### Fixes
+
+- [Trading](trade): Fixed an issue with deposit/withdraw history.
+- [Betflix](play-betflix): Fixed issues with the bet amount selection.
+- Other:
+  - Resolved errors caused by logging in with a passkey.
+  - Corrected token price fetching and handling.
 
 ## December 23, 2025
 
@@ -33,7 +53,8 @@ Here you'll find the latest Warden release highlights, including new features, i
 #### New features
 
 - [The Agent Hub](explore-ai-agents): Introduced the **Community** tab where you can access Community Agents built by our developer community.
-- [Community Agents](explore-ai-agents#community-agents): Added [Crypto Research by Caesar](explore-ai-agents#crypto-research-by-caesar) and [Deep Research by Caesar](explore-ai-agents#deep-research-by-caesar).
+- [Crypto Research by Caesar](explore-ai-agents#crypto-research-by-caesar): Added a new Agent for crypto research.
+- [Deep Research by Caesar](explore-ai-agents#deep-research-by-caesar): Added a new Agent for advanced research and data interpretation.
 - [Agents Credits](manage-your-wallets#agents-credits): Added a wallet holding credits for Agents.
 
 ## December 17, 2025

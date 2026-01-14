@@ -115,6 +115,26 @@ Tokens:
 
 Fees: [deBridge fees](fees#debridge-fees).
 
+### Google Assistant
+
+The **Google Assistant** Agent manages your Gmail and Google Calendar: it can read and send emails, show event details, schedule events, and more.
+
+Here are some examples of tasks this Agent can perform:
+
+- List recent emails or get full details of a specific email
+- Search emails by sender, subject, date, labels, or status
+- List upcoming events or search by date or keywords
+- View full details of a specific event
+- Create, update, or delete events (with confirmation)
+- Check availability for you or your colleagues
+- Add or remove Google Meet links
+
+Fees: none.
+
+:::note
+To start using this Google Assistant, connect your Google account and grant the required permissions directly in the chat. You can use a different account than your Warden sign-in, and you can disconnect or switch accounts anytime in your [Warden wallet settings](manage-your-wallets#configure) under **Integrations**.
+:::
+
 ### Intelligent DCA
 
 The **Intelligent DCA** Agent automates recurring token swaps on [Uniswap](https://app.uniswap.org), helping you accumulate crypto over time through Dollar Cost Averaging (DCA). You can either spend or receive a fixed amount of a token at the following intervals: 5m, 1h, 1d, 1w, 30d.

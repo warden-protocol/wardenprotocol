@@ -8,6 +8,23 @@ sidebar_position: 11
 
 Here you'll find the latest Warden release highlights, including new features, improvements, and bug fixes. This section helps you quickly see what's changed and how it can enhance your experience.
 
+## January 13, 2026
+
+#### New features
+
+- [Google Assistant](explore-ai-agents#google-assistant): Added a new Agent that can manage your Gmail and Google Calendar.
+
+#### Improvements
+
+- [Community Agents](explore-ai-agents#community-agents): Improved remote execution compatibility and streaming reliability.
+- [WachAI](explore-ai-agents#wachai): Improved backend connectivity and compatibility.
+- [Betflix](play-betflix): Added geo-blocking for restricted regions.
+
+#### Fixes
+
+- [The main account](manage-your-wallets#the-main-account): A minor UI fix.
+- [Trading](trade): A minor UI fix.
+
 ## January 7, 2026
 
 #### New features

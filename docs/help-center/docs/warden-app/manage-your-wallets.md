@@ -29,7 +29,9 @@ You can access your wallets from any Warden tab:
 
 ## The main account
 
-The **main account** is the main Warden wallet holding your funds on all the supported chains. Here you can view your balances and activity, initiate transactions, whitelist addresses, and manage other settings.
+The **main account** is the main Warden wallet holding your funds on all the supported chains. Here you can view your balances and activity and initiate transactions.
+
+You can also configure and manage your account: whitelist addresses, get your private key, and link external accounts, such as Web3 wallets, emails, and social accounts.
 
 ### Deposit
 
@@ -91,43 +93,6 @@ Alternatively, you can go to the **Chats** tab and ask the default [Warden Agent
 
 ![View your balance and activity in Warden](../../static/img/warden-app/manage-your-wallets-main-2.png)
 
-### Configure
-
-To access your Warden account settings, [open any wallet](#access-your-wallets) and click the gear icon at the top:
-
-![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-3.png)
-
-The following settings are available:
-
-- **Favorite Addresses**: Whitelist addresses to reference them by name in the [AI chat](use-the-chat).
-- **Security**: Manage your private keys and passkeys.
-- **Login**:
-  - Link and unlink Web3 wallets (for [depositing assets](#deposit)).
-  - Add an authentication method.
-- **Integrations**: Connect third-party services required by certain Agents, such as [Google Assistant](explore-ai-agents#google-assistant).
-
-![The available wallet settings in Warden](../../static/img/warden-app/manage-your-wallets-main-4.png)
-
-### Get the private key
-
-To get your private key, take these steps:
-
-1. [Open any wallet](#access-your-wallets).
-2. Click the gear icon at the top to access your account settings.
-3. In the **Security** section, click your private key on the desired network.
-4. Click **Copy key**.
-
-:::warning
-Never share your private key with anyone. It grants full access to your assets.
-:::
-
-:::note
-You can use your private key to export the wallet. To learn more, see [Privy docs](https://privy-io.notion.site/Transferring-your-account-9dab9e16c6034a7ab1ff7fa479b02828).
-:::
-
-![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-3.png)
-![Copy your private key in Warden](../../static/img/warden-app/manage-your-wallets-main-5.png)
-
 ### Get the address
 
 To copy your wallet address (the public key), take these steps:
@@ -136,7 +101,27 @@ To copy your wallet address (the public key), take these steps:
 2. Click **Addresses**.
 3. Select an address associated with the desired network.
 
-![Access your addresses in Warden](../../static/img/warden-app/manage-your-wallets-main-6.png)
+![Access your addresses in Warden](../../static/img/warden-app/manage-your-wallets-main-3.png)
+
+### Configure
+
+To access your Warden account settings, [open any wallet](#access-your-wallets) and click the gear icon at the top:
+
+![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-4.png)
+
+The following options are available:
+
+1. **Favorite Addresses**: Whitelist an address. You can reference your favorite addresses by name in the [AI chat](use-the-chat).
+2. **Security**:
+   - To manage your passkeys, click **Passkeys**.
+   - To export your wallet, click your private key on the desired network and then click **Copy key**. Never share your private key with anyone—it grants full access to your assets. To learn more, see [Privy docs](https://privy-io.notion.site/Transferring-your-account-9dab9e16c6034a7ab1ff7fa479b02828). 
+3. **Login**: Here you can link and unlink external accounts:
+   - **Linked Wallets**: Link Web3 wallets (for [depositing assets](#deposit)).
+   - **Email** & **Google**: Add an authentication method.
+   - **Twitter**, **Telegram**, **Discord**: Link your social accounts.
+4. **Integrations**: Connect or disconnect third-party services required by certain Agents, such as [Google Assistant](explore-ai-agents#google-assistant).
+
+![The available wallet settings in Warden](../../static/img/warden-app/manage-your-wallets-main-5.png)
 
 ## Dedicated wallets
 

@@ -132,7 +132,7 @@ Here are some examples of tasks this Agent can perform:
 Fees: none.
 
 :::note
-To start using this Google Assistant, connect your Google account and grant the required permissions directly in the chat. You can use a different account than your Warden sign-in, and you can disconnect or switch accounts anytime in your [Warden wallet settings](manage-your-wallets#configure) under **Integrations**.
+To start using Google Assistant, connect your Google account and grant the required permissions directly in the chat. You can use a different account than your Warden sign-in, and you can disconnect or switch accounts anytime in your [Warden wallet settings](manage-your-wallets#configure) under **Integrations**.
 :::
 
 ### Intelligent DCA

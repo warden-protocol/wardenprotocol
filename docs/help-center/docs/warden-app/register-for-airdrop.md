@@ -11,7 +11,7 @@ Registration for the [WARD](https://docs.wardenprotocol.org/ward/introduction) a
 You can sign up through the **Airdrop Registration Portal** in Warden. Before registering, you may need to prepare your account—follow this guide to learn more.
 
 :::warning
-Make sure that you only access the Airdrop Portal through [Warden](https://app.wardenprotocol.org). Do not click any external or social links. 
+Make sure that you only access the Airdrop Registration Portal through [Warden](https://app.wardenprotocol.org). Do not click any external or social links. 
 :::
 
 ## Important information
@@ -24,15 +24,15 @@ Make sure that you only access the Airdrop Portal through [Warden](https://app.w
 
 ## Register
 
-Before registering on the Airdrop Portal, make sure your [Warden account](manage-your-wallets#the-main-account) is ready. The steps below depend on your user type.
+Before registering , make sure your [Warden account](manage-your-wallets#the-main-account) is ready. The steps below depend on your user type.
 
 ### Warden users
 
-Your Warden account already contains all the necessary information, and no additional action is required. Just register on the Airdrop Portal.
+Your Warden account already contains all the necessary information, and no additional action is required. Just register on the Airdrop Registration Portal.
 
 ### Kaito yappers
 
-Before registering on the Airdrop Portal, link your X account to your Warden account.
+Before registering on the Airdrop Registration Portal, link your X account to your Warden account.
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. Click the wallet icon at the top right. This will open your account.
@@ -46,7 +46,7 @@ Once linked, we'll track the mindshare you generated during the Kaito Pre-TGE ca
 
 ### WARP holders & stakers
 
-Before registering on the Airdrop Portal, link your wallets containing **WARP** or **staked WARP** to your Warden account:
+Before registering on the Airdrop Registration Portal, link your wallets containing **WARP** or **staked WARP** to your Warden account:
 
 1. Identify your wallets containing WARP or staked WARP on [YieldWard](https://yieldward.com).
 2. Log in: 👉 [Warden](https://app.wardenprotocol.org)
@@ -68,9 +68,9 @@ To qualify for the airdrop, you must meet **both** of the following requirements
 If you meet only one of the requirements, you will not be able to participate in the claiming stage. 
 :::
 
-Before registering on the Airdrop Portal, link your wallets containing these assets to your Warden account:
+Before registering on the Airdrop Registration Portal, link your wallets containing these assets to your Warden account:
 
-1. If you hold or stake your LVVA tokens on Levva, make sure that the unique NFT is owned by the same wallet address, even if the NFT is on Base.
+1. If you hold or stake your LVVA tokens on Levva, make sure that the unique NFT is owned by the same wallet address, even though the NFT is on Base.
 2. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 3. Click the wallet icon at the top right. This will open your account.
 4. Go to **Settings** by clicking the gear icon.

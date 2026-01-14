@@ -24,7 +24,7 @@ Make sure that you only access the Airdrop Registration Portal through [Warden](
 
 ## Register
 
-Before registering , make sure your [Warden account](manage-your-wallets#the-main-account) is ready. The steps below depend on your user type.
+Before registering, make sure your [Warden account](manage-your-wallets#the-main-account) is ready. The steps below depend on your user type.
 
 ### Warden users
 

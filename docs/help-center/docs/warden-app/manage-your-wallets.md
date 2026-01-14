@@ -104,6 +104,7 @@ The following settings are available:
 - **Login**:
   - Link and unlink Web3 wallets (for [depositing assets](#deposit)).
   - Add an authentication method.
+- **Integrations**: Connect third-party services required by certain Agents, such as [Google Assistant](explore-ai-agents#google-assistant).
 
 ![The available wallet settings in Warden](../../static/img/warden-app/manage-your-wallets-main-4.png)
 

@@ -119,6 +119,7 @@ The following options are available:
    - **Linked Wallets**: Link Web3 wallets (for [depositing assets](#deposit)).
    - **Email** & **Google**: Add an authentication method.
    - **Twitter**, **Telegram**, **Discord**: Link your social accounts.
+4. **Integrations**: Connect third-party services required by certain Agents, such as the Google Assistant.
 
 ![The available wallet settings in Warden](../../static/img/warden-app/manage-your-wallets-main-5.png)
 

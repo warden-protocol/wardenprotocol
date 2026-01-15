@@ -95,7 +95,7 @@ This page lists basic chain information: the **chain ID** and supported **endpoi
   </tr>
   <tr>
     <td>**Faucet**</td>
-    <td>[Barra faucet](https://faucet.barra.wardenprotocol.org)</td>
+    <td>[Barra faucet](https://faucet.wardenprotocol.org)</td>
   </tr>
   <tr>
     <td>**Validator guides**</td>

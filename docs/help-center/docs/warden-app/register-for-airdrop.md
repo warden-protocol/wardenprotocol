@@ -90,7 +90,7 @@ After this, you can register for the airdrop.
 To qualify as a Pre-Early Subscription holder, you must meet the following requirements:
 
 - Hold a valid [Pre-Early Subscription NFT](https://opensea.io/0xb48d6c39283777c9cf56c5327238688e4081cf1f/created) on **Base** ([Basic](https://opensea.io/collection/warden-pre-early-basic/overview), [Pro](https://opensea.io/collection/warden-pre-early-pro/overview), [Premium](https://opensea.io/collection/warden-pre-early-premium/overview), or [Infinite](https://opensea.io/collection/warden-pre-early-infinite/overview))
-- Hold the NFT in wallet you control
+- Hold the NFT in a wallet you control
 - Link that wallet to your Warden account **before registration**
 
 :::important
@@ -99,7 +99,7 @@ If your Pre-Early NFT wallet is not linked at the time of registration, your eli
 
 To link your wallet holding the NFT on Base, take these steps:
 
-1. Log in: 👉**Warden**
+1. Log in: 👉 **Warden**
 2. Click the wallet icon at the top right to open your account.
 3. Go to **Settings** by clicking the gear icon.
 4. In the **Login** section, click **Linked Wallets**

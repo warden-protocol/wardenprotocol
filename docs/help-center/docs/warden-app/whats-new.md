@@ -12,7 +12,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 #### New features
 
-- [The Airdrop Registration Portal](register-for-airdrop): Added a portal where you can register for WARD airdrop.
+- [The Airdrop Registration Portal](register-for-airdrop): Added a portal where you can register for the WARD airdrop.
 
 ## January 13, 2026
 

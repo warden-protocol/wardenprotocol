@@ -14,6 +14,10 @@ You can sign up through the **Airdrop Registration Portal** in Warden. Before re
 Make sure that you only access the Airdrop Registration Portal through [Warden](https://app.wardenprotocol.org). Do not click any external or social links. 
 :::
 
+:::important
+Registration does not guarantee rewards. Allocations will be provided at the claiming stage.
+:::
+
 ## Important information
 
 - All registration happens in [Warden](https://app.wardenprotocol.org). We'll **never** ask you to connect your wallet to any third-party website.
@@ -21,7 +25,7 @@ Make sure that you only access the Airdrop Registration Portal through [Warden](
 - Linking any external wallet or account must happen **before** the registration.
 - Registration does not guarantee rewards. Allocations will be provided at the claiming stage.
 - Users who do not register will not be able to participate in the claiming phase.
-
+- To eliminate spam accounts, we charge a small randomized **registration fee**.
 ## 1. Prepare your account
 
 Before registering, make sure your [Warden account](manage-your-wallets#the-main-account) is ready. The steps below depend on your user type.
@@ -138,20 +142,34 @@ The distribution for **Wallchain Quacks** will happen through [Wallchain](https:
 
 ## 2. Register
 
-After [preparing your account](#1-prepare-your-account), you can register in the **Airdrop Registration Portal**. 
+After [preparing your account](#1-prepare-your-account), you can register through the **Airdrop Registration Portal**. 
 
-:::important
-In order to prove you're a human, you'll need to pay the registration fee of **$1.14**.
+:::warning
+Make sure that you only access the Airdrop Registration Portal through [Warden](https://app.wardenprotocol.org). Do not click any external or social links. 
 :::
 
-Take these steps:
+:::important
+To eliminate spam accounts, we charge a randomized **registration fee**. You'll need to pay around **$1** in **USDC** or the native token on any of the supported chains.
+:::
 
-1. Click the **Airdrop** icon at the top-right.
-2. Prove that you're a human:
+To register, take these steps:
+
+1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
+2. Click the **Airdrop** icon at the top-right to open the Airdrop Registration Portal.
+3. Verify that you're a human:
    - Connect your Twitter (X).
    - Confirm that you've read this guide.
    - Accept terms and conditions.
-   - Agree to pay the fee of **$1.14**.
+   - Agree to pay the registration fee.
+4. If needed, click **Top up** and fund your wallet to pay the fee.
+5. Click **Register For Airdrop**.
 
-Congratulations! Now you're registered for the airdrop. You can download the confirmation:
+Congratulations! You're now registered for the airdrop. To download a confirmation, click **Share**.
 
+:::important
+Please note that registration does not guarantee rewards—allocations will be provided at the claiming stage.
+:::
+
+![Access the Airdrop Registration Portal in Warden](../../static/img/warden-app/airdrop-4.png)
+![Verify that you're a human to register for the airdrop in Warden](../../static/img/warden-app/airdrop-5.png)
+![Download the airdrop confirmation in Warden](../../static/img/warden-app/airdrop-6.png)

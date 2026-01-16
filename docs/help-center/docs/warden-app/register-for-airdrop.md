@@ -114,7 +114,6 @@ Your Pre-Early status and tier will be automatically detected based on the linke
 ![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-4.png)
 ![Link your external wallet in Warden](../../static/img/warden-app/airdrop-2.png)
 
-
 ### Ambassadors
 
 Every **ambassador** needs to link their X and Discord accounts:

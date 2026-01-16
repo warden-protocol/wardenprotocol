@@ -35,7 +35,7 @@ Your Warden account already contains all the necessary information, and no addit
 Before registering on the Airdrop Registration Portal, link your X account to your Warden account.
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
-2. Click the wallet icon at the top right. This will open your account.
+2. Click the wallet icon at the top right to open your account.
 3. Go to **Settings** by clicking the gear icon.
 4. In the **Login** section, link your X (Twitter) account to your Warden account.
 
@@ -54,9 +54,10 @@ Before registering on the Airdrop Registration Portal, link your wallets contain
 
 1. Identify your wallets containing WARP or staked WARP on [YieldWard](https://yieldward.com).
 2. Log in: 👉 [Warden](https://app.wardenprotocol.org)
-3. Click the wallet icon at the top right. This will open your account.
+3. Click the wallet icon at the top right to open your account.
 4. Go to **Settings** by clicking the gear icon.
-5. In the **Login** section, click **Linked Wallets** and follow the instructions.
+5. In the **Login** section, click **Linked Wallets**.
+6. Select your wallet and follow the instructions.
 
 After this, you can [register for the airdrop](#2-register).
 
@@ -78,11 +79,41 @@ Before registering on the Airdrop Registration Portal, link your wallets contain
 
 1. If you hold or stake your LVVA tokens on Levva, make sure that the unique NFT is owned by the same wallet address, even though the NFT is on Base.
 2. Log in: 👉 [Warden](https://app.wardenprotocol.org)
-3. Click the wallet icon at the top right. This will open your account.
+3. Click the wallet icon at the top right to open your account.
 4. Go to **Settings** by clicking the gear icon.
-5. In the **Login** section, click **Linked Wallets** and follow the instructions.
+5. In the **Login** section, click **Linked Wallets**.
+6. Select your wallet and follow the instructions.
 
 After this, you can [register for the airdrop](#2-register).
+
+![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-4.png)
+![Link your external wallet in Warden](../../static/img/warden-app/airdrop-2.png)
+
+### Pre-Early Subscription NFT holders
+
+To qualify as a Pre-Early Subscription holder, you must meet the following requirements:
+
+- Hold a valid [Pre-Early Subscription NFT](https://opensea.io/0xb48d6c39283777c9cf56c5327238688e4081cf1f/created) on **Base** ([Basic](https://opensea.io/collection/warden-pre-early-basic/overview), [Pro](https://opensea.io/collection/warden-pre-early-pro/overview), [Premium](https://opensea.io/collection/warden-pre-early-premium/overview), or [Infinite](https://opensea.io/collection/warden-pre-early-infinite/overview))
+- Hold the NFT in a wallet you control
+- Link that wallet to your Warden account **before registration**
+
+:::important
+If your Pre-Early NFT wallet is not linked at the time of registration, your eligibility may not be recognized during the claiming stage.
+:::
+
+To link your wallet holding the NFT on Base, take these steps:
+
+1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
+2. Click the wallet icon at the top right to open your account.
+3. Go to **Settings** by clicking the gear icon.
+4. In the **Login** section, click **Linked Wallets**
+5. Select your wallet and follow the instructions.
+
+After this, you can register for the airdrop.
+
+:::note
+Your Pre-Early status and tier will be automatically detected based on the linked wallet. Benefits such as boosted allocations or multipliers (if available) will be applied at the claiming stage.
+:::
 
 ![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-4.png)
 ![Link your external wallet in Warden](../../static/img/warden-app/airdrop-2.png)
@@ -107,6 +138,20 @@ The distribution for **Wallchain Quacks** will happen through [Wallchain](https:
 
 ## 2. Register
 
-After [preparing your Warden account](#1-prepare-your-account), you can sign up in the **Airdrop Registration Portal**:
+After [preparing your account](#1-prepare-your-account), you can register in the **Airdrop Registration Portal**. 
 
+:::important
+In order to prove you're a human, you'll need to pay the registration fee of **$1.14**.
+:::
+
+Take these steps:
+
+1. Click the **Airdrop** icon at the top-right.
+2. Prove that you're a human:
+   - Connect your Twitter (X).
+   - Confirm that you've read this guide.
+   - Accept terms and conditions.
+   - Agree to pay the fee of **$1.14**.
+
+Congratulations! Now you're registered for the airdrop. You can download the confirmation:
 

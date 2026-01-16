@@ -22,13 +22,13 @@ Make sure that you only access the Airdrop Registration Portal through [Warden](
 - Registration does not guarantee rewards. Allocations will be provided at the claiming stage.
 - Users who do not register will not be able to participate in the claiming phase.
 
-## Register
+## 1. Prepare your account
 
 Before registering, make sure your [Warden account](manage-your-wallets#the-main-account) is ready. The steps below depend on your user type.
 
 ### Warden users
 
-Your Warden account already contains all the necessary information, and no additional action is required. Just register on the Airdrop Registration Portal.
+Your Warden account already contains all the necessary information, and no additional action is required. Just [register](#2-register) on the Airdrop Registration Portal.
 
 ### Kaito yappers
 
@@ -39,7 +39,11 @@ Before registering on the Airdrop Registration Portal, link your X account to yo
 3. Go to **Settings** by clicking the gear icon.
 4. In the **Login** section, link your X (Twitter) account to your Warden account.
 
-Once linked, we'll track the mindshare you generated during the Kaito Pre-TGE campaign. Remember: the Kaito campaign required use of Warden.
+After this, you can [register for the airdrop](#2-register).
+
+:::note
+Once your X is linked, we'll track the mindshare you generated during the Kaito Pre-TGE campaign. Remember: the Kaito campaign required use of Warden.
+:::
 
 ![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-4.png)
 ![Link your X account in Warden](../../static/img/warden-app/airdrop-1.png)
@@ -53,6 +57,8 @@ Before registering on the Airdrop Registration Portal, link your wallets contain
 3. Click the wallet icon at the top right. This will open your account.
 4. Go to **Settings** by clicking the gear icon.
 5. In the **Login** section, click **Linked Wallets** and follow the instructions.
+
+After this, you can [register for the airdrop](#2-register).
 
 ![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-4.png)
 ![Link your external wallet in Warden](../../static/img/warden-app/airdrop-2.png)
@@ -76,6 +82,8 @@ Before registering on the Airdrop Registration Portal, link your wallets contain
 4. Go to **Settings** by clicking the gear icon.
 5. In the **Login** section, click **Linked Wallets** and follow the instructions.
 
+After this, you can [register for the airdrop](#2-register).
+
 ![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-4.png)
 ![Link your external wallet in Warden](../../static/img/warden-app/airdrop-2.png)
 
@@ -88,9 +96,17 @@ Every **ambassador** needs to link their X and Discord accounts:
 3. Go to **Settings** by clicking the gear icon.
 4. In the **Login** section, link your X (Twitter) and Discord.
 
+After this, you can [register for the airdrop](#2-register).
+
 ![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-4.png)
 ![Link your X and Discord accounts in Warden](../../static/img/warden-app/airdrop-3.png)
 
 ### Wallchain Quacks holders
 
 The distribution for **Wallchain Quacks** will happen through [Wallchain](https://www.wallchain.xyz). Registration is not required at this stage unless you qualify under another category.
+
+## 2. Register
+
+After [preparing your Warden account](#1-prepare-your-account), you can sign up in the **Airdrop Registration Portal**:
+
+

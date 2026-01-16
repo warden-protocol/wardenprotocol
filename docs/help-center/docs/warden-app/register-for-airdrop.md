@@ -99,7 +99,7 @@ If your Pre-Early NFT wallet is not linked at the time of registration, your eli
 
 To link your wallet holding the NFT on Base, take these steps:
 
-1. Log in: 👉 **Warden**
+1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. Click the wallet icon at the top right to open your account.
 3. Go to **Settings** by clicking the gear icon.
 4. In the **Login** section, click **Linked Wallets**

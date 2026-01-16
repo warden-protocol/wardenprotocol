@@ -72,14 +72,10 @@ After this, you can [register for the airdrop](#2-register).
 
 To qualify for the airdrop, you must meet **both** of the following requirements:
 
-- The minimum required amount of **LVVA** or **staked LVVA**
-- The unique NFT on **Base**, owned by the same wallet address that holds LVVA
+- Hold the minimum required amount of **LVVA** or **staked LVVA**
+- Hold the unique NFT on **Base**, owned by the same wallet address that holds LVVA
 
-:::important
-If you meet only one of the requirements, you will not be able to participate in the claiming stage. 
-:::
-
-Before registering on the Airdrop Registration Portal, link your wallets containing these assets to your Warden account:
+Before registering on the Airdrop Registration Portal, link your wallet containing these assets to your Warden account:
 
 1. If you hold or stake your LVVA tokens on Levva, make sure that the unique NFT is owned by the same wallet address, even though the NFT is on Base.
 2. Log in: 👉 [Warden](https://app.wardenprotocol.org)
@@ -127,7 +123,7 @@ Your Pre-Early status and tier will be automatically detected based on the linke
 Every **ambassador** needs to link their X and Discord accounts:
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
-2. Click the wallet icon at the top right. This will open your account.
+2. Click the wallet icon at the top right to open your account.
 3. Go to **Settings** by clicking the gear icon.
 4. In the **Login** section, link your X (Twitter) and Discord.
 

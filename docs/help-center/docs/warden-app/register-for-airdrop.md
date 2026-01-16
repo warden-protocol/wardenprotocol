@@ -6,7 +6,7 @@ sidebar_position: 9
 
 ## Overview
 
-Registration for the [WARD](https://docs.wardenprotocol.org/ward/introduction) airdrop is going live.
+Registration for the [WARD](https://docs.wardenprotocol.org/ward/introduction) airdrop is live.
 
 You can sign up through the **Airdrop Registration Portal** in Warden. Before registering, you may need to prepare your account—follow this guide to learn more.
 
@@ -109,7 +109,7 @@ To link your wallet holding the NFT on Base, take these steps:
 4. In the **Login** section, click **Linked Wallets**
 5. Select your wallet and follow the instructions.
 
-After this, you can register for the airdrop.
+After this, you can [register for the airdrop](#2-register).
 
 :::note
 Your Pre-Early status and tier will be automatically detected based on the linked wallet. Benefits such as boosted allocations or multipliers (if available) will be applied at the claiming stage.
@@ -153,7 +153,7 @@ To register, take these steps:
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. Click the **Airdrop** icon at the top-right to open the Airdrop Registration Portal.
 3. Verify that you're a human:
-   - Connect your Twitter (X).
+   - Connect your X (Twitter).
    - Confirm that you've read this guide.
    - Accept terms and conditions.
    - Agree to pay the registration fee.

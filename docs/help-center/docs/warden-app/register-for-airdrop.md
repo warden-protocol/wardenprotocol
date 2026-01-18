@@ -68,7 +68,7 @@ After this, you can [register for the airdrop](#2-register).
 ![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-4.png)
 ![Link your external wallet in Warden](../../static/img/warden-app/airdrop-2.png)
 
-### OPEN OG
+### OPEN OG holders
 
 To qualify for the airdrop, you must meet **both** of the following requirements:
 

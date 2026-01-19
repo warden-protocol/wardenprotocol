@@ -95,7 +95,9 @@ Once you log in, the developer account automatically connects with your Warden a
 
 ## Earn rewards
 
-We encourage Agent developers to participate in the [Agent Builder Incentive Programme](https://wardenprotocol.org/blog/agent-builder-incentive-programme). You can build an Agent, publish it on Warden, and earn rewards for early onboarding, quality, and other achievements.
+We encourage Agent developers to participate in the [Agent Builder Incentive Programme](https://wardenprotocol.org/blog/agent-builder-incentive-programme).
+
+You can build an Agent, publish it on Warden, and earn rewards for early onboarding, quality, and other achievements. To learn more, see the [FAQ](https://wardenprotocol.notion.site/agent-builder-incentive-faq).
 
 To qualify for rewards, you need to do the following:
 
@@ -105,7 +107,4 @@ To qualify for rewards, you need to do the following:
 
 :::tip
 To earn extra rewards, ship clean code and great docs. Innovative or under-served categories will get additional recognition and funding.
-:::
-:::note
-Learn more: [FAQ](https://wardenprotocol.notion.site/agent-builder-incentive-faq).
 :::

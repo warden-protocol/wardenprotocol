@@ -26,7 +26,7 @@ Please keep in mind the following requirements and technical limitations:
 - You can host your Agent on LangGraph Cloud or on your own infrastructure.
 - Make sure that your Agent is accessible through an API. **No UI is required**.
 - Make sure that you only have one Agent per LangGraph instance to keep your Agents separated.
-- For security reasons, Agents will not have access to users' wallets, nor will they be able to store any data on Warden infrastructure. These limitations will be removed in the next phase of Warden Agent Hub in the beginning of 2026.
+- For security reasons, Agents will not have access to users' wallets, nor will they be able to store any data on Warden infrastructure. These limitations will be removed in the next phase of the Warden Agent Hub.
 
 ## Step 1. Build an Agent
 
@@ -37,7 +37,7 @@ To quickly get started with publishing an Agent on Warden, explore the examples 
 3. Deploy your Agent on LangGraph Cloud or on your infrastructure.
 4. Make sure your Agent is accessible through the LangGraph API.
 
-To learn more, explore the [official LangGraph documentation](https://docs.langchain.com/oss/javascript/langchain/overview) and check [LangGraph beginner guides](https://github.com/warden-protocol/community-agents/tree/main/docs) in our repository.
+To learn more, explore the [official LangGraph documentation](https://docs.langchain.com) and check [LangGraph beginner guides](https://github.com/warden-protocol/community-agents/tree/main/docs) in our repository.
 
 :::important
 To publish your Agent, you **do not need to build a UI**. The only thing required is an **API URL**, which is **automatically available** once you deploy your Agent.
@@ -52,8 +52,9 @@ Each example we provide in the `community-agents` repository has its own README 
 Now you can publish and monetize your Agent on [Warden](https://app.wardenprotocol.org) through **Warden Studio**—our platform for Agent developers.
 
 Make sure your [Warden account](https://help.wardenprotocol.org/warden-app/manage-your-wallets#the-main-account) holds the following assets:
-   - At least **1 USDC on Base** to pay the registration fee
-   - **ETH on Base** to pay the gas fee
+
+- At least **1 USDC on Base** to pay the registration fee
+- **ETH on Base** to pay the gas fee
 
 Then take the following steps in the Warden Studio:
 

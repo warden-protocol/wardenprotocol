@@ -146,7 +146,7 @@ Make sure that you only access the Airdrop Registration Portal through [Warden](
 :::
 
 :::important
-To eliminate spam accounts, we charge a randomized **registration fee**, paid in **USDC** or the native token on any of the [supported chains](/#supported-chains).
+To eliminate spam accounts, we charge a randomized **registration fee**, paid in **USDC** or the native token on any of the [supported chains](/#supported-networks).
 :::
 
 To register, take these steps:

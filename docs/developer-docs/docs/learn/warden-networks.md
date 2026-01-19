@@ -15,7 +15,7 @@ This page lists basic chain information: the **chain ID** and supported **endpoi
 <table>
   <tr>
     <td>**Binary**</td>
-    <td>[v0.7.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.3)</td>
+    <td>[v0.7.4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.4)</td>
   </tr>
   <tr>
     <td>**Endpoints**</td>
@@ -60,7 +60,7 @@ This page lists basic chain information: the **chain ID** and supported **endpoi
 <table>
   <tr>
     <td>**Binary**</td>
-    <td>[v0.7.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.3)</td>
+    <td>[v0.7.4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.4)</td>
   </tr>
   <tr>
     <td>**Endpoints**</td>
@@ -95,7 +95,7 @@ This page lists basic chain information: the **chain ID** and supported **endpoi
   </tr>
   <tr>
     <td>**Faucet**</td>
-    <td>[Barra faucet](https://faucet.barra.wardenprotocol.org)</td>
+    <td>[Barra faucet](https://faucet.wardenprotocol.org)</td>
   </tr>
   <tr>
     <td>**Validator guides**</td>

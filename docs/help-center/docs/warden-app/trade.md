@@ -10,7 +10,7 @@ In Warden, you can use **perpetual contracts** (**trade perps**) to trade on fut
 
 Warden's **AI Trading Terminal** brings real-time market analysis tools directly into your trading screen so you make informed decisions before placing a trade. This includes AI signals, an order book, and a chart with technical indicators and drawing tools.
 
-This guide explains how to open and manage your positions, manage the trading wallet, and use market analysis tools. To learn more about perps and the related concepts, see [Perpetual trading](#perpetual-trading).
+This guide explains how to open and manage your positions, manage the trading wallet, and use market analysis tools. To learn more about perps and the related concepts, see [Perpetual trading glossary](#perpetual-trading-glossary).
 
 :::warning
 Perpetual Trading involves significant risk, including potential loss of all funds due to leverage and volatility, and may not suit all users.
@@ -30,12 +30,13 @@ Want to trade just for fun? Try [Betflix](play-betflix).
 You'll see the Terminal interface, where you can do the following:
 
 1. Select a perp to trade
-2. [Manage the trading wallet](#manage-the-trading-wallet)
-3. [Analyze the market](#analyze-the-market)
-4. [Create an order](#2-create-an-order)
-5. [Manage your trade](#3-manage-your-trade)
+2. [Create an order](#2-create-an-order)
+3. [Manage your trade](#3-manage-your-trade)
+4. [Analyze the market](#analyze-the-market)
+5. [Earn PUMPs](#earn-pumps)
+6. [Manage the trading wallet](#manage-the-trading-wallet)
 
-![AI Trading Terminal in Warden](../../static/img/warden-app/trade-1.png)
+![AI Trading Terminal in Warden](../../static/img/warden-app/trade-terminal.png)
 
 ## Manage trades
 
@@ -49,7 +50,7 @@ To start trading, you need **USDC** on **Arbitrum**, **Ethereum**, **Base**, or 
 4. Click the wallet icon at the top right to open the [trading wallet](#manage-the-trading-wallet).
 5. In the trading wallet, click **Deposit** and add USDC from your main account.
 
-![Prepare funds for perpetual trading in Warden](../../static/img/warden-app/trade-2.png)
+![Prepare funds for perpetual trading in Warden](../../static/img/warden-app/trade-funds.png)
 
 ### 2. Create an order
 
@@ -64,7 +65,7 @@ Once you have funds in your trading wallet, you can create an order. [Open the A
 5. Review your order details and confirm opening a position.
 
 :::note
-Selecting a pair determines the perp you'll trade. Tokens are usually paired with **USDC** or **USDH**: BTC-USDC, ETH-USDC, OPENAI-USDC and so on.
+Selecting a pair determines the perp you'll trade. Tokens (base currencies) are usually paired with **USDC** or **USDH**: BTC-USDC, ETH-USDC, OPENAI-USDC, and so on.
 :::
 
 :::tip Tips
@@ -72,8 +73,8 @@ Selecting a pair determines the perp you'll trade. Tokens are usually paired wit
 - To see only [builder-deployed perps](https://hyperliquid.gitbook.io/hyperliquid-docs/hyperliquid-improvement-proposals-hips/hip-3-builder-deployed-perpetuals), filter the pair list by **HIP-3**.
 :::
 
-![Create an order in Warden](../../static/img/warden-app/trade-3.png)
-![Create an order in Warden](../../static/img/warden-app/trade-4.png)
+![Create an order in Warden](../../static/img/warden-app/trade-order-1.png)
+![Create an order in Warden](../../static/img/warden-app/trade-order-2.png)
 
 ### 3. Manage your trade
 
@@ -88,9 +89,9 @@ In the [AI Trading Terminal](#access-the-trading-terminal), you can track and ma
 
 - **Positions**: Your open positions—the resulting perp exposure.
 - **Orders**: Your orders that aren't fully executed yet. This includes unfilled parts of partially filled limit orders.
-- **History**: Filled and cancelled orders.
+- **History**: Filled and canceled orders.
 
-![Track and manage your perp positions in Warden](../../static/img/warden-app/trade-5.png)
+![Track and manage your perp positions in Warden](../../static/img/warden-app/trade-positions.png)
 
 To manage an open position or a limit order, click the **Manage** button next to it. You can do the following:
 
@@ -131,8 +132,51 @@ There are also additional parameters that are automatically calculated based on 
 - **Margin**: Your security deposit ([learn more](#margin)).
 - **Entry**: The estimated price at which your position would open if your order were executed now.
 - **Liquidation**: The price at which your position will be automatically closed to prevent further losses.
-- **Size**: The total value of your position, determined by your margin and leverage.
+- **Size**: The total value (overall exposure) of your position, determined by your margin and leverage.
 - **Est. fee**: The total fee for opening a position. See [trading fees](fees#trading-fees).
+
+## Analyze the market
+
+In the [AI Trading Terminal](#access-the-trading-terminal), you can access various market analysis tools helping you make informed decisions on your trades:
+
+- **The live chart** displays perp price movements. It supports multiple chart types, technical indicators, drawing tools, and more. Here you can also view your historical trades and [manage your active trades](#3-manage-your-trade).
+- **The order book** is a real-time list of all active buy and sell orders. It shows available amounts at each price level, letting you see market liquidity and the spread between bids and asks.
+- **Messari Signals** powered by [Messari](https://messari.io) are AI-generated token reports. For deeper insights, use the  [Messari Deep Research](explore-ai-agents#messari-deep-research) Agent.
+
+:::note
+The market data for the chart and order book is provided by [Hyperliquid](https://hyperfoundation.org).
+:::
+
+![Analyze the perpetual trading market in Warden](../../static/img/warden-app/trade-market-1.png)
+![Use technical indicators on the trading live chart in Warden](../../static/img/warden-app/trade-market-2.png)
+![See your positions on the trading live chart in Warden](../../static/img/warden-app/trade-market-3.png)
+
+## Earn PUMPs
+
+Once your all-time total trade volume reaches **$100**, you qualify to join the **League of Traders** and start receiving [PUMPs](earn-rewards#earn-pumps)—points that reward your activity in Warden.
+
+You earn rewards for every position closed within a **15-minute** cycle (when PUMPs are distributed):
+
+- Reward (PUMPs) = **trade volume (USD) x 30 x your multiplier**.
+- Trade volume  = **price x size (base currency) x leverage**.
+- The multiplier is based on your total trade volume:
+  - 1x for volume >= $100
+  - 2x for volume >= $500
+  - 3x for volume >= $1,000
+  - 5x for volume >= $10,000
+
+In the **League of Traders**, there are two **weekly** and two **monthly** leaderboards based on **PnL** and **volume**. Top traders in each ranking earn extra PUMPs:
+
+- Weekly PnL & Volume leagues: 1st–5th ranks
+- Monthly PnL & Volume leagues: 1st–5th ranks
+
+To view all leaderboards and the exact rewards, [check your trading wallet](#check-your-stats) or click the League of Traders icon at the top right:
+
+![Access the Pro League of Traders in Warden](../../static/img/warden-app/trade-pumps.png)
+
+:::note
+Since distributions of PUMPs run at 15-minute intervals, leaderboard stats may update with a delay.
+:::
 
 ## Manage the trading wallet
 
@@ -146,8 +190,8 @@ To switch between the main and trading wallets at any time, click the wallet ico
 The balance you see here is only your **withdrawable amount**.
 :::
 
-![Access the trading wallet in Warden](../../static/img/warden-app/trade-6.png)
-![Switch between the main and trading wallets in Warden](../../static/img/warden-app/trade-7.png)
+![Access the trading wallet in Warden](../../static/img/warden-app/trade-wallet-1.png)
+![Switch between the main and trading wallets in Warden](../../static/img/warden-app/trade-wallet-2.png)
 
 ### Deposit
 
@@ -186,23 +230,18 @@ The balance you see in the trading wallet is your **withdrawable amount** of **U
 Each withdrawal is subject to a [Hyperliquid fee](fees#trading-wallet-fees) of **1 USDC**.
 :::
 
-## Analyze the market
+### Check your stats
 
-In the [AI Trading Terminal](#access-the-trading-terminal), you can access various market analysis tools helping you make informed decisions on your trades:
+In the trading wallet, you can also view your statistics:
 
-- **The live chart** displays perp price movements. It supports multiple chart types, technical indicators, drawing tools, and more. Here you can also view your historical trades and [manage your active trades](#3-manage-your-trade).
-- **The order book** A real-time list of all active buy and sell orders. It shows available amounts at each price level, letting you see market liquidity and the spread between bids and asks.
-- **Messari Signals** powered by [Messari](https://messari.io) are AI-generated token reports. For deeper insights, use the  [Messari Deep Research](explore-ai-agents#messari-deep-research) Agent.
+- The **Leaderboard** tab displays your [League of Traders](#earn-pumps) ranking:
+  - You can select the **Weekly** and **Monthly** leagues, **PnL** or **Volume**.
+  - To see rewards for each rank, click the information icon next to the winners list.
+- The **Activity** tab displays your activity in the wallet.
 
-:::note
-The market data for the chart and order book is provided by [Hyperliquid](https://hyperfoundation.org).
-:::
+![Check trading stats in Warden](../../static/img/warden-app/trade-wallet-3.png)
 
-![Analyze the perpetual trading market in Warden](../../static/img/warden-app/trade-8.png)
-![Use technical indicators on the trading live chart in Warden](../../static/img/warden-app/trade-9.png)
-![See your positions on the trading live chart in Warden](../../static/img/warden-app/trade-10.png)
-
-## Perpetual trading
+## Perpetual trading glossary
 
 #### Trade perp
 
@@ -267,5 +306,5 @@ Warden supports two order types with different fill conditions:
   - Short orders fill at the target price or higher.
 
 :::note
-Limit orders rest on the [order book](#analyze-the-market) until they can execute. Your order fills only if there are enough buyers or sellers at the target price to match the size of your order. If only part of the size is matched, the order fills partially.
+Limit orders rest on the [order book](#analyze-the-market) until they can execute. Your order fills only if there are enough buyers or sellers at the target price to match the amount placed on the order book. If only part of the amount is matched, the order fills partially.
 :::

@@ -71,12 +71,11 @@ The **Base Farmer** Agent assists you with managing your tokens on the Base chai
 Networks:
 
 - **Base**
-- **Arbitrum**
 
 Tokens:
 
+- **ETH**
 - **USDC**
-- **VIRTUAL**
 
 Fees: [swap](fees#swap-fees) and [transfer fees](fees#transfer-fee).
 
@@ -115,6 +114,26 @@ Tokens:
 - **USDC**
 
 Fees: [deBridge fees](fees#debridge-fees).
+
+### Google Assistant
+
+The **Google Assistant** Agent manages your Gmail and Google Calendar: it can read and send emails, show event details, schedule events, and more.
+
+Here are some examples of tasks this Agent can perform:
+
+- List recent emails or get full details of a specific email
+- Search emails by sender, subject, date, labels, or status
+- List upcoming events or search by date or keywords
+- View full details of a specific event
+- Create, update, or delete events (with confirmation)
+- Check availability for you or your colleagues
+- Add or remove Google Meet links
+
+Fees: none.
+
+:::note
+To start using Google Assistant, connect your Google account and grant the required permissions directly in the chat. You can use a different account than your Warden sign-in, and you can disconnect or switch accounts anytime in your [Warden wallet settings](manage-your-wallets#configure) under **Integrations**.
+:::
 
 ### Intelligent DCA
 
@@ -226,6 +245,12 @@ Fees: [WachAI fee](fees#wachai-fee).
 
 **Community Agents** are AI Agents built by our developer community. [You can participate too!](https://wardenprotocol.org/blog/agent-builder-incentive-programme)
 
+### Anime Agent
+
+The **Anime Agent** generates images in anime style. You can use it to instantly design anime heroes, waifus, battles, and fantasy landscapes.
+
+Fees: none.
+
 ### Crypto Research by Caesar
 
 **Crypto Research by Caesar** integrates with the [Caesar API](https://docs.caesar.xyz/get-started/introduction) to deliver in-depth analysis of projects, trends, and blockchain data for smarter decisions.
@@ -293,7 +318,6 @@ For active portfolio management that integrates analytics with automated investm
 
 The Agent lineup keeps growing. Here's what to expect next:
 
-- **Anime Agent**
 - **Google Assistant**
 - **Travel**
 - **ApexLiquid**

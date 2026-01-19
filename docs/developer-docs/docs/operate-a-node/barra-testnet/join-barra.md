@@ -27,7 +27,7 @@ Before you start, complete the following prerequisites:
 
 To be able to interact with the node, install `wardend` (the Warden binary) and configure it:
 
-1. Download the binary for your platform from the [release page](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.3) and unzip it. The archive contains the `wardend` binary.
+1. Download the binary for your platform from the [release page](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.4) and unzip it. The archive contains the `wardend` binary.
 
 2. Navigate to the directory containing the binary and initialize the node, specifying a custom chain moniker:
     

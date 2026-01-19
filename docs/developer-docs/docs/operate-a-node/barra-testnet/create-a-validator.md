@@ -44,7 +44,7 @@ In the next steps, you'll register your new validator by submitting a `create-va
 
 You can obtain testnet **WARD** from our faucet:
 
-- [Barra faucet](https://faucet.barra.wardenprotocol.org)
+- [Barra faucet](https://faucet.wardenprotocol.org)
 
 To verify your balance, use this command:
 

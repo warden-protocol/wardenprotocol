@@ -37,14 +37,15 @@ To quickly get started with publishing an Agent on Warden, explore the examples 
 3. Deploy your Agent on LangGraph Cloud or on your infrastructure.
 4. Make sure your Agent is accessible through the LangGraph API.
 
-To learn more, explore the [official LangGraph documentation](https://docs.langchain.com) and check [LangGraph beginner guides](https://github.com/warden-protocol/community-agents/tree/main/docs) in our repository.
+To learn more, explore the [official LangGraph documentation](https://docs.langchain.com/oss/javascript/langgraph/overview) and check [LangGraph beginner guides](https://github.com/warden-protocol/community-agents/tree/main/docs) in our repository.
 
 :::important
 To publish your Agent, you **do not need to build a UI**. The only thing required is an **API URL**, which is **automatically available** once you deploy your Agent.
 :::
 
 :::tip Tips
-Each example we provide in the `community-agents` repository has its own README explaining how we built the Agent—you can start with the [Weather Agent](https://github.com/warden-protocol/community-agents/tree/main/agents/weather-agent).
+- Each example we provide in the `community-agents` repository has its own README explaining how we built the Agent—you can start with the [Weather Agent](https://github.com/warden-protocol/community-agents/tree/main/agents/weather-agent).
+- With LangGraph, you can use either **TypeScript** or **Python**. 
 :::
 
 ## Step 2. Publish your Agent
@@ -58,7 +59,7 @@ Make sure your [Warden account](https://help.wardenprotocol.org/warden-app/manag
 
 Then take the following steps in the Warden Studio:
 
-1. Log in using the same credentials: 👉 [Warden Studio](https://studio.wardenprotocol.org)  
+1. Log in using you Warden account credentials: 👉 [Warden Studio](https://studio.wardenprotocol.org)  
 2. Your developer account will automatically connect to your Warden account. Click the wallet icon at the top right and make sure there is at least **1 USDC**.
 3. Open the **Agents** tab and click **Register**.
 4. Provide the required details:

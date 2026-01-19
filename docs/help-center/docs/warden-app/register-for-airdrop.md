@@ -69,7 +69,7 @@ After this, you can [register for the airdrop](#2-register).
 ![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-4.png)
 ![Link your external wallet in Warden](../../static/img/warden-app/airdrop-2.png)
 
-### OPEN OG
+### OPEN OG holders & stakers
 
 To qualify for the airdrop, you must meet **both** of the following requirements:
 
@@ -146,7 +146,7 @@ Make sure that you only access the Airdrop Registration Portal through [Warden](
 :::
 
 :::important
-To eliminate spam accounts, we charge a randomized **registration fee**. You'll need to pay around **$1** in **USDC** or the native token on any of the supported chains.
+To eliminate spam accounts, we charge a randomized **registration fee**, paid in **USDC** or the native token on any of the [supported chains](/#supported-chains).
 :::
 
 To register, take these steps:

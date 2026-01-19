@@ -26,6 +26,7 @@ Registration does not guarantee rewards. Allocations will be provided at the cla
 - Registration does not guarantee rewards. Allocations will be provided at the claiming stage.
 - Users who do not register will not be able to participate in the claiming phase.
 - To eliminate spam accounts, we charge a small randomized **registration fee**.
+
 ## 1. Prepare your account
 
 Before registering, make sure your [Warden account](manage-your-wallets#the-main-account) is ready. The steps below depend on your user type.

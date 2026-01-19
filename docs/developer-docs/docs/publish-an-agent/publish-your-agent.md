@@ -16,7 +16,7 @@ To quickly get started with publishing an Agent on Warden, explore the examples 
 If you get stuck or have any questions, join the developer channel in our Discord: [`#developers`](https://discord.com/channels/1199357852666560654/1222892775876333629).
 :::
 
-## Requirements
+## Technical requirements
 
 You can implement any Web3 or Web2 workflow and any custom functionality: your Agent can connect to APIs, use databases, tools, and so on.
 
@@ -95,15 +95,13 @@ Once you log in, the developer account automatically connects with your Warden a
 
 ## Earn rewards
 
-We encourage Agent developers to participate in the [Agent Builder Incentive Programme](https://wardenprotocol.org/blog/agent-builder-incentive-programme).
-
-You can build an Agent, publish it on Warden, and earn rewards for early onboarding, quality, and other achievements. To learn more, see the [FAQ](https://wardenprotocol.notion.site/agent-builder-incentive-faq).
+We encourage Agent developers to participate in the [Agent Builder Incentive Programme](https://wardenprotocol.org/blog/agent-builder-incentive-programme). You can build an Agent, publish it on Warden, and earn rewards for early onboarding, quality, and other achievements. To learn more, see the [FAQ](https://wardenprotocol.notion.site/agent-builder-incentive-faq).
 
 To qualify for rewards, you need to do the following:
 
-- Build an Agent. You must use [LangGraph](https://www.langchain.com/langgraph) and meet other [requirements](#requirements).
-- [Register for the programme](https://docs.google.com/forms/d/e/1FAIpQLSdwTR0BL8-T3LLbJt6aIyjuEYjMAmJPMdwffwHcyW6gskDQsg/viewform).
-- Submit a pull request to the `community-agents` repository, listing your Agent in [`README.md`](https://github.com/warden-protocol/community-agents/blob/main/README.md#-community-agents-and-tools).
+- Publish an Agent meeting the [technical requirements](#technical-requirements)
+- [Register for the programme](https://docs.google.com/forms/d/e/1FAIpQLSdwTR0BL8-T3LLbJt6aIyjuEYjMAmJPMdwffwHcyW6gskDQsg/viewform)
+- Submit a pull request to the `community-agents` repository, listing your Agent in [`README.md`](https://github.com/warden-protocol/community-agents/blob/main/README.md#-community-agents-and-tools)
 
 :::tip
 To earn extra rewards, ship clean code and great docs. Innovative or under-served categories will get additional recognition and funding.

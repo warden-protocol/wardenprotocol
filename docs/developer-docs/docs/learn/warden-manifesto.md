@@ -98,7 +98,7 @@ We're convinced the next wave of Agent innovation won't come from traditional co
 - **Global onchain identity:** Your Agent identity gets published onchain, making it discoverable and accessible from anywhere, fully compatible with ERC8004 and X402.
 - **Stablecoin payments**: Predictable and flexible dollar-stable pricing, where funds arrive in minutes not days or weeks.
 - **Flexible pricing**: support per-inference billing and subscriptions out of the box.
-- **Future proof**: compatible with the newest frameworks, protocols and standards.
+- **Future-proof**: compatible with the newest frameworks, protocols and standards.
 
 ### Warden Chain
 
@@ -137,7 +137,7 @@ Our belief is that all applications will use AI. **These will be applications wh
 
 We have an ambitious roadmap:
 
-- **Warden**: : A mobile-first experience is key. We will be adding more human ways to access services, included voice-enabled actions. Additionally we'll be introducing more Agents, better coordination, autopilot Agents that work while you're offline, and support for more chains.
+- **Warden**: A mobile-first experience is key. We will be adding more human ways to access services, included voice-enabled actions. Additionally we'll be introducing more Agents, better coordination, autopilot Agents that work while you're offline, and support for more chains.
 - **Warden Launchpad**: Giving creators and developers the tools to create and launch tokens for their Agents, alongside the existing launch tools in the Warden Agent Hub.
 - **Warden Protocol**:  Continued improvements to the speed, performance and composability, alongside the go-live of our verification layer.
 - **Warden Studio**: Launching the best developer tooling that enables any Agent to publish on the Agent Network—with onchain passports, instant payment capabilities, and built-in trust and coordination protocols.

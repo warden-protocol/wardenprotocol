@@ -52,7 +52,7 @@ At the application layer of [Warden Protocol](#warden-protocol), developers can 
 
 ## Big Brain
 
-[Warden Protocol](#warden-protocol)'s Big Brain is a protocol-enabled, domain-specific LLM trained on 1T tokens, catalyzing [AI Agent](#ai-agent) performance as the evolving hive mind. Big Brain learns from every [Warden](#warden) interaction and will rewards contributors who help it improve.
+[Warden Protocol](#warden-protocol)'s Big Brain is a protocol-enabled, domain-specific LLM trained on 1T tokens, catalyzing [AI Agent](#ai-agent) performance as the evolving hive mind. Big Brain learns from every [Warden](#warden) interaction and will reward contributors who help it improve.
 
 *This feature is coming soon.*
 

@@ -59,7 +59,7 @@ Make sure your [Warden account](https://help.wardenprotocol.org/warden-app/manag
 
 Then take the following steps in Warden Studio:
 
-1. Log in using you Warden account credentials: 👉 [Warden Studio](https://studio.wardenprotocol.org)  
+1. Log in using your Warden account credentials: 👉 [Warden Studio](https://studio.wardenprotocol.org)  
 2. Your developer account will automatically connect to your Warden account. Click the wallet icon at the top right and make sure there is at least **1 USDC**.
 3. Open the **Agents** tab and click **Register**.
 4. Provide the required details:

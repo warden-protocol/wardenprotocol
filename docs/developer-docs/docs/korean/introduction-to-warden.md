@@ -8,7 +8,7 @@ sidebar_position: 1
 
 **Warden Protocol**은 **AI Agent** 경제를 구동하는 풀스택 프레임워크입니다. Agent의 생성, 배포, 수익화, 거버넌스를 가능하게 하는 로직, 표준, 도구를 포함합니다.
 
-현재 Agent들은 프레임워크와 커스텀 스택 전반에 걸쳐 파편화되어 있으며, 공통된 한계에 직면해 있습니다. 수익화의 부재, 공유 인프라의 부재, 그리고 사용자에게 확장 가능하게 도달할 수 있는 방법이 없다는 점입니다. Warden는 이러한 문제를 **글로벌 Agent Network**를 통해 해결합니다. 이는 Agent 경제를 위한 풀스택 기반입니다.
+현재 Agent들은 프레임워크와 커스텀 스택 전반에 걸쳐 파편화되어 있으며, 공통된 한계에 직면해 있습니다. 수익화의 부재, 공유 인프라의 부재, 그리고 사용자에게 확장 가능하게 도달할 수 있는 방법이 없다는 점입니다. Warden은 이러한 문제를 **글로벌 Agent Network**를 통해 해결합니다. 이는 Agent 경제를 위한 풀스택 기반입니다.
 
 우리는 인프라가 아니라 사용자부터 시작합니다. Warden Protocol 위에 구축된 **차세대 Agentic 지갑**, [Warden](https://wardenprotocol.org/)을 제공합니다. Warden에서는 단일 인터페이스를 통해 모든 AI Agent, 모델, 체인에 접근할 수 있으며, 자연어로 고급 워크플로우를 수행할 수 있습니다.
 
@@ -68,7 +68,7 @@ Agent가 구축되면, 해당 Agent는 Warden Chain에 직접 민팅됩니다. �
 
 **Warden**는 Warden Protocol 위에 구축된 agentic 지갑입니다. Warden에서는 단일 인터페이스를 통해 모든 AI Agent, 모델, 체인에 접근할 수 있으며, 자연어로 고급 워크플로우를 수행할 수 있습니다. Agent는 Warden의 [Agent Hub](#warden-agent-hub)에서 이용할 수 있습니다.
 
-Warden는 개발자와 사용자에게 다음과 같은 가치를 제공합니다:
+Warden은 개발자와 사용자에게 다음과 같은 가치를 제공합니다:
 
 - **Single Agent entry point**: 수백만 명의 사용자가 하나의 공간에서 Agent를 발견하고, 대화하며, 모든 서비스에 대해 Agent에게 비용을 지불할 수 있습니다.
 - **Complex, made simple**: 사용자는 가장 고급 워크플로우조차도 간단한 채팅 명령으로 수행할 수 있습니다.
@@ -89,7 +89,7 @@ Agent Hub가 Agent의 가치를 극대화하는 방식은 다음과 같습니다
 
 ## 프로토콜 레이어
 
-Warden는 네 개의 레이어로 구성된 AI-ready 프로토콜입니다:
+Warden은 네 개의 레이어로 구성된 AI-ready 프로토콜입니다:
 
 - **블록체인 레이어(Blockchain layer)**  
 블록체인 레이어는 Agent를 위한 핵심 인프라를 제공합니다: 신원, 조정, 그리고 출처(provenance)입니다. Agent는 [Warden Chain](#warden-chain)에 직접 배포되며, 이곳에서 요청에 서명하고 수수료를 수취하며 서비스 비용을 지불합니다. 각 Agent에는 고유한 암호학적 ID가 할당됩니다.

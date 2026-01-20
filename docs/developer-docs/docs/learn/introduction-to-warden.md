@@ -12,7 +12,7 @@ slug: /
 
 Agents today are fragmented across frameworks and custom stacks, all facing the same limits: no monetization, no shared infrastructure, and no scalable way to reach users. Warden addresses this by enabling a **global Agent Network**—the full-stack foundation for the Agent economy.
 
-We start with users rather than infrastructure, delivering [Warden](https://wardenprotocol.org/)—a **Next-Generation Agentic wallet**, built on Warden Protocol. In Warden, users access all AI Agents, models, and chains through a single interface, performing advanced workflows in natural language.
+We start with users rather than infrastructure, delivering [Warden](https://wardenprotocol.org/)—a **Next-Generation Agentic Wallet**, built on Warden Protocol. In Warden, users access all AI Agents, models, and chains through a single interface, performing advanced workflows in natural language.
 
 You can find a detailed overview of our mission in [Warden Manifesto](/learn/warden-manifesto).
 

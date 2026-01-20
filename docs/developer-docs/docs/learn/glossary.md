@@ -46,13 +46,13 @@ An AI Agent is an AI-driven program that supports both offchain and onchain oper
 
 ## Application layer
 
-At the application layer of [Warden Protocol](#warden-protocol), developers can easily build [AI Agents](#ai-agent) and instantly make them accessible to all [Warden](#warden) users. [Warden Studio](#warden-studio) (now in Alpha) provides everything required to develop, test, and publish Agents.
+At the application layer of [Warden Protocol](#warden-protocol), developers can easily build [AI Agents](#ai-agent) and instantly make them accessible to all [Warden](#warden) users. [Warden Studio](#warden-studio) provides everything required to develop, test, and publish Agents.
 
 ---
 
 ## Big Brain
 
-[Warden Protocol](#warden-protocol)'s Big Brain is a protocol-enabled, domain-specific LLM trained on 1T tokens, catalyzing [AI Agent](#ai-agent) performance as the evolving hive mind. Big Brain learns from every [Warden](#warden) interaction and rewards contributors who help it improve.
+[Warden Protocol](#warden-protocol)'s Big Brain is a protocol-enabled, domain-specific LLM trained on 1T tokens, catalyzing [AI Agent](#ai-agent) performance as the evolving hive mind. Big Brain learns from every [Warden](#warden) interaction and will reward contributors who help it improve.
 
 *This feature is coming soon.*
 
@@ -205,7 +205,7 @@ Learn more: [$WARD](/ward/introduction).
 
 ## Warden
 
-Warden is an AI-driven application built on [Warden Protocol](#warden-protocol). In Warden, users access all [AI Agents](#ai-agent), models, and chains through a single interface, performing advanced workflows in natural language. Agents are available in Warden's [Agent Hub](#warden-agent-hub); Warden provides a [Proof of Inference](#proof-of-inference) for each user request.
+Warden is an agentic wallet built on [Warden Protocol](#warden-protocol). In Warden, users access all [AI Agents](#ai-agent), models, and chains through a single interface, performing advanced workflows in natural language. Agents are available in Warden's [Agent Hub](#warden-agent-hub); Warden provides a [Proof of Inference](#proof-of-inference) for each user request.
 
 Try it out: [Warden](https://app.wardenprotocol.org).  
 Learn more: [Warden documentation](https://help.wardenprotocol.org).
@@ -224,7 +224,7 @@ Learn more: [Warden documentation](https://help.wardenprotocol.org/warden-app/ex
 
 Warden Agent Network is the infrastructure that supports the entire lifecycle of [AI Agents](#ai-agent). It provides the full-stack foundation for the Agent economy, unifying Agents that would otherwise remain fragmented across frameworks and custom stacks without reaching users.
 
-The core elements of the Agent Network are [Warden Studio](#warden-studio), [Warden Chain](#warden-chain), [Warden Agent Hub](#warden-agent-hub), and [Warden](#warden).
+The core elements of the Agent Network are [Warden](#warden), [Warden Studio](#warden-studio), [Warden Chain](#warden-chain), and [Warden Agent Hub](#warden-agent-hub).
 
 ---
 
@@ -232,7 +232,7 @@ The core elements of the Agent Network are [Warden Studio](#warden-studio), [War
 
 Warden Chain is a purpose-built EVM blockchain for [AI Agents](#ai-agent). It provides the decentralized infrastructure that makes the [Warden Protocol](#warden-protocol) logic operational.
 
-Once an Agent is built, it's minted directly onto the chain, where it signs requests, collects fees, and pays for services. In this way, Warden Chain serves as the entry point to discover, interact, and transact with Agents in the ecosystem.
+Once an Agent is registered, it's minted directly onto the chain, where it signs requests, collects fees, and pays for services. In this way, Warden Chain serves as the entry point to discover, interact, and transact with Agents in the ecosystem.
 
 Learn more: [Warden networks](/learn/warden-networks).
 
@@ -255,4 +255,7 @@ Learn more: [Manifesto](warden-manifesto).
 
 ## Warden Studio
 
-Warden Studio (now in Alpha) is a platform where developers can register and monetize their [Community Agents](#community-agent), publishing them directly to [Warden](#warden) users. Upon publication, Warden Studio generates [Agent Passports](#agent-passport).
+Warden Studio is a platform where developers can register and monetize their [Community Agents](#community-agent), publishing them directly to [Warden](#warden) users. Upon publication, Warden Studio generates [Agent Passports](#agent-passport).
+
+Try it out: [Warden Studio](https://studio.wardenprotocol.org).  
+Learn more: [Publish your Agent](/publish-an-agent/publish-your-agent#overview).

@@ -12,7 +12,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 #### New features
 
-- [The Airdrop Registration Portal](register-for-airdrop): Added the ability to pay the registration fee on **Arbitrum** and **BNB Smart chain**.
+- [The Airdrop Registration Portal](register-for-airdrop): Added the ability to pay the registration fee on **Arbitrum** and **BNB Smart Chain**.
 
 #### Improvements
 

@@ -58,11 +58,11 @@ To access all available tasks and see the PUMP points you can earn, simply go to
 
 ![Create and grow your coin in Warden](../../static/img/warden-app/earn-rewards-2.png)
 
-### Tap to pump
+### Tap to PUMP
 
-A fun way to collect more PUMPs is by playing the **Tap to Pump** game:
+A fun way to collect more PUMPs is by playing the **Tap to PUMP** game:
 
-- Each tap costs **$0.10**.
+- Each tap costs **$0.10**. To learn more, see [Tap to PUMP fee](fees#tap-to-pump-fee).
 - Every tap grants you **10 PUMPs**.
 - Every 10 taps, you unlock a chance to hit a reward boost: **x10**, **x15**, or **x20**.
 

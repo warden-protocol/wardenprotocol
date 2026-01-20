@@ -145,8 +145,9 @@ After [preparing your account](#1-prepare-your-account), you can register throug
 Make sure that you only access the Airdrop Registration Portal through [Warden](https://app.wardenprotocol.org). Do not click any external or social links. 
 :::
 
-:::important
-To eliminate spam accounts, we charge a randomized **registration fee**, paid in **USDC** or the native token on any of the [supported chains](/#supported-networks).
+:::important Important notes
+- To eliminate spam accounts, we charge a randomized **registration fee** of **$3–3.50**, paid in **USDC** or the native token on any of the supported chains. To learn more, see [Airdrop registration fee](fees#airdrop-registration-fee).
+- Please note that registration does not guarantee rewards—allocations will be provided at the claiming stage.
 :::
 
 To register, take these steps:
@@ -157,15 +158,11 @@ To register, take these steps:
    - Connect your X (Twitter).
    - Confirm that you've read this guide.
    - Accept terms and conditions.
-   - Agree to pay the registration fee.
+   - Agree to pay the [registration fee](fees#airdrop-registration-fee).
 4. If needed, click **Top up** and fund your wallet to pay the fee.
 5. Click **Register For Airdrop**.
 
 Congratulations! You're now registered for the airdrop. To download a confirmation, click **Share**.
-
-:::important
-Please note that registration does not guarantee rewards—allocations will be provided at the claiming stage.
-:::
 
 ![Access the Airdrop Registration Portal in Warden](../../static/img/warden-app/airdrop-4.png)
 ![Verify that you're a human to register for the airdrop in Warden](../../static/img/warden-app/airdrop-5.png)

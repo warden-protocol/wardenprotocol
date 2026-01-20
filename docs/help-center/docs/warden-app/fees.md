@@ -81,10 +81,39 @@ Trading with [Betflix](play-betflix) includes the following fees, charged from y
 The remaining amount from losing bets goes to the community treasury (currently $2,000).
 :::
 
+## Tap to PUMP fee
+
+Each time you tap in the [Tap to PUMP](earn-rewards#tap-to-pump) game, Warden charges a small fee:
+
+| Fee type        | Amount | Currency         | Description          |
+| --------------- | ------ | ---------------- | -------------------- |
+| Tap to PUMP fee | 0.1    | USDC/native coin | A fee paid to Warden |
+
+Warden charges this fee using the first available currency, following this priority:
+
+- **USDC** on Solana, Base, or Ethereum
+- **SOL** on Solana
+- **ETH** on Base or Ethereum
+
+## Airdrop registration fee
+
+When you [register for the WARD airdrop](register-for-airdrop), Warden charges a randomized fee to eliminate bot accounts:
+
+| Fee type         | Amount  | Currency         | Description          |
+| ---------------- | ------- | ---------------- | -------------------- |
+| Registration fee | 3–3.50  | USDC/native coin | A fee paid to Warden |
+
+Warden charges this fee using the first available currency, following this priority:
+
+- **USDC** on Solana, Base, Arbitrum, BNB Smart Chain, or Ethereum
+- **SOL** on Solana
+- **ETH** on Base or Arbitrum
+- **BSC** on BNB Smart Chain
+- **ETH** on Ethereum
+
 ## Agent fees
 
 In this section, you'll find additional Agent-specific fees.
-
 
 ### Caesar fees
 
@@ -115,25 +144,25 @@ All [deBridge](explore-ai-agents#debridge) transactions include the following fe
 
 All reports provided by [Kaibot](explore-ai-agents#kaibot) are subject to this fee:
 
-| Fee type      | Amount   | Currency                             | Description                        |
-| ------------- | -------- | ------------------------------------ | ---------------------------------- |
-| Agent fee     | 0.25 USD | [USDC/SOL/ETH](#currency-priorities) | A fee paid to the Agent per report |
+| Fee type      | Amount   | Currency                                 | Description                        |
+| ------------- | -------- | ---------------------------------------- | ---------------------------------- |
+| Agent fee     | 0.25 USD | [USDC/native coin](#currency-priorities) | A fee paid to the Agent per report |
 
 ### Messari fee
 
 All reports provided by [Messari Deep Research](explore-ai-agents#messari-deep-research) are subject to this fee:
 
-| Fee type      | Amount   | Currency                             | Description                        |
-| ------------- | -------- | ------------------------------------ | ---------------------------------- |
-| Agent fee     | 0.25 USD | [USDC/SOL/ETH](#currency-priorities) | A fee paid to the Agent per report |
+| Fee type      | Amount   | Currency                                 | Description                        |
+| ------------- | -------- | ---------------------------------------- | ---------------------------------- |
+| Agent fee     | 0.25 USD | [USDC/native coin](#currency-priorities) | A fee paid to the Agent per report |
 
 ### WachAI fee
 
 All reports provided by [WachAI](explore-ai-agents#wachai) are subject to this fee:
 
-| Fee type      | Amount   | Currency                             | Description                        |
-| ------------- | -------- | ------------------------------------ | ---------------------------------- |
-| Agent fee     | 0.25 USD | [USDC/SOL/ETH](#currency-priorities) | A fee paid to the Agent per report |
+| Fee type      | Amount   | Currency                                 | Description                        |
+| ------------- | -------- | ---------------------------------------- | ---------------------------------- |
+| Agent fee     | 0.25 USD | [USDC/native coin](#currency-priorities) | A fee paid to the Agent per report |
 
 ### Currency priorities
 

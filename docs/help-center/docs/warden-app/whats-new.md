@@ -8,6 +8,22 @@ sidebar_position: 11
 
 Here you'll find the latest Warden release highlights, including new features, improvements, and bug fixes. This section helps you quickly see what's changed and how it can enhance your experience.
 
+## January 19, 2026
+
+#### New features
+
+- [The Airdrop Registration Portal](register-for-airdrop): Added the ability to pay the registration fee on **Arbitrum** and **BNB Smart Chain**.
+
+#### Improvements
+
+- [The Airdrop Registration Portal](register-for-airdrop): Adjusted the registration fee.
+
+## January 15, 2026
+
+#### New features
+
+- [The Airdrop Registration Portal](register-for-airdrop): Added a portal where you can register for the WARD airdrop.
+
 ## January 13, 2026
 
 #### New features

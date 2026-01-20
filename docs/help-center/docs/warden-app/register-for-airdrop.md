@@ -6,12 +6,16 @@ sidebar_position: 9
 
 ## Overview
 
-Registration for the [WARD](https://docs.wardenprotocol.org/ward/introduction) airdrop is going live.
+Registration for the [WARD](https://docs.wardenprotocol.org/ward/introduction) airdrop is live.
 
 You can sign up through the **Airdrop Registration Portal** in Warden. Before registering, you may need to prepare your account—follow this guide to learn more.
 
 :::warning
 Make sure that you only access the Airdrop Registration Portal through [Warden](https://app.wardenprotocol.org). Do not click any external or social links. 
+:::
+
+:::important
+Registration does not guarantee rewards. Allocations will be provided at the claiming stage.
 :::
 
 ## Important information
@@ -21,14 +25,15 @@ Make sure that you only access the Airdrop Registration Portal through [Warden](
 - Linking any external wallet or account must happen **before** the registration.
 - Registration does not guarantee rewards. Allocations will be provided at the claiming stage.
 - Users who do not register will not be able to participate in the claiming phase.
+- To eliminate bot accounts, we charge a small randomized **registration fee**.
 
-## Register
+## 1. Prepare your account
 
 Before registering, make sure your [Warden account](manage-your-wallets#the-main-account) is ready. The steps below depend on your user type.
 
 ### Warden users
 
-Your Warden account already contains all the necessary information, and no additional action is required. Just register on the Airdrop Registration Portal.
+Your Warden account already contains all the necessary information, and no additional action is required. Just [register](#2-register) on the Airdrop Registration Portal.
 
 ### Kaito yappers
 
@@ -39,7 +44,7 @@ Before registering on the Airdrop Registration Portal, link your X account to yo
 3. Go to **Settings** by clicking the gear icon.
 4. In the **Login** section, link your X (Twitter) account to your Warden account.
 
-After this, you can register for the airdrop.
+After this, you can [register for the airdrop](#2-register).
 
 :::note
 Once your X is linked, we'll track the mindshare you generated during the Kaito Pre-TGE campaign. Remember: the Kaito campaign required use of Warden.
@@ -59,12 +64,12 @@ Before registering on the Airdrop Registration Portal, link your wallets contain
 5. In the **Login** section, click **Linked Wallets**.
 6. Select your wallet and follow the instructions.
 
-After this, you can register for the airdrop.
+After this, you can [register for the airdrop](#2-register).
 
 ![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-4.png)
 ![Link your external wallet in Warden](../../static/img/warden-app/airdrop-2.png)
 
-### OPEN OG
+### OPEN OG holders & stakers
 
 To qualify for the airdrop, you must meet **both** of the following requirements:
 
@@ -80,7 +85,7 @@ Before registering on the Airdrop Registration Portal, link your wallet containi
 5. In the **Login** section, click **Linked Wallets**.
 6. Select your wallet and follow the instructions.
 
-After this, you can register for the airdrop.
+After this, you can [register for the airdrop](#2-register).
 
 ![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-4.png)
 ![Link your external wallet in Warden](../../static/img/warden-app/airdrop-2.png)
@@ -105,7 +110,7 @@ To link your wallet holding the NFT on Base, take these steps:
 4. In the **Login** section, click **Linked Wallets**
 5. Select your wallet and follow the instructions.
 
-After this, you can register for the airdrop.
+After this, you can [register for the airdrop](#2-register).
 
 :::note
 Your Pre-Early status and tier will be automatically detected based on the linked wallet. Benefits such as boosted allocations or multipliers (if available) will be applied at the claiming stage.
@@ -123,7 +128,7 @@ Every **ambassador** needs to link their X and Discord accounts:
 3. Go to **Settings** by clicking the gear icon.
 4. In the **Login** section, link your X (Twitter) and Discord.
 
-After this, you can register for the airdrop.
+After this, you can [register for the airdrop](#2-register).
 
 ![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-4.png)
 ![Link your X and Discord accounts in Warden](../../static/img/warden-app/airdrop-3.png)
@@ -131,3 +136,34 @@ After this, you can register for the airdrop.
 ### Wallchain Quacks holders
 
 The distribution for **Wallchain Quacks** will happen through [Wallchain](https://www.wallchain.xyz). Registration is not required at this stage unless you qualify under another category.
+
+## 2. Register
+
+After [preparing your account](#1-prepare-your-account), you can register through the **Airdrop Registration Portal**. 
+
+:::warning
+Make sure that you only access the Airdrop Registration Portal through [Warden](https://app.wardenprotocol.org). Do not click any external or social links. 
+:::
+
+:::important Important notes
+- To eliminate bot accounts, we charge a randomized **registration fee** of **$3–3.50**, paid in **USDC** or the native token on any of the supported chains. To learn more, see [Airdrop registration fee](fees#airdrop-registration-fee).
+- Please note that registration does not guarantee rewards—allocations will be provided at the claiming stage.
+:::
+
+To register, take these steps:
+
+1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
+2. Click the **Airdrop** icon at the top-right to open the Airdrop Registration Portal.
+3. Verify that you're a human:
+   - Connect your X (Twitter).
+   - Confirm that you've read this guide.
+   - Accept terms and conditions.
+   - Agree to pay the [registration fee](fees#airdrop-registration-fee).
+4. If needed, click **Top up** and fund your wallet to pay the fee.
+5. Click **Register For Airdrop**.
+
+Congratulations! You're now registered for the airdrop. To download a confirmation, click **Share**.
+
+![Access the Airdrop Registration Portal in Warden](../../static/img/warden-app/airdrop-4.png)
+![Verify that you're a human to register for the airdrop in Warden](../../static/img/warden-app/airdrop-5.png)
+![Download the airdrop confirmation in Warden](../../static/img/warden-app/airdrop-6.png)

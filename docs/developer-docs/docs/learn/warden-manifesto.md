@@ -6,9 +6,10 @@ sidebar_position: 2
 
 ![Warden Manifesto: The global Agent Network](../../static/img/manifesto-cover.png)
 
-## *Warden—The Network for the Agent Economy*
+## *Warden—The App and Network Layer for the Agent Economy*
 
-> "*This Manifesto first started out as a long-form memo for our team. A standing document that would capture why we're building Warden. Now in this second iteration, we believe it is the ideal window for a prospective user, or investor, to understand our mission and why we're uniquely placed to succeed. With over 6.5m users, and over 350k DAUs, we have a once-in-a-lifetime opportunity to make crypto incredibly exciting and intuitive*"—David, Josh, Luis, Antonio & Team Warden
+> "*This Manifesto first started out as a long-form memo for our team. A standing document that would capture why we're building Warden. Now in this second iteration, we believe it is the ideal window for a prospective user to understand our mission and why we're uniquely placed to succeed. With over 15m users, and over 250k DAUs, we have a once-in-a-lifetime opportunity to make crypto incredibly exciting and intuitive*"  
+**David, Josh, Luis, Antonio & Team Warden**
 > 
 
 ## Opportunity
@@ -27,11 +28,11 @@ Frameworks alone aren't good enough. Agents need a global network. A global AI A
 
 ### Mission: build the global Agent Network, starting with distribution
 
-Our mission is simple: **building the global Agent Network**—the full-stack foundation for the Agent economy.
+Our mission is to build the discovery layer of the Agent Economy—combining a next-generation app with a global Agent Network to deliver the full-stack infrastructure intelligent Agents require.
 
-Most teams in this space start by targeting developers, building infrastructure, and *hoping* someone will use it. We think that's backwards. We take the opposite approach: start with users. 
+Most teams in this space start by targeting developers, building infrastructure, and *hoping* someone will use it. We think that's backwards. We take the opposite approach: start with users.
 
-Without users, Agents are useless. They're technically there, but practically invisible. Over the last 16 months, we've learned: **developers follow distribution not infrastructure**. They want their work to be seen, used, and valued by a large and growing audience. 
+Without users, Agents are useless. They're technically there, but practically invisible. Over the last two years, we've learned: **developers follow distribution not infrastructure**. They want their work to be seen, used, and valued by a large and growing audience. 
 
 We focus on *showing, not telling*. Our Agents are accessible to everyone, and they make crypto feel 10x better. This creates the pull that brings the world's best developers to Warden. 
 
@@ -39,8 +40,8 @@ We focus on *showing, not telling*. Our Agents are accessible to everyone, and t
 
 From this foundation, how we build adoption of our full-stack strategy becomes clear: 
 
-- **Win users first**: Show (*don't just tell*) how Agents can solve crypto's broken UX. This gives users one interface, with access to all the chains, apps, and models they could ever want—a true AI-powered Everything App for crypto.
-- **Open the rails to builders**: Once we have a large, engaged user base, we open Warden Studio: the creation hub for Agents. Here developers can build and deploy onchain or offchain Agents that come with identity, wallet access, trust mechanisms, and monetization tools. Regardless of the framework used to build these Agents, they can be connected to our network instantly.
+- **Win users first**: Show (*don't just tell*) how Agents can solve crypto's broken UX. This gives users one interface, with access to all the chains, apps, and models they could ever want—[Warden](https://wardenprotocol.org)—the "Next-Generation Agentic Wallet".
+- **Open the rails to builders**: With Warden Studio, developers can register, launch, and instantly distribute their onchain or offchain Agents that come with global identity, trust mechanisms, and monetization tools. 
 - **Power the Agent Network**: Give Agents the onchain identity, trust, monetization, and distribution rails to access millions of users—creating the global network they need to thrive.
 
 ### Our secret sauce: owning the distribution
@@ -49,17 +50,17 @@ We've built two-sided networks before. Our leadership team has done it at Uber, 
 
 And so we built something that users want—[Warden](https://wardenprotocol.org/)—the "Everything App" for crypto. It gives users a simple and intuitive way to access anything in crypto and AI. Whether you're sending, swapping, staking, opening LP positions, doing complex airdrop farming, or just generating images and minting an NFT collection—Warden has got you covered.
 
-We're OGs in growth and scaling, and within the first 10 weeks of launch we hit over 6.5m users (yes, that excludes bots—which we nerfed to the tune of over 7m!). With this growing user base we'll push Warden's infra to its limits, showcasing its power, and we have the perfect distribution channel for anyone building with or on Warden. This is how we win.
+We're OGs in growth and scaling, and within the first 10 weeks of launch we hit over 6.5m users (yes, that excludes bots—which we nerfed to the tune of over 7m!). With this growing user base—over 15m to date—we'll push Warden's infra to its limits, showcasing its power, and we have the perfect distribution channel for anyone building with or on Warden. This is how we win.
 
-![Warden: the "Everything App" for crypto](../../static/img/manifesto-2.png)
+![Warden: the "Next-Generation Agentic Wallet"](../../static/img/manifesto-2.png)
 
 ## Seasoned AI x crypto team: why only we can build Warden
 
 The global Agent Network we envision needs a team that can build full-stack infrastructure *and* win distribution at scale, fast. Warden's team has done both, in the toughest markets on Earth. We've scaled two-sided networks to hundreds of millions of users at Uber and Binance, built core blockchain protocols at Tendermint, deployed AI at Google, and set global standards at W3C and Nillion. We've built each layer before, and now we're combining them into the first global Agent Network.
 
-- David Pinger (CEO): Ex-Binance, Ex-Uber
+- David Pinger (CSO): Ex-Binance, Ex-Uber
 - Dr. Michele Dallachiesa (Chief AI Officer): Ex-Google, Ex-Nasa
-- Josh Goodbody (Executive Chairman): Ex-Binance, Ex-Huobi
+- Josh Goodbody (CEO): Ex-Binance, Ex-Huobi
 - Antonio Pitasi (Chief Blockchain Developer): Ex-Ignite/Tendermint
 - Dr. Andrei Sambra (CTO): Ex-Nillion, W3C, MIT
 - Luis Vaello (COO): Ex-Binance, Ex-Bitnovo
@@ -67,23 +68,37 @@ The global Agent Network we envision needs a team that can build full-stack infr
 
 ## Technology
 
+### Warden
+
+[Warden](https://wardenprotocol.org/) is a Next-Generation Agentic Wallet—the interface, or the front door, to the Agent economy—**one place where users discover, chat with, and pay Agents for their services.** Whether it's deep research, bridging, minting, trading, or staking—Warden performs these complex Web3 actions through simple chat commands. The Agents powering the application do all the thinking and problem solving. Today Solana, Ethereum, BNB Chain, and Base, all their tokens and apps, are live, and soon we'll cover all EVM chains and beyond.
+
+The net result for the user is that it makes crypto look and feel easy and intuitive and—importantly—that it's a sticky product, as it gives you access to 20+ general-purpose AI models. **It's truly an Everything App**.
+
+- **Single Agent entry point**: Here millions of users discover, chat with, and pay Agents for any service in one place.
+- **Complex, made simple**: Perform even the most advanced workflows through natural language, all in your own words.
+- **Everything Neo Finance in one place**: Paired with an Agent-assisted co-pilot, you can trade, predict, research, and manage your finances all from one easy-to-use interface. 
+
+![Warden: Messari Deep Research](../../static/img/manifesto-3.png)
+
 ### Warden Agent Network
 
-![Warden Agent Network: layers](../../static/img/manifesto-3.png)
+![Warden Agent Network: layers](../../static/img/manifesto-4.png)
 
-**We capture the entire lifecycle of your Agent on our Agent Network**. This is our north star: from creation to global adoption, at every stage, Warden adds value. Warden Studio gives creators the tools they need to develop and launch their own Agents. Warden Chain gives Agents identity, trust, and payment rails to collaborate at machine speed. Warden Agent Hub solves the toughest challenge in tech: distribution. And finally, Warden, our flagship app, is the front door—where millions of people discover and interact with your Agent every day.
+**We capture the entire lifecycle of your Agent on our Agent Network**. This is our north star: from creation to global adoption, at every stage, Warden adds value. Warden Studio gives creators the tools they need to launch their own Agents and reach users. Warden Chain gives Agents identity, trust, and payment rails to collaborate at machine speed. Warden Agent Hub solves the toughest challenge in tech: distribution. And finally, Warden, our flagship app, is the front door—where millions of people discover and interact with your Agent every day.
 
-![Warden Agent Network: components](../../static/img/manifesto-4.png)
+![Warden Agent Network: components](../../static/img/manifesto-5.png)
 
 ### Warden Studio
 
-Available now in Alpha, Warden Studio equips builders with everything they need to develop, test, and deploy Agents—onchain or offchain—directly to Warden's millions of users. From decentralized and verifiable inference to domain-specific large language models, verification systems, and primitives, the Studio has all the components needed for the next generation of autonomous Agents. 
+[Warden Studio](https://studio.wardenprotocol.org) is a zero-friction platform that equips builders with the tools they need to launch and monetize their AI Agents—onchain or offchain—directly to Warden's millions of users. From onchain identity and instant discoverability to verification and payment rails—the Studio has all the components needed to join a living and breathing network and turning innovation into income.
 
-We're convinced the next wave of Agent innovation won't come from traditional coders alone—it'll be driven by vibe coders, no-code creators, and Web2 builders. Warden Agent Studio will be designed to empower this new generation of creators.
+We're convinced the next wave of Agent innovation won't come from traditional coders alone—it'll be driven by vibe coders, no-code creators, and Web2 builders. Warden Agent Studio is designed to empower this new generation of creators.
 
-- **Agent creation toolkit**: Develop, test, and deploy onchain or offchain Agents.
-- **Instant distribution**: Publish directly to millions of active Warden users.
-- **Flexible for creators**: Built for Web3 developers, no-code creators, and Web2 builders.
+- **Instant launch and global reach:** Skip registrations and approvals—list your Agent in under a minute and reach millions of users from day one.
+- **Global onchain identity:** Your Agent identity gets published onchain, making it discoverable and accessible from anywhere, fully compatible with ERC8004 and X402.
+- **Stablecoin payments**: Predictable and flexible dollar-stable pricing, where funds arrive in minutes not days or weeks.
+- **Flexible pricing**: support per-inference billing and subscriptions out of the box.
+- **Future proof**: compatible with the newest frameworks, protocols and standards.
 
 ### Warden Chain
 
@@ -96,7 +111,7 @@ We're convinced the next wave of Agent innovation won't come from traditional co
 
 ### Warden Agent Hub
 
-![The Warden Agent Hub](../../static/img/manifesto-5.png)
+![The Warden Agent Hub](../../static/img/manifesto-6.png)
 
 Goodbye apps, hello Agents. Whether you're planning your next trip or need investment advice, there's an Agent for that. Like the App Store for Agents, Warden Agent Hub is your marketplace, but with one key difference: Agents can work together, combine skills, and solve problems no single Agent could handle alone.
 
@@ -104,17 +119,6 @@ Warden Agent Hub solves tech's hardest problem—distribution. Instead of launch
 
 - **Direct monetization**: Publish your Agent, set your price model, and start earning revenue from your Agent immediately. All usage and payment tracking is handled automatically.
 - **Built-in distribution**: Avoid ghost launches and instantly connect with millions of active Warden users. Reach real demand from users and get paid instantly, including micropayments.
-
-### Warden
-
-[Warden](https://wardenprotocol.org/) is the interface, or the front door, to the Agent economy—**one place where users discover, chat with, and pay Agents for their services.** Whether it's deep research, bridging, minting, trading, or staking—Warden performs these complex Web3 actions through simple chat commands. The Agents powering the application do all the thinking and problem solving. Today Solana, Ethereum, and Base, all their tokens and apps, are live, and soon we'll cover all EVM chains and beyond.
-
-The net result for the user is that it makes crypto look and feel easy and intuitive and—importantly—that it's a sticky product, as it gives you access to 20+ general-purpose AI models. **It's truly an Everything App**.
-
-- **Single Agent entry point**: Here millions of users discover, chat with, and pay Agents for any service in one place.
-- **Complex, made simple**: Perform even the most advanced workflows through natural language, all in your own words.
-
-![Warden: Messari Deep Research](../../static/img/manifesto-6.png)
 
 ### From storytelling to Agent development
 
@@ -133,10 +137,11 @@ Our belief is that all applications will use AI. **These will be applications wh
 
 We have an ambitious roadmap:
 
-- **Warden**: More Agents, better coordination, autopilot Agents that work while you're offline, and support for more chains.
-- **Warden Protocol**: An imminent launch of mainnet, and the go-live of our verification layer.
-- **Warden Studio**: Launching the best developer tooling that enables any Agent to publish on the Agent Ledger—with onchain passports, instant payment capabilities, and built-in trust and coordination protocols.
-- **Big Brain**: A protocol-enabled, domain-specific LLM trained on 1T tokens from Warden, catalyzing Agent performance as the evolving hive mind. Big Brain learns from every Warden interaction and rewards those who make it smarter. Built with industry leaders, it'll be available to Agent builders in late 2025.
+- **Warden**: : A mobile-first experience is key. We will be adding more human ways to access services, included voice-enabled actions. Additionally we'll be introducing more Agents, better coordination, autopilot Agents that work while you're offline, and support for more chains.
+- **Warden Launchpad**: Giving creators and developers the tools to create and launch tokens for their Agents, alongside the existing launch tools in the Warden Agent Hub.
+- **Warden Protocol**:  Continued improvements to the speed, performance and composability, alongside the go-live of our verification layer.
+- **Warden Studio**: Launching the best developer tooling that enables any Agent to publish on the Agent Network—with onchain passports, instant payment capabilities, and built-in trust and coordination protocols.
+- **Big Brain**: Exploring a protocol-enabled, domain-specific LLM trained on 2T tokens from Warden, improving Agent performance. Big Brain learns from every Warden interaction and will reward those who make it smarter.
 
 ## Links
 
@@ -147,36 +152,3 @@ We have an ambitious roadmap:
 - [SPEX whitepaper](https://arxiv.org/abs/2503.18899)
 - [SPEX on GitHub](https://github.com/warden-protocol/warden-spex)
 - [Messari](https://messari.io/report/warden-bringing-ai-onchain)
-
-## FAQs
-
-1. **What's the status of Warden *today*?**
-    
-    Nearly 6.5m users deep—Warden isn't a whitepaper pitch or an "idea". All the core infrastructure like the blockchain, verification, and application layers are live, hardened over 4 testnets and audited. The team is staffed, and runway is secured until Q1 2026. We're executing, relentlessly.
-    
-2. **What's a simple way to think about Model AVRs?**
-    
-    We think of them like plugins/add-ons/extensions. In the same way you can install an extension in a Google Sheet, you can add a verifiable model to your application.
-    
-3. **How does Agent publishing work?**
-    
-    On Warden Studio there will be a simple publishing flow that immediately provides an onchain identity, wallets, and a means of coordination and distribution.
-    
-4. **What's the role of your token, WARD?**
-    
-    WARD is used to pay for:
-    
-    - Fees on Warden Chain
-    - Unlock gate-kept functionality on Warden (in Q3)
-    - Payment and incentives for builders
-    
-    [See the tokenomics overview](/ward/introduction).
-    
-5. **What other net-new applications can be built on Warden?**
-    
-    Warden enables net new applications. Categories of apps the team is excited about are:
-    
-    - **Personalized DeFi**: Experiences that are simple and personalized. Customized portfolio analysis, trade recommendations, portfolio optimizations, and risk tooling.
-    - **Intent-parsing applications**: Applications that interpret "what the user means", transforming user intentions into precise onchain actions.
-    - **Model training:** Using Warden as a coordination layer across compute resources. We're actively exploring this with a hackathon applicant.
-    - **DAO governance**: Abstracting the complexity and bureaucracy of human coordination through DAO-Agent governance.

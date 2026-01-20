@@ -12,7 +12,7 @@ slug: /
 
 Agents today are fragmented across frameworks and custom stacks, all facing the same limits: no monetization, no shared infrastructure, and no scalable way to reach users. Warden addresses this by enabling a **global Agent Network**—the full-stack foundation for the Agent economy.
 
-We start with users rather than infrastructure, delivering [Warden](https://wardenprotocol.org/)—an AI-powered **Everything App** for crypto, built on Warden Protocol. In Warden, users access all AI Agents, models, and chains through a single interface, performing advanced workflows in natural language.
+We start with users rather than infrastructure, delivering [Warden](https://wardenprotocol.org/)—a **Next-Generation Agentic wallet**, built on Warden Protocol. In Warden, users access all AI Agents, models, and chains through a single interface, performing advanced workflows in natural language.
 
 You can find a detailed overview of our mission in [Warden Manifesto](/learn/warden-manifesto).
 
@@ -33,7 +33,7 @@ Any developer can build a **Community Agent** and register it on Warden, making 
 
 We capture the entire lifecycle of Agents in our **Agent Network**:
 
-- Developers build Community Agents in [Warden Studio](#warden-studio).
+- Developers register Community Agents in [Warden Studio](#warden-studio).
 - Agents are published directly on [Warden Chain](#warden-chain).
 - Users discover Agents in [Warden](#warden)'s [Agent Hub](#warden-agent-hub).
 
@@ -41,13 +41,17 @@ The core infrastructure elements making this possible are outlined below.
 
 ### Warden Studio
 
-**Warden Studio** is a toolkit giving builders everything they need to develop, test, and publish Agents directly to [Warden](#warden) users—from decentralized, verifiable inference to domain-specific language models, verification systems, and core primitives.
+**Warden Studio** is a platform that equips builders with the tools they need to launch and monetize their AI Agents—directly to [Warden](#warden) users.
 
 The core features of Warden Studio include the following:
 
-- **Agent creation toolkit**: Develop, test, and deploy onchain or offchain Agents.
-- **Instant distribution**: Publish directly to millions of active Warden users.
-- **Flexible for creators**: Built for Web3 developers, no-code creators, and Web2 builders.
+- **Instant launch and global reach:** Skip registrations and approvals—list your Agent in under a minute and reach millions of users from day one.
+- **Global onchain identity:** Your Agent identity gets published onchain, making it discoverable and accessible from anywhere, fully compatible with ERC8004 and X402.
+- **Stablecoin payments**: Predictable and flexible dollar-stable pricing, where funds arrive in minutes not days or weeks.
+- **Flexible pricing**: Supports per-inference billing and subscriptions out of the box.
+- **Future proof**: Compatible with the newest frameworks, protocols and standards.
+
+Try it out: [Warden Studio](https://studio.wardenprotocol.org).
 
 ### Warden Chain
 
@@ -64,12 +68,13 @@ Learn more: [Warden networks](/learn/warden-networks).
 
 ### Warden
 
-**Warden** is an AI-driven application built on Warden Protocol. In Warden, users access all AI Agents, models, and chains through a single interface, performing advanced workflows in natural language. Agents are available in Warden's [Agent Hub](#warden-agent-hub).
+**Warden** is an agentic wallet built on Warden Protocol. In Warden, users discover all AI Agents, models, and chains through a single interface, performing advanced workflows in natural language. Agents are available in Warden's [Agent Hub](#warden-agent-hub).
 
 This is what Warden offers developers and users:
 
 - **Single Agent entry point**: Millions of users discover, chat with, and pay Agents for any service in one place.
 - **Complex, made simple**: Users perform even the most advanced workflows through simple chat commands.
+- **All your financial tools in one place**: Paired with an AI co-pilot, you can trade, predict, research, and manage your finances all from one interface. 
 
 Try it out: [Warden](https://app.wardenprotocol.org).
 
@@ -95,10 +100,10 @@ The blockchain layer provides the core infrastructure for Agents: identity, coor
 Our verifiability layer uses blockchain, cryptography, and consensus to guarantee the integrity of AI models. [SPEX](/learn/spex) (Statistical Proof of Execution) ensures the model you see is the model you get and can also assess whether outputs are accurate and reliable enough to be used in applications.
 
 - **Application layer**  
-At the application layer, developers can easily build Agents and instantly make them accessible to all [Warden](#warden) users. [Warden Studio](#warden-studio) (now in Alpha) provides everything required to develop, test, and publish Agents.
+At the application layer, developers can easily build Agents and instantly make them accessible to all [Warden](#warden) users. [Warden Studio](#warden-studio) provides everything required to develop, test, and publish Agents.
 
 - **Big Brain**  
-Big Brain (under development) is a protocol-enabled, domain-specific LLM trained on 1T tokens, catalyzing Agent performance as the evolving hive mind. Big Brain learns from every Warden interaction and rewards contributors who help it improve.
+Big Brain (under development) is a protocol-enabled, domain-specific LLM trained on 1T tokens, catalyzing Agent performance. Big Brain learns from every Warden interaction and will reward those who make it smarter.
 
 ## Docs overview
 
@@ -113,7 +118,7 @@ Use the top menu to navigate across the main sections of the docs and learn how 
   - [Warden networks](/learn/warden-networks): A list of available networks
   - [Glossary](/learn/glossary): A list of key Warden terms with definitions
 - [Operate a node](/operate-a-node/introduction): Guides for node operators
-- [Publish an Agent](/publish-an-agent/introduction): An introduction for Community Agent builders
+- [Publish an Agent](/publish-an-agent/introduction): Onboarding for Community Agent builders
 - [$WARD](/ward/introduction): A detailed overview of Warden tokenomics
 
 You can also visit Warden's **Help Center** to find user guides for our applications:

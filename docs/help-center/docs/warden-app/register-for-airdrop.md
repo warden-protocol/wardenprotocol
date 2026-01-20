@@ -25,7 +25,7 @@ Registration does not guarantee rewards. Allocations will be provided at the cla
 - Linking any external wallet or account must happen **before** the registration.
 - Registration does not guarantee rewards. Allocations will be provided at the claiming stage.
 - Users who do not register will not be able to participate in the claiming phase.
-- To eliminate spam accounts, we charge a small randomized **registration fee**.
+- To eliminate bot accounts, we charge a small randomized **registration fee**.
 
 ## 1. Prepare your account
 
@@ -146,7 +146,7 @@ Make sure that you only access the Airdrop Registration Portal through [Warden](
 :::
 
 :::important Important notes
-- To eliminate spam accounts, we charge a randomized **registration fee** of **$3–3.50**, paid in **USDC** or the native token on any of the supported chains. To learn more, see [Airdrop registration fee](fees#airdrop-registration-fee).
+- To eliminate bot accounts, we charge a randomized **registration fee** of **$3–3.50**, paid in **USDC** or the native token on any of the supported chains. To learn more, see [Airdrop registration fee](fees#airdrop-registration-fee).
 - Please note that registration does not guarantee rewards—allocations will be provided at the claiming stage.
 :::
 

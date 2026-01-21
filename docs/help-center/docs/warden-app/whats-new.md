@@ -29,7 +29,7 @@ Here you'll find the latest Warden release highlights, including new features, i
   - Fixed issues with swaps.
 - [Community Agents](explore-ai-agents#community-agents): Fixed payment-related messaging.
 - [Google Assistant](explore-ai-agents#google-assistant): A minor UI fix.
-- Authentication : Enhanced error handling.
+- Authentication: Enhanced error handling.
 
 ## January 19, 2026
 

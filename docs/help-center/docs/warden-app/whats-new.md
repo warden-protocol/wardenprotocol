@@ -8,6 +8,29 @@ sidebar_position: 11
 
 Here you'll find the latest Warden release highlights, including new features, improvements, and bug fixes. This section helps you quickly see what's changed and how it can enhance your experience.
 
+## January 20, 2026
+
+#### Improvements
+
+- [The Airdrop Registration Portal](register-for-airdrop):
+  - Enhanced messaging.
+  - Enhanced error handling.
+- [Warden Agent](explore-ai-agents#warden-agent):
+  - Enhanced swap flow.
+  - Enhanced error handling.
+  - Improved documentation coverage in agent responses.
+
+#### Fixes
+
+- [Trading](trade): Fixed a display issue affecting positions.
+- [The main account](manage-your-wallets#the-main-account): Resolved an issue where linked wallets could disconnect.
+- [Warden Agent](explore-ai-agents#warden-agent):
+  - Made internal updates to maintain AI service reliability.
+  - Fixed an issue with swaps.
+- [Community Agents](explore-ai-agents#community-agents): Fixed payment-related messaging.
+- [Google Assistant](explore-ai-agents#google-assistant): A minor UI fix.
+- Authentication : Enhanced error handling.
+
 ## January 19, 2026
 
 #### New features

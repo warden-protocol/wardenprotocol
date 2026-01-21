@@ -8,7 +8,7 @@ sidebar_position: 11
 
 Here you'll find the latest Warden release highlights, including new features, improvements, and bug fixes. This section helps you quickly see what's changed and how it can enhance your experience.
 
-## January 20, 2026
+## January 21, 2026
 
 #### Improvements
 

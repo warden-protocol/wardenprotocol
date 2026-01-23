@@ -46,6 +46,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 
+## [v0.7.6](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.6) - 2026-01-23
+
+This is an emergency upgrade. It will be applied without going through the
+normal governance process, as chains funds are at risk.
+
+It disables the ics20 EVM precompile.
+
 ## [v0.7.5](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.5) - 2026-01-23
 
 ### Features (non-breaking)

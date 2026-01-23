@@ -46,6 +46,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 
+## [v0.7.5](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.5) - 2026-01-23
+
+### Features (non-breaking)
+
+- cometbft: bump to [v0.38.21](https://github.com/cometbft/cometbft/releases/tag/v0.38.21)
+
 ## [v0.7.4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.4) - 2026-01-12
 
 ### Consensus Breaking Changes

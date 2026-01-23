@@ -36,7 +36,7 @@ require (
 	github.com/CosmWasm/wasmd v0.61.2
 	github.com/CosmWasm/wasmvm/v3 v3.0.2
 	github.com/Jeffail/gabs/v2 v2.7.0
-	github.com/aws/aws-sdk-go-v2 v1.41.0
+	github.com/aws/aws-sdk-go-v2 v1.41.1
 	github.com/aws/aws-sdk-go-v2/config v1.32.5
 	github.com/aws/aws-sdk-go-v2/credentials v1.19.5
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.93.1

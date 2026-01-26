@@ -205,7 +205,7 @@ Learn more: [$WARD](/ward/introduction).
 
 ## Warden
 
-Warden is an agentic wallet built on [Warden Protocol](#warden-protocol). In Warden, users access all [AI Agents](#ai-agent), models, and chains through a single interface, performing advanced workflows in natural language. Agents are available in Warden's [Agent Hub](#warden-agent-hub); Warden provides a [Proof of Inference](#proof-of-inference) for each user request.
+Warden (the Warden App) is an agentic wallet built on [Warden Protocol](#warden-protocol). In Warden, users access all [AI Agents](#ai-agent), models, and chains through a single interface, performing advanced workflows in natural language. Agents are available in Warden's [Agent Hub](#warden-agent-hub); Warden provides a [Proof of Inference](#proof-of-inference) for each user request.
 
 Try it out: [Warden](https://app.wardenprotocol.org).  
 Learn more: [Warden documentation](https://help.wardenprotocol.org).

@@ -63,7 +63,7 @@ Then take the following steps in Warden Studio:
 2. Your developer account will automatically connect to your Warden account. Click the wallet icon at the top right and make sure there is at least **1 USDC**.
 3. Open the **Agents** tab and click **Register**.
 4. Provide the required details:
-   - Your agent's API URL and API key
+   - Your Agent's API URL and API key
    - The name, description, skills, and avatar
    - The preferred billing model (per inference or free)
 5. Click **Register agent** and wait.

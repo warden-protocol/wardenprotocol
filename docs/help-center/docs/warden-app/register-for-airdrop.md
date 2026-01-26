@@ -135,7 +135,21 @@ After this, you can [register for the airdrop](#2-register).
 
 ### Wallchain Quacks holders
 
-The distribution for **Wallchain Quacks** will happen through [Wallchain](https://www.wallchain.xyz). Registration is not required at this stage unless you qualify under another category.
+If you're a **Wallchain Quacks** holder, you need to activate your Warden account and link it to X:
+
+1. Sign up here: 👉 [Warden](https://app.wardenprotocol.org)  
+2. Click the wallet icon at the top right to open your account.
+3. Go to **Settings** by clicking the gear icon.
+4. In the **Login** section, link your X (Twitter) and Discord.
+
+Registration for the airdrop is not required at this stage unless you qualify under another category. The distribution will take place through [Wallchain](https://www.wallchain.xyz).
+
+:::note
+On your first login, your Warden account is created automatically.
+:::
+
+![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-4.png)
+![Link your X account in Warden](../../static/img/warden-app/airdrop-1.png)
 
 ## 2. Register
 

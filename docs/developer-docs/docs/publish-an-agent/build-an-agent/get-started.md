@@ -2,6 +2,9 @@
 sidebar_position: 2
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Get started
 
 ## Overview
@@ -72,16 +75,147 @@ Now you can create your Agent:
    ```bash
    /new
    ```
-2. Provide the following details:
+2. Provide the following details: (?)
 
-3. Edit the `env` file: 
-   - .env.example -> .env
-   - the LLM key
+   This will generate a new Agent. You can check its code in `warden-code/src/agent.ts`. (?)
 
-Your Agent will be available...
+3. Duplicate `.env.example` and rename it to `.env`. Add your LLM API key from [Prerequisites](#prerequisites):
+   
+   ```bash
+   OPENAI_API_KEY=OPEN_AI_API_KEY
+   ```
+Congratulations! Your Agent is available on `http://localhost:3000`.
 
-## 3. Run your Agent locally
+## 3. Test your Agent locally
+
+:::important
+Every new Agent is immediately accessible through LangGraph API. To learn more, see [LangGraph API reference](https://langchain-ai.github.io/langgraph/cloud/reference/api/api_ref.html). Alternatively, you can view and test all endpoints locally: `http://localhost:3000/docs`. (?)
+:::
+
+To make sure your Agent is working locally, run some of the LangGraph API endpoints:
+
+1. Run the [Search Assistants](https://langchain-ai.github.io/langgraph/cloud/reference/api/api_ref.html#tag/assistants/post/assistants/search) endpoint to get your Agent's ID:
+
+   <Tabs>
+   <TabItem value="postman" label="Postman" default>
+   **POST** `http://localhost:3000/assistants/search`  
+   **Headers**: `Content-Type`: `application/json`  
+   **Body**:
+
+   ```json
+   {
+     "metadata": {},
+     "graph_id": "agent",
+     "limit": 10,
+     "offset": 0,
+     "sort_by": "assistant_id",
+     "sort_order": "asc",
+     "select": [
+       "assistant_id"
+     ]
+   }
+   ``` 
+   </TabItem>
+   <TabItem value="curl" label="cURL" default>
+
+   ```bash
+   curl http://localhost:3000/assistants/search \
+     --request POST \
+     --header 'Content-Type: application/json' \
+     --data '{
+       "metadata": {},
+       "graph_id": "",
+       "limit": 10,
+       "offset": 0,
+       "sort_by": "assistant_id",
+       "sort_order": "asc",
+       "select": [
+         "assistant_id"
+       ]
+     }'
+   ```
+   </TabItem>    
+   </Tabs>
+
+   The ID will be returned in the `assistant_id` field. Typically, it's `fe096781-5601-53d2-b2f6-0d3403f7e9ca`.
+
+2. Now you can access your A2A Agent Card:
+   
+   ```text
+   http://localhost:3000/.well-known/agent-card.json?assistant_id=fe096781-5601-53d2-b2f6-0d3403f7e9ca
+   ```
+   
+   The card will display your Agent's name and capabilities, alongside with other information.
+
+3. Finally, try the [A2A Post](https://langchain-ai.github.io/langgraph/cloud/reference/api/api_ref.html#tag/a2a) endpoint:
+
+   <Tabs>
+   <TabItem value="postman" label="Postman" default>
+   **POST** `http://localhost:3000/a2a/fe096781-5601-53d2-b2f6-0d3403f7e9ca`  
+   **Headers**: `Accept`: `application/json`, `Content-Type`: `application/json`  
+   **Body**:
+        
+   ```json
+   {
+     "jsonrpc": "2.0",
+     "id": "",
+     "method": "message/send",
+     "params": {
+       "message": {
+         "role": "user",
+         "parts": [
+           {
+             "kind": "text",
+             "text": "What can you do?"
+           }
+         ],
+         "messageId": ""
+       },
+       "thread": {
+         "threadId": ""
+       }
+     }
+   }
+   ```  
+   </TabItem>
+   <TabItem value="curl" label="cURL" default>
+
+   ```bash
+   curl http://localhost:3000/a2a/fe096781-5601-53d2-b2f6-0d3403f7e9ca \
+     --request POST \
+     --header 'Accept: application/json' \
+     --header 'Content-Type: application/json' \
+     --data '{
+       "jsonrpc": "2.0",
+       "id": "",
+       "method": "message/send",
+       "params": {
+         "message": {
+           "role": "user",
+           "parts": [
+             {
+               "kind": "text",
+               "text": "What can you do?"
+             }
+           ],
+           "messageId": ""
+         },
+         "thread": {
+           "threadId": ""
+         }
+       }
+     }'
+   ```
+   </TabItem>    
+   </Tabs>
+      
+   If everything is fine, you'll receive a response including your prompt, assistant's reply, and other data.
+
+4. In addition, you can check logs in [LangSmith Studio](https://smith.langchain.com/studio): navigate to **Tracing Project** in the left menu and select your project. The logs will display data on all threads and runs (Agent invocations). (?)
 
 ## Next steps
 
+Now you can implement a custom logic: just edit your Agent's code in `warden-code/src/agent.ts`.
+
+For inspiration, see our [examples](examples).
 

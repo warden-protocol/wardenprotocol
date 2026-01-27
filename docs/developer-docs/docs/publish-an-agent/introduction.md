@@ -26,7 +26,7 @@ You can build an Agent, publish it on Warden, and earn rewards for early onboard
 
 ## Get started
 
-To quickly get started with building and registering an Agent, see the next section: [Publish your agent](publish-your-agent).
+To quickly get started with building and registering an Agent, see the next section: [Publish your Agent](publish-your-agent).
 
 ## Coming soon
 

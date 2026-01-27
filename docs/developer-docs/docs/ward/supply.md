@@ -10,7 +10,7 @@ sidebar_position: 6
 | -------------------- | ------------------ |
 | Token                | WARD               |
 | Initial total supply | 1,000,000,000 WARD |
-| Decimals             | 6                  |
+| Decimals             | 18                 |
 
 
 ## $WARD emissions

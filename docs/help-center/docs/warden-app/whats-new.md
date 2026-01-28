@@ -8,6 +8,23 @@ sidebar_position: 11
 
 Here you'll find the latest Warden release highlights, including new features, improvements, and bug fixes. This section helps you quickly see what's changed and how it can enhance your experience.
 
+## January 29, 2026
+
+#### New features
+
+- [Warden Agent](explore-ai-agents#warden-agent), [Jupiter](explore-ai-agents#jupiter): Improved token detection on Solana, including support for newer token standards.
+- [Warden Agent](explore-ai-agents#warden-agent): Enhanced messaging.
+
+#### Improvements
+
+- [Community Agents](explore-ai-agents#community-agents): Improved error logging.
+- [The trading leaderboard](trade#check-your-stats): Improved the UI.
+
+#### Fixes
+
+- [Warden Agent](explore-ai-agents#warden-agent): Fixed issues with EVM and Solana swaps.
+- [WachAI](explore-ai-agents#wachai): A minor UI fix.
+
 ## January 21, 2026
 
 #### Improvements

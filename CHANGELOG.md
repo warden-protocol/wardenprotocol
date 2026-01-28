@@ -46,6 +46,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 
+## [v0.7.7](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.7) - 2026-01-26
+
+This upgrade re-aligns the network binary version after the v0.7.6 emergency
+upgrade, enforcing that all nodes (even non-validators) are running the latest
+version.
+
+### Consensus Breaking Changes
+
+- x/evm: disable unused precompiles.
+
 ## [v0.7.6](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.6) - 2026-01-23
 
 This is an emergency upgrade. It will be applied without going through the

@@ -10,7 +10,7 @@ Registration for the airdrop is now closed. Stay tuned for airdrop claim details
 
 ## Overview
 
-Register for the [WARD](https://docs.wardenprotocol.org/ward/introduction) airdrop was previously available through the **Airdrop Registration Portal** in Warden. The registration period has ended, and claim details are coming soon.
+Registeration for the [WARD](https://docs.wardenprotocol.org/ward/introduction) airdrop was previously available through the **Airdrop Registration Portal** in Warden. The registration period has ended, and claim details are coming soon.
 
 If you're a registered user, you can always [check your status](#3-check-your-status) in the Airdrop Registration Portal.
 
@@ -165,7 +165,7 @@ Make sure that you only access the Airdrop Registration Portal through [Warden](
 :::
 
 ![Access the Airdrop Registration Portal in Warden](../../static/img/warden-app/airdrop-4.png)
-![Download the airdrop confirmation in Warden](../../static/img/warden-app/airdrop-6.png)
+![Download the airdrop confirmation in Warden](../../static/img/warden-app/airdrop-5.png)
 
 ## 4. Claim WARD
 

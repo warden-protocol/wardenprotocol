@@ -5,12 +5,16 @@ sidebar_position: 9
 # Register for the airdrop
 
 :::important
-Registration for the airdrop is now closed. Stay tuned for airdrop claim details.
+Registration for the airdrop is now closed. Stay tuned for airdrop claim details. You can always [check your status](#3-check-your-status) in the Airdrop Registration Portal.
 :::
 
 ## Overview
 
-To register for the [WARD](https://docs.wardenprotocol.org/ward/introduction) airdrop, sign up through the **Airdrop Registration Portal** in Warden. Before registering, you may need to prepare your account—follow this guide to learn more.
+Register for the [WARD](https://docs.wardenprotocol.org/ward/introduction) airdrop was previously available through the **Airdrop Registration Portal** in Warden. The registration period has ended, and claim details are coming soon.
+
+If you're a registered user, you can always [check your status](#3-check-your-status) in the Airdrop Registration Portal.
+
+The instructions below describe the process that was available prior to closure.
 
 :::warning
 Make sure that you only access the Airdrop Registration Portal through [Warden](https://app.wardenprotocol.org). Do not click any external or social links. 
@@ -175,8 +179,23 @@ To register, take these steps:
 4. If needed, click **Top up** and fund your wallet to pay the fee.
 5. Click **Register For Airdrop**.
 
-Congratulations! You're now registered for the airdrop. To download a confirmation, click **Share**.
+Congratulations! You're now registered for the airdrop.
 
 ![Access the Airdrop Registration Portal in Warden](../../static/img/warden-app/airdrop-4.png)
 ![Verify that you're a human to register for the airdrop in Warden](../../static/img/warden-app/airdrop-5.png)
+
+## 3. Check your status
+
+The airdrop claim details are coming soon. Meanwhile, you can always check your registration status in the Airdrop Registration Portal:
+
+1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
+2. Click the **Airdrop** icon at the top-right to open the Airdrop Registration Portal.
+3. If you registered successfully, you'll see a corresponding notification.
+
+To download a confirmation, click **Share**.
+
 ![Download the airdrop confirmation in Warden](../../static/img/warden-app/airdrop-6.png)
+
+## 4. Claim WARD
+
+The airdrop claim details are coming soon—stay tuned!

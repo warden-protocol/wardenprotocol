@@ -1,4 +1,4 @@
-﻿---
+---
 sidebar_position: 11
 ---
 
@@ -7,6 +7,18 @@ sidebar_position: 11
 ## Overview
 
 Here you'll find the latest Warden release highlights, including new features, improvements, and bug fixes. This section helps you quickly see what's changed and how it can enhance your experience.
+
+## January 28, 2026
+
+#### New features
+
+- [The Airdrop Registration Portal](register-for-airdrop): Added UI and infrastructure updates to support future airdrop flows.
+
+#### Improvements
+
+- [The Airdrop Registration Portal](register-for-airdrop): 
+  - Improved the registration flow, visual layout, and the UI text.
+  - Enhanced messaging.
 
 ## January 21, 2026
 

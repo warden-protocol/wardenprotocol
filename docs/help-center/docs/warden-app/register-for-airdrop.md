@@ -4,6 +4,10 @@ sidebar_position: 9
 
 # Register for the airdrop
 
+:::important
+Registration for the airdrop is now closed. Stay tuned for airdrop claim details.
+:::
+
 ## Overview
 
 Registration for the [WARD](https://docs.wardenprotocol.org/ward/introduction) airdrop is live.

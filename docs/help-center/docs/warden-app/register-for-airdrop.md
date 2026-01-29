@@ -10,9 +10,7 @@ Registration for the airdrop is now closed. Stay tuned for airdrop claim details
 
 ## Overview
 
-Registration for the [WARD](https://docs.wardenprotocol.org/ward/introduction) airdrop is live.
-
-You can sign up through the **Airdrop Registration Portal** in Warden. Before registering, you may need to prepare your account—follow this guide to learn more.
+To register for the [WARD](https://docs.wardenprotocol.org/ward/introduction) airdrop, sign up through the **Airdrop Registration Portal** in Warden. Before registering, you may need to prepare your account—follow this guide to learn more.
 
 :::warning
 Make sure that you only access the Airdrop Registration Portal through [Warden](https://app.wardenprotocol.org). Do not click any external or social links. 

@@ -26,31 +26,29 @@ Registration does not guarantee rewards. Allocations will be provided at the cla
 
 ## Important information
 
-- All registration happens in [Warden](https://app.wardenprotocol.org). We'll **never** ask you to connect your wallet to any third-party website.
-- You must have an active [Warden account](manage-your-wallets#the-main-account) to register and claim rewards.
+- Registration is now closed, stay tuned for claiming instruction.
+- All registration happened in [Warden](https://app.wardenprotocol.org). We'll **never** ask you to connect your wallet to any third-party website.
+- You must have an active [Warden account](manage-your-wallets#the-main-account) to claim rewards.
 - Linking any external wallet or account must happen **before** the registration.
 - Registration does not guarantee rewards. Allocations will be provided at the claiming stage.
-- Users who do not register will not be able to participate in the claiming phase.
-- To eliminate bot accounts, we charge a small randomized **registration fee**.
+- Users who aren't registered will not be able to participate in the claiming phase.
+- To eliminate bot accounts, we charged a small randomized [registration fee](fees#airdrop-registration-fee).
 
 ## 1. Prepare your account
 
-Before registering, make sure your [Warden account](manage-your-wallets#the-main-account) is ready. The steps below depend on your user type.
-
+This section describes the steps that were required to prepare your [Warden account](manage-your-wallets#the-main-account) for registration, depending on the user type.
 ### Warden users
 
-Your Warden account already contains all the necessary information, and no additional action is required. Just [register](#2-register) on the Airdrop Registration Portal.
+Your Warden account already contains all the necessary information, and no additional action is required.
 
 ### Kaito yappers
 
-Before registering on the Airdrop Registration Portal, link your X account to your Warden account.
+To qualify for the airdrop, link your X account to your Warden account.
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. Click the wallet icon at the top right to open your account.
 3. Go to **Settings** by clicking the gear icon.
 4. In the **Login** section, link your X (Twitter) account to your Warden account.
-
-After this, you can [register for the airdrop](#2-register).
 
 :::note
 Once your X is linked, we'll track the mindshare you generated during the Kaito Pre-TGE campaign. Remember: the Kaito campaign required use of Warden.
@@ -61,7 +59,7 @@ Once your X is linked, we'll track the mindshare you generated during the Kaito 
 
 ### WARP holders & stakers
 
-Before registering on the Airdrop Registration Portal, link your wallets containing **WARP** or **staked WARP** to your Warden account:
+To qualify for the airdrop, link your wallets containing **WARP** or **staked WARP** to your Warden account:
 
 1. Identify your wallets containing WARP or staked WARP on [YieldWard](https://yieldward.com).
 2. Log in: 👉 [Warden](https://app.wardenprotocol.org)
@@ -69,8 +67,6 @@ Before registering on the Airdrop Registration Portal, link your wallets contain
 4. Go to **Settings** by clicking the gear icon.
 5. In the **Login** section, click **Linked Wallets**.
 6. Select your wallet and follow the instructions.
-
-After this, you can [register for the airdrop](#2-register).
 
 ![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-4.png)
 ![Link your external wallet in Warden](../../static/img/warden-app/airdrop-2.png)
@@ -90,8 +86,6 @@ Before registering on the Airdrop Registration Portal, link your wallet containi
 4. Go to **Settings** by clicking the gear icon.
 5. In the **Login** section, click **Linked Wallets**.
 6. Select your wallet and follow the instructions.
-
-After this, you can [register for the airdrop](#2-register).
 
 ![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-4.png)
 ![Link your external wallet in Warden](../../static/img/warden-app/airdrop-2.png)
@@ -116,8 +110,6 @@ To link your wallet holding the NFT on Base, take these steps:
 4. In the **Login** section, click **Linked Wallets**
 5. Select your wallet and follow the instructions.
 
-After this, you can [register for the airdrop](#2-register).
-
 :::note
 Your Pre-Early status and tier will be automatically detected based on the linked wallet. Benefits such as boosted allocations or multipliers (if available) will be applied at the claiming stage.
 :::
@@ -127,14 +119,12 @@ Your Pre-Early status and tier will be automatically detected based on the linke
 
 ### Ambassadors
 
-Every **ambassador** needs to link their X and Discord accounts:
+To qualify for the airdrop, , every **ambassador** needs to link their X and Discord accounts:
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. Click the wallet icon at the top right to open your account.
 3. Go to **Settings** by clicking the gear icon.
 4. In the **Login** section, link your X (Twitter) and Discord.
-
-After this, you can [register for the airdrop](#2-register).
 
 ![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-4.png)
 ![Link your X and Discord accounts in Warden](../../static/img/warden-app/airdrop-3.png)
@@ -154,35 +144,11 @@ Registration for the airdrop is not required at this stage unless you qualify un
 ![Access your account settings in Warden](../../static/img/warden-app/manage-your-wallets-main-4.png)
 ![Link your X account in Warden](../../static/img/warden-app/airdrop-1.png)
 
-## 2. Register
+## 2. Register (closed)
 
-After [preparing your account](#1-prepare-your-account), you can register through the **Airdrop Registration Portal**. 
+During the registration period, users could register through the **Airdrop Registration Portal** after preparing their accounts.
 
-:::warning
-Make sure that you only access the Airdrop Registration Portal through [Warden](https://app.wardenprotocol.org). Do not click any external or social links. 
-:::
-
-:::important Important notes
-- To eliminate bot accounts, we charge a randomized **registration fee** of **$3–3.50**, paid in **USDC** or the native token on any of the supported chains. To learn more, see [Airdrop registration fee](fees#airdrop-registration-fee).
-- Please note that registration does not guarantee rewards—allocations will be provided at the claiming stage.
-:::
-
-To register, take these steps:
-
-1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
-2. Click the **Airdrop** icon at the top-right to open the Airdrop Registration Portal.
-3. Verify that you're a human:
-   - Connect your X (Twitter).
-   - Confirm that you've read this guide.
-   - Accept terms and conditions.
-   - Agree to pay the [registration fee](fees#airdrop-registration-fee).
-4. If needed, click **Top up** and fund your wallet to pay the fee.
-5. Click **Register For Airdrop**.
-
-Congratulations! You're now registered for the airdrop.
-
-![Access the Airdrop Registration Portal in Warden](../../static/img/warden-app/airdrop-4.png)
-![Verify that you're a human to register for the airdrop in Warden](../../static/img/warden-app/airdrop-5.png)
+Now registration is closed. If you registered successfully, you can [check your status](#3-check-your-status).
 
 ## 3. Check your status
 
@@ -194,8 +160,17 @@ The airdrop claim details are coming soon. Meanwhile, you can always check your 
 
 To download a confirmation, click **Share**.
 
+:::warning
+Make sure that you only access the Airdrop Registration Portal through [Warden](https://app.wardenprotocol.org). Do not click any external or social links. 
+:::
+
+![Access the Airdrop Registration Portal in Warden](../../static/img/warden-app/airdrop-4.png)
 ![Download the airdrop confirmation in Warden](../../static/img/warden-app/airdrop-6.png)
 
 ## 4. Claim WARD
 
 The airdrop claim details are coming soon—stay tuned!
+
+:::important
+Please note that registration does not guarantee rewards. Allocations will be provided at the claiming stage.
+:::

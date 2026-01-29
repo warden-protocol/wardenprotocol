@@ -119,7 +119,7 @@ Your Pre-Early status and tier will be automatically detected based on the linke
 
 ### Ambassadors
 
-To qualify for the airdrop, , every **ambassador** needs to link their X and Discord accounts:
+To qualify for the airdrop, every **ambassador** needs to link their X and Discord accounts:
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. Click the wallet icon at the top right to open your account.

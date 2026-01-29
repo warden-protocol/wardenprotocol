@@ -40,7 +40,9 @@ Each of these tiers will get a percentage of the delegation pool allocated durin
 | 3     | 2.5M        | 10               | 2.5%           | 25%     | 25M              |
 | 4     | 2M          | 20               | 2%             | 40%     | 40M              |
 
-**Note**: Amounts are expressed in WARD tokens.
+:::note
+Amounts are expressed in WARD tokens.
+:::
 
 ## Validator requirements
 

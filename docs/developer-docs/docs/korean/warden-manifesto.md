@@ -142,7 +142,6 @@ Warden Agent Hub는 기술 분야에서 가장 어려운 문제인 유통(distri
 - **Warden Launchpad**: Warden Agent Hub에 이미 존재하는 출시 도구와 함께, 크리에이터와 개발자가 자신의 Agent를 위한 토큰을 생성하고 출시할 수 있는 도구를 제공합니다.
 - **Warden Protocol**: 속도, 성능, 컴포저빌리티(composability)에 대한 지속적인 개선과 함께, 검증 레이어의 메인넷 적용(go-live)을 진행합니다.
 - **Warden Studio**: 온체인 패스포트, 즉시 결제 기능, 내장된 신뢰 및 조정 프로토콜을 통해, 어떤 Agent든 Agent Network에 퍼블리시할 수 있도록 지원하는 최고의 개발자 도구를 출시합니다.
-- **Big Brain**: Warden에서 생성된 2조(2T) 토큰으로 학습된 프로토콜 기반 도메인 특화 LLM을 탐구하며, Agent 성능을 향상시킵니다. Big Brain은 모든 Warden 상호작용으로부터 학습하고, 이를 더 똑똑하게 만드는 데 기여한 참여자에게 보상을 제공합니다.
 
 ## 링크
 

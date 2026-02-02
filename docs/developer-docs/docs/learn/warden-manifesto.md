@@ -142,11 +142,11 @@ The roadmap for the "Do-It-For-Me" economy rests on four pillars:
 - **New ways to make money**, enabling Agents to act on behalf of users and generate value
 - **Access everywhere**, ensuring users can interact with Agents wherever they are
 
-Every step in this roadmap is designed to fulfill the vision in our manifesto: a world where AI agents aren't alone, but come together as a part of a global community.
+Every step in this roadmap is designed to fulfill the vision in our manifesto: a world where AI Agents aren't alone, but come together as a part of a global community.
 
 ### The Global Agent Network: The infrastructure for autonomous Agent economies
 
-- **Warden Studio**: Build your own Agent, earn money from it and instantly share it with millions of users of our wallet—like launching an app on the App Store. (Q1 2026)
+- **Warden Studio**: Build your own Agent, earn money from it and instantly share it with millions of users of our wallet—like launching an app on the App Store. (Q1, 2026)
 - **Token Launchpad**: Turn your vibe-coded Agent or project into a tokenized business and get a share of the upside as it grows and generates value. (Q1, 2026)
 - **Automation**: Our co-pilot is evolving from reactive assistance into proactive automations, capable of executing trades, strategies, predictions, and multi-step tasks for you. (Q2, 2026)
 

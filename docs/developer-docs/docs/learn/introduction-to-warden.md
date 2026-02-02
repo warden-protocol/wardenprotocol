@@ -1,7 +1,5 @@
 ﻿---
 sidebar_position: 1
-id: home-doc
-slug: /
 ---
 
 # Introduction to Warden
@@ -68,7 +66,7 @@ Learn more: [Warden networks](/learn/warden-networks).
 
 ### Warden
 
-**Warden** is an agentic wallet built on Warden Protocol. In Warden, users discover all AI Agents, models, and chains through a single interface, performing advanced workflows in natural language. Agents are available in Warden's [Agent Hub](#warden-agent-hub).
+**Warden** is an Agentic Wallet built on Warden Protocol. In Warden, users discover all AI Agents, models, and chains through a single interface, performing advanced workflows in natural language. Agents are available in Warden's [Agent Hub](#warden-agent-hub).
 
 This is what Warden offers developers and users:
 

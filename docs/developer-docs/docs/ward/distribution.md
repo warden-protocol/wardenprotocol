@@ -12,7 +12,7 @@ Note that $WARD distribution will be characterized by the following:
 
 - **Fair launch mechanism**: The WARD token distribution will adopt a fair launch mechanism. This approach ensures a wide and equitable distribution of tokens, preventing market manipulation and ensuring a rapid distribution of stakeholders and community governance.
   
-- **Prioritization of active users and supporters**: active users of any application or infra within the Warden ecosystem will be recognized ongoing support, along with other eligible protocols and platforms that have contributed to the foundations and culture that has given Warden Protocol the ability to launch.
+- **Prioritization of active users and supporters**: active users of any application or infra within the Warden ecosystem will be recognized for ongoing support, along with other eligible protocols and platforms that have contributed to the foundations and culture that has given Warden Protocol the ability to launch.
 
 ## Main WARD distribution
 
@@ -23,8 +23,8 @@ Note that $WARD distribution will be characterized by the following:
 ## Distribution description
 
 | Category | Number | %  | Description | Circulating |
-| -------- | -- | -- | ----------- | ----------- |
-| Initial airdrop | 47M | 4,70% | Initial token airdrop | 30.32M at genesis with 6-month linear vesting |
+| -------- | ------ | -- | ----------- | ----------- |
+| Initial airdrop | 47M | 4.70% | Initial token airdrop | 30.32M at genesis with 6-month linear vesting |
 | Public goods | 53M | 5.30% | Allocation for ongoing growth activities and user incentives through activity leaderboards for both onchain and social engagement | 10M at genesis with 30-month linear vesting |
 | Ecosystem & community | 120M | 12.00% | Allocation that supports ecosystem growth including marketing, partnerships, community activities, and events, as well as critical infrastructure such as public block explorers and Dune Analytics dashboards | 20M at genesis with 30-month linear vesting |
 | Liquidity | 50M | 5.00% | Liquidity provisioning |  No vesting: 100% available at genesis |

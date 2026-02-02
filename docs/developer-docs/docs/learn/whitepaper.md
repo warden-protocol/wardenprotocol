@@ -6,4 +6,4 @@ sidebar_position: 7
 
 You can download our whitepaper here: 
 
-- [Warden Protocol Whitepaper](../../static/img/whitepaper.pdf)
+- [Warden Protocol Whitepaper](../../static/whitepaper.pdf)

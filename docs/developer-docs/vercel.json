@@ -1,12 +1,12 @@
 {
     "redirects": [
 
-        {"source":"/learn/Modularity", "destination":"/", "statusCode": 301},
+        {"source":"/learn/Modularity", "destination":"/learn/introduction", "statusCode": 301},
         {"source":"/learn/OApps/OApps%20Overview", "destination":"/", "statusCode": 301},
-        {"source":"/learn/eli5","destination":"/", "statusCode": 301},
-        {"source":"/learn/faq","destination":"/", "statusCode": 301},
-        {"source":"/learn/how-does-warden-protocol-work","destination":"/", "statusCode": 301},
-        {"source":"/learn/keychains","destination":"/", "statusCode": 301},
+        {"source":"/learn/eli5","destination":"/learn/introduction", "statusCode": 301},
+        {"source":"/learn/faq","destination":"/learn/introduction", "statusCode": 301},
+        {"source":"/learn/how-does-warden-protocol-work","destination":"/learn/introduction", "statusCode": 301},
+        {"source":"/learn/keychains","destination":"/learn/introduction", "statusCode": 301},
         {"source":"/learn/keychains/Keychain%20Onboarding","destination":"/", "statusCode": 301},
         {"source":"/learn/spaceward/:path*","destination":"/", "statusCode": 301},
         {"source":"/category/spaceward","destination":"/", "statusCode": 301},
@@ -25,7 +25,7 @@
         {"source":"/build-an-oapp/:path*","destination":"/", "statusCode": 301},
         {"source":"/tokens/ward-token/delegation-program","destination":"/operate-a-node/delegation-plan", "statusCode": 301},
 
-        {"source":"/learn/aibi","destination":"/", "statusCode": 301},
+        {"source":"/learn/aibi","destination":"/learn/introduction", "statusCode": 301},
         {"source":"/category/use-the-http-handler","destination":"/", "statusCode": 301},
         {"source":"/category/use-the-price-prediction-handler","destination":"/", "statusCode": 301},
         {"source":"/operate-a-node/node-api-reference","destination":"/operate-a-node/node-api", "statusCode": 301},
@@ -33,7 +33,7 @@
         {"source":"/tokens/warp-token/:path*","destination":"/ward/introduction", "statusCode": 301},
         {"source":"/category/warp-token","destination":"/ward/introduction", "statusCode": 301},
         {"source":"/category/build-the-infrastructure-for-orders","destination":"/", "statusCode": 301},
-        {"source":"/learn/bridging","destination":"/", "statusCode": 301},
+        {"source":"/learn/bridging","destination":"/learn/introduction", "statusCode": 301},
 
         {"source":"/build-an-app/:path*","destination":"/", "statusCode": 301},
         {"source":"/category/deploy-smart-contracts-on-warden","destination":"/", "statusCode": 301},
@@ -53,7 +53,7 @@
         {"source":"/category/implementations","destination":"/", "statusCode": 301},
         {"source":"/learn/warden-protocol-modules/:path*","destination":"/learn/modules", "statusCode": 301}, 
         {"source":"/category/warden-protocol-modules","destination":"/learn/modules", "statusCode": 301},       
-        {"source":"/learn/interoperability","destination":"/", "statusCode": 301},
+        {"source":"/learn/interoperability","destination":"/learn/introduction", "statusCode": 301},
         {"source":"/operate-a-node/run-a-local-chain","destination":"/", "statusCode": 301},
         {"source":"/operate-a-node/chiado-testnet/:path*","destination":"/operate-a-node/introduction", "statusCode": 301},
         {"source":"/category/chiado-testnet","destination":"/", "statusCode": 301},

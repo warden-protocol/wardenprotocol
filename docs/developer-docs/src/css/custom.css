@@ -171,3 +171,61 @@ html[data-theme='dark'] .navbar--github-link:before {
   --docsearch-background-color: var(--ifm-color-emphasis-200);
   --docsearch-icon-color: var(--ifm-color-secondary-darkest);
 }
+
+.card__header {
+  padding-bottom: 0;
+}
+
+.homepage-cards {
+  display: grid;
+  grid-template-columns: 1fr; /* mobile default */
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .homepage-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .homepage-cards > .card:last-child:nth-child(odd) {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 767px) {
+  .card__header h3 {
+    font-size: 1.15rem;
+  }
+}
+
+.card-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-icon.navbar--discord-link,
+.card-icon.navbar--github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background: none;
+}
+
+.card-icon.navbar--discord-link::before,
+.card-icon.navbar--github-link::before {
+  width: 1.1em;
+  height: 1.1em;
+  background-size: contain;
+}
+
+
+
+

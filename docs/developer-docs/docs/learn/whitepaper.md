@@ -122,7 +122,7 @@ Warden Agent Hub solves tech's hardest problem—distribution. Instead of launch
 - **Direct monetization**: Publish your Agent, set your price model, and start earning revenue from your Agent immediately. All usage and payment tracking is handled automatically.
 - **Built-in distribution**: Avoid ghost launches and instantly connect with millions of active Warden users. Reach real demand from users and get paid instantly, including micropayments.
 
-#### From storytelling to Agent development
+### From storytelling to Agent development
 
 ![Agent development: Agent types](../../static/img/manifesto-7.png)
 
@@ -137,7 +137,14 @@ Our belief is that all applications will use AI. **These will be applications wh
 
 ![Warden's roadmap](../../static/img/manifesto-8.png)
 
-The roadmap for the "Do-It-For-Me" economy rests on four pillars: **The Global Agent Network** that provides the infrastructure for many specialized Agents to work together; **Smarter Agents**, like the Warden Agent, capable of coordinating more complex work; **New Ways To Make Money**, enabling Agents to act on behalf of users and generate value, and lastly **Access Everywhere**, ensuring users can interact with Agents wherever they are. Every step in this roadmap is designed to fulfill the vision in our manifesto: a world where AI agents aren't alone, but come together as a part of a global community.
+The roadmap for the "Do-It-For-Me" economy rests on four pillars:
+
+- **The Global Agent Network** that provides the infrastructure for many specialized Agents to work together
+- **Smarter Agents**, like the Warden Agent, capable of coordinating more complex work
+- **New ways to make money**, enabling Agents to act on behalf of users and generate value
+- **Access everywhere**, ensuring users can interact with Agents wherever they are
+
+Every step in this roadmap is designed to fulfill the vision in our manifesto: a world where AI agents aren't alone, but come together as a part of a global community.
 
 #### The Global Agent Network: The infrastructure for autonomous Agent economies
 
@@ -152,19 +159,19 @@ The roadmap for the "Do-It-For-Me" economy rests on four pillars: **The Global A
 - **Agent payments**: A Warden Agent that can pay other Agents—and receive payments from them, so that tasks and work can happen automatically without manual transfers. (Q2, 2026)
 - **Multi-step Agents**: The original co-pilot helped users do one thing at a time, like swapping crypto. Now Warden is getting smarter—it'll be able to handle several steps automatically. (Q2, 2026)
 
-#### New Ways to Make Money Work
+#### New ways to make money
 
 - **Strategies**: With this strategy initiative, AI Trade Terminal users get a low-effort path to more complex yield and trading strategies without configuring complex parameters or running infrastructure. (Q1, 2026)
 - **Predictions**: Prediction markets unlock a whole new dimension, letting people bet on real-world outcomes like elections, sports, and other major events directly within the app, and for those looking to get the edge, world-class prediction research tools. (Q1, 2026)
 - **Subscriptions**: Flexible subscription tiers to unlock features, giving users upgrade paths as their needs grow. (Q2, 2026)
 
-#### Wherever You Are
+#### Access everywhere
 
 - **Voice**: Talk to Warden like you would to a friend, instead of just typing chat commands. (Q2, 2026)
 - **Interfaces**: Deeper integration of Agents into the Trade Terminal, Prediction Markets and BetFlix. Do less, but achieve more. (Q2, 2026)
 - **API**: Plug Warden into other apps, like embedding YouTube videos inside other websites. Instantly upgrade your app's UX. (Q3, 2026)
 - **Mobile**: Download Warden as a native app for iOS or Android. (Q2, 2026)
-- **Browser Extension**: One-click access so you can use Warden in any application. (Q2, 2026)
+- **Browser extension**: One-click access so you can use Warden in any application. (Q2, 2026)
 
 ### Links
 

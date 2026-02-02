@@ -89,7 +89,7 @@ Agent Hub가 Agent의 가치를 극대화하는 방식은 다음과 같습니다
 
 ## 프로토콜 레이어
 
-Warden은 네 개의 레이어로 구성된 AI-ready 프로토콜입니다:
+Warden은 세 개의 레이어로 구성된 AI-ready 프로토콜입니다:
 
 - **블록체인 레이어(Blockchain layer)**  
 블록체인 레이어는 Agent를 위한 핵심 인프라를 제공합니다: 신원, 조정, 그리고 출처(provenance)입니다. Agent는 [Warden Chain](#warden-chain)에 직접 배포되며, 이곳에서 요청에 서명하고 수수료를 수취하며 서비스 비용을 지불합니다. 각 Agent에는 고유한 암호학적 ID가 할당됩니다.

@@ -115,9 +115,9 @@ We're convinced the next wave of Agent innovation won't come from traditional co
 
 ![The Warden Agent Hub](../../static/img/manifesto-6.png)
 
-Goodbye apps, hello Agents. Whether you're planning your next trip or need investment advice, there's an Agent for that. Like the App Store for Agents, Warden Agent Hub is your marketplace, but with one key difference: Agents can work together, combine skills, and solve problems no single Agent could handle alone.
+Goodbye apps, hello Agents. Whether you're planning your next trip or need investment advice, there's an Agent for that. Like App Store for Agents, Warden Agent Hub is your marketplace, but with one key difference: Agents can work together, combine skills, and solve problems no single Agent could handle alone.
 
-Warden Agent Hub solves tech's hardest problem—distribution. Instead of launching into an empty market, your Agent is placed in front of millions of active and engaged Warden users coming onchain everyday. No ghost launches, no cold stars. Just instant reach and direct monetization.
+Warden Agent Hub solves tech's hardest problem—distribution. Instead of launching into an empty market, your Agent is placed in front of millions of active and engaged Warden users coming onchain everyday. No ghost launches, no cold starts. Just instant reach and direct monetization.
 
 - **Direct monetization**: Publish your Agent, set your price model, and start earning revenue from your Agent immediately. All usage and payment tracking is handled automatically.
 - **Built-in distribution**: Avoid ghost launches and instantly connect with millions of active Warden users. Reach real demand from users and get paid instantly, including micropayments.
@@ -141,30 +141,30 @@ The roadmap for the "Do-It-For-Me" economy rests on four pillars: **The Global A
 
 #### The Global Agent Network: The infrastructure for autonomous Agent economies
 
-- **Warden Studio**: Build your own Agent, earn money off of it and instantly share it with million of users of our wallet—like launching an app on the App Store. (Q1 2026)
+- **Warden Studio**: Build your own Agent, earn money from it and instantly share it with million of users of our wallet—like launching an app on the App Store. (Q1 2026)
 - **Token Launchpad**: Turn your vibe-coded Agent or project into a tokenized business and get a share of the upside as it grows and generates value. (Q1, 2026)
 - **Automation**: Our co-pilot is evolving from reactive assistance into proactive automations, capable of executing trades, strategies, predictions, and multi-step tasks for you. (Q2, 2026)
 
 #### Smarter Agents
 
-- **Multi-agent orchestration**: A single entry point where users no longer need to select or switch between siloed Agents. You can think of the Warden Agent like the Google Search for Agents. (Q1, 2026)
+- **Multi-agent orchestration**: A single entry point where users no longer need to select or switch between siloed Agents. You can think of the Warden Agent like Google Search for Agents. (Q1, 2026)
 - **Agent discovery**: A Warden Agent that automatically browses and evaluates thousands of Agents to find the best fit for the work you want to get done. (Q2, 2026)
-- **Agent payments**: A Warden agent that can pay other Agents—and receive payments from them, so that tasks and work can happen automatically without manual transfers. (Q2, 2026)
+- **Agent payments**: A Warden Agent that can pay other Agents—and receive payments from them, so that tasks and work can happen automatically without manual transfers. (Q2, 2026)
 - **Multi-step Agents**: The original co-pilot helped users do one thing at a time, like swapping crypto. Now Warden is getting smarter—it'll be able to handle several steps automatically. (Q2, 2026)
 
 #### New Ways to Make Money Work
 
 - **Strategies**: With this strategy initiative, AI Trade Terminal users get a low-effort path to more complex yield and trading strategies without configuring complex parameters or running infrastructure. (Q1, 2026)
-- **Predictions**: Prediction markets unlock a whole new dimensions, letting people bet on real-world outcomes like elections, sports, and other major events directly within the app, and for those looking to get the edge, world-class prediction research tools. (Q1, 2026)
-- **Subscriptions**: Flexible subscriptions tiers to unlock features, giving users an upgrade paths as their needs are growing further. (Q2, 2026)
+- **Predictions**: Prediction markets unlock a whole new dimension, letting people bet on real-world outcomes like elections, sports, and other major events directly within the app, and for those looking to get the edge, world-class prediction research tools. (Q1, 2026)
+- **Subscriptions**: Flexible subscription tiers to unlock features, giving users upgrade paths as their needs grow. (Q2, 2026)
 
 #### Wherever You Are
 
 - **Voice**: Talk to Warden like you would to a friend, instead of just typing chat commands. (Q2, 2026)
 - **Interfaces**: Deeper integration of Agents into the Trade Terminal, Prediction Markets and BetFlix. Do less, but achieve more. (Q2, 2026)
 - **API**: Plug Warden into other apps, like embedding YouTube videos inside other websites. Instantly upgrade your app's UX. (Q3, 2026)
-- **Mobile**: Download Warden as a native App for iOS or Android. (Q2, 2026)
-- **Browser Extension**: One-click access so you can use Warden in any application (Q2, 2026)
+- **Mobile**: Download Warden as a native app for iOS or Android. (Q2, 2026)
+- **Browser Extension**: One-click access so you can use Warden in any application. (Q2, 2026)
 
 ### Links
 
@@ -180,9 +180,9 @@ The roadmap for the "Do-It-For-Me" economy rests on four pillars: **The Global A
 
 ### Introduction
 
-**$WARD** is the native utility token for the Warden Protocol's ecosystem, sitting at the heart of both [Warden Chain](/learn/glossary#warden-chain) and [Warden](/learn/glossary#warden).
+**$WARD** is the native utility token for the Warden Protocol's ecosystem, sitting at the heart of both [Warden Chain](glossary#warden-chain) and [Warden](glossary#warden).
 
-$WARD is designed to facilitate various operations—such as governance, staking, rewards—and to serve as a medium of payment for any developer publishing an [Agent](/learn/glossary#ai-agent) on Warden. For Warden, it'll act as a gas abstraction token and unlock gated functionality, including future subscription tiers. 
+$WARD is designed to facilitate various operations—such as governance, staking, rewards—and to serve as a medium of payment for any developer publishing an [Agent](glossary#ai-agent) on Warden. For Warden, it'll act as a gas abstraction token and unlock gated functionality, including future subscription tiers. 
 
 |Property              | Details            |
 | -------------------- | ------------------ |

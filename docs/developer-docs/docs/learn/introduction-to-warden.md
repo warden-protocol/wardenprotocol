@@ -114,6 +114,7 @@ In this section, you can find the following:
 - [Modules](modules): An overview of protocol modules
 - [Warden networks](warden-networks): A list of available networks
 - [Glossary](glossary): A list of key Warden terms with definitions
+- [Whitepaper](whitepaper): Essential information on the protocol and tokenomics
 
 To learn more, explore other sections:
 

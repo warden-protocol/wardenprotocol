@@ -89,7 +89,7 @@ Learn more: [Warden documentation](https://help.wardenprotocol.org/warden-app/ex
 
 ## Protocol layers
 
-Warden is an AI-ready protocol with four layers:
+Warden is an AI-ready protocol with three layers:
 
 - **Blockchain layer**  
 The blockchain layer provides the core infrastructure for Agents: identity, coordination, and provenance. Agents are deployed directly onto [Warden Chain](#warden-chain), where they sign requests, collect fees, and pay for services. Each Agent is assigned a unique cryptographic ID.

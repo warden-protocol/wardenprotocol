@@ -4,9 +4,9 @@ sidebar_position: 7
 
 # Whitepaper
 
-## Warden Manifesto
+![Warden Whitepaper](../../static/img/whitepaper-cover.png)
 
-![Warden Manifesto: The global Agent Network](../../static/img/manifesto-cover.png)
+## Warden Manifesto
 
 ### *Warden—The App and Network Layer for the Agent Economy*
 

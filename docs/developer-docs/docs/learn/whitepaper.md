@@ -1,21 +1,22 @@
 ﻿---
 sidebar_position: 7
-title: Whitepaper
 ---
 
-# Warden Manifesto
+# Whitepaper
+
+## Warden Manifesto
 
 ![Warden Manifesto: The global Agent Network](../../static/img/manifesto-cover.png)
 
-## *Warden—The App and Network Layer for the Agent Economy*
+### *Warden—The App and Network Layer for the Agent Economy*
 
 > "*This Manifesto first started out as a long-form memo for our team. A standing document that would capture why we're building Warden. Now in this second iteration, we believe it is the ideal window for a prospective user to understand our mission and why we're uniquely placed to succeed. With over 15m users, and over 250k DAUs, we have a once-in-a-lifetime opportunity to make crypto incredibly exciting and intuitive*"  
 **David, Josh, Luis, Antonio & Team Warden**
 > 
 
-## Opportunity
+### Opportunity
 
-### Problem: Agents need a global network, not just a framework
+#### Problem: Agents need a global network, not just a framework
 
 ![Agents need more than an operating system](../../static/img/manifesto-1.png)
 
@@ -27,7 +28,7 @@ Frameworks alone aren't good enough. Agents need a global network. A global AI A
 
 **This is the design space we're opening at Warden**. We aren't just thinking about how Agents run, but also about how they *live*—how they earn, collaborate, and continuously improve across chains, frameworks, and applications. The future isn't in siloed stacks; it's an interconnected Agent Network that spans the entire crypto landscape. 
 
-### Mission: build the global Agent Network, starting with distribution
+#### Mission: build the global Agent Network, starting with distribution
 
 Our mission is to build the discovery layer of the Agent Economy—combining a next-generation app with a global Agent Network to deliver the full-stack infrastructure intelligent Agents require.
 
@@ -37,7 +38,7 @@ Without users, Agents are useless. They're technically there, but practically in
 
 We focus on *showing, not telling*. Our Agents are accessible to everyone, and they make crypto feel 10x better. This creates the pull that brings the world's best developers to Warden. 
 
-### Platform strategy: own users, then open the rails
+#### Platform strategy: own users, then open the rails
 
 From this foundation, how we build adoption of our full-stack strategy becomes clear: 
 
@@ -45,7 +46,7 @@ From this foundation, how we build adoption of our full-stack strategy becomes c
 - **Open the rails to builders**: With Warden Studio, developers can register, launch, and instantly distribute their onchain or offchain Agents that come with global identity, trust mechanisms, and monetization tools. 
 - **Power the Agent Network**: Give Agents the onchain identity, trust, monetization, and distribution rails to access millions of users—creating the global network they need to thrive.
 
-### Our secret sauce: owning the distribution
+#### Our secret sauce: owning the distribution
 
 We've built two-sided networks before. Our leadership team has done it at Uber, Binance, and other global platforms—scaling products to hundreds of millions of users and billions in GMV. We *know* that in these markets, users are the scarce asset. 
 
@@ -55,7 +56,7 @@ We're OGs in growth and scaling, and within the first 10 weeks of launch we hit 
 
 ![Warden: the "Next-Generation Agentic Wallet"](../../static/img/manifesto-2.png)
 
-## Seasoned AI x crypto team: why only we can build Warden
+### Seasoned AI x crypto team: why only we can build Warden
 
 The global Agent Network we envision needs a team that can build full-stack infrastructure *and* win distribution at scale, fast. Warden's team has done both, in the toughest markets on Earth. We've scaled two-sided networks to hundreds of millions of users at Uber and Binance, built core blockchain protocols at Tendermint, deployed AI at Google, and set global standards at W3C and Nillion. We've built each layer before, and now we're combining them into the first global Agent Network.
 
@@ -67,9 +68,9 @@ The global Agent Network we envision needs a team that can build full-stack infr
 - Luis Vaello (COO): Ex-Binance, Ex-Bitnovo
 - \+ Additional 25 team members with deep AI, blockchain, and growth expertise.
 
-## Technology
+### Technology
 
-### Warden
+#### Warden
 
 [Warden](https://wardenprotocol.org/) is a Next-Generation Agentic Wallet—the interface, or the front door, to the Agent economy—**one place where users discover, chat with, and pay Agents for their services.** Whether it's deep research, bridging, minting, trading, or staking—Warden performs these complex Web3 actions through simple chat commands. The Agents powering the application do all the thinking and problem solving. Today Solana, Ethereum, BNB Chain, and Base, all their tokens and apps, are live, and soon we'll cover all EVM chains and beyond.
 
@@ -81,7 +82,7 @@ The net result for the user is that it makes crypto look and feel easy and intui
 
 ![Warden: Messari Deep Research](../../static/img/manifesto-3.png)
 
-### Warden Agent Network
+#### Warden Agent Network
 
 ![Warden Agent Network: layers](../../static/img/manifesto-4.png)
 
@@ -89,7 +90,7 @@ The net result for the user is that it makes crypto look and feel easy and intui
 
 ![Warden Agent Network: components](../../static/img/manifesto-5.png)
 
-### Warden Studio
+#### Warden Studio
 
 [Warden Studio](https://studio.wardenprotocol.org) is a zero-friction platform that equips builders with the tools they need to launch and monetize their AI Agents—onchain or offchain—directly to Warden's millions of users. From onchain identity and instant discoverability to verification and payment rails—the Studio has all the components needed to join a living and breathing network and turning innovation into income.
 
@@ -101,7 +102,7 @@ We're convinced the next wave of Agent innovation won't come from traditional co
 - **Flexible pricing**: support per-inference billing and subscriptions out of the box.
 - **Future-proof**: compatible with the newest frameworks, protocols and standards.
 
-### Warden Chain
+#### Warden Chain
 
 [Warden Chain](warden-networks) is a foundational, purpose-built blockchain for Agents. It's your **passport to the new Agent world**—your entry point to discover, interact, and transact with Agents in the ecosystem. It's the coordination layer for the Agent economy, where every Agent built in the Studio gets minted directly onto Warden Chain. 
 
@@ -110,7 +111,7 @@ We're convinced the next wave of Agent innovation won't come from traditional co
 - **Spending**: Lets Agents hold balances, pay for services automatically, and trigger payouts based on metered billings. Every interaction is recorded using our own [Proof of Inference](glossary#proof-of-inference).
 - **Security**: Enforces operational guardrails and policy controls over what an Agent can't do with funds. Pre-authorize payments under your own spending rules.
 
-### Warden Agent Hub
+#### Warden Agent Hub
 
 ![The Warden Agent Hub](../../static/img/manifesto-6.png)
 
@@ -121,7 +122,7 @@ Warden Agent Hub solves tech's hardest problem—distribution. Instead of launch
 - **Direct monetization**: Publish your Agent, set your price model, and start earning revenue from your Agent immediately. All usage and payment tracking is handled automatically.
 - **Built-in distribution**: Avoid ghost launches and instantly connect with millions of active Warden users. Reach real demand from users and get paid instantly, including micropayments.
 
-### From storytelling to Agent development
+#### From storytelling to Agent development
 
 ![Agent development: Agent types](../../static/img/manifesto-7.png)
 
@@ -132,7 +133,7 @@ Our belief is that all applications will use AI. **These will be applications wh
 - **Institutional Agents**: Agents that optimize portfolios in real time, deploy dynamic risk management systems, and proactively guard against malicious hacks. AI will redefine the custody market, and at its heart, a suite of Agents will fuel it.
 - **Ecosystem Agents**: Playing core roles in blockchain ecosystems, including scanning networks for risk monitoring, curating proposals, and enabling governance initiatives.
 
-## Warden's roadmap
+### Warden's roadmap
 
 ![Warden's roadmap](../../static/img/manifesto-8.png)
 
@@ -144,7 +145,7 @@ We have an ambitious roadmap:
 - **Warden Studio**: Launching the best developer tooling that enables any Agent to publish on the Agent Network—with onchain passports, instant payment capabilities, and built-in trust and coordination protocols.
 - **Big Brain**: Exploring a protocol-enabled, domain-specific LLM trained on 2T tokens from Warden, improving Agent performance. Big Brain learns from every Warden interaction and will reward those who make it smarter.
 
-## Links
+### Links
 
 - [Warden](https://app.wardenprotocol.org)
 - [Docs](https://docs.wardenprotocol.org)
@@ -154,9 +155,23 @@ We have an ambitious roadmap:
 - [SPEX on GitHub](https://github.com/warden-protocol/warden-spex)
 - [Messari](https://messari.io/report/warden-bringing-ai-onchain)
 
-## Distribution
+## WARD
 
-### Overview
+### Introduction
+
+**$WARD** is the native utility token for the Warden Protocol's ecosystem, sitting at the heart of both [Warden Chain](/learn/glossary#warden-chain) and [Warden](/learn/glossary#warden).
+
+$WARD is designed to facilitate various operations—such as governance, staking, rewards—and to serve as a medium of payment for any developer publishing an [Agent](/learn/glossary#ai-agent) on Warden. For Warden, it'll act as a gas abstraction token and unlock gated functionality, including future subscription tiers. 
+
+|Property              | Details            |
+| -------------------- | ------------------ |
+| Token                | WARD               |
+| Initial total supply | 1,000,000,000 WARD |
+| Decimals             | 18                 |
+
+### Distribution
+
+#### Overview
 
 In this section you'll find information about the $WARD token distribution and release schedule.
 
@@ -166,13 +181,13 @@ Note that $WARD distribution will be characterized by the following:
   
 - **Prioritization of active users and supporters**: active users of any application or infra within the Warden ecosystem will be recognized for ongoing support, along with other eligible protocols and platforms that have contributed to the foundations and culture that has given Warden Protocol the ability to launch.
 
-### Main WARD distribution
+#### Main WARD distribution
 
 **1B WARD**
 
 ![WARD distribution chart](../../static/img/ward-distribution-1.png)
 
-### Distribution description
+#### Distribution description
 
 | Category | Number | %  | Description | Circulating |
 | -------- | -- | -- | ----------- | ----------- |
@@ -186,6 +201,6 @@ Note that $WARD distribution will be characterized by the following:
 | Strategic investors | 20M | 2.00% | Allocation reserved for the strategic round participants | 12-month cliff with 12-month linear vesting |
 | Core contributors | 200M | 20.00% | Reserved for the development team, advisors, and early contributors | 6-month cliff with 2-year linear vesting |
 
-### Release schedule
+#### Release schedule
 
 ![The final WARD release schedule](../../static/img/ward-distribution-2.png)

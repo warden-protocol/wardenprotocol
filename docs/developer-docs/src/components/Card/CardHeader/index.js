@@ -26,13 +26,17 @@ const CardHeader = ({
   const textTruncate = truncate ? 'text--truncate' : '';
   const textWeight = weight ? `text--${weight}` : '';
 
-  const Wrapper = to || href ? Link : 'div';
+  const isLink = Boolean(to || href);
+  const Wrapper = isLink ? Link : 'div';
+
+  const wrapperProps = isLink
+    ? { to, href }
+    : {};
 
   return (
     <div className="card__header">
       <Wrapper
-        to={to}
-        href={href}
+        {...wrapperProps}
         className={clsx(
           className,
           text,

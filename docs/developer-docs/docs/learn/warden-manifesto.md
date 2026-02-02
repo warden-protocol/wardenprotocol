@@ -92,7 +92,7 @@ The net result for the user is that it makes crypto look and feel easy and intui
 
 [Warden Studio](https://studio.wardenprotocol.org) is a zero-friction platform that equips builders with the tools they need to launch and monetize their AI Agents—onchain or offchain—directly to Warden's millions of users. From onchain identity and instant discoverability to verification and payment rails—the Studio has all the components needed to join a living and breathing network and turning innovation into income.
 
-We're convinced the next wave of Agent innovation won't come from traditional coders alone—it'll be driven by vibe coders, no-code creators, and Web2 builders. Warden Agent Studio is designed to empower this new generation of creators.
+We're convinced the next wave of Agent innovation won't come from traditional coders alone—it'll be driven by vibe coders, no-code creators, and Web2 builders. Warden Studio is designed to empower this new generation of creators.
 
 - **Instant launch and global reach:** Skip registrations and approvals—list your Agent in under a minute and reach millions of users from day one.
 - **Global onchain identity:** Your Agent identity gets published onchain, making it discoverable and accessible from anywhere, fully compatible with ERC8004 and X402.

@@ -153,7 +153,7 @@ Warden Agent Hub는 기술 분야에서 가장 어려운 문제인 유통(distri
 
 ### 지능형 에이전트 (Smarter Agents)
 
-- **다중 에이전트 오케스트레이션 (Multi-agent orchestration)**: 사용자가 더 이상 분리된 Agent들 사이에서 선택하거나 전환할 필요가 없는 단일 진입점입니다. Warden Agent를 Agent를 위한 Google Search처럼 생각할 수 있습니다. (2026년 1분기)
+- **다중 에이전트 오케스트레이션 (Multi-agent orchestration)**: 사용자가 더 이상 분리된 에이전트들 사이에서 선택하거나 전환할 필요가 없는 단일 진입점입니다. Warden Agent를 에이전트를 위한 Google Search처럼 생각할 수 있습니다. (2026년 1분기)
 - **에이전트 탐색 (Agent discovery)**: 수천 개의 Agent를 자동으로 탐색하고 평가하여, 사용자가 수행하려는 작업에 가장 적합한 Agent를 찾아주는 Warden Agent입니다. (2026년 2분기)
 - **에이전트 결제 (Agent payments)**: 다른 Agent에게 결제할 수 있고, 동시에 다른 Agent로부터 결제를 받을 수 있는 Warden Agent로, 수동 전송 없이 작업과 업무가 자동으로 이루어질 수 있습니다. (2026년 2분기)
 - **다단계 에이전트 (Multi-step Agents)**: 기존 코파일럿은 암호화폐 스왑과 같이 한 번에 하나의 작업을 돕는 역할을 했습니다. 이제 Warden은 더 똑똑해져 여러 단계를 자동으로 처리할 수 있게 됩니다. (2026년 2분기)

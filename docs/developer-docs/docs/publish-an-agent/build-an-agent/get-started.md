@@ -42,7 +42,13 @@ Before you start, complete the following prerequisites:
    ```bash
    git clone https://github.com/warden-protocol/warden-code.git
    ```
-2. Then install it:
+3. Navigate to the `warden-code` directory:
+
+   ```bash
+   cd warden-code
+   ```
+
+3. Install the tool:
 
    ```bash
    npm install -g warden-code
@@ -55,12 +61,6 @@ Before you start, complete the following prerequisites:
    ```
    ```bash
    npx warden-code
-   ```
-
-3. Navigate to the `warden-code` directory:
-
-   ```bash
-   cd warden-code
    ```
 
 4. Install the required packages: (?)

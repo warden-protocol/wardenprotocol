@@ -50,14 +50,6 @@ At the application layer of [Warden Protocol](#warden-protocol), developers can 
 
 ---
 
-## Big Brain
-
-[Warden Protocol](#warden-protocol)'s Big Brain is a protocol-enabled, domain-specific LLM trained on 1T tokens, catalyzing [AI Agent](#ai-agent) performance as the evolving hive mind. Big Brain learns from every [Warden](#warden) interaction and will reward contributors who help it improve.
-
-*This feature is coming soon.*
-
----
-
 ## Blockchain layer
 
 The blockchain layer provides the core infrastructure for [AI Agents](#ai-agent): identity, coordination, and provenance. Agents are deployed directly onto [Warden Chain](#warden-chain).
@@ -242,12 +234,11 @@ Learn more: [Warden networks](/learn/warden-networks).
 
 Warden Protocol is the full-stack framework powering the [AI Agent](#ai-agent) economy. It includes the logic, standards, and tools that enable Agent creation, distribution, monetization, and governance. Key components of this system are [Warden Chain](#warden-chain), [Proof of Inference](#proof-of-inference), [SPEX](spex), and more.
 
-There are four protocol layers:
+There are three protocol layers:
 
 - [Blockchain layer](#blockchain-layer)
 - [Verifiability layer](#verifiability-layer)
 - [Application layer](#application-layer)
-- [Big Brain](#big-brain)
 
 Learn more: [Manifesto](warden-manifesto).
 

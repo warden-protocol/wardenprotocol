@@ -131,17 +131,38 @@ Our belief is that all applications will use AI. **These will be applications wh
 - **Institutional Agents**: Agents that optimize portfolios in real time, deploy dynamic risk management systems, and proactively guard against malicious hacks. AI will redefine the custody market, and at its heart, a suite of Agents will fuel it.
 - **Ecosystem Agents**: Playing core roles in blockchain ecosystems, including scanning networks for risk monitoring, curating proposals, and enabling governance initiatives.
 
-## Warden's roadmap
+### Bringing the "Do-It-For-Me" economy to life
 
 ![Warden's roadmap](../../static/img/manifesto-8.png)
 
-We have an ambitious roadmap:
+The roadmap for the "Do-It-For-Me" economy rests on four pillars: **The Global Agent Network** that provides the infrastructure for many specialized Agents to work together; **Smarter Agents**, like the Warden Agent, capable of coordinating more complex work; **New Ways To Make Money**, enabling Agents to act on behalf of users and generate value, and lastly **Access Everywhere**, ensuring users can interact with Agents wherever they are. Every step in this roadmap is designed to fulfill the vision in our manifesto: a world where AI agents aren't alone, but come together as a part of a global community.
 
-- **Warden**: A mobile-first experience is key. We will be adding more human ways to access services, included voice-enabled actions. Additionally we'll be introducing more Agents, better coordination, autopilot Agents that work while you're offline, and support for more chains.
-- **Warden Launchpad**: Giving creators and developers the tools to create and launch tokens for their Agents, alongside the existing launch tools in the Warden Agent Hub.
-- **Warden Protocol**:  Continued improvements to the speed, performance and composability, alongside the go-live of our verification layer.
-- **Warden Studio**: Launching the best developer tooling that enables any Agent to publish on the Agent Network—with onchain passports, instant payment capabilities, and built-in trust and coordination protocols.
-- **Big Brain**: Exploring a protocol-enabled, domain-specific LLM trained on 2T tokens from Warden, improving Agent performance. Big Brain learns from every Warden interaction and will reward those who make it smarter.
+#### The Global Agent Network: The infrastructure for autonomous Agent economies
+
+- **Warden Studio**: Build your own Agent, earn money off of it and instantly share it with million of users of our wallet—like launching an app on the App Store. (Q1 2026)
+- **Token Launchpad**: Turn your vibe-coded Agent or project into a tokenized business and get a share of the upside as it grows and generates value. (Q1, 2026)
+- **Automation**: Our co-pilot is evolving from reactive assistance into proactive automations, capable of executing trades, strategies, predictions, and multi-step tasks for you. (Q2, 2026)
+
+#### Smarter Agents
+
+- **Multi-agent orchestration**: A single entry point where users no longer need to select or switch between siloed Agents. You can think of the Warden Agent like the Google Search for Agents. (Q1, 2026)
+- **Agent discovery**: A Warden Agent that automatically browses and evaluates thousands of Agents to find the best fit for the work you want to get done. (Q2, 2026)
+- **Agent payments**: A Warden agent that can pay other Agents—and receive payments from them, so that tasks and work can happen automatically without manual transfers. (Q2, 2026)
+- **Multi-step Agents**: The original co-pilot helped users do one thing at a time, like swapping crypto. Now Warden is getting smarter—it'll be able to handle several steps automatically. (Q2, 2026)
+
+#### New Ways to Make Money Work
+
+- **Strategies**: With this strategy initiative, AI Trade Terminal users get a low-effort path to more complex yield and trading strategies without configuring complex parameters or running infrastructure. (Q1, 2026)
+- **Predictions**: Prediction markets unlock a whole new dimensions, letting people bet on real-world outcomes like elections, sports, and other major events directly within the app, and for those looking to get the edge, world-class prediction research tools. (Q1, 2026)
+- **Subscriptions**: Flexible subscriptions tiers to unlock features, giving users an upgrade paths as their needs are growing further. (Q2, 2026)
+
+#### Wherever You Are
+
+- **Voice**: Talk to Warden like you would to a friend, instead of just typing chat commands. (Q2, 2026)
+- **Interfaces**: Deeper integration of Agents into the Trade Terminal, Prediction Markets and BetFlix. Do less, but achieve more. (Q2, 2026)
+- **API**: Plug Warden into other apps, like embedding YouTube videos inside other websites. Instantly upgrade your app's UX. (Q3, 2026)
+- **Mobile**: Download Warden as a native App for iOS or Android. (Q2, 2026)
+- **Browser Extension**: One-click access so you can use Warden in any application (Q2, 2026)
 
 ## Links
 

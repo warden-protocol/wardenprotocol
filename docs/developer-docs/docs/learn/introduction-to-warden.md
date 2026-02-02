@@ -100,9 +100,6 @@ Our verifiability layer uses blockchain, cryptography, and consensus to guarante
 - **Application layer**  
 At the application layer, developers can easily build Agents and instantly make them accessible to all [Warden](#warden) users. [Warden Studio](#warden-studio) provides everything required to develop, test, and publish Agents.
 
-- **Big Brain**  
-Big Brain (under development) is a protocol-enabled, domain-specific LLM trained on 1T tokens, catalyzing Agent performance. Big Brain learns from every Warden interaction and will reward those who make it smarter.
-
 ## Documentation
 
 Welcome to the Warden Protocol documentation!

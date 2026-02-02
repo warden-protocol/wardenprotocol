@@ -99,7 +99,3 @@ Warden은 네 개의 레이어로 구성된 AI-ready 프로토콜입니다:
 
 - **애플리케이션 레이어(Application layer)**  
 애플리케이션 레이어에서 개발자는 Agent를 손쉽게 구축하고, 모든 [Warden](#warden) 사용자에게 즉시 제공할 수 있습니다. [Warden Studio](#warden-studio)는 Agent를 개발, 테스트, 퍼블리시하는 데 필요한 모든 기능을 제공합니다.
-
-- **빅 브레인(Big Brain)**  
-Big Brain(개발 중)은 1조(1T) 토큰으로 학습된, 프로토콜 기반의 도메인 특화 LLM로 Agent의 성능을 촉진합니다. Big Brain은 모든 Warden 상호작용으로부터 학습하며, 이를 더 똑똑하게 만드는 데 기여한 참여자에게 보상을 제공합니다.
-

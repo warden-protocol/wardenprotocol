@@ -113,9 +113,9 @@ We're convinced the next wave of Agent innovation won't come from traditional co
 
 ![The Warden Agent Hub](../../static/img/manifesto-6.png)
 
-Goodbye apps, hello Agents. Whether you're planning your next trip or need investment advice, there's an Agent for that. Like App Store for Agents, Warden Agent Hub is your marketplace, but with one key difference: Agents can work together, combine skills, and solve problems no single Agent could handle alone.
+Goodbye apps, hello Agents. Whether you're planning your next trip or need investment advice, there's an Agent for that. Like the App Store for Agents, Warden Agent Hub is your marketplace, but with one key difference: Agents can work together, combine skills, and solve problems no single Agent could handle alone.
 
-Warden Agent Hub solves tech's hardest problem—distribution. Instead of launching into an empty market, your Agent is placed in front of millions of active and engaged Warden users coming onchain everyday. No ghost launches, no cold starts. Just instant reach and direct monetization.
+Warden Agent Hub solves tech's hardest problem—distribution. Instead of launching into an empty market, your Agent is placed in front of millions of active and engaged Warden users coming onchain every day. No ghost launches, no cold starts. Just instant reach and direct monetization.
 
 - **Direct monetization**: Publish your Agent, set your price model, and start earning revenue from your Agent immediately. All usage and payment tracking is handled automatically.
 - **Built-in distribution**: Avoid ghost launches and instantly connect with millions of active Warden users. Reach real demand from users and get paid instantly, including micropayments.

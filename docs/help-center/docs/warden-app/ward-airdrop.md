@@ -77,7 +77,7 @@ Once you receive your allocation, you'll be able to [bridge your WARD](#bridge-w
 
 ## Bridge WARD
 
-Your airdropped WARD is available on - [Warden Protocol](https://docs.wardenprotocol.org/learn/introduction-to-warden) (Warden Chain)(Warden Chain).
+Your airdropped WARD is available on [Warden Protocol](https://docs.wardenprotocol.org/learn/introduction-to-warden) (Warden Chain)(Warden Chain).
 
 You can bridge it to **Base** and **BNB Smart Chain**. As a result, you'll get **BEP20 WARD** on BNB or **ERC20 WARD** on Base.
 

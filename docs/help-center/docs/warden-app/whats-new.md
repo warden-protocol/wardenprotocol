@@ -69,7 +69,7 @@ Here you'll find the latest Warden release highlights, including new features, i
   - Made internal updates to maintain AI service reliability.
   - Fixed issues with swaps.
 - [Community Agents](explore-ai-agents#community-agents): Fixed payment-related messaging.
-- [Google Assistant](explore-ai-agents#google-assistant): Made minor UI fix.
+- [Google Assistant](explore-ai-agents#google-assistant): Made a minor UI fix.
 - Authentication: Enhanced error handling.
 
 ## January 19, 2026
@@ -102,7 +102,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **Fixes**:
 
-- [The main account](manage-your-wallets#the-main-account): A minor UI fix.
+- [The main account](manage-your-wallets#the-main-account): Made a minor UI fix.
 - [Trading](trade): Made a minor UI fix.
 
 ## January 7, 2026

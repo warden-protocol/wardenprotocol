@@ -77,20 +77,20 @@ Once you receive your allocation, you'll be able to [bridge your WARD](#bridge-w
 
 ## Bridge WARD
 
-Your airdropped WARD is available on [Warden Protocol](https://docs.wardenprotocol.org/learn/introduction-to-warden) (Warden Chain)(Warden Chain).
+Your airdropped WARD is available on [Warden Protocol](https://docs.wardenprotocol.org/learn/introduction-to-warden). You can bridge it to get one of these tokens:
 
-You can bridge it to **Base** and **BNB Smart Chain**. As a result, you'll get **BEP20 WARD** on BNB or **ERC20 WARD** on Base.
+- **ERC20 WARD** on **Base**
+- **BEP20 WARD** on **BNB Smart Chain**
 
-You can use any bridging application on top of Hyperlane Warp, such as [Nexus](https://nexus.hyperlane.xyz):
+For this purpose, use any bridging application on top of Hyperlane Warp, such as [Nexus](https://nexus.hyperlane.xyz):
 
-1. Make sure you have WARD in your Warden account.
-2. Make sure you have enough native tokens to pay gas fees.
-3. Link an EVM wallet in your [Warden account settings](manage-your-wallets#configure).
-4. Link the same wallet to the bridging application.
-5. In the bridging interface, set **Warden Chain** as the source.
-6. Set **Base**/**BNB** as the destination.
-7. Select **WARD** as the token.
-8. Execute the transaction.
+1. Make sure you have enough native tokens to pay gas fees.
+2. Link an EVM wallet in your [Warden account settings](manage-your-wallets#configure).
+3. Link the same wallet to the bridging application.
+4. In the bridging interface, set **Warden Protocol** as the source.
+5. Set **Base**/**BNB** as the destination.
+6. Select **WARD** as the token.
+7. Execute the transaction.
 
 :::note
 The bridge always uses the connected wallet address. You do not need to enter a destination address manually.

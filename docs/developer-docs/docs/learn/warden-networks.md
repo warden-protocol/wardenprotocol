@@ -62,7 +62,7 @@ Warden networks use two chain IDs on different layers. The Cosmos chain ID is th
       EVM: `https://evm.barra.wardenprotocol.org/`<br />
       EVM WSS: `https://evm-ws.barra.wardenprotocol.org/`<br />
       RPC: `https://rpc.barra.wardenprotocol.org/`<br />
-      REST: `https://api.barra.wardenprotocol.org`<br />
+      REST: `https://api.barra.wardenprotocol.org/`<br />
       gRPC: `https://grpc.barra.wardenprotocol.org/`<br />
     </td>
   </tr>

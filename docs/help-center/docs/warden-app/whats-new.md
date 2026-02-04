@@ -8,13 +8,42 @@ sidebar_position: 11
 
 Here you'll find the latest Warden release highlights, including new features, improvements, and bug fixes. This section helps you quickly see what's changed and how it can enhance your experience.
 
+## February 2, 2026
+
+**New features**:
+
+- [Warden Agent](explore-ai-agents#warden-agent), [Jupiter](explore-ai-agents#jupiter): Improved token detection on Solana, including support for newer token standards.
+
+**Improvements**:
+
+- [Trading](trade): 
+  - Improved the trade confirmation flow.
+  - Introduced UI and design improvements.
+- [Agents](explore-ai-agents): Made infrastructure improvements for reliability and stability.
+- [Warden Agent](explore-ai-agents#warden-agent):
+  - Improved runtime reliability and behavior.
+  - Improved token and transfer display across supported chains.
+  - Enhanced message clarity.
+- [Community Agents](explore-ai-agents#community-agents): Improved error handling and messaging.
+
+**Fixes**:
+
+- [Trading](trade):
+  - Fixed an issue with order leverage selection.
+  - Fixed an issue with deposit and withdrawal history display.
+  - Fixed an issue with limit order price formatting.
+  - Made a mobile UI fix.
+- [Warden Agent](explore-ai-agents#warden-agent): Fixed issues with EVM and Solana swaps.
+- [WachAI](explore-ai-agents#wachai): Made a minor UI fix.
+- [Google Assistant](explore-ai-agents#google-assistant): Made a minor UI fix.
+
 ## January 28, 2026
 
-#### New features
+**New features**:
 
 - [The Airdrop Registration Portal](register-for-airdrop): Added UI and infrastructure updates to support future airdrop flows.
 
-#### Improvements
+**Improvements**:
 
 - [The Airdrop Registration Portal](register-for-airdrop): 
   - Improved the registration flow, visual layout, and the UI text.
@@ -22,7 +51,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 ## January 21, 2026
 
-#### Improvements
+**Improvements**:
 
 - [The Airdrop Registration Portal](register-for-airdrop):
   - Enhanced messaging.
@@ -32,7 +61,7 @@ Here you'll find the latest Warden release highlights, including new features, i
   - Enhanced error handling.
   - Improved documentation coverage in agent responses.
 
-#### Fixes
+**Fixes**:
 
 - [Trading](trade): Fixed a display issue affecting positions.
 - [The main account](manage-your-wallets#the-main-account): Resolved an issue where linked wallets could disconnect.
@@ -40,61 +69,60 @@ Here you'll find the latest Warden release highlights, including new features, i
   - Made internal updates to maintain AI service reliability.
   - Fixed issues with swaps.
 - [Community Agents](explore-ai-agents#community-agents): Fixed payment-related messaging.
-- [Google Assistant](explore-ai-agents#google-assistant): A minor UI fix.
+- [Google Assistant](explore-ai-agents#google-assistant): Made minor UI fix.
 - Authentication: Enhanced error handling.
 
 ## January 19, 2026
 
-#### New features
+**New features**:
 
 - [The Airdrop Registration Portal](register-for-airdrop): Added the ability to pay the registration fee on **Arbitrum** and **BNB Smart Chain**.
 
-#### Improvements
+**Improvements**:
 
 - [The Airdrop Registration Portal](register-for-airdrop): Adjusted the registration fee.
 
 ## January 15, 2026
 
-#### New features
+**New features**:
 
 - [The Airdrop Registration Portal](register-for-airdrop): Added a portal where you can register for the WARD airdrop.
 
 ## January 13, 2026
 
-#### New features
+**New features**:
 
 - [Google Assistant](explore-ai-agents#google-assistant): Added a new Agent that can manage your Gmail and Google Calendar.
 
-#### Improvements
+**Improvements**:
 
 - [Community Agents](explore-ai-agents#community-agents): Improved remote execution compatibility and streaming reliability.
 - [WachAI](explore-ai-agents#wachai): Improved backend connectivity and compatibility.
 - [Betflix](play-betflix): Added geo-blocking for restricted regions.
 
-#### Fixes
+**Fixes**:
 
 - [The main account](manage-your-wallets#the-main-account): A minor UI fix.
-- [Trading](trade): A minor UI fix.
+- [Trading](trade): Made a minor UI fix.
 
 ## January 7, 2026
 
-#### New features
+**New features**:
 
 - [Intelligent DCA](explore-ai-agents#intelligent-dca): Added ability to permanently remove Uniswap/DCA tasks from workflows. Task lists automatically filter out previously removed tasks.
 
-#### Fixes
+**Fixes**:
 
 - [Agent Hub](explore-ai-agents#access-agents): A minor UI fix.
 - [Messari Deep Research](explore-ai-agents#messari-deep-research): Resolved an issue with conversation history handling.
 
 ## December 30, 2025
 
-#### New features
-
+**New features**:
 - [Trading](trade): Introduced the [League of Traders](trade#earn-pumps) with PUMP rewards.
 - [Anime Agent](explore-ai-agents#anime-agent): Added a new Agent generating images in anime style.
 
-#### Fixes
+**Fixes**:
 
 - [Trading](trade): Fixed an issue with deposit/withdraw history.
 - [Betflix](play-betflix): Fixed issues with the bet amount selection.
@@ -104,11 +132,11 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 ## December 23, 2025
 
-#### Improvements
+**Improvements**:
 
 - [Betflix](play-betflix): Added a default bet amount.
 
-#### Fixes
+**Fixes**:
 
 - [Trading](trade): 
   - Fixed issues with withdrawals and canceling orders.
@@ -118,7 +146,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 ## December 18, 2025
 
-#### New features
+**New features**:
 
 - [The Agent Hub](explore-ai-agents): Introduced the **Community** tab where you can access Community Agents built by our developer community.
 - [Crypto Research by Caesar](explore-ai-agents#crypto-research-by-caesar): Added a new Agent for crypto research.
@@ -127,26 +155,26 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 ## December 17, 2025
 
-#### New features
+**New features**:
 
 - [Trading](trade): The live chart now displays active and historical trades, with active trades manageable from the chart.
 - [Betflix](play-betflix):
   - Added new coins: **POWER**, **1000LUNC**, **LUNA2**, **FARTCOIN**, **WLD**, and **ZEC**.
   - Added support for different fixed bets: **$2**/**5**/**10**.
 
-#### Improvements
+**Improvements**:
 
 - [Trading](trade): Improved the limit order UI and general UI text.
 - [Betflix](play-betflix): Improved the UI.
 
-#### Fixes
+**Fixes**:
 
 - [Trading](trade): Fixed issues with order creation and configuration, HIP-3 perps, and various UI components.
 - [Betflix](play-betflix): Fixed UI issues.
 
 ## November 28, 2025
 
-#### New features
+**New features**:
 
 - [Trading](trade): Introduced the **AI Trading Terminal** for perpetual trading. The Terminal supports the following features:
   - Market and limit orders
@@ -157,15 +185,15 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 ## November 25, 2025
 
-#### New features
+**New features**:
 
 - [Betflix](play-betflix): Added new coins—**Anoma** and **Aster**.
 
-#### Improvements
+**Improvements**:
 
 - [Portfolio Analysis Agent](explore-ai-agents#portfolio-analysis-agent): Improved visuals, presets, and timeframe selection.
 
-#### Fixes
+**Fixes**:
 
 - [The AI chat interface](use-the-chat): Removed auto-complete suggestions from all Agents except for the Warden Agent.
 - [Portfolio Analysis Agent](explore-ai-agents#portfolio-analysis-agent): Fixed timeframe issues and the UI text.

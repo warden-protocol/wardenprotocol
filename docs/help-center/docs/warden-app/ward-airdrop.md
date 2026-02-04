@@ -18,9 +18,9 @@ Make sure that you access the Airdrop Claim Portal through [Warden](https://app.
 
 [WARD](https://docs.wardenprotocol.org/ward/introduction), the token powering our Agentic economy, is now live and available for trading. 
 
-Registration for the **WARD airdrop** has ended. Registered users who were eligible either can proceed to [claim their WARD](#claim-ward) or will receive their rewards [automatically](#receive-ward-automatically). To find out whether you need to claim your reward or not, see [Eligibility & distribution](#eligibility--distribution).
+Registration for the **WARD airdrop** has ended. Registered users who were eligible can either [claim their WARD](#claim-ward) or receive it [automatically](#receive-ward-automatically). To find out whether you need to claim your reward or not, see [Eligibility & distribution](#eligibility--distribution).
 
-Your airdrop will available on [Warden Protocol](https://docs.wardenprotocol.org/learn/introduction-to-warden). After this, you can [bridge WARD](#bridge-ward) to other chains.
+Your airdrop will be available on [Warden Protocol](https://docs.wardenprotocol.org/learn/introduction-to-warden). After this, you can [bridge WARD](#bridge-ward) to other chains.
 
 :::important Important notes
 - All registration happened in [Warden](https://app.wardenprotocol.org), and claiming is available on the [Airdrop Claim Portal](https://airdrop.wardenprotocol.org). We'll **never** ask you to connect your wallet to any third-party website.
@@ -31,9 +31,9 @@ Your airdrop will available on [Warden Protocol](https://docs.wardenprotocol.org
 
 ## Claim WARD
 
-Certain [user types](#eligibility--distribution) are eligible for **claim-based distribution**:
+To find out whether you need to claim your reward or not, see [Eligibility & distribution](#eligibility--distribution). This is how **claim-based distribution** works:
 
-- This is a one-time claim, and you can choose when to do it.
+- You can choose when to claim. This is a one-time opportunity.
 - The longer you wait, the more your claim amount is.
 - You'll reach the maximum allocation **after 6 months**.
 - Claiming later also increases your Allocation Power, giving you priority access to future airdrops and priority positioning on the upcoming Agent Launchpad.
@@ -69,9 +69,9 @@ Make sure that you access the Airdrop Claim Portal through [Warden](https://app.
 
 ## Receive WARD automatically
 
-If you're [eligible](#eligibility--distribution) for **automatic distribution**, you'll receive your full allocations directly to your [Warden account](manage-your-wallets#the-main-account) during the first week after trading opens.
+To find out whether you need to claim your reward or not, see [Eligibility & distribution](#eligibility--distribution).
 
-We'll announce the exact timing via our official channels.
+If you're eligible for **automatic distribution**, you'll receive your full allocations directly to your [Warden account](manage-your-wallets#the-main-account) during the first week after trading opens. We'll announce the exact timing via our official channels.
 
 Once you receive your allocation, you'll be able to [bridge your WARD](#bridge-ward) to other chains.
 

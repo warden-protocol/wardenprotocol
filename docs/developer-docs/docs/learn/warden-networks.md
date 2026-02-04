@@ -100,10 +100,6 @@ You can connect **Warden Mainnet** to any **EVM-compatible wallet**:
    - **Currency symbol**: `WARD`
 3. Save.
 
-:::tip
-Your EVM wallet can display the [WARD](/ward/introduction) balance held in your [Warden](https://app.wardenprotocol.org/auth) account. To do this, link the same wallet in [Warden account settings](https://help.wardenprotocol.org/warden-app/manage-your-wallets#configure).
-:::
-
 For example, this is how to connect Warden Mainnet to [MetaMask](https://metamask.io):
 
 ![Open networks in MetaMask](../../static/img/networks-1.png)

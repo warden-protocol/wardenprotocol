@@ -241,3 +241,16 @@ html[data-theme='dark'] .navbar--github-link:before {
   height: 1.1em;
   background-size: contain;
 }
+
+[data-theme='light'] .alert--secondary {
+  --ifm-alert-color: var(--ifm-color-emphasis-700);
+  --ifm-alert-border-color: var(--ifm-color-emphasis-700);
+
+  background-color: color-mix(
+    in srgb,
+    var(--ifm-color-emphasis-700) 10%,
+    var(--ifm-background-color)
+  );
+
+  border-left: 4px solid var(--ifm-alert-border-color);
+}

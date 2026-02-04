@@ -23,7 +23,7 @@ Registration for the **WARD airdrop** has ended. Registered users who were [elig
 - Airdropped WARD is on WardenChain
 
 :::important Important notes
-- All registration happened in [Warden](https://app.wardenprotocol.org), and claiming is available on the [Airdrop Registration Portal](https://airdrop.wardenprotocol.org). We'll **never** ask you to connect your wallet to any third-party website.
+- All registration happened in [Warden](https://app.wardenprotocol.org), and claiming is available on the [Airdrop Claim Portal](https://airdrop.wardenprotocol.org). We'll **never** ask you to connect your wallet to any third-party website.
 - To claim WARD, you must have an active [Warden account](manage-your-wallets#the-main-account).
 - Users who are not registered cannot participate in the claiming phase.
 - Registration did not guarantee rewards. Only [eligible users](#eligibility--distribution) can claim WARD.
@@ -65,7 +65,7 @@ We tracked the mindshare you had generated during the Kaito Pre-TGE campaign.
 - **Eligibility criteria**:
   - Hold **WARP** or **staked WARP** on [YieldWard](https://yieldward.com)
   - Link your wallets containing these assets to your Warden account
-   - Register for the airdrop
+  - Register for the airdrop
 - **Distribution mechanism**: [automatic](#automatic-distribution).
 
 ### OPEN OG holders & stakers
@@ -137,7 +137,7 @@ Before you proceed, make sure you understand how [claim-based distribution](#cla
 
 If you're [eligible](#eligibility--distribution) for claim-based distribution, you can claim your WARD in the **Airdrop Claim Portal**:
 
-1. In [Warden](https://app.wardenprotocol.org), click the **Airdrop** icon at the top-right. You'll be redirected to the portal. Alternatively, you access it directly: 👉 [https://airdrop.wardenprotocol.org](https://airdrop.wardenprotocol.org)
+1. In [Warden](https://app.wardenprotocol.org), click the **Airdrop** icon at the top-right. You'll be redirected to the portal. Alternatively, you can access it directly: 👉 [https://airdrop.wardenprotocol.org](https://airdrop.wardenprotocol.org)
 2. Click **Claim Rewards**.
 3. Connect your [Warden account](manage-your-wallets#the-main-account). Use the same credentials with which you log in to Warden.
 4. Click **Continue**. This option is displayed only if you're eligible.

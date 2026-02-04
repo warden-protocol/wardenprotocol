@@ -20,7 +20,7 @@ Make sure that you access the Airdrop Claim Portal through [Warden](https://app.
 
 Registration for the **WARD airdrop** has ended. Registered users who were eligible can either [claim their WARD](#claim-ward) or receive it [automatically](#receive-ward-automatically). To find out whether you need to claim your reward or not, see [Eligibility & distribution](#eligibility--distribution).
 
-Your airdrop will be available on [Warden Protocol](https://docs.wardenprotocol.org/learn/introduction-to-warden). After this, you can [bridge WARD](#bridge-ward) to other chains.
+Your airdrop will be available on [Warden Protocol](https://docs.wardenprotocol.org/learn/introduction-to-warden).
 
 :::important Important notes
 - All registration happened in [Warden](https://app.wardenprotocol.org), and claiming is available on the [Airdrop Claim Portal](https://airdrop.wardenprotocol.org). We'll **never** ask you to connect your wallet to any third-party website.
@@ -55,7 +55,6 @@ Before you proceed, make sure you understand how claim-based distribution works.
 Once you claim your WARD, the following happens:
 - Your reward is locked.
 - Any unclaimed remainder is returned to the Public Goods pool, fueling future community campaigns and rewards.
-- You can [bridge your WARD](#bridge-ward) to other chains.
 
 :::warning
 Make sure that you access the Airdrop Claim Portal through [Warden](https://app.wardenprotocol.org) or directly on [https://airdrop.wardenprotocol.org](https://airdrop.wardenprotocol.org). Do not click any external or social links. 
@@ -72,29 +71,6 @@ Make sure that you access the Airdrop Claim Portal through [Warden](https://app.
 To find out whether you need to claim your reward or not, see [Eligibility & distribution](#eligibility--distribution).
 
 If you're eligible for **automatic distribution**, you'll receive your full allocations directly to your [Warden account](manage-your-wallets#the-main-account) during the first week after trading opens. We'll announce the exact timing via our official channels.
-
-Once you receive your allocation, you'll be able to [bridge your WARD](#bridge-ward) to other chains.
-
-## Bridge WARD
-
-Your airdropped WARD is available on [Warden Protocol](https://docs.wardenprotocol.org/learn/introduction-to-warden). You can bridge it to get one of these tokens:
-
-- **ERC20 WARD** on **Base**
-- **BEP20 WARD** on **BNB Smart Chain**
-
-For this purpose, use any bridging application on top of Hyperlane Warp, such as [Nexus](https://nexus.hyperlane.xyz):
-
-1. Make sure you have enough native tokens to pay gas fees.
-2. Link an EVM wallet in your [Warden account settings](manage-your-wallets#configure).
-3. Link the same wallet to the bridging application.
-4. In the bridging interface, set **Warden Protocol** as the source.
-5. Set **Base**/**BNB** as the destination.
-6. Select **WARD** as the token.
-7. Execute the transaction.
-
-:::note
-The bridge always uses the connected wallet address. You do not need to enter a destination address manually.
-:::
 
 ## Eligibility & distribution
 
@@ -174,3 +150,11 @@ When you claim your reward, your Pre-Early status, tier, and benefits are automa
 :::note
 In this case, registration for the airdrop wasn't required.
 :::
+
+## Other ways to get WARD
+
+Besides the airdrop, you can **buy WARD** using **external wallets**, outside of Warden.
+
+Unlike the airdrop, buying WARD **does not require a Warden account**. You manage purchased WARD entirely through your external wallet.
+
+External wallets can interact with third-party apps for actions such as **swapping and bridging WARD**.

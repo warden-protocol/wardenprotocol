@@ -34,7 +34,7 @@ Your airdrop will be available on [Warden Protocol](https://docs.wardenprotocol.
 To find out whether you need to claim your reward or not, see [Eligibility & distribution](#eligibility--distribution). This is how **claim-based distribution** works:
 
 - You can choose when to claim. This is a one-time opportunity.
-- The longer you wait, the more your claim amount is.
+- The longer you wait, the larger your claim amount is.
 - You'll reach the maximum allocation **after 6 months**.
 - Claiming later also increases your Allocation Power, giving you priority access to future airdrops and priority positioning on the upcoming Agent Launchpad.
 

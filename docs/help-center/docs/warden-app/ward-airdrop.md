@@ -65,7 +65,7 @@ Make sure that you access the Airdrop Claim Portal through [Warden](https://app.
 ![Open the Airdrop Claim Portal](../../static/img/warden-app/airdrop-2.png)
 ![Connect your Warden account in the Airdrop Claim Portal](../../static/img/warden-app/airdrop-3.png)
 ![Initiate claiming in the Airdrop Claim Portal](../../static/img/warden-app/airdrop-4.png)
-![The success message  in the Airdrop Claim Portal](../../static/img/warden-app/airdrop-5.png)
+![The success message in the Airdrop Claim Portal](../../static/img/warden-app/airdrop-5.png)
 
 ## Receive WARD automatically
 
@@ -88,7 +88,7 @@ You can use any bridging application on top of Hyperlane Warp, such as [Nexus](h
 3. Link an EVM wallet in your [Warden account settings](manage-your-wallets#configure).
 4. Link the same wallet to the bridging application.
 5. In the bridging interface, set **Warden Chain** as the source.
-6. Set  **Base**/**BNB** as the destination.
+6. Set **Base**/**BNB** as the destination.
 7. Select **WARD** as the token.
 8. Execute the transaction.
 
@@ -144,7 +144,7 @@ We tracked the mindshare you had generated during the Kaito Pre-TGE campaign.
   - Register for the airdrop
 - **Distribution mechanism**: [automatic](#receive-ward-automatically).
 
-###  Pre-Early Subscription NFT holders
+### Pre-Early Subscription NFT holders
 
 - **Eligibility criteria**:
   - Hold a valid [Pre-Early Subscription NFT](https://opensea.io/0xb48d6c39283777c9cf56c5327238688e4081cf1f/created) on **Base** ([Basic](https://opensea.io/collection/warden-pre-early-basic/overview), [Pro](https://opensea.io/collection/warden-pre-early-pro/overview), [Premium](https://opensea.io/collection/warden-pre-early-premium/overview), or [Infinite](https://opensea.io/collection/warden-pre-early-infinite/overview))

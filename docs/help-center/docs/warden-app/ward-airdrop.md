@@ -5,7 +5,7 @@ sidebar_position: 9
 # WARD airdrop
 
 :::important
-**Registration for the airdrop is now closed. You can [claim your WARD](#claim-ward).**
+**Registration for the airdrop is now closed. If you're eligible, you can claim your WARD or will receive it automatically.**
 
 For those who registered but didn't meet the final [eligibility](#eligibility--distribution) threshold: the [registration fee](fees#airdrop-registration-fee) refunds will be processed in stablecoins to your Warden account over the coming weeks.
 :::

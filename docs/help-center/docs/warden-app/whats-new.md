@@ -12,6 +12,10 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **New features**:
 
+- [WARD airdrop](ward-airdrop): Added the Airdrop Claim Portal where users can claim their WARD airdrop.
+- [Supported chains](/#supported-networks):
+  - Added [Warden Protocol](https://docs.wardenprotocol.org/learn/introduction-to-warden) and its native coin, [WARD](https://docs.wardenprotocol.org/ward/introduction).
+  - Added **WARD** on **Base** and on **BNB Smart Chain (BSC)**.
 - [Warden Agent](explore-ai-agents#warden-agent), [Jupiter](explore-ai-agents#jupiter): Improved token detection on Solana, including support for newer token standards.
 
 **Improvements**:
@@ -41,11 +45,11 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **New features**:
 
-- [The Airdrop Registration Portal](register-for-airdrop): Added UI and infrastructure updates to support future airdrop flows.
+- [WARD airdrop](ward-airdrop): Added UI and infrastructure updates to support future airdrop flows.
 
 **Improvements**:
 
-- [The Airdrop Registration Portal](register-for-airdrop): 
+- [WARD airdrop](ward-airdrop): 
   - Improved the registration flow, visual layout, and the UI text.
   - Enhanced messaging.
 
@@ -53,7 +57,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **Improvements**:
 
-- [The Airdrop Registration Portal](register-for-airdrop):
+- [WARD airdrop](ward-airdrop):
   - Enhanced messaging.
   - Enhanced error handling.
 - [Warden Agent](explore-ai-agents#warden-agent):
@@ -76,17 +80,17 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **New features**:
 
-- [The Airdrop Registration Portal](register-for-airdrop): Added the ability to pay the registration fee on **Arbitrum** and **BNB Smart Chain**.
+- [WARD airdrop](ward-airdrop): Added the ability to pay the registration fee on **Arbitrum** and **BNB Smart Chain**.
 
 **Improvements**:
 
-- [The Airdrop Registration Portal](register-for-airdrop): Adjusted the registration fee.
+- [WARD airdrop](ward-airdrop): Adjusted the registration fee.
 
 ## January 15, 2026
 
 **New features**:
 
-- [The Airdrop Registration Portal](register-for-airdrop): Added a portal where you can register for the WARD airdrop.
+- [WARD airdrop](ward-airdrop): Added a portal where you can register for the WARD airdrop.
 
 ## January 13, 2026
 

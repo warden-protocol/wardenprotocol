@@ -44,6 +44,7 @@ Within Warden, you can do the following:
 
 Currently, Warden supports the following networks:
 
+- **[Warden Protocol](https://docs.wardenprotocol.org/learn/introduction-to-warden)**
 - **Ethereum**
 - **Solana**
 - **Base**

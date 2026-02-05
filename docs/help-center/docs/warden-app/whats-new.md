@@ -15,7 +15,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 - [WARD airdrop](ward-airdrop): Added the Airdrop Claim Portal where users can claim their WARD airdrop.
 - [Supported chains](/#supported-networks):
   - Added [Warden Protocol](https://docs.wardenprotocol.org/learn/introduction-to-warden) and its native coin, [WARD](https://docs.wardenprotocol.org/ward/introduction).
-  - Added **WARD** on **Base** and on **BNB Smart Chain (BSC)**.
+  - Added support for **ERC20 WARD** on **Base** and **BEP20 WARD** on **BNB Smart Chain**.
 - [Warden Agent](explore-ai-agents#warden-agent), [Jupiter](explore-ai-agents#jupiter): Improved token detection on Solana, including support for newer token standards.
 
 **Improvements**:

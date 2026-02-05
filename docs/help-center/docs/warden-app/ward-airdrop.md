@@ -18,7 +18,7 @@ Make sure that you access the Airdrop Claim Portal through [Warden](https://app.
 
 [WARD](https://docs.wardenprotocol.org/ward/introduction), the token powering our Agentic economy, is now live and available for trading. 
 
-Registration for the **WARD airdrop** has ended. Registered users who were eligible can either [claim their WARD](#claim-ward) or receive it [automatically](#receive-ward-automatically). To find out whether you need to claim your reward or not, see [Eligibility & distribution](#eligibility--distribution).
+Registration for the **WARD airdrop** has ended. Registered users who are eligible can either [claim their WARD](#claim-ward) or receive it [automatically](#receive-ward-automatically). To find out whether you need to claim your reward or not, see [Eligibility & distribution](#eligibility--distribution).
 
 Your airdrop will be available on [Warden Protocol](https://docs.wardenprotocol.org/learn/introduction-to-warden).
 

@@ -155,6 +155,6 @@ In this case, registration for the airdrop wasn't required.
 
 Besides the airdrop, you can **buy WARD** using **external wallets**, outside of Warden.
 
-Buying WARD **does not require a Warden account**. You manage purchased WARD entirely through your external wallet.
+Buying WARD from CEXs & DEXs **does not require a Warden account**. You manage purchased WARD entirely through your external wallet.
 
 External wallets can interact with third-party apps for actions such as **swapping and bridging WARD**.

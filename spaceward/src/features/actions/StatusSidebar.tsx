@@ -346,6 +346,27 @@ function ActionItem({ single, ...item }: ItemProps) {
 								queryClient.invalidateQueries({ queryKey });
 							}
 
+							// Invalidate wallet balance query after successful transaction
+							if (address) {
+								queryClient.invalidateQueries({
+									predicate: (query) => {
+										const key = query.queryKey;
+										if (!Array.isArray(key) || key[0] !== "balance") {
+											return false;
+										}
+										const params = key[1];
+										return (
+											typeof params === "object" &&
+											params !== null &&
+											"address" in params &&
+											(params as any).address === address &&
+											"chainId" in params &&
+											(params as any).chainId === env.evmChainId
+										);
+									},
+								});
+							}
+
 							if (!status.next) {
 								toast({
 									title: "Success",
@@ -432,6 +453,27 @@ function ActionItem({ single, ...item }: ItemProps) {
 						description: "Transaction successful",
 						duration: 10000,
 					});
+
+					// Invalidate wallet balance query after successful transaction
+					if (address) {
+						queryClient.invalidateQueries({
+							predicate: (query) => {
+								const key = query.queryKey;
+								if (!Array.isArray(key) || key[0] !== "balance") {
+									return false;
+								}
+								const params = key[1];
+								return (
+									typeof params === "object" &&
+									params !== null &&
+									"address" in params &&
+									(params as any).address === address &&
+									"chainId" in params &&
+									(params as any).chainId === env.evmChainId
+								);
+							},
+						});
+					}
 
 					setData({
 						[item.id]: {

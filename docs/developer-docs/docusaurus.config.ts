@@ -73,7 +73,7 @@ const config: Config = {
             indexName: 'developer-docs',
             contextualSearch: true,
             // insights: true,              
-            // askAi: 'YOUR_ALGOLIA_ASK_AI_ASSISTANT_ID',              
+            askAi: 'Ie2Fa0BHUqU9',        
         },
         navbar: {
             title: "",

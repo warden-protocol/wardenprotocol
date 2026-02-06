@@ -1,0 +1,11 @@
+{
+  "position": 2,
+  "label": "Build an Agent with the Warden CLI",
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Build an Agent with the Warden CLI"
+  },
+  "customProps": {}
+}

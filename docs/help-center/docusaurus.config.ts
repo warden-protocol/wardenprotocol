@@ -3,119 +3,119 @@ import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
-    title: "Warden Protocol Help Center",
-    tagline: "",
-    favicon: "img/favicon.svg",
+  title: "Warden Protocol Help Center",
+  tagline: "",
+  favicon: "img/favicon.svg",
 
-    // Set the production url of your site here
-    url: "https://help.wardenprotocol.org",
-    // Set the /<baseUrl>/ pathname under which your site is served
-    // For GitHub pages deployment, it is often '/<projectName>/'
-    baseUrl: "/",
+  // Set the production url of your site here
+  url: "https://help.wardenprotocol.org",
+  // Set the /<baseUrl>/ pathname under which your site is served
+  // For GitHub pages deployment, it is often '/<projectName>/'
+  baseUrl: "/",
 
-    // GitHub pages deployment config.
-    // If you aren't using GitHub pages, you don't need these.
-    organizationName: "warden-protocol", // Usually your GitHub org/user name.
-    projectName: "wardenprotocol", // Usually your repo name.
+  // GitHub pages deployment config.
+  // If you aren't using GitHub pages, you don't need these.
+  organizationName: "warden-protocol", // Usually your GitHub org/user name.
+  projectName: "wardenprotocol", // Usually your repo name.
 
-    onBrokenLinks: "throw",
+  onBrokenLinks: "throw",
 
-    // Even if you don't use internationalization, you can use this field to set
-    // useful metadata like html lang. For example, if your site is Chinese, you
-    // may want to replace "en" with "zh-Hans".
-    i18n: {
-        defaultLocale: "en",
-        locales: ["en"],
+  // Even if you don't use internationalization, you can use this field to set
+  // useful metadata like html lang. For example, if your site is Chinese, you
+  // may want to replace "en" with "zh-Hans".
+  i18n: {
+    defaultLocale: "en",
+    locales: ["en"],
+  },
+
+  markdown: {
+    mermaid: true,
+    hooks: {
+      onBrokenMarkdownLinks: "warn",
     },
+  },
+  themes: ["@docusaurus/theme-mermaid"],
 
-    markdown: {
-        mermaid: true,
-        hooks: {
-            onBrokenMarkdownLinks: "warn",
+  presets: [
+    [
+      "classic",
+      {
+        docs: {
+          routeBasePath: "/",
+          sidebarPath: "./sidebars.ts",
+          // exclude: ["**/adr-template.md"],
         },
-    },
-    themes: ["@docusaurus/theme-mermaid"],
-
-    presets: [
-        [
-            "classic",
-            {
-                docs: {
-                    routeBasePath: "/",
-                    sidebarPath: "./sidebars.ts",
-                    // exclude: ["**/adr-template.md"],
-                },
-                theme: {
-                    customCss: ["./src/css/custom.css"],
-                },
-                gtag: {
-                    trackingID: "G-YSKP6SGX5N",
-                    anonymizeIP: true,
-                },
-                googleTagManager: {
-                    containerId: "GTM-K292N3G7",
-                },
-            } satisfies Preset.Options,
-        ],
+        theme: {
+          customCss: ["./src/css/custom.css"],
+        },
+        gtag: {
+          trackingID: "G-YSKP6SGX5N",
+          anonymizeIP: true,
+        },
+        googleTagManager: {
+          containerId: "GTM-K292N3G7",
+        },
+      } satisfies Preset.Options,
     ],
+  ],
 
-    themeConfig: {
-        // Replace with your project's social card
-        // image: 'img/docusaurus-social-card.jpg',
-        colorMode: {
-            defaultMode: "dark",
+  themeConfig: {
+    // Replace with your project's social card
+    // image: 'img/docusaurus-social-card.jpg',
+    colorMode: {
+      defaultMode: "dark",
+    },
+    algolia: {
+      appId: "3TCJS4JC6F",
+      apiKey: "732e1c627088d28114b1daa89f3bb8a6",
+      indexName: "help-center",
+      contextualSearch: true,
+      // insights: true,
+      // askAi: 'YOUR_ALGOLIA_ASK_AI_ASSISTANT_ID',
+    },
+    navbar: {
+      title: "",
+      logo: {
+        alt: "Warden Protocol Logo",
+        href: "/",
+        src: "img/logo.svg",
+        srcDark: "img/logo-dark.svg",
+      },
+      items: [
+        // {
+        //     type: "docSidebar",
+        //     sidebarId: "wardenapp",
+        //     label: "Warden",
+        //     position: "left",
+        // },
+        {
+          href: "https://docs.wardenprotocol.org",
+          label: "Warden Protocol Docs",
+          position: "right",
         },
-        algolia: {
-            appId: '3TCJS4JC6F',
-            apiKey: '732e1c627088d28114b1daa89f3bb8a6',
-            indexName: 'help-center',
-            contextualSearch: true,
-            // insights: true,              
-            // askAi: 'YOUR_ALGOLIA_ASK_AI_ASSISTANT_ID',              
+        {
+          "aria-label": "Discord Invite",
+          className: "navbar--discord-link",
+          href: "https://discord.com/invite/wardenprotocol",
+          position: "right",
         },
-        navbar: {
-            title: "",
-            logo: {
-                alt: "Warden Protocol Logo",
-                href: "/",
-                src: "img/logo.svg",
-                srcDark: "img/logo-dark.svg",
-            },
-            items: [
-                {
-                    type: "docSidebar",
-                    sidebarId: "wardenapp",
-                    label: "Warden",
-                    position: "left",
-                },
-                {
-                    href: "https://docs.wardenprotocol.org",
-                    label: "Warden Protocol",
-                    position: "right",
-                },
-                {
-                    'aria-label': 'Discord Invite',
-                    'className': 'navbar--discord-link',
-                    'href': 'https://discord.com/invite/wardenprotocol',
-                    'position': 'right',
-                },
-                {
-                    'aria-label': 'GitHub Repository',
-                    'className': 'navbar--github-link',
-                    'href': 'https://github.com/warden-protocol/wardenprotocol',
-                    'position': 'right',
-                },
-            ],
+        {
+          "aria-label": "GitHub Repository",
+          className: "navbar--github-link",
+          href: "https://github.com/warden-protocol/wardenprotocol",
+          position: "right",
         },
+      ],
+    },
 
-        footer: {
-            copyright: `Copyright © ${new Date().getFullYear()} Warden Protocol.`,
-        },
-        prism: {
-            theme: prismThemes.github,
-            darkTheme: prismThemes.dracula,
-        },
-    } satisfies Preset.ThemeConfig,
+    footer: {
+      copyright: `Copyright © ${new Date().getFullYear()} Warden Protocol.`,
+    },
+    prism: {
+      theme: prismThemes.github,
+      darkTheme: prismThemes.dracula,
+    },
+  } satisfies Preset.ThemeConfig,
 };
 
 export default config;

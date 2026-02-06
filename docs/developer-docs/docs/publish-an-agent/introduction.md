@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Community Agents
 
-**Warden Agents** are AI-driven programs registered on Warden Chain. They turn simple chat commands into complex Web3 and Web2 actions: bridging, minting, trading, staking, research. Users can access these Agents in our agentic wallet, [Warden](https://help.wardenprotocol.org).
+**Warden Agents** are AI-driven programs registered on Warden Chain. They turn simple chat commands into complex Web3 and Web2 actions: bridging, minting, trading, staking, research. Users can access these Agents in our Agentic Wallet, [Warden](https://help.wardenprotocol.org).
 
 If you're a developer, you can register your Agent on Warden as a **Community Agent**. The key advantages of publishing on Warden include the following:
 
@@ -26,7 +26,7 @@ You can build an Agent, publish it on Warden, and earn rewards for early onboard
 
 ## Get started
 
-To quickly get started with building and registering an Agent, see the next section: [Publish your agent](publish-your-agent).
+To quickly get started with building and registering an Agent, see the next section: [Publish your Agent](publish-your-agent).
 
 ## Coming soon
 

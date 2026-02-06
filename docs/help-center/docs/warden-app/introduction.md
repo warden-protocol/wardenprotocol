@@ -10,7 +10,7 @@ slug: /
 
 Try the app: 👉 [Warden](https://app.wardenprotocol.org)
 
-**Warden** is your **Next-Generation Agentic Wallet**, built on [Warden Protocol](https://docs.wardenprotocol.org). It lets you interact with **AI Agents** to perform tasks across both Web2 and Web3 ecosystems.
+**Warden** is your **Agentic Wallet**, built on [Warden Protocol](https://docs.wardenprotocol.org). It lets you interact with **AI Agents** to perform tasks across both Web2 and Web3 ecosystems.
 
 With seamless Web3 integration and a focus on privacy, decentralization, and accessibility, the app offers a smooth, user-friendly experience.
 
@@ -44,6 +44,7 @@ Within Warden, you can do the following:
 
 Currently, Warden supports the following networks:
 
+- **[Warden Protocol](https://docs.wardenprotocol.org/learn/introduction-to-warden)**
 - **Ethereum**
 - **Solana**
 - **Base**

@@ -1,7 +1,5 @@
 ﻿---
 sidebar_position: 1
-id: home-doc
-slug: /
 ---
 
 # Introduction to Warden
@@ -14,7 +12,7 @@ Agents today are fragmented across frameworks and custom stacks, all facing the 
 
 We start with users rather than infrastructure, delivering [Warden](https://wardenprotocol.org/)—a **Next-Generation Agentic Wallet**, built on Warden Protocol. In Warden, users access all AI Agents, models, and chains through a single interface, performing advanced workflows in natural language.
 
-You can find a detailed overview of our mission in [Warden Manifesto](/learn/warden-manifesto).
+You can find a detailed overview of our mission in [Warden Manifesto](warden-manifesto).
 
 ## AI Agents
 
@@ -61,14 +59,14 @@ Once an Agent is built, it gets minted directly onto Warden Chain. The Chain pro
 
 - **Identity**: Assigns each Agent a unique cryptographic ID for authentication and signing requests.  
 - **Reputation**: Records an Agent's track record, so others can verify its history.  
-- **Spending**: Allows Agents to hold balances, pay for services, and trigger payouts from metered billing, with every interaction recorded via [Proof of Inference](/learn/glossary#proof-of-inference).
+- **Spending**: Allows Agents to hold balances, pay for services, and trigger payouts from metered billing, with every interaction recorded via [Proof of Inference](glossary#proof-of-inference).
 - **Security**: Enforces guardrails on how Agents use funds, with payments pre-authorized under your rules.
 
-Learn more: [Warden networks](/learn/warden-networks).
+Learn more: [Warden networks](warden-networks).
 
 ### Warden
 
-**Warden** is an agentic wallet built on Warden Protocol. In Warden, users discover all AI Agents, models, and chains through a single interface, performing advanced workflows in natural language. Agents are available in Warden's [Agent Hub](#warden-agent-hub).
+**Warden** is an Agentic Wallet built on Warden Protocol. In Warden, users discover all AI Agents, models, and chains through a single interface, performing advanced workflows in natural language. Agents are available in Warden's [Agent Hub](#warden-agent-hub).
 
 This is what Warden offers developers and users:
 
@@ -91,36 +89,36 @@ Learn more: [Warden documentation](https://help.wardenprotocol.org/warden-app/ex
 
 ## Protocol layers
 
-Warden is an AI-ready protocol with four layers:
+Warden is an AI-ready protocol with three layers:
 
 - **Blockchain layer**  
 The blockchain layer provides the core infrastructure for Agents: identity, coordination, and provenance. Agents are deployed directly onto [Warden Chain](#warden-chain), where they sign requests, collect fees, and pay for services. Each Agent is assigned a unique cryptographic ID.
 
 - **Verifiability layer**  
-Our verifiability layer uses blockchain, cryptography, and consensus to guarantee the integrity of AI models. [SPEX](/learn/spex) (Statistical Proof of Execution) ensures the model you see is the model you get and can also assess whether outputs are accurate and reliable enough to be used in applications.
+Our verifiability layer uses blockchain, cryptography, and consensus to guarantee the integrity of AI models. [SPEX](spex) (Statistical Proof of Execution) ensures the model you see is the model you get and can also assess whether outputs are accurate and reliable enough to be used in applications.
 
 - **Application layer**  
 At the application layer, developers can easily build Agents and instantly make them accessible to all [Warden](#warden) users. [Warden Studio](#warden-studio) provides everything required to develop, test, and publish Agents.
 
-- **Big Brain**  
-Big Brain (under development) is a protocol-enabled, domain-specific LLM trained on 1T tokens, catalyzing Agent performance. Big Brain learns from every Warden interaction and will reward those who make it smarter.
-
-## Docs overview
+## Documentation
 
 Welcome to the Warden Protocol documentation!
 
-Use the top menu to navigate across the main sections of the docs and learn how to join Warden:
+In this section, you can find the following:
 
-- **Learn**:
-  - [Warden Manifesto](/learn/warden-manifesto): A Manifesto capturing Warden's mission
-  - [SPEX](/learn/spex): An overview of our verifiability layer, SPEX
-  - [Modules](/learn/modules): An overview of protocol modules
-  - [Warden networks](/learn/warden-networks): A list of available networks
-  - [Glossary](/learn/glossary): A list of key Warden terms with definitions
+- [Warden Manifesto](warden-manifesto): A Manifesto capturing Warden's mission
+- [SPEX](spex): An overview of our verifiability layer, SPEX
+- [Modules](modules): An overview of protocol modules
+- [Warden networks](warden-networks): A list of available networks
+- [Glossary](glossary): A list of key Warden terms with definitions
+- [Whitepaper](whitepaper): Essential information on the protocol and tokenomics
+
+To learn more, explore other sections:
+
 - [Operate a node](/operate-a-node/introduction): Guides for node operators
 - [Publish an Agent](/publish-an-agent/introduction): Onboarding for Community Agent builders
 - [$WARD](/ward/introduction): A detailed overview of Warden tokenomics
 
-You can also visit Warden's **Help Center** to find user guides for our applications:
+Finally, you can find Warden user guides in our Help Center:
 
-- [Warden](https://help.wardenprotocol.org): User guides for Warden, an AI-powered co-pilot for crypto
+- [Warden user guides](https://help.wardenprotocol.org)

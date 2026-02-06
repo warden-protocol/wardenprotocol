@@ -9,6 +9,7 @@ import (
 	slashingkeeper "github.com/cosmos/cosmos-sdk/x/slashing/keeper"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	cmn "github.com/cosmos/evm/precompiles/common"
+	ics20precompile "github.com/cosmos/evm/precompiles/ics20"
 	precompiletypes "github.com/cosmos/evm/precompiles/types"
 	erc20Keeper "github.com/cosmos/evm/x/erc20/keeper"
 	transferkeeper "github.com/cosmos/evm/x/ibc/transfer/keeper"
@@ -50,6 +51,9 @@ func NewAvailableStaticPrecompiles(
 		slashingKeeper,
 		codec,
 	)
+
+	// remove ics20 precompile
+	delete(precompiles, common.HexToAddress(ics20precompile.PrecompileAddress))
 
 	// init warden precompiles
 	wardenprecompiles, err := wardenprecompiles.NewWardenPrecompiles(

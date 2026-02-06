@@ -97,7 +97,7 @@ Warden charges this fee using the first available currency, following this prior
 
 ## Airdrop registration fee
 
-When you [register for the WARD airdrop](register-for-airdrop), Warden charges a randomized fee to eliminate bot accounts:
+When you [register for the WARD airdrop](ward-airdrop), Warden charges a randomized fee to eliminate bot accounts:
 
 | Fee type         | Amount  | Currency         | Description          |
 | ---------------- | ------- | ---------------- | -------------------- |

@@ -12,4 +12,4 @@ $WARD is designed to facilitate various operations—such as governance, staking
 | -------------------- | ------------------ |
 | Token                | WARD               |
 | Initial total supply | 1,000,000,000 WARD |
-| Decimals             | 6                  |
+| Decimals             | 18                 |

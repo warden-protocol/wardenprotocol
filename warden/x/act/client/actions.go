@@ -147,7 +147,7 @@ func addFlagsFromMsg(msg sdk.Msg, cmd *cobra.Command) {
 				cmd.Flags().BytesBase64(flagName, nil, "")
 			case reflect.Struct:
 				if v.Field(i).Type().Elem().AssignableTo(reflect.TypeOf(sdk.Coin{})) {
-					cmd.Flags().StringSlice(flagName, nil, "(e.g. 10uward)")
+					cmd.Flags().StringSlice(flagName, nil, "(e.g. 10award)")
 				} else {
 					panic(fmt.Sprintf("unsupported slice type %v (for field %s)", v.Field(i).Type().Elem().Kind(), fieldName))
 				}

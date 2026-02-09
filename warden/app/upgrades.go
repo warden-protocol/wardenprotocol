@@ -6,6 +6,8 @@ import (
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
 	evmtypes "github.com/cosmos/evm/x/vm/types"
 )
 
@@ -41,6 +43,24 @@ func (app App) RegisterUpgradeHandlers() {
 		params.ActiveStaticPrecompiles = newPrecompiles
 
 		if err := app.EVMKeeper.SetParams(sdkCtx, params); err != nil {
+			return fromVM, err
+		}
+
+		// Update staking params to use award as bond denom
+		stakingParams, err := app.StakingKeeper.GetParams(sdkCtx)
+		if err == nil {
+			stakingParams.BondDenom = "award"
+			if err := app.StakingKeeper.SetParams(sdkCtx, stakingParams); err != nil {
+				return fromVM, err
+			}
+		}
+
+		// Update feemarket params to use award
+		feemarketParams := app.FeeMarketKeeper.GetParams(sdkCtx)
+		feemarketParams.MinGasPrice = sdk.ZeroDec() // Or some other value? 
+		// Actually, if we just want to avoid the mismatch, setting it to 0 is one way, 
+		// but better to just ensure it's not uward.
+		if err := app.FeeMarketKeeper.SetParams(sdkCtx, feemarketParams); err != nil {
 			return fromVM, err
 		}
 

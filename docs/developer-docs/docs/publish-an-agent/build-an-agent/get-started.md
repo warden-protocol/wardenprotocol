@@ -63,7 +63,7 @@ Before you start, complete the following prerequisites:
    npx warden-code
    ```
 
-4. Install the required packages: (?)
+4. Install the required packages:
 
    ```bash
    pnpm add @inquirer/prompts
@@ -137,88 +137,141 @@ Now you can create your Agent:
 ## 3. Test your Agent locally
 
 :::important
-Every new Agent is immediately accessible through LangGraph API. To learn more, see [LangGraph API reference](https://langchain-ai.github.io/langgraph/cloud/reference/api/api_ref.html). Alternatively, you can view and test all endpoints locally: `http://localhost:3000/docs`. (?)
+Every new Agent is immediately accessible through LangGraph API and A2A endpoints.
 :::
 
-To make sure your Agent is working locally, run some of the LangGraph API endpoints:
+To make sure your Agent is working locally, run some of the available API endpoints:
 
 1. Access your A2A Agent Card:
    
    ```text
-   http://localhost:3000/.well-known/agent-card.json?assistant_id=fe096781-5601-53d2-b2f6-0d3403f7e9ca
+   http://localhost:3000/.well-known/agent-card.json
    ```
-   The card will display your Agent's name and capabilities, alongside with other information:
+   The card will display your Agent's name and capabilities, along with other information:
 
    ```json
    {
-     "name": "general-test",
-     "description": "A helpful AI agent named general-test",
-     "url": "http://localhost:3000",
-     "version": "0.1.0",
-     "capabilities": {
-       "streaming": true,
-       "multiTurn": false
-     },
-     "skills": [],
-     "defaultInputModes": [
-       "text"
-     ],
-     "defaultOutputModes": [
-       "text"
-     ]
+       "name": "general-test",
+       "description": "A helpful AI agent named general-test",
+       "url": "http://localhost:3000",
+       "version": "0.1.0",
+       "capabilities": {
+           "streaming": true,
+           "multiTurn": false
+       },
+       "skills": [],
+       "defaultInputModes": [
+           "text"
+       ],
+       "defaultOutputModes": [
+           "text"
+       ]
    }
    ```
 
-2. Run the [Search Assistants](https://langchain-ai.github.io/langgraph/cloud/reference/api/api_ref.html#tag/assistants/post/assistants/search) endpoint to get your Agent's ID:
+2. You can also try the A2A endpoint:
 
    <Tabs>
    <TabItem value="postman" label="Postman" default>
-   **POST** `http://localhost:3000/assistants/search`  
+   **POST** `http://localhost:3000`  
    **Headers**: `Content-Type`: `application/json`  
    **Body**:
 
    ```json
    {
-     "metadata": {},
-     "graph_id": "agent",
-     "limit": 10,
-     "offset": 0,
-     "sort_by": "assistant_id",
-     "sort_order": "asc",
-     "select": [
-       "assistant_id"
-     ]
+     "jsonrpc": "2.0",
+     "id": "",
+     "method": "message/send",
+     "params": {
+       "message": {
+         "role": "user",
+         "parts": [
+           {
+             "kind": "text",
+             "text": "What can you do?"
+           }
+         ],
+         "messageId": ""
+       },
+       "thread": {
+         "threadId": ""
+       }
+     }
    }
    ``` 
    </TabItem>
    <TabItem value="curl" label="cURL" default>
 
    ```bash
-   curl http://localhost:3000/assistants/search \
+   curl http://localhost:3000 \
      --request POST \
      --header 'Content-Type: application/json' \
      --data '{
-       "metadata": {},
-       "graph_id": "",
-       "limit": 10,
-       "offset": 0,
-       "sort_by": "assistant_id",
-       "sort_order": "asc",
-       "select": [
-         "assistant_id"
-       ]
+       "jsonrpc": "2.0",
+       "id": "",
+       "method": "message/send",
+       "params": {
+         "message": {
+           "role": "user",
+           "parts": [
+             {
+               "kind": "text",
+               "text": "What can you do?"
+             }
+           ],
+           "messageId": ""
+         },
+         "thread": {
+           "threadId": ""
+         }
+       }
      }'
    ```
    </TabItem>    
    </Tabs>
 
-   The ID will be returned in the `assistant_id` field. Typically, it's `fe096781-5601-53d2-b2f6-0d3403f7e9ca`.
+   If everything is fine, you'll receive a response including your prompt, assistant's reply, and other data:
 
-3. Finally, try...
-      
-   If everything is fine, you'll receive a response including your prompt, assistant's reply, and other data.
-
-4. In addition, you can check logs in [LangSmith Studio](https://smith.langchain.com/studio): navigate to **Tracing Project** in the left menu and select your project. The logs will display data on all threads and runs (Agent invocations). (?)
+   ```json
+   {
+       "jsonrpc": "2.0",
+       "result": {
+           "id": "task-2",
+           "context_id": "da79d131-143c-4154-b617-c25945774648",
+           "status": {
+               "state": "completed",
+               "timestamp": "2026-02-09T08:03:07.107Z"
+           },
+           "kind": "task",
+           "history": [
+               {
+                   "role": "user",
+                   "parts": [
+                       {
+                           "kind": "text",
+                           "text": "What can you do?"
+                       }
+                   ],
+                   "messageId": "",
+                   "kind": "message",
+                   "message_id": "5646cc50-ae72-40a9-87e6-99477e050a4f"
+               },
+               {
+                   "role": "agent",
+                   "parts": [
+                       {
+                           "kind": "text",
+                           "text": "I can assist with a variety of tasks, including but not limited to:\n\n1. Answering questions and providing information on a wide range of topics.\n2. Assisting with problem-solving and brainstorming ideas.\n3. Offering writing support, including proofreading, editing, and generating text.\n4. Providing summaries and explanations of complex concepts.\n5. Helping with language translation and learning.\n6. Offering recommendations for resources, books, or tools.\n7. Engaging in casual conversation and providing companionship.\n\nIf you have a specific request or need assistance with something else, feel free to ask!"
+                       }
+                   ],
+                   "kind": "message",
+                   "message_id": "d187905d-2ded-41e5-87ae-db02ee011d88"
+               }
+           ]
+       },
+       "id": ""
+   }
+   ```
 
 ## Next steps
 

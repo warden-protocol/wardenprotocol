@@ -92,9 +92,9 @@ Warden networks use two chain IDs on different layers. The Cosmos chain ID is th
   </tr>
 </table>
 
-## Connect Warden to an EVM wallet
+## Add Warden as a custom network
 
-You can connect **Warden Mainnet** to any **EVM-compatible wallet**:
+You can add **Warden Mainnet** as a custom network to any **EVM-compatible wallet**:
 
 1. In your preferred wallet, start adding a custom network.
 2. Enter the following details:

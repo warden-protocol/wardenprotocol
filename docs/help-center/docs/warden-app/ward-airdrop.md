@@ -129,7 +129,7 @@ We tracked the mindshare you had generated during the Kaito Pre-TGE campaign.
   - Register for the airdrop
 - **Distribution mechanism**: [claim-based](#claim-ward).  
 
-:::note
+:::not
 When you claim your reward, your Pre-Early status, tier, and benefits are automatically detected based on the linked wallet.
 ::: 
 
@@ -161,7 +161,7 @@ In Warden, **only you can access your private keys**. They’re securely split a
 
 If you still prefer to withdraw your WARD to an **external EVM wallet**, follow these steps:
 
-1. [Connect Warden to your external wallet](https://docs.wardenprotocol.org/learn/warden-networks#connect-warden-to-an-evm-wallet).
+1. [Add Warden as a custom network](https://docs.wardenprotocol.org/learn/warden-networks#add-warden-as-a-custom-network) to your external wallet.
 2. Copy your external EVM wallet address.
 3. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 4. Click the wallet icon in the top-right corner to open your [main account](manage-your-wallets#the-main-account).

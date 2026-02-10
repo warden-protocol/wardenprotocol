@@ -179,8 +179,6 @@ When specifying the withdrawal amount, keep at least **0.001 WARD** to cover gas
 
 ## Get extra WARD
 
-### Buy
-
 Besides the airdrop, there are two ways to get WARD:
 
 - **Buy**: You can buy WARD from CEXs & DEXs. This **does not require a Warden account**: you manage purchased WARD entirely through your external wallet.

@@ -128,3 +128,23 @@ $WARD 발행이 연간 동안 적응하는 **변화율**은 다음 공식으로 
 ### 소각(Burns)
 
 $WARD 토큰은 프로토콜 수수료에서 3% 커뮤니티 세금을 프로그램적으로 소각하여, 프로토콜 성장에 따라 공급을 줄입니다.
+
+## $WARD 획득하기
+
+$WARD를 획득하는 방법은 두 가지가 있습니다:
+
+- **구매**: 중앙화 거래소(CEX) 및 탈중앙화 거래소(DEX)에서 $WARD를 구매할 수 있습니다. 이 방법은 **Warden 계정이 필요하지 않으며**, 구매한 WARD는 전적으로 외부 지갑을 통해 관리됩니다.
+- **스왑 및 브리지**: 외부 지갑을 사용해 서드파티 앱과 상호작용하며 $WARD를 스왑하거나 브리지할 수 있습니다. 단, **현재 Warden 내에서는 $WARD를 스왑할 수 없습니다**.
+
+$WARD는 다음 플랫폼에 상장되어 있습니다:
+
+**중앙화 거래소 (현물 시장)**
+- [Aster](https://www.asterdex.com/en/trade/pro/futures/WARDUSDT)
+- [Bitget](https://www.bitget.com/asia/spot/WARDUSDT)
+- [Kraken](https://pro.kraken.com/app/trade/WARD-usd)
+- [KuCoin](https://www.kucoin.com/trade/WARD-USDT)
+- [LBank](https://www.lbank.com/trade/ward_usdt)
+- [MEXC](https://www.mexc.com/exchange/WARD_USDT)
+
+**지갑 기반 접근**
+- [Binance Wallet (Alpha/Web3)](https://www.binance.com/en/alpha/bsc/0x6dc200b21894af4660b549b678ea8df22bf7cfac)

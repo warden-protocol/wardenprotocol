@@ -17,8 +17,8 @@ Here you'll find the latest Warden release highlights, including new features, i
   - Added current price change to positions.
   - Added an option for withdrawing the maximum amount from the trading wallet.
 - [Warden Agent](explore-ai-agents#warden-agent):
-  - Added prompt suggestions fort next steps in conversations
-  - Add contextual suggestions for chain selection
+  - Added prompt suggestions for next steps in conversations
+  - Added contextual suggestions for chain selection
 
 **Improvements**:
 

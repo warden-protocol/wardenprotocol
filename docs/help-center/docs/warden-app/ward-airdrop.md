@@ -186,7 +186,7 @@ Besides the airdrop, there are two ways to get WARD:
 
 WARD is listed on the following platforms:
 
-**Centralized exchanges (spot)**
+**Centralized exchanges**
 - [Aster](https://www.asterdex.com/en/trade/pro/futures/WARDUSDT)
 - [Bitget](https://www.bitget.com/asia/spot/WARDUSDT)
 - [Kraken](https://pro.kraken.com/app/trade/WARD-usd)

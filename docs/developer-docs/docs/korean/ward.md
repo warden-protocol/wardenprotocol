@@ -138,7 +138,7 @@ $WARD를 획득하는 방법은 두 가지가 있습니다:
 
 $WARD는 다음 플랫폼에 상장되어 있습니다:
 
-**중앙화 거래소 (현물 시장)**
+**중앙화 거래소**
 - [Aster](https://www.asterdex.com/en/trade/pro/futures/WARDUSDT)
 - [Bitget](https://www.bitget.com/asia/spot/WARDUSDT)
 - [Kraken](https://pro.kraken.com/app/trade/WARD-usd)

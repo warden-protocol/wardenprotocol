@@ -7,7 +7,7 @@ sidebar_position: 7
 There are two ways to get $WARD:
 
 - **Buy**: You can buy $WARD from CEXs & DEXs. This **does not require a Warden account**: you manage purchased WARD entirely through your external wallet.
-- **Swap & bridge**: External wallets can interact with third-party apps for actions such as swapping and bridging $WARD. Please note that it's **currently not possible to swap WARD in Warden**.
+- **Swap & bridge**: External wallets can interact with third-party apps for actions such as swapping and bridging $WARD. Please note that it's **currently not possible to swap $WARD in Warden**.
 
 $WARD is listed on the following platforms:
 

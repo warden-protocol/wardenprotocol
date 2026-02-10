@@ -8,6 +8,47 @@ sidebar_position: 11
 
 Here you'll find the latest Warden release highlights, including new features, improvements, and bug fixes. This section helps you quickly see what's changed and how it can enhance your experience.
 
+## February 10, 2026
+
+**New features**:
+
+- Added a new **home page** with a balance overview, an AI chat, and links to trading and other ecosystem features.
+- [Trading](trade):
+  - Added current price change to positions.
+  - Added an option for withdrawing the maximum amount from the trading wallet.
+- [Warden Agent](explore-ai-agents#warden-agent):
+  - Added prompt suggestions fort next steps in conversations
+  - Add contextual suggestions for chain selection
+
+**Improvements**:
+
+- [Trading](trade):
+  - Clarified balance information across deposits and wallets.
+  - Improved button behavior during review and submission.
+- [Warden Agent](explore-ai-agents#warden-agent): Improved conversation handling, routing logic, and response quality.
+- [Agent Hub](explore-ai-agents#access-agents): Improved navigation.
+- [Wallets](manage-your-wallets): Improved balance formatting.
+- [WARD airdrop](ward-airdrop):
+  - Improved the UI and behavior.
+  - Improved internal performance and stability.
+
+**Fixes**:
+
+- [Trading](trade):
+  - Improved balance display consistency.
+  - Prevented submissions when leverage information was out of date.
+- [Wallets](manage-your-wallets) & [Warden Agent](explore-ai-agents#warden-agent): Fixed an issue with displaying wrong activity on Solana.
+
+## February 5, 2026
+
+**New features**:
+
+- [Trading](trade): Introduced **Strategies**.
+
+**Improvements**:
+
+- [Rewards](earn-rewards): Refreshed the PUMPs leaderboard while preserving recent activity.
+
 ## February 3, 2026
 
 **New features**:

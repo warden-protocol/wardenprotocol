@@ -50,9 +50,3 @@ You can easily manage your chats using the buttons at the top of the screen:
 
 ![Manage AI chats in Warden](../../static/img/warden-app/use-the-chat-3.png)
 ![Manage existing threads in Warden](../../static/img/warden-app/use-the-chat-5.png)
-
-## Explore the dashboard
-
-Below the chat, you can find a useful **dashboard** with prompt suggestions, an overview of your assets, and more:
-
-![The dashboard on the chat screen in Warden](../../static/img/warden-app/use-the-chat-6.png)

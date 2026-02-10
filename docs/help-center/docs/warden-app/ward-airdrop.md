@@ -129,7 +129,7 @@ We tracked the mindshare you had generated during the Kaito Pre-TGE campaign.
   - Register for the airdrop
 - **Distribution mechanism**: [claim-based](#claim-ward).  
 
-:::not
+:::note
 When you claim your reward, your Pre-Early status, tier, and benefits are automatically detected based on the linked wallet.
 ::: 
 

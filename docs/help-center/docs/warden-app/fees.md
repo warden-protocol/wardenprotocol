@@ -49,7 +49,7 @@ For opening a [perpetual trading position](trade), the following fees are charge
 
 ## Trading wallet fees
 
-When depositing to your [trading wallet](trade#manage-the-trading-wallet) from Arbitrum, you pay only for the native bridge:
+When depositing to your [trading wallet](trade#trading-wallet) from Arbitrum, you pay only for the native bridge:
 
 | Fee type | Amount | Currency         | Description                          |
 | -------- | ------ | ---------------- | ------------------------------------ |

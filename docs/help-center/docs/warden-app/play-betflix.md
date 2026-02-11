@@ -8,7 +8,7 @@ sidebar_position: 7
 
 You can trade with **Betflix**, Warden's Tinder-style prediction game.
 
-Note that Betflix balance is kept [in a separate wallet](#manage-the-betflix-wallet).
+Note that Betflix balance is kept [in a separate wallet](#betflix-wallet).
 
 :::tip
 Warden also supports advanced trading tools. Learn more in the [Trade](trade) section.
@@ -38,7 +38,7 @@ To start playing, you need **USDC on Solana** (**$6** or more):
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. If you don't have USDC on Solana, [deposit it to your main account](manage-your-wallets#deposit).
 3. In the left menu, open the **Betflix** tab.
-4. In the right panel, you'll see the [Betflix wallet](#manage-the-betflix-wallet). Click **Deposit** and add USDC from your main account.
+4. In the right panel, you'll see the [Betflix wallet](#betflix-wallet). Click **Deposit** and add USDC from your main account.
 5. Start playing:
    - Choose your bet: **$2**/**5**/**10**
    - Swipe right → Go long
@@ -62,7 +62,7 @@ To view all leaderboards and the exact rewards, [check your Betflix wallet](#che
 ![Access the Betflix League of Traders in Warden](../../static/img/warden-app/play-betflix-2.png)
 
 
-## Manage the Betflix wallet
+## Betflix wallet
 
 ### Access
 

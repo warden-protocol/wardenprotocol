@@ -70,7 +70,7 @@ All withdrawals are subject to a flat fee paid to [Hyperliquid](https://hyperliq
 
 ## Betflix fees
 
-Trading with [Betflix](play-betflix) includes the following fees, charged from your [Betflix wallet](play-betflix#manage-the-betflix-wallet):
+Trading with [Betflix](play-betflix) includes the following fees, charged from your [Betflix wallet](play-betflix#betflix-wallet):
 
 | Fee type      | Amount   | Currency       | Description                        |
 | ------------- | -------- | -------------- | ---------------------------------- |

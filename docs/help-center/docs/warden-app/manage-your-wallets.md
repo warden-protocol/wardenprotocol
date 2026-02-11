@@ -165,4 +165,4 @@ Learn more: [Perpetual trading](trade#trading-wallet).
 
 The **Betflix wallet** is a dedicated place where Warden stores your Betflix balance to protect assets in the [main account](#main-account).
 
-Learn more: [Play Betflix](play-betflix#manage-the-betflix-wallet).
+Learn more: [Play Betflix](play-betflix#betflix-wallet).

@@ -48,18 +48,17 @@ func (app App) RegisterUpgradeHandlers() {
 
 		// Update staking params to use award as bond denom
 		stakingParams, err := app.StakingKeeper.GetParams(sdkCtx)
-		if err == nil {
-			stakingParams.BondDenom = "award"
-			if err := app.StakingKeeper.SetParams(sdkCtx, stakingParams); err != nil {
-				return fromVM, err
-			}
+		if err != nil {
+			return fromVM, err
+		}
+		stakingParams.BondDenom = "award"
+		if err := app.StakingKeeper.SetParams(sdkCtx, stakingParams); err != nil {
+			return fromVM, err
 		}
 
 		// Update feemarket params to use award
 		feemarketParams := app.FeeMarketKeeper.GetParams(sdkCtx)
-		feemarketParams.MinGasPrice = sdk.ZeroDec() // Or some other value? 
-		// Actually, if we just want to avoid the mismatch, setting it to 0 is one way, 
-		// but better to just ensure it's not uward.
+		feemarketParams.MinGasPrice = sdk.ZeroDec()
 		if err := app.FeeMarketKeeper.SetParams(sdkCtx, feemarketParams); err != nil {
 			return fromVM, err
 		}

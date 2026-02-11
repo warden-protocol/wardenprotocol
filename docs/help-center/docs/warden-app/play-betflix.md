@@ -66,7 +66,7 @@ To view all leaderboards and the exact rewards, [check your Betflix wallet](#che
 
 ### Access
 
-Warden stores your Betflix balance in a separate **Betflix wallet**, held as **USDC on Solana**. This protects assets in your [main account](manage-your-wallets#the-main-account).
+Warden stores your Betflix balance in a separate **Betflix wallet**, held as **USDC on Solana**. This protects assets in your [main account](manage-your-wallets#main-account).
 
 To switch between the main and Betflix wallets at any time, click the wallet icon at the top right and select **Main Account** or **Bets** at the top of the wallet:
 

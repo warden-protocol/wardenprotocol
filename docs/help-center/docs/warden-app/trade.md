@@ -8,9 +8,9 @@ sidebar_position: 5
 
 In Warden, you can use **perpetual contracts** (**trade perps**) to trade on future price movements of underlying token without actually owning them. Currently, Warden supports [Hyperliquid](https://hyperfoundation.org) perps.
 
-Warden's **AI Trading Terminal** brings real-time market analysis tools directly into your trading screen so you make informed decisions before placing a trade. This includes AI signals, an order book, and a chart with technical indicators and drawing tools.
+Warden's **AI Trading Terminal** brings real-time market analysis tools directly into your trading screen so you make informed decisions before placing a trade. This includes AI signals, an order book, and a chart with technical indicators and drawing tools. You can either trade manually or use automated Strategies.
 
-This guide explains how to open and manage your positions, manage the trading wallet, and use market analysis tools. To learn more about perps and the related concepts, see [Perpetual trading glossary](#perpetual-trading-glossary).
+This guide explains how to open and manage your positions, manage the trading wallet, and use market analysis tools. To learn more about perps and the related concepts, see [Glossary](#glossary).
 
 :::warning
 Perpetual Trading involves significant risk, including potential loss of all funds due to leverage and volatility, and may not suit all users.
@@ -20,7 +20,9 @@ Perpetual Trading involves significant risk, including potential loss of all fun
 Want to trade just for fun? Try [Betflix](play-betflix).
 :::
 
-## Access the Trading Terminal
+## Get started
+
+### Access the Trading Terminal
 
 **AI Trading Terminal** is a place in Warden where you can open perpetual trading positions and analyze market data. To access the Terminal, do this:
 
@@ -29,34 +31,35 @@ Want to trade just for fun? Try [Betflix](play-betflix).
 
 You'll see the Terminal interface, where you can do the following:
 
-1. Select a perp to trade
-2. [Create an order](#2-create-an-order)
-3. [Manage your trade](#3-manage-your-trade)
-4. [Analyze the market](#analyze-the-market)
-5. [Earn PUMPs](#earn-pumps)
-6. [Manage the trading wallet](#manage-the-trading-wallet)
+1. Switch between [manual trading](#manual-trading) and [strategies](#trading-with-strategies).
+2. Select a perp to trade
+3. [Create an order](#create-an-order)
+4. [Manage your trade](#manage-your-trade)
+5. [Manage the trading wallet](#trading-wallet)
+6. [Analyze the market](#analyze-the-market)
+7. [Earn PUMPs](#earn-pumps)
 
 ![AI Trading Terminal in Warden](../../static/img/warden-app/trade-terminal.png)
 
-## Manage trades
-
-### 1. Prepare funds
+### Prepare funds
 
 To start trading, you need **USDC** on **Arbitrum**, **Ethereum**, **Base**, or **BSC** (**$6** or more):
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. If you don't have USDC, [deposit it to your main account](manage-your-wallets#deposit).
-3. In the left menu, open the **Trade** tab to [access the AI Trading Terminal](#access-the-trading-terminal).
-4. Click the wallet icon at the top right to open the [trading wallet](#manage-the-trading-wallet).
+3. In the left menu, open the **Trade** tab to access the AI Trading Terminal.
+4. Click the wallet icon at the top right to open the [trading wallet](#trading-wallet).
 5. In the trading wallet, click **Deposit** and add USDC from your main account.
 
 ![Prepare funds for perpetual trading in Warden](../../static/img/warden-app/trade-funds.png)
 
-### 2. Create an order
+## Manual trading
 
-An **order** is an instruction to buy or sell a perpetual contract. Warden supports **market** and **limit orders** ([learn more](#order)).
+### Create an order
 
-Once you have funds in your trading wallet, you can create an order. [Open the AI Trading Terminal](#access-the-trading-terminal) and do this:
+An **order** is an instruction to buy or sell a perpetual contract. Warden supports **market** and **limit orders** ([learn more](#order)). Once you [prepare funds](#prepare-funds) in your trading wallet, you can create an order.
+
+[Open the AI Trading Terminal](#access-the-trading-terminal) and do this:
 
 1. If it's your first trade, click **Start Trading** and confirm your consent.
 2. Select a token pair from the drop-down menu at the top left.
@@ -76,9 +79,9 @@ Selecting a pair determines the perp you'll trade. Tokens (base currencies) are 
 ![Create an order in Warden](../../static/img/warden-app/trade-order-1.png)
 ![Create an order in Warden](../../static/img/warden-app/trade-order-2.png)
 
-### 3. Manage your trade
+### Manage your trade
 
-After you [create an order](#2-create-an-order), it **executes (fills)**. Execution may open new [positions](#position), modify existing ones, or partially close them. Opening positions is subject to [trading fees](fees#trading-fees).
+After you [create an order](#create-an-order), it **executes (fills)**. Execution may open new [positions](#position), modify existing ones, or partially close them. Opening positions is subject to [trading fees](fees#trading-fees).
 
 :::note Notes
 - Market orders fill immediately at the best available price, and limit orders fill when the price reaches your target price ([learn more](#order)).
@@ -106,7 +109,7 @@ To manage an open position or a limit order, click the **Manage** button next to
 
 ### Order parameters
 
-When [creating an order](#2-create-an-order), you can set the following parameters in the configuration panel:
+When [creating an order](#create-an-order), you can set the following parameters in the configuration panel:
 
 - **Long**/**Short**: A setting indicating whether your position will benefit when the [spot price](#spot-price) moves up (long) or down (short).
 - **Order Type**: The order type.
@@ -120,7 +123,7 @@ When [creating an order](#2-create-an-order), you can set the following paramete
     - **Stop Loss**: The lower price where your position closes to cut losses. This helps prevent [liquidation](#liquidation).
 
 :::tip
-You can adjust **Auto-Close** even after creating an order. See [Manage your trade](#3-manage-your-trade).
+You can adjust **Auto-Close** even after creating an order. See [Manage your trade](#manage-your-trade).
 :::
 
 :::note
@@ -135,54 +138,73 @@ There are also additional parameters that are automatically calculated based on 
 - **Size**: The total value (overall exposure) of your position, determined by your margin and leverage.
 - **Est. fee**: The total fee for opening a position. See [trading fees](fees#trading-fees).
 
-## Analyze the market
+## Trading with Strategies
 
-In the [AI Trading Terminal](#access-the-trading-terminal), you can access various market analysis tools helping you make informed decisions on your trades:
+### Understand Strategies
 
-- **The live chart** displays perp price movements. It supports multiple chart types, technical indicators, drawing tools, and more. Here you can also view your historical trades and [manage your active trades](#3-manage-your-trade).
-- **The order book** is a real-time list of all active buy and sell orders. It shows available amounts at each price level, letting you see market liquidity and the spread between bids and asks.
-- **Messari Signals** powered by [Messari](https://messari.io) are AI-generated token reports. For deeper insights, use the  [Messari Deep Research](explore-ai-agents#messari-deep-research) Agent.
+Instead of executing trades manually, you can use **Strategies on Warden**.
 
-:::note
-The market data for the chart and order book is provided by [Hyperliquid](https://hyperfoundation.org).
+A **Strategy** is an automated trading system that executes, rebalances, and optimizes positions on your behalf. Once you allocate funds to a Strategy, it operates automatically while you retain full control of your capital and benefit from advanced trading infrastructure.
+
+Warden currently offers a curated selection of **Hyperliquid Strategies**, giving you exposure to multiple assets through highly liquid markets and fast order execution.
+
+More Strategies will be added over time.
+
+![Trading Strategies on Warden](../../static/img/warden-app/trade-strategies-1.png)
+
+### Use a Strategy
+
+Once you [prepare funds](#prepare-funds) in your trading wallet, you can start using Strategies.
+
+[Open the AI Trading Terminal](#access-the-trading-terminal) and do this:
+
+1. On the top of the screen, switch to the **Strategies** tab.
+2. Explore available Strategies. Use the search bar to discover more.
+3. Click the preferred Strategy and view its metrics and details.
+4. If you wish to use this Strategy, click **Use Strategy**.
+5. Allocate **$5 or more** from your [trading wallet](#trading-wallet).
+6. Confirm the transaction.
+
+:::important
+Upon allocation, your funds will be temporarily locked: you'll be able to [withdraw your deposit](#manage-your-portfolio) only after the **lockup period**. You can check the exact time on the deposit screen, before confirming the transaction. 
 :::
 
-![Analyze the perpetual trading market in Warden](../../static/img/warden-app/trade-market-1.png)
-![Use technical indicators on the trading live chart in Warden](../../static/img/warden-app/trade-market-2.png)
-![See your positions on the trading live chart in Warden](../../static/img/warden-app/trade-market-3.png)
-
-## Earn PUMPs
-
-Once your all-time total trade volume reaches **$100**, you qualify to join the **League of Traders** and start receiving [PUMPs](earn-rewards#earn-pumps)—points that reward your activity in Warden.
-
-You earn rewards for every position closed within a **15-minute** cycle (when PUMPs are distributed):
-
-- Reward (PUMPs) = **trade volume (USD) x 30 x your multiplier**.
-- Trade volume  = **price x size (base currency) x leverage**.
-- The multiplier is based on your total trade volume:
-  - 1x for volume >= $100
-  - 2x for volume >= $500
-  - 3x for volume >= $1,000
-  - 5x for volume >= $10,000
-
-In the **League of Traders**, there are two **weekly** and two **monthly** leaderboards based on **PnL** and **volume**. Top traders in each ranking earn extra PUMPs:
-
-- Weekly PnL & Volume leagues: 1st–5th ranks
-- Monthly PnL & Volume leagues: 1st–5th ranks
-
-To view all leaderboards and the exact rewards, [check your trading wallet](#check-your-stats) or click the League of Traders icon at the top right:
-
-![Access the Pro League of Traders in Warden](../../static/img/warden-app/trade-pumps.png)
-
-:::note
-Since distributions of PUMPs run at 15-minute intervals, leaderboard stats may update with a delay.
+:::tip
+Each Strategy displays the key metrics to help you make an informed decision:
+- TVL: Total Value Locked
+- Period: The investment timeframe
+- APR %: Projected annual returns
+- Number of users: Community participation
 :::
 
-## Manage the trading wallet
+![Access the Strategies tab in Warden's AI Trading Terminal](../../static/img/warden-app/trade-strategies-2.png)
+![Start trading Strategies on Warden](../../static/img/warden-app/trade-strategies-3.png)
+![Allocate trading funds to a Strategy on Warden](../../static/img/warden-app/trade-strategies-4.png)
+
+### Manage your portfolio
+
+After [allocating funds](#use-a-strategy) to a Strategy, you can track and manage your positions in [the AI Trading Terminal](#access-the-trading-terminal):
+
+1. Open the **Strategies** tab. You'll see your positions under **Portfolio**.
+2. Click **View** next to any position to open its Strategy.
+3. At the top of the screen, you can do this:
+   - View your position details
+   - Click **Add USDC** to allocate more funds to the Strategy
+   - Click **Withdraw** to withdraw or check the lockup period
+
+:::tip
+Strategies support both partial and full withdrawal.
+:::
+
+![Access your trading positions Strategies on Warden](../../static/img/warden-app/trade-strategies-5.png)
+![Track and manage a trading position opened with Strategies on Warden](../../static/img/warden-app/trade-strategies-6.png)
+![Withdraw trading funds allocated to a Strategy on Warden](../../static/img/warden-app/trade-strategies-7.png)
+
+## Trading wallet
 
 ### Access
 
-Warden stores your perpetual trading balance in a separate **trading wallet**, held as **USDC on Arbitrum**. This protects assets in your [main account](manage-your-wallets#the-main-account) from being [liquidated](#liquidation).
+Warden stores your perpetual trading balance in a separate **trading wallet**, held as **USDC on Arbitrum**. This protects assets in your [main account](manage-your-wallets#main-account) from being [liquidated](#liquidation).
 
 To switch between the main and trading wallets at any time, click the wallet icon at the top right and select **Trading** or **Main Account**.
 
@@ -241,7 +263,52 @@ In the trading wallet, you can also view your statistics:
 
 ![Check trading stats in Warden](../../static/img/warden-app/trade-wallet-3.png)
 
-## Perpetual trading glossary
+## Extras
+
+### Analyze the market
+
+In the [AI Trading Terminal](#access-the-trading-terminal), you can access various market analysis tools helping you make informed decisions on your trades:
+
+- **The live chart** displays perp price movements. It supports multiple chart types, technical indicators, drawing tools, and more. Here you can also view your historical trades and [manage your active trades](#manage-your-trade).
+- **The order book** is a real-time list of all active buy and sell orders. It shows available amounts at each price level, letting you see market liquidity and the spread between bids and asks.
+- **Messari Signals** powered by [Messari](https://messari.io) are AI-generated token reports. For deeper insights, use the  [Messari Deep Research](explore-ai-agents#messari-deep-research) Agent.
+
+:::note
+The market data for the chart and order book is provided by [Hyperliquid](https://hyperfoundation.org).
+:::
+
+![Analyze the perpetual trading market in Warden](../../static/img/warden-app/trade-market-1.png)
+![Use technical indicators on the trading live chart in Warden](../../static/img/warden-app/trade-market-2.png)
+![See your positions on the trading live chart in Warden](../../static/img/warden-app/trade-market-3.png)
+
+### Earn PUMPs
+
+Once your all-time total trade volume reaches **$100**, you qualify to join the **League of Traders** and start receiving [PUMPs](earn-rewards#earn-pumps)—points that reward your activity in Warden.
+
+You earn rewards for every position closed within a **15-minute** cycle (when PUMPs are distributed):
+
+- Reward (PUMPs) = **trade volume (USD) x 30 x your multiplier**.
+- Trade volume  = **price x size (base currency) x leverage**.
+- The multiplier is based on your total trade volume:
+  - 1x for volume >= $100
+  - 2x for volume >= $500
+  - 3x for volume >= $1,000
+  - 5x for volume >= $10,000
+
+In the **League of Traders**, there are two **weekly** and two **monthly** leaderboards based on **PnL** and **volume**. Top traders in each ranking earn extra PUMPs:
+
+- Weekly PnL & Volume leagues: 1st–5th ranks
+- Monthly PnL & Volume leagues: 1st–5th ranks
+
+To view all leaderboards and the exact rewards, [check your trading wallet](#check-your-stats) or click the League of Traders icon at the top right:
+
+![Access the Pro League of Traders in Warden](../../static/img/warden-app/trade-pumps.png)
+
+:::note
+Since distributions of PUMPs run at 15-minute intervals, leaderboard stats may update with a delay.
+:::
+
+### Glossary
 
 #### Trade perp
 

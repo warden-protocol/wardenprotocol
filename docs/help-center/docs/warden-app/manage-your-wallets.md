@@ -8,7 +8,7 @@ sidebar_position: 8
 
 This guide explains how to manage your Warden wallets:
 
-- [The main account](#the-main-account): The main wallet holding your assets on the supported chains.
+- [Main account](#main-account): The main wallet holding your assets on the supported chains.
 - [Dedicated wallets](#dedicated-wallets): Special wallets used for Agent and trading fees.
 
 ## Access your wallets
@@ -19,7 +19,7 @@ You can access your wallets from any Warden tab:
 2. Click the wallet icon in the top-right corner.
 3. This will open the wallet panel at the right.
 4. Use the menu at the top of the wallet to switch between your accounts:
-   - **Main account**: [Your main account](#the-main-account)
+   - **Main account**: [Your main account](#main-account)
    - **Agents Credits**: [The Agents Credits wallet](#agents-credits)
    - **Trading**: [The trading wallet](#trading)
    - **Bets**: [The Betflix wallet](#betflix)
@@ -27,7 +27,7 @@ You can access your wallets from any Warden tab:
 ![Access your wallet in Warden](../../static/img/warden-app/manage-your-wallets-1.png)
 ![View your wallet in Warden](../../static/img/warden-app/manage-your-wallets-2.png)
 
-## The main account
+## Main account
 
 The **main account** is the main Warden wallet holding your funds on all the supported chains. Here you can view your balances and activity and initiate transactions.
 
@@ -128,14 +128,14 @@ The following options are available:
 **Dedicated wallets** are special wallets where Warden stores funds for some of the AI Agents and trading.
 
 :::tip
-You can fund your dedicated wallets only from the [main account](#the-main-account).
+You can fund your dedicated wallets only from the [main account](#main-account).
 :::
 
 ### Agents Credits
 
 The **Agents Credits wallet** is a dedicated place where Warden stores your **Agents Credits**, which are used to pay certain [AI Agents](explore-ai-agents). The balance is held as **USDC on Base**.
 
-This is how you can fund this wallet from the [main account](#the-main-account):
+This is how you can fund this wallet from the [main account](#main-account):
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. Click the wallet icon in the top-right corner.
@@ -157,12 +157,12 @@ Currently, withdrawals aren't allowed.
 
 ### Trading
 
-The **trading wallet** is a dedicated place where Warden stores your perpetual trading balance to protect assets in the [main account](#the-main-account).
+The **trading wallet** is a dedicated place where Warden stores your perpetual trading balance to protect assets in the [main account](#main-account).
 
-Learn more: [Perpetual trading](trade#manage-the-trading-wallet).
+Learn more: [Perpetual trading](trade#trading-wallet).
 
 ### Betflix
 
-The **Betflix wallet** is a dedicated place where Warden stores your Betflix balance to protect assets in the [main account](#the-main-account).
+The **Betflix wallet** is a dedicated place where Warden stores your Betflix balance to protect assets in the [main account](#tmain-account).
 
 Learn more: [Play Betflix](play-betflix#manage-the-betflix-wallet).

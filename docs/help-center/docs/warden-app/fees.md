@@ -40,7 +40,7 @@ All swaps include these fees:
 
 ## Trading fees
 
-For opening a [perpetual trading position](trade), the following fees are charged from your [trading wallet](trade#manage-the-trading-wallet):
+For opening a [perpetual trading position](trade), the following fees are charged from your [trading wallet](trade#trading-wallet):
 
 | Fee type         | Amount | Currency         | Description                    |
 | ---------------- | ------ | ---------------- | -----------------------------  |

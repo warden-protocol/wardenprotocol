@@ -10,11 +10,7 @@ In this section, you'll discover how to start **earning rewards** in Warden:
 
 1. [Create a coin](#create-your-coin): Create your PumpKoin.
 2. [Earn PUMP points](#earn-pumps): Stay active in Warden to boost your coin's rank.
-3. [Earn WARD](#earn-ward): The top PUMP holders will earn rewards in the WARD token.
-
-:::tip
-The most active users will also gain priority access to upcoming features.
-:::
+3. [Earn rewards](#earn-rewards): The top PUMP holders will earn rewards.
 
 ## Create your coin
 
@@ -79,11 +75,8 @@ You can either participate in perpetual trading or play our trading game:
 - [Trade](trade#earn-pumps)
 - [Play Betflix](play-betflix#earn-pumps)
 
-## Earn WARD
+## Earn rewards
 
-Active Warden users can earn rewards in the [WARD token](https://docs.wardenprotocol.org/ward/introduction): simply [create your coin](#create-your-coin), [start earning PUMP points](#earn-pumps), and climb the ranks. The top PUMP holders will be eligible for rewards.
+The most active Warden users will gain priority access to upcoming features, and other rewards.
 
-This is part of **The Great Pump Off**—an ongoing **rewards campaign**, with up to **2.5%** of WARD supply (**$1M+** in current value) allocated to participants. Designed by Warden, in collaboration with [Kaito](https://www.kaito.ai), this campaign is engineered to reward those who actively use Warden and drive community engagement:
-
-- Learn more about the rewards campaign 👉 [The Great Pump Off](https://wardenprotocol.org/blog/great-pump-off)
-- Join the campaign 👉 [Warden Protocol on Kaito](https://yaps.kaito.ai/warden)
+Keep [earning PUMPs](#earn-pumps) and stay tuned for updates!

@@ -196,7 +196,7 @@ After [allocating funds](#use-a-strategy) to a Strategy, you can track and manag
 Strategies support both partial and full withdrawal.
 :::
 
-![Access your trading positions Strategies on Warden](../../static/img/warden-app/trade-strategies-5.png)
+![Access your trading positions opened with Strategies on Warden](../../static/img/warden-app/trade-strategies-5.png)
 ![Track and manage a trading position opened with Strategies on Warden](../../static/img/warden-app/trade-strategies-6.png)
 ![Withdraw trading funds allocated to a Strategy on Warden](../../static/img/warden-app/trade-strategies-7.png)
 
@@ -271,7 +271,7 @@ In the [AI Trading Terminal](#access-the-trading-terminal), you can access vario
 
 - **The live chart** displays perp price movements. It supports multiple chart types, technical indicators, drawing tools, and more. Here you can also view your historical trades and [manage your active trades](#manage-your-trade).
 - **The order book** is a real-time list of all active buy and sell orders. It shows available amounts at each price level, letting you see market liquidity and the spread between bids and asks.
-- **Messari Signals** powered by [Messari](https://messari.io) are AI-generated token reports. For deeper insights, use the  [Messari Deep Research](explore-ai-agents#messari-deep-research) Agent.
+- **Messari Signals** powered by [Messari](https://messari.io) are AI-generated token reports. For deeper insights, use the [Messari Deep Research](explore-ai-agents#messari-deep-research) Agent.
 
 :::note
 The market data for the chart and order book is provided by [Hyperliquid](https://hyperfoundation.org).

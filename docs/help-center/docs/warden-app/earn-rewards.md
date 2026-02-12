@@ -10,7 +10,7 @@ In this section, you'll discover how to start **earning rewards** in Warden:
 
 1. [Create a coin](#create-your-coin): Create your PumpKoin.
 2. [Earn PUMP points](#earn-pumps): Stay active in Warden to boost your coin's rank.
-3. [Earn rewards](#earn-rewards): The top PUMP holders will earn rewards.
+3. [Get rewards](#get-rewards): The top PUMP holders will be rewarded.
 
 ## Create your coin
 
@@ -30,10 +30,7 @@ Congratulations! Now you can start earning PUMP points.
 
 **PUMP points** are your reward for activity in Warden. The more PUMPs you earn, the higher your coin climbs on the leaderboard.
 
-The top PUMP holders will enjoy the following benefits:
-
-- [Earn WARD](#earn-ward)
-- Gain priority access to upcoming features
+The top PUMP holders will [be rewarded](#get-rewards).
 
 To check your coin's rank, open the **Rewards** tab and scroll down to the **PUMP Leaderboard**:
 
@@ -75,8 +72,8 @@ You can either participate in perpetual trading or play our trading game:
 - [Trade](trade#earn-pumps)
 - [Play Betflix](play-betflix#earn-pumps)
 
-## Earn rewards
+## Get rewards
 
-The most active Warden users will gain priority access to upcoming features, and other rewards.
+The most active Warden users will gain priority access to upcoming features and other rewards.
 
 Keep [earning PUMPs](#earn-pumps) and stay tuned for updates!

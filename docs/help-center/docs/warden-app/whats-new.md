@@ -43,7 +43,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **New features**:
 
-- [Trading](trade): Introduced **Strategies**.
+- [Trading](trade): Introduced [Strategies](trade#trading-with-strategies)—automated systems that trade on users' behalf.
 
 **Improvements**:
 
@@ -109,7 +109,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 **Fixes**:
 
 - [Trading](trade): Fixed a display issue affecting positions.
-- [The main account](manage-your-wallets#the-main-account): Resolved an issue where linked wallets could disconnect.
+- [The main account](manage-your-wallets#main-account): Resolved an issue where linked wallets could disconnect.
 - [Warden Agent](explore-ai-agents#warden-agent):
   - Made internal updates to maintain AI service reliability.
   - Fixed issues with swaps.
@@ -147,7 +147,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **Fixes**:
 
-- [The main account](manage-your-wallets#the-main-account): Made a minor UI fix.
+- [The main account](manage-your-wallets#main-account): Made a minor UI fix.
 - [Trading](trade): Made a minor UI fix.
 
 ## January 7, 2026

@@ -7,6 +7,6 @@
         {"source":"/warden-app/create-your-coin","destination":"/warden-app/earn-rewards", "statusCode": 301},
         {"source":"/warden-app/manage-your-assets","destination":"/warden-app/manage-your-wallets#main-account", "statusCode": 301},
         {"source":"/warden-app/manage-your-wallet","destination":"/warden-app/manage-your-wallets", "statusCode": 301},
-        {"source":"/warden-app/register-for-airdrop","destination":"/warden-app/claim-ward", "statusCode": 301}
+        {"source":"/warden-app/register-for-airdrop","destination":"/warden-app/ward-airdrop", "statusCode": 301}
     ]
 }

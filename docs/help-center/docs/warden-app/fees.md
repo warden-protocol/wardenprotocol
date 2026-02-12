@@ -97,7 +97,7 @@ Warden charges this fee using the first available currency, following this prior
 
 ## Airdrop registration fee
 
-When registration for the [$WARD airdrop](claim-ward) was open, Warden charged a randomized fee to eliminate bot accounts:
+When registration for the [$WARD airdrop](ward-airdrop) was open, Warden charged a randomized fee to eliminate bot accounts:
 
 | Fee type         | Amount  | Currency         | Description          |
 | ---------------- | ------- | ---------------- | -------------------- |

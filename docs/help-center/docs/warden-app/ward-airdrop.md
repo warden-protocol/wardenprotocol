@@ -1,8 +1,8 @@
 ---
-sidebar_position: 10
+sidebar_position: 11
 ---
 
-# Claim $WARD
+# $WARD airdrop
 
 :::important
 **Registration for the airdrop is now closed. If you're eligible, you can claim your $WARD or will receive it automatically.**

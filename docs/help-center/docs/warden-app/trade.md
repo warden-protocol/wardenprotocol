@@ -332,7 +332,7 @@ Perps use a single combined position per token. For example, if you already have
 
 #### Margin
 
-**Margin** is the security deposit that keeps your [positions](#position) open. If your margin drops too low because the position is losing money, a [liquidation](#liquidation) will happen: Warden will automatically close the position. Note that Warden uses **cross-margin**: there is one shared margin pool for all positions.
+**Margin** is the security deposit that keeps your [positions](#position) open. If your margin drops too low because the position is losing money, a [liquidation](#liquidation) will happen: Warden will automatically close the position. Note that Warden uses **cross-margin**: there's one shared margin pool for all positions.
 
 #### Leverage
 

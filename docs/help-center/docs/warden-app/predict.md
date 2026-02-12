@@ -48,11 +48,12 @@ After selecting an event in the **Predictions** tab, you access the following ma
 
 - **The live chart** displaying predictions
 - **The AI overview** of the market
-- **The Predict Agent** providing insights on the market and probable outcomes
+- **The Predict Agent** providing insights on the market
 
-I can analyze prediction markets for the Brentford vs Arsenal game, providing insights on probabilities for outcomes such as wins for either team or a draw, along with relevant statistics and reasoning behind those estimates.
+:::note
+The Predict Agent can analyze prediction markets, providing insights on probabilities, along with relevant statistics and reasoning behind its estimates.
+:::
 
 ![Discover market analysis tools in Warden's Predictions](../../static/img/warden-app/predict-4.png)
-
 ![Use the Predict Agent in Warden's Predictions](../../static/img/warden-app/predict-5.png)
 

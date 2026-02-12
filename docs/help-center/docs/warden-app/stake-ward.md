@@ -88,7 +88,7 @@ There is an **unbonding period of 14 days** during which your tokens will be loc
 
 ## Warden validators
 
-**Validators** are nodes that participate in the consensus process to secure the Warden Protocol network. They validate transactions an produce new blocks. By staking, you **delegate** your $WARD to a validator and earn a share of the rewards.
+**Validators** are nodes that participate in the consensus process to secure the Warden Protocol network. They validate transactions and produce new blocks. By staking, you **delegate** your $WARD to a validator and earn a share of the rewards.
 
 :::tip
 When selecting validators on Warden, you can sort them by the following parameters: **total staked**, **voting power**, and **commission**. Learn more: [How to choose a validator?](https://docs.wardenprotocol.org/operate-a-node/delegation-plan#how-to-choose-a-validator)

@@ -37,7 +37,7 @@ To start playing, you need **USDC on Solana** (**$6** or more):
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. If you don't have USDC on Solana, [deposit it to your main account](manage-your-wallets#deposit).
-3. In the left menu, In the left menu, select **Betflix**.
+3. In the left menu, select **Betflix**.
 4. In the right panel, you'll see the [Betflix wallet](#betflix-wallet). Click **Deposit** and add USDC from your main account.
 5. Start playing:
    - Choose your bet: **$2**/**5**/**10**

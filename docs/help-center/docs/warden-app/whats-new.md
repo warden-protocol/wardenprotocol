@@ -12,7 +12,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **New features**:
 
-- [Predictions](predict): Warden's Predictions allowing you to browse markets, place orders, and manage a prediction portfolio.
+- [Predictions (Beta)](predict): Introduced Predictions and the Predict Agent. These features allow you to trade real-world events with the help of the AI.
 - [Staking](stake-ward): Now $WARD holders can stake their tokens on Warden.
 
 **Improvements**:

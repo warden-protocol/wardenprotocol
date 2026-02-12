@@ -17,7 +17,7 @@ In this section, you'll discover how to start **earning rewards** in Warden:
 To create **your own coin**, take these steps:
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
-2. In the left menu, open the **Rewards** tab.
+2. In the left menu, select **Rewards**.
 3. Then simply name your coin.
 
 Congratulations! Now you can start earning reWARD points.

@@ -27,7 +27,7 @@ Want to trade just for fun? Try [Betflix](play-betflix).
 **AI Trading Terminal** is a place in Warden where you can open perpetual trading positions and analyze market data. To access the Terminal, do this:
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
-2. Open the **Trade** tab.
+2. In the left menu, select **Trade**.
 
 You'll see the Terminal interface, where you can do the following:
 
@@ -47,7 +47,7 @@ To start trading, you need **USDC** on **Arbitrum**, **Ethereum**, **Base**, or 
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. If you don't have USDC, [deposit it to your main account](manage-your-wallets#deposit).
-3. In the left menu, open the **Trade** tab to access the AI Trading Terminal.
+3. In the left menu, select **Trade** to access the AI Trading Terminal.
 4. Click the wallet icon at the top right to open the [trading wallet](#trading-wallet).
 5. In the trading wallet, click **Deposit** and add USDC from your main account.
 

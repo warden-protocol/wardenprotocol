@@ -65,7 +65,7 @@ You can send or swap assets in your main account using simple **chat commands**:
 2. Make sure your [main account is funded](#deposit).
 3. Initiate a transaction. There are two ways to do it:
    - In the main account, click **Swap**/**Send**. This will start a chat.
-   - In the **Chats** tab, ask the [Warden Agent](explore-ai-agents#warden-agent) to send or swap an asset.
+   - In the **Chats** section, ask the [Warden Agent](explore-ai-agents#warden-agent) to send or swap an asset.
 4. Provide the required details and confirm the transaction in the chat.
 5. The Agent will share the transaction details with you.
 
@@ -89,7 +89,7 @@ To view your balances and activity, do this:
 1. [Open the main account](#access-your-wallets).
 2. See the **Assets** and **Activity** tabs.
 
-Alternatively, you can go to the **Chats** tab and ask the default [Warden Agent](explore-ai-agents#warden-agent) about your balances.
+Alternatively, you can go to the **Chats** section and ask the default [Warden Agent](explore-ai-agents#warden-agent) about your balances.
 
 ![View your balance and activity in Warden](../../static/img/warden-app/manage-your-wallets-main-2.png)
 

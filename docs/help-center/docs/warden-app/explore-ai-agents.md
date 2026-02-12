@@ -21,13 +21,13 @@ In the sections below, you'll find the full list of available Agents—and more 
 You can explore and select Agents in the **Agent Hub**:
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
-2. In the left menu, open the **Agents** tab.
+2. In the left menu, select **Agents**.
 3. Select an Agent. Use the **Verified**/**Community** tabs to switch between Agent types.
-4. After selecting an Agent, you'll be taken to the **Chats** tab.
+4. After selecting an Agent, you'll be redirected to the **Chats** section.
 
 ![The Agent Hub in Warden](../../static/img/warden-app/explore-ai-agents-1.png)
  
-Alternatively, you can access Agents directly from the **Chats** tab. Use the drop-down menu at the top to switch quickly between the Agents:
+Alternatively, you can access Agents directly from the **Chats** section. Use the drop-down menu at the top to switch quickly between the Agents:
 
 ![Manage AI chats in Warden](../../static/img/warden-app/use-the-chat-3.png)
 
@@ -37,7 +37,7 @@ Interacting with some of the Agents is subject to fees. Before starting, you may
 
 ## Warden Agent
 
-The **Warden Agent** is the default Agent you see when logging in to Warden. It's not displayed in the Agent Hub, but you can always switch to it in the **Chats** tab.
+The **Warden Agent** is the default Agent you see when logging in to Warden. It's not displayed in the Agent Hub, but you can always switch to it in the **Chats** section.
 
 This Agent performs all your Web3 transactions and handles other tasks:
 

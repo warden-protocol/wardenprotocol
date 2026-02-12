@@ -24,7 +24,7 @@ Your airdrop will be available on [Warden Protocol](https://docs.wardenprotocol.
 
 :::important Important notes
 - All registration happened in [Warden](https://app.wardenprotocol.org), and claiming is available on the [Airdrop Claim Portal](https://airdrop.wardenprotocol.org). We'll **never** ask you to connect your wallet to any third-party website.
-- To claim WARD, you must have an active [Warden account](manage-your-wallets#the-main-account).
+- To claim WARD, you must have an active [Warden account](manage-your-wallets#main-account).
 - Users who are not registered cannot participate in the claiming phase.
 - Registration did not guarantee rewards. Only [eligible users](#eligibility--distribution) can claim WARD.
 :::
@@ -46,7 +46,7 @@ Before you proceed, make sure you understand how claim-based distribution works.
 
 1. In [Warden](https://app.wardenprotocol.org), click the **Airdrop** icon at the top-right. You'll be redirected to the portal. Alternatively, you can access it directly: 👉 [https://airdrop.wardenprotocol.org](https://airdrop.wardenprotocol.org)
 2. Click **Claim Rewards**.
-3. Connect your [Warden account](manage-your-wallets#the-main-account). Use the same credentials with which you log in to Warden.
+3. Connect your [Warden account](manage-your-wallets#main-account). Use the same credentials with which you log in to Warden.
 4. Click **Continue**. This option is displayed only if you're eligible.
 5. Click **Claim** and confirm.
 6. Review and accept the terms.
@@ -70,7 +70,7 @@ Make sure that you access the Airdrop Claim Portal through [Warden](https://app.
 
 To find out whether you need to claim your reward or not, see [Eligibility & distribution](#eligibility--distribution).
 
-If you're eligible for **automatic distribution**, you'll receive your full allocations directly to your [Warden account](manage-your-wallets#the-main-account) during the first week after trading opens. We'll announce the exact timing via our official channels.
+If you're eligible for **automatic distribution**, you'll receive your full allocations directly to your [Warden account](manage-your-wallets#main-account) during the first week after trading opens. We'll announce the exact timing via our official channels.
 
 ## Eligibility & distribution
 

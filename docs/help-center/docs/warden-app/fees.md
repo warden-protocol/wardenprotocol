@@ -81,13 +81,13 @@ Trading with [Betflix](play-betflix) includes the following fees, charged from y
 The remaining amount from losing bets goes to the community treasury (currently $2,000).
 :::
 
-## Tap to PUMP fee
+## Tap to reWARD fee
 
-Each time you tap in the [Tap to PUMP](earn-rewards#tap-to-pump) game, Warden charges a small fee:
+Each time you tap in the [Tap to reWARD](earn-rewards#tap-to-reward) game, Warden charges a small fee:
 
-| Fee type        | Amount | Currency         | Description          |
-| --------------- | ------ | ---------------- | -------------------- |
-| Tap to PUMP fee | 0.1    | USDC/native coin | A fee paid to Warden |
+| Fee type          | Amount | Currency         | Description          |
+| ----------------- | ------ | ---------------- | -------------------- |
+| Tap to reWARD fee | 0.1    | USDC/native coin | A fee paid to Warden |
 
 Warden charges this fee using the first available currency, following this priority:
 

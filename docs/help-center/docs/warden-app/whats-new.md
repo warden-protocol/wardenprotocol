@@ -66,7 +66,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **Improvements**:
 
-- [Rewards](earn-rewards): Refreshed the PUMPs leaderboard while preserving recent activity.
+- [Rewards](earn-rewards): Refreshed the reWARDs leaderboard while preserving recent activity.
 
 ## February 3, 2026
 
@@ -183,7 +183,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 ## December 30, 2025
 
 **New features**:
-- [Trading](trade): Introduced the [League of Traders](trade#earn-pumps) with PUMP rewards.
+- [Trading](trade): Introduced the [League of Traders](trade#earn-rewards).
 - [Anime Agent](explore-ai-agents#anime-agent): Added a new Agent generating images in anime style.
 
 **Fixes**:

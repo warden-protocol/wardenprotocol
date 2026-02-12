@@ -29,7 +29,7 @@ Gameplay details:
 - The bet is fixed: **$2**/**5**/**10** per round with fixed **100x leverage**.
 - Supported coins: **DOGE**, **PEPE**, **BONK**, **WIF**, **SHIB**, **TRUMP**, and more.
 - All bets are subject to fees. Learn more: [Betflix fees](fees#betflix-fees).
-- Top traders [earn PUMPs](#earn-pumps).
+- Top traders [earn reWARDs](#earn-rewards).
 
 ## Start playing
 
@@ -47,11 +47,11 @@ To start playing, you need **USDC on Solana** (**$6** or more):
 
 ![Start playing Betflix in Warden](../../static/img/warden-app/play-betflix-1.png)
 
-## Earn PUMPs
+## Earn reWARDs
 
 By playing Betflix, you join the **League of Traders**: each swipe contributes to your **hourly**, **daily**, and **weekly** rankings, based on profit and streaks.
 
-Top traders earn [PUMPs](earn-rewards#earn-pumps)—points that reward your activity in Warden:
+Top traders earn [reWARDs](earn-rewards#earn-reward-points)—points that reward your activity in Warden:
 
 - Hourly league: 1st–3rd ranks
 - Daily league: 1st–5th ranks
@@ -90,7 +90,7 @@ To deposit, make sure your main account has **USDC on Solana**.
 
 In the Betflix wallet, you can also view the game statistics:
 
-- The **Leaderboard** tab displays your [League of Traders](#earn-pumps) ranking:
+- The **Leaderboard** tab displays your [League of Traders](#earn-rewards) ranking:
   - You can select the **Hourly**, **Daily**, or **Weekly** leagues.
   - To see rewards for each rank, click the information icon next to the winners list.
 - The **Bets** tab displays your recent plays and results.

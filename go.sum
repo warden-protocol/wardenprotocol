@@ -939,8 +939,8 @@ github.com/cosmos/cosmos-db v1.1.3 h1:7QNT77+vkefostcKkhrzDK9uoIEryzFrU9eoMeaQOP
 github.com/cosmos/cosmos-db v1.1.3/go.mod h1:kN+wGsnwUJZYn8Sy5Q2O0vCYA99MJllkKASbs6Unb9U=
 github.com/cosmos/cosmos-proto v1.0.0-beta.5 h1:eNcayDLpip+zVLRLYafhzLvQlSmyab+RC5W7ZfmxJLA=
 github.com/cosmos/cosmos-proto v1.0.0-beta.5/go.mod h1:hQGLpiIUloJBMdQMMWb/4wRApmI9hjHH05nefC0Ojec=
-github.com/cosmos/cosmos-sdk v0.53.5-0.20251030204916-768cb210885c h1:HMVLvm0q3ahGvsyExkSCBcmvcdItMpTxAh4jllL4rJ4=
-github.com/cosmos/cosmos-sdk v0.53.5-0.20251030204916-768cb210885c/go.mod h1:nifazrMGFjpmOuaVIZBQ8akQc160imzySYFEA8A7tus=
+github.com/cosmos/cosmos-sdk v0.53.6 h1:aJeInld7rbsHtH1qLHu2aZJF9t40mGlqp3ylBLDT0HI=
+github.com/cosmos/cosmos-sdk v0.53.6/go.mod h1:N6YuprhAabInbT3YGumGDKONbvPX5dNro7RjHvkQoKE=
 github.com/cosmos/evm v0.5.1 h1:eSRsxFxy/Tr2jiga/h8X5DojnC8JJwd21MB+HTa1SIg=
 github.com/cosmos/evm v0.5.1/go.mod h1:AiKOtGMt539qICNH2Kdy+iw9yK3rlcU6MWet3+g8sWs=
 github.com/cosmos/go-bip39 v1.0.0 h1:pcomnQdrdH22njcAatO0yWojsUnCO3y2tNoV1cb6hHY=
@@ -960,8 +960,8 @@ github.com/cosmos/ics23/go v0.11.0 h1:jk5skjT0TqX5e5QJbEnwXIS2yI2vnmLOgpQPeM5Rtn
 github.com/cosmos/ics23/go v0.11.0/go.mod h1:A8OjxPE67hHST4Icw94hOxxFEJMBG031xIGF/JHNIY0=
 github.com/cosmos/keyring v1.2.0 h1:8C1lBP9xhImmIabyXW4c3vFjjLiBdGCmfLUfeZlV1Yo=
 github.com/cosmos/keyring v1.2.0/go.mod h1:fc+wB5KTk9wQ9sDx0kFXB3A0MaeGHM9AwRStKOQ5vOA=
-github.com/cosmos/ledger-cosmos-go v0.16.0 h1:YKlWPG9NnGZIEUb2bEfZ6zhON1CHlNTg0QKRRGcNEd0=
-github.com/cosmos/ledger-cosmos-go v0.16.0/go.mod h1:WrM2xEa8koYoH2DgeIuZXNarF7FGuZl3mrIOnp3Dp0o=
+github.com/cosmos/ledger-cosmos-go v1.0.0 h1:jNKW89nPf0vR0EkjHG8Zz16h6p3zqwYEOxlHArwgYtw=
+github.com/cosmos/ledger-cosmos-go v1.0.0/go.mod h1:mGaw2wDOf+Z6SfRJsMGxU9DIrBa4du0MAiPlpPhLAOE=
 github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d/go.mod h1:maD7wRr/U5Z6m/iR4s+kqSMx2CaBsrgA7czyZG/E6dU=
 github.com/cpuguy83/go-md2man/v2 v2.0.6/go.mod h1:oOW0eioCTA6cOiMLiUPZOpcVxMig6NIQQ7OS05n1F4g=
 github.com/cpuguy83/go-md2man/v2 v2.0.7 h1:zbFlGlXEAKlwXpmvle3d8Oe3YnkKIK4xSRTd3sHPnBo=

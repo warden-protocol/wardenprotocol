@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Quick start
+# Get started
 
 In Warden, you can send or swap assets using simple **chat commands**.
 

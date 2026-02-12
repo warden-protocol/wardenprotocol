@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 10
+sidebar_position: 12
 ---
 
 # Fees
@@ -97,13 +97,13 @@ Warden charges this fee using the first available currency, following this prior
 
 ## Airdrop registration fee
 
-When you [register for the WARD airdrop](ward-airdrop), Warden charges a randomized fee to eliminate bot accounts:
+When registration for the [$WARD airdrop](claim-ward) was open, Warden charged a randomized fee to eliminate bot accounts:
 
 | Fee type         | Amount  | Currency         | Description          |
 | ---------------- | ------- | ---------------- | -------------------- |
 | Registration fee | 3–3.50  | USDC/native coin | A fee paid to Warden |
 
-Warden charges this fee using the first available currency, following this priority:
+This fee was charged using the first available currency, following this priority:
 
 - **USDC** on Solana, Base, Arbitrum, BNB Smart Chain, or Ethereum
 - **SOL** on Solana

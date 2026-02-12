@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 8
+sidebar_position: 5
 ---
 
 # Manage your wallets

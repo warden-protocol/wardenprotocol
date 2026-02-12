@@ -1,5 +1,5 @@
 ---
-sidebar_position: 11
+sidebar_position: 13
 ---
 
 # What's new?
@@ -28,7 +28,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 - [Warden Agent](explore-ai-agents#warden-agent): Improved conversation handling, routing logic, and response quality.
 - [Agent Hub](explore-ai-agents#access-agents): Improved navigation.
 - [Wallets](manage-your-wallets): Improved balance formatting.
-- [WARD airdrop](ward-airdrop):
+- [$WARD airdrop](claim-ward):
   - Improved the UI and behavior.
   - Improved internal performance and stability.
 
@@ -53,9 +53,9 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **New features**:
 
-- [WARD airdrop](ward-airdrop): Added the Airdrop Claim Portal where users can claim their WARD airdrop.
+- [$WARD airdrop](claim-ward): Added the Airdrop Claim Portal where users can claim their $WARD airdrop.
 - [Supported chains](/#supported-networks):
-  - Added [Warden Protocol](https://docs.wardenprotocol.org/learn/introduction-to-warden) and its native coin, [WARD](https://docs.wardenprotocol.org/ward/introduction).
+  - Added [Warden Protocol](https://docs.wardenprotocol.org/learn/introduction-to-warden) and its native coin, [$WARD](https://docs.wardenprotocol.org/ward/introduction).
   - Added support for **ERC20 WARD** on **Base** and **BEP20 WARD** on **BNB Smart Chain**.
 - [Warden Agent](explore-ai-agents#warden-agent), [Jupiter](explore-ai-agents#jupiter): Improved token detection on Solana, including support for newer token standards.
 
@@ -86,11 +86,11 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **New features**:
 
-- [WARD airdrop](ward-airdrop): Added UI and infrastructure updates to support future airdrop flows.
+- [$WARD airdrop](claim-ward): Added UI and infrastructure updates to support future airdrop flows.
 
 **Improvements**:
 
-- [WARD airdrop](ward-airdrop): 
+- [$WARD airdrop](claim-ward): 
   - Improved the registration flow, visual layout, and the UI text.
   - Enhanced messaging.
 
@@ -98,7 +98,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **Improvements**:
 
-- [WARD airdrop](ward-airdrop):
+- [$WARD airdrop](claim-ward):
   - Enhanced messaging.
   - Enhanced error handling.
 - [Warden Agent](explore-ai-agents#warden-agent):
@@ -121,17 +121,17 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **New features**:
 
-- [WARD airdrop](ward-airdrop): Added the ability to pay the registration fee on **Arbitrum** and **BNB Smart Chain**.
+- [$WARD airdrop](claim-ward): Added the ability to pay the registration fee on **Arbitrum** and **BNB Smart Chain**.
 
 **Improvements**:
 
-- [WARD airdrop](ward-airdrop): Adjusted the registration fee.
+- [$WARD airdrop](claim-ward): Adjusted the registration fee.
 
 ## January 15, 2026
 
 **New features**:
 
-- [WARD airdrop](ward-airdrop): Added a portal where you can register for the WARD airdrop.
+- [$WARD airdrop](claim-ward): Added a portal where you can register for the $WARD airdrop.
 
 ## January 13, 2026
 

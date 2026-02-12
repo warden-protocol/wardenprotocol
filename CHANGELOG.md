@@ -42,6 +42,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Consensus Breaking Changes
 
+- sdk: update Cosmos SDK to v0.53.6.
+
 ### Features (non-breaking)
 
 ### Bug Fixes

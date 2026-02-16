@@ -20,7 +20,7 @@ replace (
 )
 
 require (
-	cosmossdk.io/api v0.9.2
+	cosmossdk.io/api v1.0.0
 	cosmossdk.io/client/v2 v2.0.0-beta.11
 	cosmossdk.io/collections v1.3.1
 	cosmossdk.io/core v0.11.3
@@ -65,7 +65,7 @@ require (
 	github.com/stretchr/testify v1.11.1
 	github.com/warden-protocol/connect v1.3.1
 	golang.org/x/image v0.35.0
-	google.golang.org/genproto/googleapis/api v0.0.0-20251022142026-3a174f9686a8
+	google.golang.org/genproto/googleapis/api v0.0.0-20260114163908-3f89685c29c3
 	google.golang.org/grpc v1.77.0
 	google.golang.org/protobuf v1.36.11
 )
@@ -381,7 +381,7 @@ require (
 	golang.org/x/time v0.12.0 // indirect
 	google.golang.org/api v0.247.0 // indirect
 	google.golang.org/genproto v0.0.0-20250603155806-513f23925822 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20251022142026-3a174f9686a8 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260114163908-3f89685c29c3 // indirect
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.5.1 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect

@@ -30,7 +30,7 @@ To start predicting, you need **USDT on BNB Smart Chain**. Take these steps:
 8. Confirm.
 
 :::tip
-Before placing an order, you can [analyze the market](#analyze-the-market-with-ai).
+Before placing an order, you can [analyze the market](#analyze-the-market).
 :::
 
 ![Access Warden's predictions](../../static/img/warden-app/predict-1.png)

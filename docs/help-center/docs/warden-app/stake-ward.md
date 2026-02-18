@@ -22,7 +22,7 @@ To access the staking screen, do this:
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org).
 2. Click the wallet icon at the top right to open your [main account](manage-your-wallets#main-account).
-3. Click **Stake** next to you $WARD balance.
+3. Click **Stake** next to your $WARD balance.
 
 ![Access your wallets in Warden](../../static/img/warden-app/manage-your-wallets-1.png)
 ![Access the staking screen through the main Warden account](../../static/img/warden-app/stake-1.png)

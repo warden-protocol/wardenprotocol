@@ -55,7 +55,7 @@ To view and unlink your linked wallets, see the [account settings](#configure).
 :::
 
 ![Access your wallets in Warden](../../static/img/warden-app/manage-your-wallets-1.png)
-![Deposit funds the main account in Warden](../../static/img/warden-app/manage-your-wallets-main-1.png)
+![Deposit funds to the main account in Warden](../../static/img/warden-app/manage-your-wallets-main-1.png)
 
 ### Send or swap
 

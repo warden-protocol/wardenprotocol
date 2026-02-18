@@ -8,11 +8,32 @@ sidebar_position: 13
 
 Here you'll find the latest Warden release highlights, including new features, improvements, and bug fixes. This section helps you quickly see what's changed and how it can enhance your experience.
 
+## February 18, 2026
+
+**Improvements**:
+
+- [Staking](stake-ward): Added the ability to access staking from the main account.
+- [Earn rewards](earn-rewards):
+  - Improved the UI
+  - Updated the leaderboard
+  - Updated the logic behind rewards for swapping
+
+**Fixes**:
+
+- [Predictions](predict):
+  - Fixed incorrect limit order suggestions
+  - Resolved an issue with failing API calls
+  - Fixed the retry logic
+  - Fixed UI issues
+- [Staking](stake-ward): Fixed UI issues.
+- [Strategies](trade#trading-with-strategies): Fixed UI issues.
+- The home page: Fixed UI issues.
+
 ## February 12, 2026
 
 **New features**:
 
-- [Predictions (Beta)](predict): Introduced Predictions and the Predict Agent. These features allow you to trade real-world events with the help of the AI.
+- [Predictions ](predict): Introduced a Beta version of Predictions and the [Predict Agent](explore-ai-agents#predict-agent). These features allow you to trade real-world events with the help of the AI.
 - [Staking](stake-ward): Now $WARD holders can stake their tokens on Warden.
 
 **Improvements**:
@@ -25,7 +46,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **Fixes**:
 
-- Home screen: Fixed minor UI issues.
+- The home page: Fixed minor UI issues.
 
 ## February 10, 2026
 
@@ -177,7 +198,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **Fixes**:
 
-- [Agent Hub](explore-ai-agents#access-agents): A minor UI fix.
+- [Agent Hub](explore-ai-agents#access-agents): Made a minor UI fix.
 - [Messari Deep Research](explore-ai-agents#messari-deep-research): Resolved an issue with conversation history handling.
 
 ## December 30, 2025

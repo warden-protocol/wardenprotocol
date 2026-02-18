@@ -32,7 +32,7 @@ Want to trade just for fun? Try [Betflix](play-betflix).
 You'll see the Terminal interface, where you can do the following:
 
 1. Switch between [manual trading](#manual-trading) and [strategies](#trading-with-strategies).
-2. Select a perp to trade
+2. Select a perp
 3. [Create an order](#create-an-order)
 4. [Manage your trade](#manage-your-trade)
 5. [Manage the trading wallet](#trading-wallet)
@@ -61,11 +61,12 @@ An **order** is an instruction to buy or sell a perpetual contract. Warden suppo
 
 [Open the AI Trading Terminal](#access-the-trading-terminal) and do this:
 
-1. If it's your first trade, click **Start Trading** and confirm your consent.
-2. Select a token pair from the drop-down menu at the top left.
-3. In the configuration panel at the right, set your [order parameters](#order-parameters).
-4. Click **Long**/**Short** at the bottom of the configuration panel.
-5. Review your order details and confirm opening a position.
+1. Make sure you're on the **Manual** tab.
+2. If it's your first trade, click **Start Trading** and confirm your consent.
+3. Select a token pair from the drop-down menu at the top left.
+4. In the configuration panel at the right, set your [order parameters](#order-parameters).
+5. Click **Long**/**Short** at the bottom of the configuration panel.
+6. Review your order details and confirm opening a position.
 
 :::note
 Selecting a pair determines the perp you'll trade. Tokens (base currencies) are usually paired with **USDC** or **USDH**: BTC-USDC, ETH-USDC, OPENAI-USDC, and so on.
@@ -187,18 +188,19 @@ After [allocating funds](#use-a-strategy) to a Strategy, you can track and manag
 
 1. Open the **Strategies** tab. You'll see your positions under **Portfolio**.
 2. Click **View** next to any position to open its Strategy.
-3. At the top of the screen, you can do this:
-   - View your position details
-   - Click **Add USDC** to allocate more funds to the Strategy
-   - Click **Withdraw** to withdraw or check the lockup period
 
-:::tip
-Strategies support both partial and full withdrawal.
+
+Here you can do the following:
+  - View your position details
+  - Click **Add USDC** to allocate more funds to the Strategy
+  - Click **Withdraw** to withdraw or check the lockup period
+
+:::important
+Strategies support both partial and full withdrawals. Withdrawals may require partially closing vault positions at market price. Due to slippage (market price changes during execution), the final amount may differ from the amount originally entered.
 :::
 
 ![Access your trading positions opened with Strategies on Warden](../../static/img/warden-app/trade-strategies-5.png)
 ![Track and manage a trading position opened with Strategies on Warden](../../static/img/warden-app/trade-strategies-6.png)
-![Withdraw trading funds allocated to a Strategy on Warden](../../static/img/warden-app/trade-strategies-7.png)
 
 ## Trading wallet
 
@@ -269,9 +271,9 @@ In the trading wallet, you can also view your statistics:
 
 In the [AI Trading Terminal](#access-the-trading-terminal), you can access various market analysis tools helping you make informed decisions on your trades:
 
+- **Messari Signals** powered by [Messari](https://messari.io) are AI-generated token reports. For deeper insights, use the [Messari Deep Research](explore-ai-agents#messari-deep-research) Agent.
 - **The live chart** displays perp price movements. It supports multiple chart types, technical indicators, drawing tools, and more. Here you can also view your historical trades and [manage your active trades](#manage-your-trade).
 - **The order book** is a real-time list of all active buy and sell orders. It shows available amounts at each price level, letting you see market liquidity and the spread between bids and asks.
-- **Messari Signals** powered by [Messari](https://messari.io) are AI-generated token reports. For deeper insights, use the [Messari Deep Research](explore-ai-agents#messari-deep-research) Agent.
 
 :::note
 The market data for the chart and order book is provided by [Hyperliquid](https://hyperfoundation.org).

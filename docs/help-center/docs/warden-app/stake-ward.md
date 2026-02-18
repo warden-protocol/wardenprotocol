@@ -18,21 +18,29 @@ When staking, you **delegate** your tokens to a preferred **validator** acting o
 
 ## Access staking
 
-To access staking, open [Warden](https://app.wardenprotocol.org) and click **Stake $WARD** on the home screen:
+To access the staking screen, do this:
 
-![Access the staking screen in Warden](../../static/img/warden-app/stake-1.png)
+1. Log in: 👉 [Warden](https://app.wardenprotocol.org).
+2. Click the wallet icon at the top right to open your [main account](manage-your-wallets#main-account).
+3. Click **Stake** next to you $WARD balance.
+
+![Access your wallets in Warden](../../static/img/warden-app/manage-your-wallets-1.png)
+![Access the staking screen through the main Warden account](../../static/img/warden-app/stake-1.png)
+
+Alternatively, you can click **Stake $WARD** on the home screen:
+
+![Access the staking screen through Warden's home screen](../../static/img/warden-app/stake-2.png)
 
 ## Stake
 
-To start staking on Warden, take these steps:
+To start staking, make sure you hold enough $WARD in your [main account](manage-your-wallets#main-account).
 
-1. Log in: 👉 [Warden](https://app.wardenprotocol.org).
-2. Make sure your [Warden wallet](manage-your-wallets#main-account) holds enough $WARD.
-3. On the home screen, click **Stake $WARD**.
-4. On the staking screen, click **Stake**.
-5. Select a validator. You can sort and filter the list.
-6. Enter the amount to stake.
-7. Confirm the transaction.
+Then [access the staking screen](#access-staking) and take these steps:
+
+1. On the staking screen, click **Stake**.
+2. Select a validator. You can sort and filter the list.
+3. Enter the amount to stake.
+4. Confirm the transaction.
 
 Your $WARD will be delegated to the selected validator, and you'll start [earning rewards](#earn--claim). Warden will display your portfolio on the staking screen.
 
@@ -44,9 +52,8 @@ Please note that validators charge **commissions**. The amount varies.
 To learn more about validators, see [Warden validators](#warden-validators).
 :::
 
-![Access the staking screen in Warden](../../static/img/warden-app/stake-1.png)
-![Start staking $WARD in Warden](../../static/img/warden-app/stake-2.png)
-![Enter staking details in Warden](../../static/img/warden-app/stake-3.png)
+![Start staking $WARD in Warden](../../static/img/warden-app/stake-3.png)
+![Enter staking details in Warden](../../static/img/warden-app/stake-4.png)
 
 ## Stake more
 
@@ -54,7 +61,7 @@ You can always **stake more**.
 
 On the [staking screen](#access-staking), click **Stake More** or the list of validators from your portfolio:
 
-![Stake more $WARD in Warden](../../static/img/warden-app/stake-4.png)
+![Stake more $WARD in Warden](../../static/img/warden-app/stake-5.png)
 
 ## Earn & claim
 
@@ -71,7 +78,7 @@ You can **claim** any portion of your accumulated rewards at any time:
 
 You'll immediately receive $WARD to your main account.
 
-![Claim your staking rewards in Warden](../../static/img/warden-app/stake-5.png)
+![Claim your staking rewards in Warden](../../static/img/warden-app/stake-6.png)
 
 ## Unstake
 
@@ -84,7 +91,7 @@ You can **unstake** any portion of your staked $WARD at any time:
 
 There is an **unbonding period of 14 days** during which your tokens will be locked before they become available in your wallet again.
 
-![Unstake $WARD in Warden](../../static/img/warden-app/stake-6.png)
+![Unstake $WARD in Warden](../../static/img/warden-app/stake-7.png)
 
 ## Warden validators
 
@@ -107,7 +114,7 @@ Here are all available Warden validators:
 - [UTSA](https://utsa.gitbook.io/services/)
 - [polkachu.com](https://polkachu.com)
 - [LithiumDigital](https://www.lithiumdigital.com/staking)
-- CoreNode
+- [CoreNode](https://corenode.info)
 - [Cumulo](https://cumulo.pro)
 - [TrustedPoint](https://trusted-point.com)
 - [POSTHUMAN 🧬 StakeDrop](https://www.posthuman.digital)
@@ -121,7 +128,7 @@ Here are all available Warden validators:
 - [CryptoSJnet](https://cryptosj.net)
 - [MictoNode](https://mictonode.com)
 - [ITRocket](https://itrocket.net)
-- AM Solutions
+- [AM Solutions](https://www.theamsolutions.info)
 - [StakeUp](https://stakeup.tech)
 - [EQLab](https://eqlab.io)
 - [Inter Blockchain Services](https://ibs.team)

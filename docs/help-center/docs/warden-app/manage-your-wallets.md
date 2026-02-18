@@ -16,9 +16,8 @@ This guide explains how to manage your Warden wallets:
 You can access your wallets from any Warden tab:
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
-2. Click the wallet icon in the top-right corner.
-3. This will open the wallet panel at the right.
-4. Use the menu at the top of the wallet to switch between your accounts:
+2. Click the wallet icon at the top-right to open the wallet panel.
+3. Use the menu at the top to switch between your accounts:
    - **Main account**: [Your main account](#main-account)
    - **Agents Credits**: [The Agents Credits wallet](#agents-credits)
    - **Trading**: [The trading wallet](#trading)
@@ -26,6 +25,7 @@ You can access your wallets from any Warden tab:
 
 ![Access your wallet in Warden](../../static/img/warden-app/manage-your-wallets-1.png)
 ![View your wallet in Warden](../../static/img/warden-app/manage-your-wallets-2.png)
+![Switch accounts in Warden](../../static/img/warden-app/manage-your-wallets-3.png)
 
 ## Main account
 
@@ -55,7 +55,7 @@ To view and unlink your linked wallets, see the [account settings](#configure).
 :::
 
 ![Access your wallets in Warden](../../static/img/warden-app/manage-your-wallets-1.png)
-![Select the main account in Warden](../../static/img/warden-app/manage-your-wallets-main-1.png)
+![Deposit funds the main account in Warden](../../static/img/warden-app/manage-your-wallets-main-1.png)
 
 ### Send or swap
 
@@ -80,7 +80,7 @@ Transactions are subject to [transfer](fees#transfer-fee) and [swap fees](fees#s
 - You can check your history in the wallet's **Activity** tab.
 :::
 
-![Send or swap assets using the Warden Agent](../../static/img/warden-app/quick-start-1.png)
+![Send or swap assets using the Warden Agent](../../static/img/warden-app/use-the-chat-2.png)
 
 ### View your assets
 
@@ -153,6 +153,7 @@ To deposit and pay for gas, make sure your main account has **USDC and ETH** on 
 Currently, withdrawals aren't allowed.
 :::
 
+![Access your wallets in Warden](../../static/img/warden-app/manage-your-wallets-1.png)
 ![Deposit to the Agents Credits wallet in Warden](../../static/img/warden-app/manage-your-wallets-credits-1.png)
 
 ### Trading

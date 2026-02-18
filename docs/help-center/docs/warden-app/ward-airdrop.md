@@ -155,10 +155,48 @@ When you claim your reward, your Pre-Early status, tier, and benefits are automa
 In this case, registration for the airdrop wasn't required.
 :::
 
-## Other ways to get $WARD
+## Withdraw WARD
 
-Besides the airdrop, you can **buy $WARD** using **external wallets**, outside of Warden.
+If you want the **security of self-custody** without the complexity, **keep your WARD in Warden**.
 
-Buying $WARD from CEXs & DEXs **does not require a Warden account**. You manage purchased $WARD entirely through your external wallet.
+:::note
+In Warden, **only you can access your private keys**. They’re securely split and never stored in one place, coming together only momentarily to approve transactions. This lets you transact securely, use Web3 apps, and manage assets with natural language.
+:::
 
-External wallets can interact with third-party apps for actions such as **swapping and bridging $WARD**.
+If you still prefer to withdraw your WARD to an **external EVM wallet**, follow these steps:
+
+1. [Add Warden as a custom network](https://docs.wardenprotocol.org/learn/warden-networks#add-warden-as-a-custom-network) to your external wallet.
+2. Copy your external EVM wallet address.
+3. Log in: 👉 [Warden](https://app.wardenprotocol.org)
+4. Click the wallet icon in the top-right corner to open your [main account](manage-your-wallets#the-main-account).
+5. Click **Send** to start a chat with the [Warden Agent](explore-ai-agents#warden-agent).
+6. Type this: *Send [amount] WARD on Warden Chain to [EVM address]*.
+7. Confirm the transaction.
+8. Verify the withdrawal in the [Warden Protocol explorer](https://explorer.wardenprotocol.org).
+
+:::tip
+When specifying the withdrawal amount, keep at least **0.001 WARD** to cover gas fees.
+:::
+
+![Access your wallet in Warden](../../static/img/warden-app/manage-your-wallets-1.png)
+![Send an asset in Warden](../../static/img/warden-app/airdrop-withdraw.png)
+
+## Get extra WARD
+
+Besides the airdrop, there are two ways to get WARD:
+
+- **Buy**: You can buy WARD from CEXs & DEXs. This **does not require a Warden account**: you manage purchased WARD entirely through your external wallet.
+- **Swap & bridge**: External wallets can interact with third-party apps for actions such as swapping and bridging WARD. Please note that it's **currently not possible to swap WARD in Warden**.
+
+WARD is listed on the following platforms:
+
+**Centralized exchanges**
+- [Aster](https://www.asterdex.com/en/trade/pro/futures/WARDUSDT)
+- [Bitget](https://www.bitget.com/asia/spot/WARDUSDT)
+- [Kraken](https://pro.kraken.com/app/trade/WARD-usd)
+- [KuCoin](https://www.kucoin.com/trade/WARD-USDT)
+- [LBank](https://www.lbank.com/trade/ward_usdt)
+- [MEXC](https://www.mexc.com/exchange/WARD_USDT)
+
+**Wallet-based access**
+- [Binance Wallet (Alpha/Web3)](https://www.binance.com/en/alpha/bsc/0x6dc200b21894af4660b549b678ea8df22bf7cfac)

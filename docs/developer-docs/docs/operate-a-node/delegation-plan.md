@@ -41,7 +41,7 @@ Each of these tiers will get a percentage of the delegation pool allocated durin
 | 4     | 2M          | 20               | 2%             | 40%     | 40M              |
 
 :::note
-Amounts are expressed in WARD tokens.
+Amounts are expressed in $WARD tokens.
 :::
 
 ## Validator requirements
@@ -79,9 +79,9 @@ Validators in the program will receive a feedback form every quarter, so the pro
 
 Delegators have several criteria to consider when choosing validators to delegate their tokens to. Here are some key factors that delegators may want to take into account when selecting validators:
 
-**Self-bonded WARD**: The amount of WARD a validator has self‑bonded is an indicator of commitment and alignment with the network. Validators with higher self‑bonded WARD have greater "skin in the game" and are perceived as more reliable and accountable.
+**Self-bonded $WARD**: The amount of $WARD a validator has self‑bonded is an indicator of commitment and alignment with the network. Validators with higher self‑bonded $WARD have greater "skin in the game" and are perceived as more reliable and accountable.
 
-**Delegated WARD**: The total amount of WARD delegated to a validator reflects the level of trust and confidence the community has in that validator. A validator with a large stake of delegate WARD may be considered more reputable, but may also make them a bigger target for malicious actors, potentially impacting network security.
+**Delegated $WARD**: The total amount of $WARD delegated to a validator reflects the level of trust and confidence the community has in that validator. A validator with a large stake of delegate $WARD may be considered more reputable, but may also make them a bigger target for malicious actors, potentially impacting network security.
 
 **Commission rate**: The commission rate set by the validator determines the portion of staking rewards that the validator retains for themselves, rather than distributing it to their delegators.
 

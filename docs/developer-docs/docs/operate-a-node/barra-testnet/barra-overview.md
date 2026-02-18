@@ -66,10 +66,10 @@ barra_9191-1
 
 ## Denomination
 
-Barra's denomination is `award` (1 award = 10^-18 [WARD](/ward/introduction)).
+Barra's denomination is `award` (1 award = 10^-18 [$WARD](/ward/introduction)).
 
 ## Faucet
 
-Here is the faucet for getting [WARD](/ward/introduction) on Barra:
+Here is the faucet for getting [$WARD](/ward/introduction) on Barra:
 
 - [Barra faucet](https://faucet.wardenprotocol.org)

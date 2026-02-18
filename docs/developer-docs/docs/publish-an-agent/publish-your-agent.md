@@ -52,7 +52,7 @@ To publish your Agent, you **do not need to build a UI**. The only thing require
 
 Now you can publish and monetize your Agent on [Warden](https://app.wardenprotocol.org) through **Warden Studio**—our platform for Agent developers.
 
-Make sure your [Warden account](https://help.wardenprotocol.org/warden-app/manage-your-wallets#the-main-account) holds the following assets:
+Make sure your [Warden account](https://help.wardenprotocol.org/warden-app/manage-your-wallets#main-account) holds the following assets:
 
 - At least **1 USDC on Base** to pay the registration fee
 - **ETH on Base** to pay the gas fee

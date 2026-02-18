@@ -216,7 +216,7 @@ The **Predict Agent** is available in the [Predict](predict#analyze-the-market) 
 This Agent helps you trade real-world events:
 
 - Analyzes prediction markets
-- Provides insights on probabilities
+- Provides insights into probabilities
 - Provides relevant statistics and reasoning behind its estimates
 
 Fees: none.

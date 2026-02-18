@@ -46,7 +46,7 @@ To view and manage your portfolio, open the **Predict** section and switch to th
 
 After selecting an event in the **Predictions** tab, you access the following market analysis tools:
 
-- [The Predict Agent](explore-ai-agents#predict-agent) providing insights on the market
+- [The Predict Agent](explore-ai-agents#predict-agent) providing insights into the market
 - **The AI overview** of the market
 - **The live chart** displaying predictions
 

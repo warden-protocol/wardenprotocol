@@ -14,17 +14,17 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 - [Staking](stake-ward): Added the ability to access staking from the main account.
 - [Earn rewards](earn-rewards):
-  - Improved the UI
-  - Updated the leaderboard
-  - Updated the logic behind rewards for swapping
+  - Improved the UI.
+  - Updated the leaderboard.
+  - Updated the logic behind rewards for swapping.
 
 **Fixes**:
 
 - [Predictions](predict):
-  - Fixed incorrect limit order suggestions
-  - Resolved an issue with failing API calls
-  - Fixed the retry logic
-  - Fixed UI issues
+  - Fixed incorrect limit order suggestions.
+  - Resolved an issue with failing API calls.
+  - Fixed the retry logic.
+  - Fixed UI issues.
 - [Staking](stake-ward): Fixed UI issues.
 - [Strategies](trade#trading-with-strategies): Fixed UI issues.
 - The home page: Fixed UI issues.
@@ -33,7 +33,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **New features**:
 
-- [Predictions](predict): Introduced a Beta version of Predictions and the [Predict Agent](explore-ai-agents#predict-agent). These features allow you to trade real-world events with the help of the AI.
+- [Predictions](predict): Introduced a Beta version of Predictions and the [Predict Agent](explore-ai-agents#predict-agent). These features allow you to trade real-world events with the help of AI.
 - [Staking](stake-ward): Now $WARD holders can stake their tokens on Warden.
 
 **Improvements**:
@@ -57,8 +57,8 @@ Here you'll find the latest Warden release highlights, including new features, i
   - Added current price change to positions.
   - Added an option for withdrawing the maximum amount from the trading wallet.
 - [Warden Agent](explore-ai-agents#warden-agent):
-  - Added prompt suggestions for next steps in conversations
-  - Added contextual suggestions for chain selection
+  - Added prompt suggestions for next steps in conversations.
+  - Added contextual suggestions for chain selection.
 
 **Improvements**:
 

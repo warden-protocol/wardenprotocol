@@ -20,4 +20,4 @@ The following is a brief overview explaining how to get started and experience t
 
 Congratulations! You've just performed your first transaction with Warden.
 
-![Send or swap assets using the Warden Agent](../../static/img/warden-app/quick-start-1.png)
+![Send or swap assets using the Warden Agent](../../static/img/warden-app/use-the-chat-2.png)

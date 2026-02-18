@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 5
+sidebar_position: 6
 ---
 
 # Trade
@@ -27,7 +27,7 @@ Want to trade just for fun? Try [Betflix](play-betflix).
 **AI Trading Terminal** is a place in Warden where you can open perpetual trading positions and analyze market data. To access the Terminal, do this:
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
-2. Open the **Trade** tab.
+2. In the left menu, select **Trade**.
 
 You'll see the Terminal interface, where you can do the following:
 
@@ -37,7 +37,7 @@ You'll see the Terminal interface, where you can do the following:
 4. [Manage your trade](#manage-your-trade)
 5. [Manage the trading wallet](#trading-wallet)
 6. [Analyze the market](#analyze-the-market)
-7. [Earn PUMPs](#earn-pumps)
+7. [Earn reWARDs](#earn-rewards)
 
 ![AI Trading Terminal in Warden](../../static/img/warden-app/trade-terminal.png)
 
@@ -47,7 +47,7 @@ To start trading, you need **USDC** on **Arbitrum**, **Ethereum**, **Base**, or 
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. If you don't have USDC, [deposit it to your main account](manage-your-wallets#deposit).
-3. In the left menu, open the **Trade** tab to access the AI Trading Terminal.
+3. In the left menu, select **Trade** to access the AI Trading Terminal.
 4. Click the wallet icon at the top right to open the [trading wallet](#trading-wallet).
 5. In the trading wallet, click **Deposit** and add USDC from your main account.
 
@@ -256,7 +256,7 @@ Each withdrawal is subject to a [Hyperliquid fee](fees#trading-wallet-fees) of *
 
 In the trading wallet, you can also view your statistics:
 
-- The **Leaderboard** tab displays your [League of Traders](#earn-pumps) ranking:
+- The **Leaderboard** tab displays your [League of Traders](#earn-rewards) ranking:
   - You can select the **Weekly** and **Monthly** leagues, **PnL** or **Volume**.
   - To see rewards for each rank, click the information icon next to the winners list.
 - The **Activity** tab displays your activity in the wallet.
@@ -281,13 +281,13 @@ The market data for the chart and order book is provided by [Hyperliquid](https:
 ![Use technical indicators on the trading live chart in Warden](../../static/img/warden-app/trade-market-2.png)
 ![See your positions on the trading live chart in Warden](../../static/img/warden-app/trade-market-3.png)
 
-### Earn PUMPs
+### Earn reWARDs
 
-Once your all-time total trade volume reaches **$100**, you qualify to join the **League of Traders** and start receiving [PUMPs](earn-rewards#earn-pumps)—points that reward your activity in Warden.
+Once your all-time total trade volume reaches **$100**, you qualify to join the **League of Traders** and start receiving [reWARDs](earn-rewards#earn-reward-points)—points that reward your activity in Warden.
 
-You earn rewards for every position closed within a **15-minute** cycle (when PUMPs are distributed):
+You earn rewards for every position closed within a **15-minute** cycle (when reWARDs are distributed):
 
-- Reward (PUMPs) = **trade volume (USD) x 30 x your multiplier**.
+- Reward (reWARDs) = **trade volume (USD) x 30 x your multiplier**.
 - Trade volume  = **price x size (base currency) x leverage**.
 - The multiplier is based on your total trade volume:
   - 1x for volume >= $100
@@ -295,17 +295,17 @@ You earn rewards for every position closed within a **15-minute** cycle (when PU
   - 3x for volume >= $1,000
   - 5x for volume >= $10,000
 
-In the **League of Traders**, there are two **weekly** and two **monthly** leaderboards based on **PnL** and **volume**. Top traders in each ranking earn extra PUMPs:
+In the **League of Traders**, there are two **weekly** and two **monthly** leaderboards based on **PnL** and **volume**. Top traders in each ranking earn extra reWARDs:
 
 - Weekly PnL & Volume leagues: 1st–5th ranks
 - Monthly PnL & Volume leagues: 1st–5th ranks
 
 To view all leaderboards and the exact rewards, [check your trading wallet](#check-your-stats) or click the League of Traders icon at the top right:
 
-![Access the Pro League of Traders in Warden](../../static/img/warden-app/trade-pumps.png)
+![Access the Pro League of Traders in Warden](../../static/img/warden-app/trade-rewards.png)
 
 :::note
-Since distributions of PUMPs run at 15-minute intervals, leaderboard stats may update with a delay.
+Since distributions of reWARDs run at 15-minute intervals, leaderboard stats may update with a delay.
 :::
 
 ### Glossary

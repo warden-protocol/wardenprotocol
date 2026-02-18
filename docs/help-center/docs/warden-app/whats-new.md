@@ -1,5 +1,5 @@
 ---
-sidebar_position: 11
+sidebar_position: 13
 ---
 
 # What's new?
@@ -7,6 +7,25 @@ sidebar_position: 11
 ## Overview
 
 Here you'll find the latest Warden release highlights, including new features, improvements, and bug fixes. This section helps you quickly see what's changed and how it can enhance your experience.
+
+## February 12, 2026
+
+**New features**:
+
+- [Predictions (Beta)](predict): Introduced Predictions and the Predict Agent. These features allow you to trade real-world events with the help of the AI.
+- [Staking](stake-ward): Now $WARD holders can stake their tokens on Warden.
+
+**Improvements**:
+
+- [Trading](trade):
+  - Added a deposit prompt.
+  - Added a toggle that allows setting the maximum margin.
+  - Enhanced balance validation.
+- [Earn rewards](earn-rewards): Updated the UI.
+
+**Fixes**:
+
+- Home screen: Fixed minor UI issues.
 
 ## February 10, 2026
 
@@ -28,7 +47,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 - [Warden Agent](explore-ai-agents#warden-agent): Improved conversation handling, routing logic, and response quality.
 - [Agent Hub](explore-ai-agents#access-agents): Improved navigation.
 - [Wallets](manage-your-wallets): Improved balance formatting.
-- [WARD airdrop](ward-airdrop):
+- [$WARD airdrop](ward-airdrop):
   - Improved the UI and behavior.
   - Improved internal performance and stability.
 
@@ -47,15 +66,15 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **Improvements**:
 
-- [Rewards](earn-rewards): Refreshed the PUMPs leaderboard while preserving recent activity.
+- [Rewards](earn-rewards): Refreshed the reWARDs leaderboard while preserving recent activity.
 
 ## February 3, 2026
 
 **New features**:
 
-- [WARD airdrop](ward-airdrop): Added the Airdrop Claim Portal where users can claim their WARD airdrop.
+- [$WARD airdrop](ward-airdrop): Added the Airdrop Claim Portal where users can claim their $WARD airdrop.
 - [Supported chains](/#supported-networks):
-  - Added [Warden Protocol](https://docs.wardenprotocol.org/learn/introduction-to-warden) and its native coin, [WARD](https://docs.wardenprotocol.org/ward/introduction).
+  - Added [Warden Protocol](https://docs.wardenprotocol.org/learn/introduction-to-warden) and its native coin, [$WARD](https://docs.wardenprotocol.org/ward/introduction).
   - Added support for **ERC20 WARD** on **Base** and **BEP20 WARD** on **BNB Smart Chain**.
 - [Warden Agent](explore-ai-agents#warden-agent), [Jupiter](explore-ai-agents#jupiter): Improved token detection on Solana, including support for newer token standards.
 
@@ -86,11 +105,11 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **New features**:
 
-- [WARD airdrop](ward-airdrop): Added UI and infrastructure updates to support future airdrop flows.
+- [$WARD airdrop](ward-airdrop): Added UI and infrastructure updates to support future airdrop flows.
 
 **Improvements**:
 
-- [WARD airdrop](ward-airdrop): 
+- [$WARD airdrop](ward-airdrop): 
   - Improved the registration flow, visual layout, and the UI text.
   - Enhanced messaging.
 
@@ -98,7 +117,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **Improvements**:
 
-- [WARD airdrop](ward-airdrop):
+- [$WARD airdrop](ward-airdrop):
   - Enhanced messaging.
   - Enhanced error handling.
 - [Warden Agent](explore-ai-agents#warden-agent):
@@ -121,17 +140,17 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **New features**:
 
-- [WARD airdrop](ward-airdrop): Added the ability to pay the registration fee on **Arbitrum** and **BNB Smart Chain**.
+- [$WARD airdrop](ward-airdrop): Added the ability to pay the registration fee on **Arbitrum** and **BNB Smart Chain**.
 
 **Improvements**:
 
-- [WARD airdrop](ward-airdrop): Adjusted the registration fee.
+- [$WARD airdrop](ward-airdrop): Adjusted the registration fee.
 
 ## January 15, 2026
 
 **New features**:
 
-- [WARD airdrop](ward-airdrop): Added a portal where you can register for the WARD airdrop.
+- [$WARD airdrop](ward-airdrop): Added a portal where you can register for the $WARD airdrop.
 
 ## January 13, 2026
 
@@ -164,7 +183,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 ## December 30, 2025
 
 **New features**:
-- [Trading](trade): Introduced the [League of Traders](trade#earn-pumps) with PUMP rewards.
+- [Trading](trade): Introduced the [League of Traders](trade#earn-rewards).
 - [Anime Agent](explore-ai-agents#anime-agent): Added a new Agent generating images in anime style.
 
 **Fixes**:

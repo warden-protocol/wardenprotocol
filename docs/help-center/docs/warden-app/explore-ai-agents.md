@@ -209,6 +209,18 @@ Use this Agent to research any blockchain project with detailed, real-time insig
 
 Fees: [Messari fee](fees#messari-fee).
 
+### Predict Agent
+
+The **Predict Agent** is available in the [Predict](predict#analyze-the-market) section of Warden.
+
+This Agent helps you trade real-world events:
+
+- Analyzes prediction markets
+- Provides insights into probabilities
+- Provides relevant statistics and reasoning behind its estimates
+
+Fees: none.
+
 ### Uniswap Trading API
 
 The **Uniswap Trading API** allows sending and swapping tokens on the supported chains through [Uniswap](https://app.uniswap.org)—a decentralized crypto exchange built on Ethereum. Swaps are fully non-custodial: they're handled directly from your wallet without any third party holding your assets.

@@ -10,9 +10,9 @@ This feature is currently in Beta.
 
 ## Overview
 
-Warden's **Predictions**, powered by [Predict.fun](https://predict.fun) and paired with the **Predict Agent**, allow you to trade real-world events with the help of the AI.
+Warden's **Predictions**, powered by [Predict.fun](https://predict.fun) and paired with the [Predict Agent](explore-ai-agents#predict-agent), allow you to trade real-world events with the help of AI.
 
-Warden supports various markets: sports, politics, crypto, and culture. You can explore them using our AI Agent and live data, place orders, and manage your portfolio.
+Warden supports various markets: sports, politics, crypto, and culture. You can place orders, manage your portfolio, and analyze markets using our AI tools and live data.
 
 To learn more, read this article.
 
@@ -46,13 +46,9 @@ To view and manage your portfolio, open the **Predict** section and switch to th
 
 After selecting an event in the **Predictions** tab, you access the following market analysis tools:
 
-- **The live chart** displaying predictions
+- [The Predict Agent](explore-ai-agents#predict-agent) providing insights into the market
 - **The AI overview** of the market
-- **The Predict Agent** providing insights on the market
-
-:::note
-The Predict Agent can analyze prediction markets, providing insights on probabilities, along with relevant statistics and reasoning behind its estimates.
-:::
+- **The live chart** displaying predictions
 
 ![Discover market analysis tools in Warden's Predictions](../../static/img/warden-app/predict-4.png)
 ![Use the Predict Agent in Warden's Predictions](../../static/img/warden-app/predict-5.png)

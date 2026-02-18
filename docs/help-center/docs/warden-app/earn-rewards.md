@@ -38,7 +38,7 @@ To check your coin's rank, open the **Rewards** tab and scroll down to the **reW
 
 ### Complete tasks
 
-To get reWARD, **complete tasks** in Warden:
+To get reWARDs, **complete tasks** in Warden:
 
 - Swap
 - Use AI Agents
@@ -53,7 +53,7 @@ To access all available tasks and see the reWARD points you can earn, simply go 
 
 ### Tap to reWARD
 
-A fun way to collect more reWARD is by playing the **Tap to reWARD** game:
+A fun way to collect more reWARDs is by playing the **Tap to reWARD** game:
 
 - Each tap costs **$0.10**. To learn more, see [Tap to reWARD fee](fees#tap-to-reward-fee).
 - Every tap grants you **10 reWARDs**.
@@ -65,7 +65,7 @@ You can access the game from any tab—simply click **Tap to reWARD** in the lef
 
 ### Trade
 
-To earn additional s, join **League of Traders** and climb its leaderboards.
+To earn additional reWARDs, join the **League of Traders** and climb its leaderboards.
 
 You can either participate in perpetual trading or play our trading game:
 

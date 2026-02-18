@@ -30,7 +30,7 @@ For example, to perform a transaction, [fund your wallet](manage-your-wallets#de
 Transactions are subject to [transfer](fees#transfer-fee) and [swap fees](fees#swap-fees).
 :::
 
-![Send or swap assets using the Warden Agent](../../static/img/warden-app/quick-start-1.png)
+![Send or swap assets using the Warden Agent](../../static/img/warden-app/use-the-chat-2.png)
 
 ## Select an AI Agent
 
@@ -38,15 +38,12 @@ In addition to the Warden Agent, you can interact with [other AI Agents](explore
 
 Explore Agents in the [Agent Hub](explore-ai-agents#access-agents) or switch between them directly in the **Chats** section using the drop-down menu at the top:
 
-![Switch between AI Agents in Warden](../../static/img/warden-app/use-the-chat-2.png)
-![The drop-down menu with AI Agents in Warden](../../static/img/warden-app/use-the-chat-3.png)
+![Switch between AI Agents in Warden](../../static/img/warden-app/use-the-chat-3.png)
+![The drop-down menu with AI Agents in Warden](../../static/img/warden-app/use-the-chat-4.png)
 
 ## Manage chats
 
-You can easily manage your chats using the buttons at the top of the screen:
+To open or delete a previous thread, use the history drop-down menu at the top of the screen:
 
-- To create a new chat, click the **+** button.
-- To open or delete a previous thread, use the history drop-down menu.
-
-![Manage AI chats in Warden](../../static/img/warden-app/use-the-chat-3.png)
-![Manage existing threads in Warden](../../static/img/warden-app/use-the-chat-5.png)
+![Manage AI chats in Warden](../../static/img/warden-app/use-the-chat-5.png)
+![Manage existing threads in Warden](../../static/img/warden-app/use-the-chat-6.png)

@@ -72,7 +72,7 @@ const config: Config = {
             apiKey: '732e1c627088d28114b1daa89f3bb8a6',
             indexName: 'developer-docs',
             contextualSearch: true,
-            // insights: true,              
+            insights: true,              
             // askAi: 'YOUR_ALGOLIA_ASK_AI_ASSISTANT_ID',              
         },
         navbar: {

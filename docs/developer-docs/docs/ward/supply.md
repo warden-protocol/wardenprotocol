@@ -6,18 +6,18 @@ sidebar_position: 6
 
 ## $WARD supply details
 
-| Property             | Details            |
-| -------------------- | ------------------ |
-| Token                | WARD               |
-| Initial total supply | 1,000,000,000 WARD |
-| Decimals             | 18                 |
+| Property             | Details             |
+| -------------------- | ------------------- |
+| Token                | $WARD               |
+| Initial total supply | 1,000,000,000 $WARD |
+| Decimals             | 18                  |
 
 
 ## $WARD emissions
 
 On mainnet launch, which will operate under a Proof-of-Authority framework, there will be zero token emissions. 
 
-Upon evolution to the Proof-of-Stake framework, an **emission** of WARD tokens commences, with a programmatic emission based on the proportion of $WARD tokens staked relative to the total supply. This will operate based on preset parameters:
+Upon evolution to the Proof-of-Stake framework, an **emission** of $WARD tokens commences, with a programmatic emission based on the proportion of $WARD tokens staked relative to the total supply. This will operate based on preset parameters:
 
 | Parameter                | Value  |
 | ------------------------ | ------ |

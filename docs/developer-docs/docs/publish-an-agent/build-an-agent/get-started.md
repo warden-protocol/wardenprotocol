@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 
 ## Overview
 
-The **Warden Agent Development CLI** allows you to easily build an **A2A LangGraph Agent** compatible with Warden.
+**Warden CLI** (`warden-code`) allows you to easily build an **A2A LangGraph Agent** compatible with Warden.
 
 This guide explains how to create your first Agent: you'll run the CLI, provide the required details, and the Agent will be immediately available for local testing.
 
@@ -35,13 +35,14 @@ Before you start, complete the following prerequisites:
 - [Install Node.js](https://nodejs.org/en/download) 18 or higher.
 - [Get an OpenAI API key](https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key) or an API key for any preferred LLM.
 
-## 1. Install and run the CLI
+## 1. Install and run Warden CLI
 
-1. First, clone the Warden Agent Development CLI:
+1. First, clone the Warden CLI:
 
    ```bash
    git clone https://github.com/warden-protocol/warden-code.git
    ```
+
 3. Navigate to the `warden-code` directory:
 
    ```bash

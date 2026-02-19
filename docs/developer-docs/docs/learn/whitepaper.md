@@ -205,7 +205,7 @@ In this section you'll find information about the $WARD token distribution and r
 
 Note that $WARD distribution will be characterized by the following:
 
-- **Fair launch mechanism**: The $WARD token distribution will adopt a fair launch mechanism. This approach ensures a wide and equitable distribution of tokens, preventing market manipulation and ensuring a rapid distribution of stakeholders and community governance.
+- **Fair launch mechanism**: The $WARD token distribution will adopt a fair launch mechanism. This approach ensures a wide and equitable distribution of tokens, preventing market manipulation and ensuring a rapid growth of the stakeholder base and community governance.
   
 - **Prioritization of active users and supporters**: active users of any application or infra within the Warden ecosystem will be recognized for ongoing support, along with other eligible protocols and platforms that have contributed to the foundations and culture that has given Warden Protocol the ability to launch.
 

@@ -70,6 +70,6 @@ Mainnet's denomination is `award` (1 award = 10^-18 [$WARD](/ward/introduction))
 
 ## Block explorer
 
-The Mainnet's block explorer is available here:
+Mainnet's block explorer is available here:
 
 - [Warden Protocol explorer](https://explorer.wardenprotocol.org)

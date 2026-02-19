@@ -33,10 +33,12 @@ Within Warden, you can do the following:
 
 1. [Use the AI chat](warden-app/use-the-chat)
 2. [Explore AI Agents](warden-app/explore-ai-agents)
-3. [Trade](warden-app/trade)
-4. [Earn rewards](warden-app/earn-rewards)
-5. [Play Betflix](warden-app/play-betflix)
-6. [Manage your wallets](warden-app/manage-your-wallets)
+3. [Manage your wallets](warden-app/manage-your-wallets)
+4. [Trade](warden-app/trade)
+5. [Predict](warden-app/predict)
+6. [Play Betflix](warden-app/play-betflix)
+7. [Earn rewards](warden-app/earn-rewards)
+8. [Stake $WARD](warden-app/stake-ward)
 
 ![The main features of Warden](../../static/img/warden-app/introduction-1.png)
 

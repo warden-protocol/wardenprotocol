@@ -16,7 +16,7 @@ You can start chatting with the default **Warden Agent** or select another [AI A
 
 When you log in to [Warden](https://app.wardenprotocol.org), a new conversation with the AI-powered [Warden Agent](explore-ai-agents#warden-agent) opens automatically.
 
-You can access Agent chats anytime by navigating to the **Chats** tab in the left menu:
+You can access Agent chats anytime by selecting **Chats** in the left menu:
 
 ![Ask the Warden Agent to swap an asset](../../static/img/warden-app/use-the-chat-1.png)
 
@@ -36,7 +36,7 @@ Transactions are subject to [transfer](fees#transfer-fee) and [swap fees](fees#s
 
 In addition to the Warden Agent, you can interact with [other AI Agents](explore-ai-agents#uniswap-trading-api) available in the app.
 
-Explore Agents in the [Agent Hub](explore-ai-agents#access-agents) or switch between them directly in the **Chats** tab using the drop-down menu at the top:
+Explore Agents in the [Agent Hub](explore-ai-agents#access-agents) or switch between them directly in the **Chats** section using the drop-down menu at the top:
 
 ![Switch between AI Agents in Warden](../../static/img/warden-app/use-the-chat-2.png)
 ![The drop-down menu with AI Agents in Warden](../../static/img/warden-app/use-the-chat-3.png)
@@ -50,9 +50,3 @@ You can easily manage your chats using the buttons at the top of the screen:
 
 ![Manage AI chats in Warden](../../static/img/warden-app/use-the-chat-3.png)
 ![Manage existing threads in Warden](../../static/img/warden-app/use-the-chat-5.png)
-
-## Explore the dashboard
-
-Below the chat, you can find a useful **dashboard** with prompt suggestions, an overview of your assets, and more:
-
-![The dashboard on the chat screen in Warden](../../static/img/warden-app/use-the-chat-6.png)

@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 7
+sidebar_position: 8
 ---
 
 # Play Betflix
@@ -8,7 +8,7 @@ sidebar_position: 7
 
 You can trade with **Betflix**, Warden's Tinder-style prediction game.
 
-Note that Betflix balance is kept [in a separate wallet](#manage-the-betflix-wallet).
+Note that Betflix balance is kept [in a separate wallet](#betflix-wallet).
 
 :::tip
 Warden also supports advanced trading tools. Learn more in the [Trade](trade) section.
@@ -29,7 +29,7 @@ Gameplay details:
 - The bet is fixed: **$2**/**5**/**10** per round with fixed **100x leverage**.
 - Supported coins: **DOGE**, **PEPE**, **BONK**, **WIF**, **SHIB**, **TRUMP**, and more.
 - All bets are subject to fees. Learn more: [Betflix fees](fees#betflix-fees).
-- Top traders [earn PUMPs](#earn-pumps).
+- Top traders [earn reWARDs](#earn-rewards).
 
 ## Start playing
 
@@ -37,8 +37,8 @@ To start playing, you need **USDC on Solana** (**$6** or more):
 
 1. Log in: 👉 [Warden](https://app.wardenprotocol.org)
 2. If you don't have USDC on Solana, [deposit it to your main account](manage-your-wallets#deposit).
-3. In the left menu, open the **Betflix** tab.
-4. In the right panel, you'll see the [Betflix wallet](#manage-the-betflix-wallet). Click **Deposit** and add USDC from your main account.
+3. In the left menu, select **Betflix**.
+4. In the right panel, you'll see the [Betflix wallet](#betflix-wallet). Click **Deposit** and add USDC from your main account.
 5. Start playing:
    - Choose your bet: **$2**/**5**/**10**
    - Swipe right → Go long
@@ -47,11 +47,11 @@ To start playing, you need **USDC on Solana** (**$6** or more):
 
 ![Start playing Betflix in Warden](../../static/img/warden-app/play-betflix-1.png)
 
-## Earn PUMPs
+## Earn reWARDs
 
 By playing Betflix, you join the **League of Traders**: each swipe contributes to your **hourly**, **daily**, and **weekly** rankings, based on profit and streaks.
 
-Top traders earn [PUMPs](earn-rewards#earn-pumps)—points that reward your activity in Warden:
+Top traders earn [reWARDs](earn-rewards#earn-reward-points)—points that reward your activity in Warden:
 
 - Hourly league: 1st–3rd ranks
 - Daily league: 1st–5th ranks
@@ -62,11 +62,11 @@ To view all leaderboards and the exact rewards, [check your Betflix wallet](#che
 ![Access the Betflix League of Traders in Warden](../../static/img/warden-app/play-betflix-2.png)
 
 
-## Manage the Betflix wallet
+## Betflix wallet
 
 ### Access
 
-Warden stores your Betflix balance in a separate **Betflix wallet**, held as **USDC on Solana**. This protects assets in your [main account](manage-your-wallets#the-main-account).
+Warden stores your Betflix balance in a separate **Betflix wallet**, held as **USDC on Solana**. This protects assets in your [main account](manage-your-wallets#main-account).
 
 To switch between the main and Betflix wallets at any time, click the wallet icon at the top right and select **Main Account** or **Bets** at the top of the wallet:
 
@@ -90,7 +90,7 @@ To deposit, make sure your main account has **USDC on Solana**.
 
 In the Betflix wallet, you can also view the game statistics:
 
-- The **Leaderboard** tab displays your [League of Traders](#earn-pumps) ranking:
+- The **Leaderboard** tab displays your [League of Traders](#earn-rewards) ranking:
   - You can select the **Hourly**, **Daily**, or **Weekly** leagues.
   - To see rewards for each rank, click the information icon next to the winners list.
 - The **Bets** tab displays your recent plays and results.

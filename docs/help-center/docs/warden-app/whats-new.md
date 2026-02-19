@@ -1,5 +1,5 @@
 ---
-sidebar_position: 11
+sidebar_position: 13
 ---
 
 # What's new?
@@ -8,13 +8,73 @@ sidebar_position: 11
 
 Here you'll find the latest Warden release highlights, including new features, improvements, and bug fixes. This section helps you quickly see what's changed and how it can enhance your experience.
 
+## February 12, 2026
+
+**New features**:
+
+- [Predictions (Beta)](predict): Introduced Predictions and the Predict Agent. These features allow you to trade real-world events with the help of the AI.
+- [Staking](stake-ward): Now $WARD holders can stake their tokens on Warden.
+
+**Improvements**:
+
+- [Trading](trade):
+  - Added a deposit prompt.
+  - Added a toggle that allows setting the maximum margin.
+  - Enhanced balance validation.
+- [Earn rewards](earn-rewards): Updated the UI.
+
+**Fixes**:
+
+- Home screen: Fixed minor UI issues.
+
+## February 10, 2026
+
+**New features**:
+
+- Added a new **home page** with a balance overview, an AI chat, and links to trading and other ecosystem features.
+- [Trading](trade):
+  - Added current price change to positions.
+  - Added an option for withdrawing the maximum amount from the trading wallet.
+- [Warden Agent](explore-ai-agents#warden-agent):
+  - Added prompt suggestions for next steps in conversations
+  - Added contextual suggestions for chain selection
+
+**Improvements**:
+
+- [Trading](trade):
+  - Clarified balance information across deposits and wallets.
+  - Improved button behavior during review and submission.
+- [Warden Agent](explore-ai-agents#warden-agent): Improved conversation handling, routing logic, and response quality.
+- [Agent Hub](explore-ai-agents#access-agents): Improved navigation.
+- [Wallets](manage-your-wallets): Improved balance formatting.
+- [$WARD airdrop](ward-airdrop):
+  - Improved the UI and behavior.
+  - Improved internal performance and stability.
+
+**Fixes**:
+
+- [Trading](trade):
+  - Improved balance display consistency.
+  - Prevented submissions when leverage information was out of date.
+- [Wallets](manage-your-wallets) & [Warden Agent](explore-ai-agents#warden-agent): Fixed an issue with displaying wrong activity on Solana.
+
+## February 5, 2026
+
+**New features**:
+
+- [Trading](trade): Introduced [Strategies](trade#trading-with-strategies)—automated systems that trade on users' behalf.
+
+**Improvements**:
+
+- [Rewards](earn-rewards): Refreshed the reWARDs leaderboard while preserving recent activity.
+
 ## February 3, 2026
 
 **New features**:
 
-- [WARD airdrop](ward-airdrop): Added the Airdrop Claim Portal where users can claim their WARD airdrop.
+- [$WARD airdrop](ward-airdrop): Added the Airdrop Claim Portal where users can claim their $WARD airdrop.
 - [Supported chains](/#supported-networks):
-  - Added [Warden Protocol](https://docs.wardenprotocol.org/learn/introduction-to-warden) and its native coin, [WARD](https://docs.wardenprotocol.org/ward/introduction).
+  - Added [Warden Protocol](https://docs.wardenprotocol.org/learn/introduction-to-warden) and its native coin, [$WARD](https://docs.wardenprotocol.org/ward/introduction).
   - Added support for **ERC20 WARD** on **Base** and **BEP20 WARD** on **BNB Smart Chain**.
 - [Warden Agent](explore-ai-agents#warden-agent), [Jupiter](explore-ai-agents#jupiter): Improved token detection on Solana, including support for newer token standards.
 
@@ -45,11 +105,11 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **New features**:
 
-- [WARD airdrop](ward-airdrop): Added UI and infrastructure updates to support future airdrop flows.
+- [$WARD airdrop](ward-airdrop): Added UI and infrastructure updates to support future airdrop flows.
 
 **Improvements**:
 
-- [WARD airdrop](ward-airdrop): 
+- [$WARD airdrop](ward-airdrop): 
   - Improved the registration flow, visual layout, and the UI text.
   - Enhanced messaging.
 
@@ -57,7 +117,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **Improvements**:
 
-- [WARD airdrop](ward-airdrop):
+- [$WARD airdrop](ward-airdrop):
   - Enhanced messaging.
   - Enhanced error handling.
 - [Warden Agent](explore-ai-agents#warden-agent):
@@ -68,7 +128,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 **Fixes**:
 
 - [Trading](trade): Fixed a display issue affecting positions.
-- [The main account](manage-your-wallets#the-main-account): Resolved an issue where linked wallets could disconnect.
+- [The main account](manage-your-wallets#main-account): Resolved an issue where linked wallets could disconnect.
 - [Warden Agent](explore-ai-agents#warden-agent):
   - Made internal updates to maintain AI service reliability.
   - Fixed issues with swaps.
@@ -80,17 +140,17 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **New features**:
 
-- [WARD airdrop](ward-airdrop): Added the ability to pay the registration fee on **Arbitrum** and **BNB Smart Chain**.
+- [$WARD airdrop](ward-airdrop): Added the ability to pay the registration fee on **Arbitrum** and **BNB Smart Chain**.
 
 **Improvements**:
 
-- [WARD airdrop](ward-airdrop): Adjusted the registration fee.
+- [$WARD airdrop](ward-airdrop): Adjusted the registration fee.
 
 ## January 15, 2026
 
 **New features**:
 
-- [WARD airdrop](ward-airdrop): Added a portal where you can register for the WARD airdrop.
+- [$WARD airdrop](ward-airdrop): Added a portal where you can register for the $WARD airdrop.
 
 ## January 13, 2026
 
@@ -106,7 +166,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **Fixes**:
 
-- [The main account](manage-your-wallets#the-main-account): Made a minor UI fix.
+- [The main account](manage-your-wallets#main-account): Made a minor UI fix.
 - [Trading](trade): Made a minor UI fix.
 
 ## January 7, 2026
@@ -123,7 +183,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 ## December 30, 2025
 
 **New features**:
-- [Trading](trade): Introduced the [League of Traders](trade#earn-pumps) with PUMP rewards.
+- [Trading](trade): Introduced the [League of Traders](trade#earn-rewards).
 - [Anime Agent](explore-ai-agents#anime-agent): Added a new Agent generating images in anime style.
 
 **Fixes**:

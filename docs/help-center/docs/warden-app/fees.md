@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 10
+sidebar_position: 12
 ---
 
 # Fees
@@ -40,7 +40,7 @@ All swaps include these fees:
 
 ## Trading fees
 
-For opening a [perpetual trading position](trade), the following fees are charged from your [trading wallet](trade#manage-the-trading-wallet):
+For opening a [perpetual trading position](trade), the following fees are charged from your [trading wallet](trade#trading-wallet):
 
 | Fee type         | Amount | Currency         | Description                    |
 | ---------------- | ------ | ---------------- | -----------------------------  |
@@ -49,7 +49,7 @@ For opening a [perpetual trading position](trade), the following fees are charge
 
 ## Trading wallet fees
 
-When depositing to your [trading wallet](trade#manage-the-trading-wallet) from Arbitrum, you pay only for the native bridge:
+When depositing to your [trading wallet](trade#trading-wallet) from Arbitrum, you pay only for the native bridge:
 
 | Fee type | Amount | Currency         | Description                          |
 | -------- | ------ | ---------------- | ------------------------------------ |
@@ -70,7 +70,7 @@ All withdrawals are subject to a flat fee paid to [Hyperliquid](https://hyperliq
 
 ## Betflix fees
 
-Trading with [Betflix](play-betflix) includes the following fees, charged from your [Betflix wallet](play-betflix#manage-the-betflix-wallet):
+Trading with [Betflix](play-betflix) includes the following fees, charged from your [Betflix wallet](play-betflix#betflix-wallet):
 
 | Fee type      | Amount   | Currency       | Description                        |
 | ------------- | -------- | -------------- | ---------------------------------- |
@@ -81,13 +81,13 @@ Trading with [Betflix](play-betflix) includes the following fees, charged from y
 The remaining amount from losing bets goes to the community treasury (currently $2,000).
 :::
 
-## Tap to PUMP fee
+## Tap to reWARD fee
 
-Each time you tap in the [Tap to PUMP](earn-rewards#tap-to-pump) game, Warden charges a small fee:
+Each time you tap in the [Tap to reWARD](earn-rewards#tap-to-reward) game, Warden charges a small fee:
 
-| Fee type        | Amount | Currency         | Description          |
-| --------------- | ------ | ---------------- | -------------------- |
-| Tap to PUMP fee | 0.1    | USDC/native coin | A fee paid to Warden |
+| Fee type          | Amount | Currency         | Description          |
+| ----------------- | ------ | ---------------- | -------------------- |
+| Tap to reWARD fee | 0.1    | USDC/native coin | A fee paid to Warden |
 
 Warden charges this fee using the first available currency, following this priority:
 
@@ -97,13 +97,13 @@ Warden charges this fee using the first available currency, following this prior
 
 ## Airdrop registration fee
 
-When you [register for the WARD airdrop](ward-airdrop), Warden charges a randomized fee to eliminate bot accounts:
+When registration for the [$WARD airdrop](ward-airdrop) was open, Warden charged a randomized fee to eliminate bot accounts:
 
 | Fee type         | Amount  | Currency         | Description          |
 | ---------------- | ------- | ---------------- | -------------------- |
 | Registration fee | 3–3.50  | USDC/native coin | A fee paid to Warden |
 
-Warden charges this fee using the first available currency, following this priority:
+This fee was charged using the first available currency, following this priority:
 
 - **USDC** on Solana, Base, Arbitrum, BNB Smart Chain, or Ethereum
 - **SOL** on Solana

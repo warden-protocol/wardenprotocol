@@ -23,7 +23,7 @@ wardend keys add KEY_NAME
 ```
 
 :::warning
-After creating a new key, you'll see its information and its seed phrase. It's essential to write down this seed phrase and keep it in a safe place. The seed phrase is the only way to restore your keys. Losing it can result in the irrecoverable loss of WARD tokens.
+After creating a new key, you'll see its information and its seed phrase. It's essential to write down this seed phrase and keep it in a safe place. The seed phrase is the only way to restore your keys. Losing it can result in the irrecoverable loss of $WARD tokens.
 :::
 
 Alternatively, you can restore an existing wallet with a mnemonic seed phrase. Replace `KEY_NAME` with a key name of your choice and run the following:
@@ -38,11 +38,11 @@ Then get your public address:
 wardend keys show KEY_NAME --address
 ```
 
-## 2. Get testnet WARD
+## 2. Get testnet $WARD
 
 In the next steps, you'll register your new validator by submitting a `create-validator` transaction. Transactions consume gas, so you need to fund your newly created address from the first step.
 
-You can obtain testnet **WARD** from our faucet:
+You can obtain testnet **$WARD** from our faucet:
 
 - [Barra faucet](https://faucet.wardenprotocol.org)
 
@@ -54,7 +54,7 @@ wardend query bank balances KEY_NAME
 
 ## 3. Create a validator
 
-Once the node is synced and you have the required WARD, you can become a validator.
+Once the node is synced and you have the required $WARD, you can become a validator.
 
 To create a validator and initialize it with a self-delegation, you need to create a `validator.json` file and submit a create-validator transaction:
 

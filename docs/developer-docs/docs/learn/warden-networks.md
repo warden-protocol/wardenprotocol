@@ -41,11 +41,15 @@ Warden networks use two chain IDs on different layers. The Cosmos chain ID is th
   </tr>
   <tr>
     <td>**Denomination**</td>
-    <td>`award` (1 award = 10^-18 [WARD](/ward/introduction))</td>
+    <td>`award` (1 award = 10^-18 [$WARD](/ward/introduction))</td>
   </tr>
   <tr>
     <td>**Validator guides**</td>
     <td>[Operate a node: Mainnet](/category/mainnet)</td>
+  </tr>
+  <tr>
+    <td>**Block explorer**</td>
+    <td>[Warden Protocol explorer](https://explorer.wardenprotocol.org)</td>
   </tr>
 </table>
 
@@ -76,21 +80,21 @@ Warden networks use two chain IDs on different layers. The Cosmos chain ID is th
   </tr>
   <tr>
     <td>**Denomination**</td>
-    <td>`award` (1 award = 10^-18 [WARD](/ward/introduction))</td>
-  </tr>
-  <tr>
-    <td>**Faucet**</td>
-    <td>[Barra faucet](https://faucet.wardenprotocol.org)</td>
+    <td>`award` (1 award = 10^-18 [$WARD](/ward/introduction))</td>
   </tr>
   <tr>
     <td>**Validator guides**</td>
     <td>[Operate a node: Barra testnet](/category/barra-testnet)</td>
   </tr>
+  <tr>
+    <td>**Faucet**</td>
+    <td>[Barra faucet](https://faucet.wardenprotocol.org)</td>
+  </tr>
 </table>
 
-## Connect Warden to an EVM wallet
+## Add Warden as a custom network
 
-You can connect **Warden Mainnet** to any **EVM-compatible wallet**:
+You can add **Warden Mainnet** as a custom network to any **EVM-compatible wallet**:
 
 1. In your preferred wallet, start adding a custom network.
 2. Enter the following details:

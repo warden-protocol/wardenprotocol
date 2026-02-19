@@ -74,7 +74,7 @@ Such Agents can implement any Web3 or Web2 workflows: research, trading, DeFi op
 
 ## Delegator
 
-A delegator is an individual or entity that participates in the [staking](#staking) process by delegating their [WARD tokens](#ward-token) to a [validator](#validator). Delegation allows validators to secure the network and share rewards with them without the responsibility of running a [node](#node).
+A delegator is an individual or entity that participates in the [staking](#staking) process by delegating their [$WARD tokens](#ward-token) to a [validator](#validator). Delegation allows validators to secure the network and share rewards with them without the responsibility of running a [node](#node).
 
 All delegators inherit the state from their validator: [bonded](#bonded-validator), [unbonding](#unbonding-validator), or [unbonded](#unbonded-validator). To avoid risks, delegators should perform due diligence on validators and spread their stake over multiple validators. Delegators can also participate in [governance](#governance).
 
@@ -90,7 +90,7 @@ A full node is a server running software (a binary) that maintains a complete up
 
 [Warden Chain](#warden-chain) supports onchain governance—a mechanism allowing the decentralized community to update the protocol through direct voting that is recorded onchain. Voting is available to [staking](#staking) participants: [validators](#validator) and [delegators](#delegator).
 
-The voting power depends on the [validator's weight](#validators-weight) or the amount of [WARD](#ward-token) a delegator staked. By default, [delegators](#delegator) inherit votes of their validator. Alternatively, a delegator can cast their own vote, which will reduce the validator's voting power.
+The voting power depends on the [validator's weight](#validators-weight) or the amount of [$WARD](#ward-token) a delegator staked. By default, [delegators](#delegator) inherit votes of their validator. Alternatively, a delegator can cast their own vote, which will reduce the validator's voting power.
 
 ---
 
@@ -133,7 +133,7 @@ Learn more: [SPEX](spex).
 
 ## Staking
 
-Staking is the process of participating in the proof-of-stake (PoS) consensus mechanism. [Validators](#validator) and [delegators](#delegator) stake their [WARD tokens](#ward-token) for a chance to validate blocks and transactions and earn staking rewards.
+Staking is the process of participating in the proof-of-stake (PoS) consensus mechanism. [Validators](#validator) and [delegators](#delegator) stake their [$WARD tokens](#ward-token) for a chance to validate blocks and transactions and earn staking rewards.
 
 The consensus mechanism chooses validators based on their [weight](#validators-weight). If a validator is successful, its delegators will earn rewards too. If a validator is slashed, the delegator's stake will be slashed. Staking also allows validators and delegators to participate in [governance](#governance).
 
@@ -159,7 +159,7 @@ A validator's commission is the percentage of [staking](#staking) rewards earned
 
 ## Validator's weight
 
-Each [validator](#validator) has its own [WARD tokens](#ward-token) and tokens bonded by its [delegators](#delegator). The total amount of tokens determines the validator's weight.
+Each [validator](#validator) has its own [$WARD tokens](#ward-token) and tokens bonded by its [delegators](#delegator). The total amount of tokens determines the validator's weight.
 
 The consensus mechanism selects validators to propose blocks based on validators' weight, so a validator with more tokens bonded can propose blocks more frequently and generate more rewards. Weight also determines the validator's voting power in [governance](#governance).
 
@@ -187,7 +187,7 @@ Validators enter this state either when they decide to stop participating in [st
 
 ---
 
-## WARD token
+## $WARD token
 
 **$WARD** is the native utility token for the [Warden Protocol](#warden-protocol)'s ecosystem, sitting at the heart of both [Warden Chain](#warden-chain) and [Warden](#warden). $WARD facilitates various operations—such as [governance](#governance), [staking](#staking), rewards—and serves as a medium of payment for any developer publishing an [Agent](#ai-agent) on Warden. For Warden, it'll act as a gas abstraction token and unlock gated functionality. 
 

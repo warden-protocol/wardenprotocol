@@ -12,8 +12,8 @@ $WARD는 거버넌스, 스테이킹, 보상과 같은 다양한 운영을 용이
 
 | 속성 | 세부 내용 |
 | --- | --- |
-| 토큰 | WARD |
-| 초기 총 공급량 | 1,000,000,000 WARD |
+| 토큰 | $WARD |
+| 초기 총 공급량 | 1,000,000,000 $WARD |
 | 소수점 자리수 | 6 |
 
 ## 에어드롭 단계
@@ -59,15 +59,15 @@ Warden Chain에서 검증자를 운영하려면, 검증자는 $WARD의 의미 �
 
 $WARD 배포는 다음과 같은 특징을 갖습니다:
 
-- **공정 출시 메커니즘(Fair launch mechanism)**: WARD 토큰 배포는 공정 출시 메커니즘을 채택합니다. 이 접근 방식은 토큰의 폭넓고 공평한 분배를 보장하며, 시장 조작을 방지하고 이해관계자 및 커뮤니티 거버넌스의 빠른 확산을 가능하게 합니다.
+- **공정 출시 메커니즘(Fair launch mechanism)**: $WARD 토큰 배포는 공정 출시 메커니즘을 채택합니다. 이 접근 방식은 토큰의 폭넓고 공평한 분배를 보장하며, 시장 조작을 방지하고 이해관계자 및 커뮤니티 거버넌스의 빠른 확산을 가능하게 합니다.
 - **활성 사용자 및 지지자 우선순위 (Prioritization of active users and supporters)**:
 Warden 생태계 내 애플리케이션 또는 인프라의 활성 사용자는 지속적인 지원에 대해 인정받으며, Warden Protocol이 출시될 수 있도록 한 기반과 문화를 형성하는 데 기여한 기타 적격 프로토콜 및 플랫폼도 함께 포함됩니다.
 
-### WARD 주요 배포
+### $WARD 주요 배포
 
-**10억 WARD (1B WARD)**
+**10억 $WARD (1B $WARD)**
 
-![WARD distribution chart](../../static/img/ward-distribution-1.png)
+![$WARD distribution chart](../../static/img/ward-distribution-1.png)
 
 ### 배포 설명
 
@@ -85,7 +85,7 @@ Warden 생태계 내 애플리케이션 또는 인프라의 활성 사용자는 
 
 ### 출시 일정(Release schedule)
 
-![The final WARD release schedule](../../static/img/ward-distribution-2.png)
+![The final $WARD release schedule](../../static/img/ward-distribution-2.png)
 
 ## 공급(Supply)
 
@@ -93,8 +93,8 @@ Warden 생태계 내 애플리케이션 또는 인프라의 활성 사용자는 
 
 | 속성 | 세부 내용 |
 | --- | --- |
-| 토큰 | WARD |
-| 초기 총 공급량 | 1,000,000,000 WARD |
+| 토큰 | $WARD |
+| 초기 총 공급량 | 1,000,000,000 $WARD |
 | 소수점 자리수 | 6 |
 
 ### $WARD 발행(Emissions)

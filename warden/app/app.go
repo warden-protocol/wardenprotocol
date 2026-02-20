@@ -98,9 +98,6 @@ import (
 	feemarketkeeper "github.com/cosmos/evm/x/feemarket/keeper"
 	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
 	ibccallbackskeeper "github.com/cosmos/evm/x/ibc/callbacks/keeper"
-	"github.com/cosmos/evm/x/ibc/transfer" // NOTE: override ICS20 keeper to support IBC transfers of ERC20 tokens
-	transferkeeper "github.com/cosmos/evm/x/ibc/transfer/keeper"
-	transferv2 "github.com/cosmos/evm/x/ibc/transfer/v2"
 	"github.com/cosmos/evm/x/precisebank"
 	precisebankkeeper "github.com/cosmos/evm/x/precisebank/keeper"
 	precisebanktypes "github.com/cosmos/evm/x/precisebank/types"
@@ -109,8 +106,10 @@ import (
 	evmtypes "github.com/cosmos/evm/x/vm/types"
 	"github.com/cosmos/gogoproto/proto"
 	ibccallbacks "github.com/cosmos/ibc-go/v10/modules/apps/callbacks"
-	ibctransfer "github.com/cosmos/ibc-go/v10/modules/apps/transfer"
+	transfer "github.com/cosmos/ibc-go/v10/modules/apps/transfer"
+	transferkeeper "github.com/cosmos/ibc-go/v10/modules/apps/transfer/keeper"
 	ibctransfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
+	transferv2 "github.com/cosmos/ibc-go/v10/modules/apps/transfer/v2"
 	ibc "github.com/cosmos/ibc-go/v10/modules/core"
 	porttypes "github.com/cosmos/ibc-go/v10/modules/core/05-port/types"
 	ibcapi "github.com/cosmos/ibc-go/v10/modules/core/api"
@@ -532,12 +531,12 @@ func NewApp(
 	app.TransferKeeper = transferkeeper.NewKeeper(
 		appCodec,
 		runtime.NewKVStoreService(keys[ibctransfertypes.StoreKey]),
+		nil,
 		app.IBCKeeper.ChannelKeeper,
 		app.IBCKeeper.ChannelKeeper,
 		app.MsgServiceRouter(),
 		app.AccountKeeper,
 		app.BankKeeper,
-		app.Erc20Keeper, // Add ERC20 Keeper for ERC20 transfers
 		authAddr,
 	)
 	app.TransferKeeper.SetAddressCodec(evmaddress.NewEvmCodec(sdk.GetConfig().GetBech32AccountAddrPrefix()))
@@ -639,7 +638,7 @@ func NewApp(
 			genutiltypes.ModuleName:     genutil.NewAppModuleBasic(genutiltypes.DefaultMessageValidator),
 			stakingtypes.ModuleName:     staking.AppModuleBasic{},
 			govtypes.ModuleName:         gov.NewAppModuleBasic(nil),
-			ibctransfertypes.ModuleName: transfer.AppModuleBasic{AppModuleBasic: &ibctransfer.AppModuleBasic{}},
+			ibctransfertypes.ModuleName: transfer.AppModuleBasic{},
 		},
 	)
 	app.BasicModuleManager.RegisterLegacyAminoCodec(legacyAmino)

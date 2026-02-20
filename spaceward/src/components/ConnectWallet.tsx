@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import FaucetButton from "./FaucetButton";
 import { Button } from "@/components/ui/button";
-import { AlertCircle, ChevronsUpDown } from "lucide-react";
+import { AlertCircle, ChevronsUpDown, RefreshCw } from "lucide-react";
 import {
 	Popover,
 	PopoverContent,
@@ -22,6 +22,7 @@ import { wallets } from "cosmos-kit";
 import { bigintToFixed } from "@/lib/math";
 import { useConnectWallet } from "@web3-onboard/react";
 import { useBalance } from "wagmi";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function ConnectWallet() {
 	const [{ wallet }, , disconnect] = useConnectWallet()
@@ -29,11 +30,27 @@ export function ConnectWallet() {
 	const username = wallet?.accounts?.[0]?.ens?.name ?? `${address?.slice(0, 6)}...${address?.slice(-4)}`;
 	const [showTooltip, setShowTooltip] = useState<Boolean>(false);
 	const [currentWallet, setCurrentWallet] = useState("");
+	const queryClient = useQueryClient();
+	const [isRefreshing, setIsRefreshing] = useState(false);
 
 	const balance = useBalance({
 		address: address,
 		chainId: env.evmChainId
 	});
+
+	const handleRefresh = async () => {
+		if (!address || isRefreshing) return;
+		setIsRefreshing(true);
+		try {
+			// Invalidate and refetch balance query
+			await queryClient.invalidateQueries({ queryKey: balance.queryKey });
+			await balance.refetch();
+		} catch (error) {
+			console.error("Error refreshing balance:", error);
+		} finally {
+			setIsRefreshing(false);
+		}
+	};
 
 	const ward = bigintToFixed(balance.data?.value, {
 		ceil: true,
@@ -176,7 +193,27 @@ export function ConnectWallet() {
 								</div>
 								<div>{ward}&nbsp;WARD</div>
 							</div>
-							<div className="ml-auto">
+							<div className="ml-auto flex items-center gap-2">
+								<TooltipProvider>
+									<Tooltip>
+										<TooltipTrigger asChild>
+											<Button
+												variant="ghost"
+												size="icon"
+												className="h-8 w-8"
+												onClick={handleRefresh}
+												disabled={isRefreshing || !address}
+											>
+												<RefreshCw
+													className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`}
+												/>
+											</Button>
+										</TooltipTrigger>
+										<TooltipContent>
+											<p>Refresh Balance</p>
+										</TooltipContent>
+									</Tooltip>
+								</TooltipProvider>
 								<FaucetButton className="!px-5" />
 							</div>
 						</div>

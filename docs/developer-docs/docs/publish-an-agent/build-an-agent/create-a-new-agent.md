@@ -114,7 +114,7 @@ Never expose your API keys on GitHub. Before publishing your project, you must k
 Now you can do the following:
 
 - [Implement custom logic](implement-custom-logic)
-- [Interact with your Agent locally](interact-with-the.agent)
+- [Interact with your Agent locally](interact-with-the-agent)
 
 :::tip
 If you get stuck or have any questions, join the developer channel in our Discord: [`#developers`](https://discord.com/channels/1199357852666560654/1222892775876333629).

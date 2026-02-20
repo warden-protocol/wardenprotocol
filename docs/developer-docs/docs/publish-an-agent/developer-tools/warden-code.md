@@ -28,23 +28,9 @@ Warden Code is available on GitHub: [`warden-code`](https://github.com/warden-pr
 
 XXX
 
-## Agent parameters
-
-When created an Agent, you're prompted to specify the following parameters:
-
-- **Name** and **Description**
-- **Template**
- - **Blank**: A minimal A2A server with no AI model — echoes input back (good for testing). Later you'll need to take additional steps such as specifying your preferred LLM in the code.
- - **OpenAI**: An AI-powered agent using OpenAI/GPT — can reason and respond to tasks. You'll be prompted to provide your **OpenAI API key**.
-- **Communication style**
-  - **Streaming**: Tokens stream in real-time as the model generates — faster perceived response.
-  - **Mulit-turn converstions**: Response arrives all at once after completion — simpler to work with.
-- **Skills** (optional): Skills describe what your agent can do (e.g. "summarize text", "translate"). They are advertised in the agent card so other agents and clients can discover capabilities.
-- **x402 payments** (optional)
-
 ## Agent models 
 
-Based on your choices, the CLI will create an Agent based one of the supported models:
+Depending on your choices you make when creating a new Agent, Warden Code uses one of the supported Agent models:
 
 - **OpenAI + Streaming**: A GPT-powered Agent with streaming responses
 - **OpenAI + Multi-turn**: A GPT-powered Agent with conversation history

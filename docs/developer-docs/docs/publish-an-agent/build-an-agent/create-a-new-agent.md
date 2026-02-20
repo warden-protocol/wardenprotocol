@@ -1,17 +1,13 @@
 ﻿---
 sidebar_position: 2
 ---
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 # Create a new Agent
 
 ## Overview
 
-**Warden Code** is a CLI tool that allows you to easily build an **A2A LangGraph Agent** compatible with Warden.
+This guide explains how to create your first Agent with [Warden Code](../developer-tools/warden-code#x402-payments)—a CLI for developing Agents compatible with Warden.
 
-This guide explains how to create your first Agent: you'll run the CLI, provide the required details, and the Agent will be immediately available for local testing.
+You'll install and run Warden Code, provide the required details, and the Agent will be immediately available for testing.
 
 ## Prerequisites
 
@@ -46,7 +42,7 @@ npm update -g warden-code
 
 ## 2. Run Warden Code
 
-Now you can run Warden Code:
+Create a directory for your new project, navigate there, and run Warden Code:
 
 ```bash
 warden
@@ -74,37 +70,51 @@ To create an Agent, take the following steps:
    ```bash
    /new
    ```
-2. The CLI will prompt you to provide the following details:
+   Now the CLI will prompt you to provide the required details.
 
-   - **Name** and **Description**
-   - **Template**
-     - **Blank**: A minimal A2A server with no AI model — echoes input back (good for testing). Later you'll need to take additional steps such as specifying your preferred LLM in the code.
-     - **OpenAI**: An AI-powered agent using OpenAI/GPT — can reason and respond to tasks. You'll be prompted to provide your **OpenAI API key** from [Prerequisites](#prerequisites).
-    - **Communication style**
-      - **Streaming**: Tokens stream in real-time as the model generates — faster perceived response.
-      - **Mulit-turn converstions**: Response arrives all at once after completion — simpler to work with.
-    - **Skills** (optional): Skills describe what your agent can do (e.g. "summarize text", "translate"). They are advertised in the agent card so other agents and clients can discover capabilities.
-    - **x402 payments** (optional)
+2. Provide the Agent name and description.
 
-3. Confirm Agent creation.
+3. Select a template:
+   - **Blank**: A minimal A2A server with no AI model. It just echoes the input back, which is good for testing. Later, you can specify the preferred LLM in the Agent code.
+   - **OpenAI**: An AI-powered agent using OpenAI to reason and respond to tasks. You'll be prompted to provide your **OpenAI API key** from [Prerequisites](#prerequisites).
+
+4. Select the communication style:
+
+   - **Streaming**: Tokens stream in real-time as the model generates, leading to a faster perceived response.
+   - **Mulit-turn converstions**: Responses arrive all at once after completion, which is simpler to work with.
+
+5. Optionally, provide skills describing what your Agent can do. This does not affect the real capabilities of the Agent—you'll need to [implement custom logic](implement-custom-logic) later.
+
+   :::tip
+   You Agent's skills are advertised in the [A2A Agent Card](https://a2a-protocol.org/latest/tutorials/python/3-agent-skills-and-card/). This allows them to be discovered by other Agents and clients. After Warden Code generates your project, you can update the card at any time by editing `public/.well-known/agent-card.json`.
+   :::
+
+6. Optionally, enable x402 payments. You'll need to select a network and provide your wallet address for receiving payments. To learn more, see [x402 payments](../developer-tools/warden-code#x402-payments).
+
+7. Confirm Agent creation.
 
 ## Result
 
-Depending on your choices, the CLI tool used one of the four [Agent models](../developer-tools/warden-code#agent-models).
+Depending on your choices, Warden Code generates a new project based one of the supported [Agent models](../developer-tools/warden-code#agent-models).
 
-What was created:
-- src/agent.ts    — your agent's logic (this is the main file you'll edit)
-- src/server.ts   — HTTP server that exposes your agent via A2A and LangGraph
-- agent-card.json — metadata other agents use to discover yours
-- .env            — environment variables (port, URL, API keys)
+This project includes the following key files:
 
-:::tip
-Your OpenAI API key was added to the `.env` file. You can always change it there, as well as the model.
+- `src/agent.ts`: Your Agent's logic
+- `public/.well-known/agent-card.json`: The metadata other Agents use to discover yours
+- `.env`: Your OpenAI API key (if provided) and other environment variables
+
+To learn more, see [Project structure](../developer-tools/warden-code#project-structure).
+
+:::warning
+Never expose your API keys on GitHub. Before publishing your project, you must keep the API key in a safe space and delete it from the `.env` file.
 :::
 
 ## Next steps
 
-XXX
+Now you can do the following:
+
+- [Implement custom logic](implement-custom-logic)
+- [Interact with your Agent locally](interact-with-the.agent)
 
 :::tip
 If you get stuck or have any questions, join the developer channel in our Discord: [`#developers`](https://discord.com/channels/1199357852666560654/1222892775876333629).

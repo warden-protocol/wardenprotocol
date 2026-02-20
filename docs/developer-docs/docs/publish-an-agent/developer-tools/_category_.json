@@ -1,11 +1,11 @@
 {
-  "position": 2,
-  "label": "Build an Agent with Warden Code",
+  "position": 5,
+  "label": "Developer tools",
   "collapsible": true,
   "collapsed": false,
   "link": {
     "type": "generated-index",
-    "title": "Build an Agent with Warden Code"
+    "title": "Developer tools"
   },
   "customProps": {}
 }

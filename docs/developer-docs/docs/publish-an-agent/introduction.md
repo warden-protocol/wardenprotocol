@@ -4,48 +4,52 @@ sidebar_position: 1
 
 # Introduction
 
+## Warden Agents
+
+**Warden Agents** are AI-driven programs registered on Warden Chain. They turn simple chat commands into complex Web3 and Web2 actions: bridging, minting, trading, staking, research.
+
+Users can access these Agents in [Warden](https://help.wardenprotocol.org), our Agentic Wallet.
+
 :::tip
-If you get stuck or have any questions, join the developer channel in our Discord: [`#developers`](https://discord.com/channels/1199357852666560654/1222892775876333629).
+To view the list of currently available Warden Agents, log in to [Warden](https://app.wardenprotocol.org/auth) and open the Agent Hub, or explore [Warden documentation](https://help.wardenprotocol.org/warden-app/explore-ai-agents).
 :::
 
 ## Community Agents
 
-**Warden Agents** are AI-driven programs registered on Warden Chain. They turn simple chat commands into complex Web3 and Web2 actions: bridging, minting, trading, staking, research. Users can access these Agents in our Agentic Wallet, [Warden](https://help.wardenprotocol.org).
+If you're a developer, you can register your own Agent on Warden as a **Community Agent**. This term refers to any Agent created by external developers rather than the Warden team.
 
-If you're a developer, you can register your Agent on Warden as a **Community Agent**. The key advantages of publishing on Warden include the following:
+The key advantages of publishing on Warden include the following:
 
-- **Discoverability**: Once registered, your Agent is instantly accessible to our users.
+- **Discoverability**: Once registered, your Agent is instantly accessible to Warden users.
 - **Monetization**: Community Agents support built-in monetization models.
 - **Reach**: Access a growing audience of millions.
 
-:::note
-To view the list of currently available Warden Agents, log in to [Warden](https://app.wardenprotocol.org/auth) and open the Agent Hub, or explore [Warden documentation](https://help.wardenprotocol.org/warden-app/explore-ai-agents).
-:::
+## Developer tools
 
-## Warden CLI
+To build and publish an Agent, use our developer tools:
 
-XXX
+- [Warden Code](developer-tools/warden-code): A CLI for scaffolding Warden-compatible Agents. It generates a ready-to-use project and uses the Warden Agent Kit under the hood.
+- [Warden Agent Kit](developer-tools/warden-agent-kit): A TypeScript SDK that powers Agents created with Warden Code. You may need to use it directly when customizing the generated Agent's logic.
+- [Warden Studio](developer-tools/warden-studio): A platform for publishing and monetizing Agents on Warden.
 
-## Warden Agent Kit
+## Section overview
 
-XXX
+- [Build an Agent with Warden Code](build-an-agent)  
+  Learn how to create and test a new Agent with Warden Code.
 
-## Warden Studio
+- [Host your Agent](host-your-agent)  
+  Learn how to host an Agent built with Warden Code.
 
-XXX
+- [Publish your Agent](publish-your-agent)  
+  Learn how to publish and manage your Agent on Warden using Warden Studio.
 
-## ~ Technical requirements
-
-You can implement any Web3 or Web2 workflow and any custom functionality: your Agent can connect to APIs, use databases, tools, and so on.
-
-Please keep in mind the following requirements and technical limitations:
-
-- Currently, you must use [LangGraph](https://www.langchain.com/langgraph). Support for more frameworks is coming soon.
-- You can host your Agent on LangGraph Cloud or on your own infrastructure.
-- Make sure that your Agent is accessible through an API. **No UI is required**.
-- Make sure that you only have one Agent per LangGraph instance to keep your Agents separated.
-- For security reasons, Agents will not have access to users' wallets, nor will they be able to store any data on Warden infrastructure. These limitations will be removed in the next phase of the Warden Agent Hub.
+- [Developer tools](developer-tools)  
+  Reference documentation for all Warden developer tools.
 
 ## Get started
 
-XXX
+To quickly get started, check our [technical requirements](build-an-agent/technical-requirements) and then [create a new Agent](build-an-agent/create-a-new-agent) with Warden Code.
+
+:::tip
+If you get stuck or have any questions, join the developer channel in our Discord: [`#developers`](https://discord.com/channels/1199357852666560654/1222892775876333629).
+:::

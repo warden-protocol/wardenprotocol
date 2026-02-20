@@ -41,7 +41,7 @@ First, prepare your agent for deployment:
    Many platforms expose this variable automatically, for example: `RENDER_EXTERNAL_URL` ([Render](https://render.com)), `VERCEL_URL` ([Vercel](https://vercel.com)), and so on.
    :::
 
-2. In `tsconfig.json`, exclude the Warden CLI tool from the build. Replace the following code:
+2. In `tsconfig.json`, exclude Warden Code from the build. Replace the following code:
 
    ```json
    "exclude": [
@@ -61,7 +61,7 @@ First, prepare your agent for deployment:
    ```
 
    :::note
-   The Warden CLI tool is not part of the deployed server—it's used only for Agent creation and local development.
+   Warden Code is not part of the deployed server—it's used only for Agent creation and local development.
    :::
 
 ## 2. Publish the code

@@ -34,16 +34,16 @@ To build and publish an Agent, use our developer tools:
 
 ## Section overview
 
-- [Build an Agent with Warden Code](build-an-agent)  
+- [Build an Agent with Warden Code](/category/build-an-agent-with-warden-code)  
   Learn how to create and test a new Agent with Warden Code.
 
 - [Host your Agent](host-your-agent)  
   Learn how to host an Agent built with Warden Code.
 
-- [Publish your Agent](publish-your-agent)  
+- [Publish your Agent](publish-your-agent-on-warden)  
   Learn how to publish and manage your Agent on Warden using Warden Studio.
 
-- [Developer tools](developer-tools)  
+- [Developer tools](/category/developer-tools)  
   Reference documentation for all Warden developer tools.
 
 ## Get started

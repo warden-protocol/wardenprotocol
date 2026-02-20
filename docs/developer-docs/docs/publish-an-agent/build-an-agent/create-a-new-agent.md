@@ -90,7 +90,7 @@ To create an Agent, take the following steps:
 
 ## Result
 
-Depending on your choices, the CLI tool used one of the four [Agent models](warden-cli-and-agent-kit#agent-models).
+Depending on your choices, the CLI tool used one of the four [Agent models](../developer-tools/warden-code#agent-models).
 
 What was created:
 - src/agent.ts    — your agent's logic (this is the main file you'll edit)

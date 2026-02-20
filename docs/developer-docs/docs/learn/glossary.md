@@ -249,4 +249,4 @@ Learn more: [Manifesto](warden-manifesto).
 Warden Studio is a platform where developers can register and monetize their [Community Agents](#community-agent), publishing them directly to [Warden](#warden) users. Upon publication, Warden Studio generates [Agent Passports](#agent-passport).
 
 Try it out: [Warden Studio](https://studio.wardenprotocol.org).  
-Learn more: [Publish your Agent](/publish-an-agent/publish-your-agent#overview).
+Learn more: [Publish your Agent](/publish-an-agent/introduction).

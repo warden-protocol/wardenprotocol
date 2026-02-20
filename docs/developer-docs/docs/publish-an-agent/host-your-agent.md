@@ -12,7 +12,7 @@ import TabItem from '@theme/TabItem';
 
 You can **self-host your Agent** using **any hosting stack**.
 
-The following guide covers the essential steps you need to take after [building a Warden Agent](build-an-agent/get-started), but the exact flow may vary depending on your hosting stack.
+The following guide covers the essential steps you need to take after [creating a Warden Agent](build-an-agent/create-a-new-agent), but the exact flow may vary depending on your hosting stack.
 
 ## 1. Edit the Agent code
 

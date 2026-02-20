@@ -35,7 +35,7 @@ When created an Agent, you're prompted to specify the following parameters:
 - **Name** and **Description**
 - **Template**
  - **Blank**: A minimal A2A server with no AI model — echoes input back (good for testing). Later you'll need to take additional steps such as specifying your preferred LLM in the code.
- - **OpenAI**: An AI-powered agent using OpenAI/GPT — can reason and respond to tasks. You'll be prompted to provide your **OpenAI API key** from [Prerequisites](#prerequisites).
+ - **OpenAI**: An AI-powered agent using OpenAI/GPT — can reason and respond to tasks. You'll be prompted to provide your **OpenAI API key**.
 - **Communication style**
   - **Streaming**: Tokens stream in real-time as the model generates — faster perceived response.
   - **Mulit-turn converstions**: Response arrives all at once after completion — simpler to work with.

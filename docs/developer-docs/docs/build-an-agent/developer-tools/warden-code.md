@@ -6,41 +6,38 @@ sidebar_position: 1
 
 ## Overview
 
-**Warden Code** is a CLI for scaffolding production-ready Agents compatible with Warden.
+**Warden Code** is a CLI for scaffolding production-ready AI Agents **compatible with Warden**. Generated Agents also support **A2A**, **x402 payments**, and **ERC-8004**.
 
-With Warden Code, you can do the following:
-
-- Quickly generate a ready-to-use project
-- Edit the Agent code using an AI assistant
-- Chat with your Agent through the CLI
-
-The CLI is built on top of the [Warden Agent Kit](warden-agent-kit), which provides the server endpoints and built-in capabilities for generated Agents:
-
-- Compatibility with the [A2A protocol](https://a2a-protocol.org/latest/topics/what-is-a2a/)
-- Support for [x402 payments](https://www.x402.org)
-- Compatibility with LangGraph SDK clients through the [LangGraph Agent Server API](https://docs.langchain.com/langsmith/server-api-ref)
+This article is a reference covering the main features of Warden Code. For getting started with Agent development, see [Build an Agent with Warden Code](/category/build-an-agent-with-warden-code).
 
 :::important GitHub
 Warden Code is available on GitHub: [`warden-code`](https://github.com/warden-protocol/warden-code).
 :::
 
-## CLI Commands
+## Features
+
+Generated Agents include the following built-in endpoints and capabilities:
+
+- [Warden](https://help.wardenprotocol.org) compatibility
+- [LangGraph Agent Server API](https://docs.langchain.com/langsmith/server-api-ref) compatibility
+- [A2A protocol](https://a2a-protocol.org/latest/topics/what-is-a2a/) compatibility
+- [x402 payments](https://www.x402.org) support
+- [ERC-8004](https://eips.ethereum.org/EIPS/eip-8004) support
+
+With Warden Code, you can generate a project, edit your code using an AI assistant, and chat with your Agent through the command line.
+
+## CLI commands
 
 XXX
 
-## Agent models 
-
-Depending on your choices you make when creating a new Agent, Warden Code uses one of the supported Agent models:
-
-- **OpenAI + Streaming**: A GPT-powered Agent with streaming responses
-- **OpenAI + Multi-turn**: A GPT-powered Agent with conversation history
-- **Blank + Streaming**: A minimal streaming Agent that echoes input
-- **Blank + Multi-turn**: A minimal multi-turn conversation agent
-
-## x402 payments
+## A2A endpoints
 
 XXX
 
-## Project structure
+## LangGraph endpoints
+
+XXX
+
+## Functions
 
 XXX

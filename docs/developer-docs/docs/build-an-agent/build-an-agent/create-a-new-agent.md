@@ -5,9 +5,14 @@ sidebar_position: 2
 
 ## Overview
 
-This guide explains how to create your first Agent with [Warden Code](../developer-tools/warden-code#x402-payments)—a CLI for developing Agents compatible with Warden.
+This guide explains how to create your first Agent with [Warden Code](../developer-tools/warden-code#x402-payments)—a CLI for developing Agents compatible with Warden. You'll install and run Warden Code, provide the required details, and the Agent will be immediately available for testing.
 
-You'll install and run Warden Code, provide the required details, and the Agent will be immediately available for testing.
+Depending on your choices you make when [creating an Agent](#3-create-an-agent), Warden Code uses one of the supported Agent models:
+
+- **OpenAI + Streaming**: A GPT-powered Agent with streaming responses
+- **OpenAI + Multi-turn**: A GPT-powered Agent with conversation history
+- **Blank + Streaming**: A minimal streaming Agent that echoes input
+- **Blank + Multi-turn**: A minimal multi-turn conversation agent
 
 ## Prerequisites
 
@@ -103,18 +108,20 @@ This project includes the following key files:
 - `public/.well-known/agent-card.json`: The metadata other Agents use to discover yours
 - `.env`: Your OpenAI API key (if provided) and other environment variables
 
-To learn more, see [Project structure](../developer-tools/warden-code#project-structure).
-
 :::warning
 Never expose your API keys on GitHub. Before publishing your project, you must keep the API key in a safe space and delete it from the `.env` file.
 :::
+
+Full project structure:
+
+XXX
 
 ## Next steps
 
 Now you can do the following:
 
 - [Implement custom logic](implement-custom-logic)
-- [Interact with your Agent locally](interact-with-the-agent)
+- [Test your Agent locally](test-your-agent-locally)
 
 :::tip
 If you get stuck or have any questions, join the developer channel in our Discord: [`#developers`](https://discord.com/channels/1199357852666560654/1222892775876333629).

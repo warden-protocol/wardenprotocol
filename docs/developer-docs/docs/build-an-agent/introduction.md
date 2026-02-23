@@ -40,11 +40,14 @@ To build and publish an Agent, use our developer tools:
 - [Host your Agent](host-your-agent)  
   Learn how to host an Agent built with Warden Code.
 
-- [Publish your Agent](publish-your-agent-on-warden)  
+- [Publish on Warden](publish-on-warden)  
   Learn how to publish and manage your Agent on Warden using Warden Studio.
 
+- [Register on ERC-8004](register-on-erc-8004)  
+  Learn how register your Agent on ERC-8004 using Warden Code.
+
 - [Developer tools](/category/developer-tools)  
-  Reference documentation for all Warden developer tools.
+  Reference documentation for Warden developer tools.
 
 ## Get started
 

@@ -1,11 +1,11 @@
 ﻿---
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Interact with the Agent
+# Test the Agent locally
 
 ## Overview
 
@@ -67,7 +67,7 @@ The card will display your Agent's name and capabilities, along with other infor
 Warden CLI is built on top of the Warden Agent Kit, which provides  **A2A** and **LangGraph** server endpoints for generated Agents. After running your Agent, you can try any of them locally.
 
 :::tip
-For a full list of supported endpoints, see [Warden Agent Kit](../developer-tools/warden-agent-kit).
+For a full list of supported endpoints, see [Warden Code](../developer-tools/warden-code).
 :::
 
 For example, you can chat with your Agent through the A2A endpoint:

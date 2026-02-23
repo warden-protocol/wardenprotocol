@@ -2,7 +2,7 @@
 sidebar_position: 4
 ---
 
-# Publish your Agent on Warden
+# Publish on Warden
 
 ## Overview
 

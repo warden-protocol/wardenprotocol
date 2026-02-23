@@ -71,6 +71,7 @@
         {"source":"/category/ward-token","destination":"/ward/introduction", "statusCode": 301},
 
         {"source":"/learn/cosmos-modules/:path*","destination":"/learn/modules", "statusCode": 301}, 
-        {"source":"/category/cosmos-modules","destination":"/learn/modules", "statusCode": 301}
+        {"source":"/category/cosmos-modules","destination":"/learn/modules", "statusCode": 301},
+        {"source":"/publish-an-agent/:path*","destination":"/build-an-agent", "statusCode": 301}
     ]
 }

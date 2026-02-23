@@ -28,8 +28,7 @@ The key advantages of publishing on Warden include the following:
 
 To build and publish an Agent, use our developer tools:
 
-- [Warden Code](developer-tools/warden-code): A CLI for scaffolding Warden-compatible Agents. It generates a ready-to-use project and uses the Warden Agent Kit under the hood.
-- [Warden Agent Kit](developer-tools/warden-agent-kit): A TypeScript SDK that powers Agents created with Warden Code. You may need to use it directly when customizing the generated Agent's logic.
+- [Warden Code](developer-tools/warden-code): A CLI for scaffolding Warden-compatible Agents.
 - [Warden Studio](developer-tools/warden-studio): A platform for publishing and monetizing Agents on Warden.
 
 ## Section overview

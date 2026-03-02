@@ -8,12 +8,14 @@ sidebar_position: 4
 
 XXX
 
-## Edit the code with AI
+## Build with AI
 
 - stop the agent (ctrl + c) -> /build -> /rebuild -> npm start -> /chat
-- prompt the agent to update the card
+- prompt the agent to update the card and other files
 
-## Edit the code directily
+## Edit the code
+
+XXX
 
 ## Next steps
 

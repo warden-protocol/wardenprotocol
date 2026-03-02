@@ -5,14 +5,9 @@ sidebar_position: 2
 
 ## Overview
 
-This guide explains how to create your first Agent with [Warden Code](../developer-tools/warden-code#x402-payments)—a CLI for developing Agents compatible with Warden. You'll install and run Warden Code, provide the required details, and the Agent will be immediately available for testing.
+This guide explains how to create your first Agent with [Warden Code](../developer-tools/warden-code)—a CLI for developing Agents compatible with Warden.
 
-Depending on your choices you make when [creating an Agent](#3-create-an-agent), Warden Code uses one of the supported Agent models:
-
-- **OpenAI + Streaming**: A GPT-powered Agent with streaming responses
-- **OpenAI + Multi-turn**: A GPT-powered Agent with conversation history
-- **Blank + Streaming**: A minimal streaming Agent that echoes input
-- **Blank + Multi-turn**: A minimal multi-turn conversation agent
+You'll install and run Warden Code, provide the required details, and the Agent will be immediately available for local testing.
 
 ## Prerequisites
 
@@ -58,9 +53,13 @@ You'll see the list of available commands:
 ```bash 
 Available Commands:
 
+/new - Create a new agent interactively
 /build - Enter AI-powered chat mode to build your agent
 /chat - Chat with a running agent via A2A or LangGraph
-/new - Create a new agent interactively
+/config - View and edit agent configuration
+/register - Register agent on-chain (ERC-8004)
+/activate - Activate a registered agent on-chain (ERC-8004)
+/deactivate - Deactivate a registered agent on-chain (ERC-8004)
 /help - Show available commands
 /clear - Clear the terminal screen
 /exit - Exit the CLI
@@ -90,39 +89,39 @@ To create an Agent, take the following steps:
 
 5. Optionally, provide skills describing what your Agent can do. This does not affect the real capabilities of the Agent—you'll need to [implement custom logic](implement-custom-logic) later.
 
-   :::tip
-   You Agent's skills are advertised in the [A2A Agent Card](https://a2a-protocol.org/latest/tutorials/python/3-agent-skills-and-card/). This allows them to be discovered by other Agents and clients. After Warden Code generates your project, you can update the card at any time by editing `public/.well-known/agent-card.json`.
+   :::note
+   You Agent's skills are advertised in the [A2A Agent Card](https://a2a-protocol.org/latest/tutorials/python/3-agent-skills-and-card/). This allows them to be discovered by other Agents and clients.
    :::
 
-6. Optionally, enable x402 payments. You'll need to select a network and provide your wallet address for receiving payments. To learn more, see [x402 payments](../developer-tools/warden-code#x402-payments).
+6. Optionally, enable x402 payments. You'll need to select a network and provide your wallet address for receiving payments. To learn more, see [Configure x402 payments](configure-the-agent#configure-x402-payments).
 
 7. Confirm Agent creation.
+
+   :::tip
+   You can [reconfigure your Agent](configure-the-agent) later by running the `/config` command. For example, you can update the Agent Card or set optional parameters if you skipped them.
+   :::
 
 ## Result
 
 Depending on your choices, Warden Code generates a new project based one of the supported [Agent models](../developer-tools/warden-code#agent-models).
 
-This project includes the following key files:
+This [project structure](../developer-tools/warden-code#project-structure) includes the following key files:
 
 - `src/agent.ts`: Your Agent's logic
-- `public/.well-known/agent-card.json`: The metadata other Agents use to discover yours
-- `.env`: Your OpenAI API key (if provided) and other environment variables
+- `.env`: Your API key for [authentication](../developer-tools/warden-code#authentication), the LLM key (if provided), and more
 
 :::warning
 Never expose your API keys on GitHub. Before publishing your project, you must keep the API key in a safe space and delete it from the `.env` file.
 :::
 
-Full project structure:
-
-XXX
-
 ## Next steps
 
 Now you can do the following:
 
+- [Learn more about x402 payments](configure-the-agent#configure-x402-payments)
 - [Implement custom logic](implement-custom-logic)
 - [Test your Agent locally](test-your-agent-locally)
 
-:::tip
+:::important
 If you get stuck or have any questions, join the developer channel in our Discord: [`#developers`](https://discord.com/channels/1199357852666560654/1222892775876333629).
 :::

@@ -1,16 +1,32 @@
 ﻿---
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 # Publish on Warden
 
 ## Overview
 
-This guide explains how to publish and monetize your Agent on [Warden](https://app.wardenprotocol.org) through **Warden Studio**—our platform for Agent developers.
+This guide explains how to publish and monetize your Agents on [Warden](https://app.wardenprotocol.org) using [Warden Studio](developer-tools/warden-studio).
 
-## Publish your Agent
+In Warden Studio, you can do the following:
 
-Make sure your [Warden account](https://help.wardenprotocol.org/warden-app/manage-your-wallets#main-account) holds the following assets:
+- Register an Agent
+- Monitor your Agent
+- Manage your Agents
+- Manage your account
+
+## Prerequisites
+
+Before you start, complete the following prerequisites:
+
+- [Build an Agent with Warden Code](/category/build-an-agent-with-warden-code)
+- [Host your Agent](../host-your-agent)
+- Note down your **public API URL** and the **Agent API key**
+- Optionally, prepare a publicly hosted image for your Agent
+
+## Publish an Agent
+
+First, sign it to [Warden](https://app.wardenprotocol.org/home) and [fund your account](https://help.wardenprotocol.org/warden-app/manage-your-wallets#deposit). Make sure it holds the following assets:
 
 - At least **1 USDC on Base** to pay the registration fee
 - **ETH on Base** to pay the gas fee
@@ -30,14 +46,20 @@ If everything is fine, your Agent will soon appear on the **Agents** tab in Ward
 
 For additional visibility, we encourage you to submit a pull request to the `community-agents` repository, listing your Agent in [`README.md`](https://github.com/warden-protocol/community-agents/blob/main/README.md#-community-agents-and-tools).
 
-![Registering an Agent in Warden Studio](../../static/img/community-agents-1.png)
+![Registering an Agent in Warden Studio](../../static/img/warden-studio-1.png)
 
-## Manage your Agent
+## Monitor your Agent
 
-In [Warden Studio](https://studio.wardenprotocol.org), you can monitor inferences and payments to your Agent. Just check the following tabs:
+You can monitor inferences and payments to your Agent.
+
+Just check the following tabs in [Warden Studio](https://studio.wardenprotocol.org):
 
 - **Inferences**
 - **Payments**
+
+## Manage your Agent
+
+*Coming soon.*
 
 ## Manage your account
 
@@ -54,4 +76,4 @@ You can also manage your **developer account**—a wallet for paying the Agent r
 Once you log in, the developer account automatically connects with your Warden account using the same credentials but displays only **USDC on Base**.
 :::
 
-![Managing the dev account in Warden Studio](../../static/img/community-agents-2.png)
+![Managing the dev account in Warden Studio](../../static/img/warden-studio-2.png)

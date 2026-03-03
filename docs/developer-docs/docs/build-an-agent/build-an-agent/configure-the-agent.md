@@ -35,7 +35,22 @@ To update your Agent's settings, take these steps:
 
 ## Update the A2A Agent Card
 
-*Coming soon*.
+[A2A Agent Card](https://agent2agent.info/docs/concepts/agentcard/) is a JSON file describing your Agent's capabilities. It enables clients or other Agents to discover and understand what functionalities the Agent offers.
+
+Warden Code generates all Agents with Agent Cards, based on the information provided on Agent creation. If you need to change the Agent Card data later, use one of these methods:
+
+- **Manual update**  
+  You can find the Agent Card in `src/public/.well-known/agent-card.json`.
+
+- **`/config`**  
+  Run `warden` and type the `/config` command. If you edit **Identity** and **Skills**, these updates will be reflected in the card.
+
+- **`/build`**
+  Run `warden` and type the `/build` command to enter the AI-powered build mode. Here you can ask the AI assistant to update the agent card for you.
+
+  :::tip
+  To use the AI assistant, you may need to run `/mode` and configure one of the supported LLM providers: **OpenAI** or **Anthropic**. If you created an OpenAI Agent and specified a correct API key, no action is required.
+  :::
 
 ## Configure x402 payments
 

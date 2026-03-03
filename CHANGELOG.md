@@ -42,18 +42,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Consensus Breaking Changes
 
+### Features (non-breaking)
+
+### Bug Fixes
+
+## [v1.0.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v1.0.0) - 2026-03-03
+
+This upgrade re-aligns the network binary version after the v0.7.6 emergency
+upgrade, enforcing that all nodes (even non-validators) are running the latest
+version.
+
+### Consensus Breaking Changes
+
 - sdk: update Cosmos SDK to v0.53.6.
 - x/evm: update cosmos/evm to v0.6.0.
 
 ### Features (non-breaking)
 
-### Bug Fixes
+- update Go to v1.26.
+- bump minor dependencies.
 
 ## [v0.7.7](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.7) - 2026-01-26
 
-This upgrade re-aligns the network binary version after the v0.7.6 emergency
-upgrade, enforcing that all nodes (even non-validators) are running the latest
-version.
+Retracted - update directly from v0.7.6 to v1.0.0.
 
 ### Consensus Breaking Changes
 

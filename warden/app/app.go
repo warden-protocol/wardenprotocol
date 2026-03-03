@@ -863,6 +863,12 @@ func (app *App) Name() string { return app.BaseApp.Name() }
 
 // BeginBlocker application updates every begin block.
 func (app *App) BeginBlocker(ctx sdk.Context) (sdk.BeginBlock, error) {
+	if emergencyUpgradeHeight > 0 && ctx.BlockHeight() == emergencyUpgradeHeight {
+		if err := app.emergencyUpgrade4476100(ctx); err != nil {
+			return sdk.BeginBlock{}, err
+		}
+	}
+
 	return app.ModuleManager.BeginBlock(ctx)
 }
 

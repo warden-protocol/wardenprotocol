@@ -116,7 +116,7 @@ In this section, you can find the following:
 To learn more, explore other sections:
 
 - [Operate a node](/operate-a-node/introduction): Guides for node operators
-- [Publish an Agent](/publish-an-agent/introduction): Onboarding for Community Agent builders
+- [Build an Agent](/build-an-agent/introduction): Guides for Agent builders
 - [$WARD](/ward/introduction): A detailed overview of Warden tokenomics
 
 Finally, you can find Warden user guides in our Help Center:

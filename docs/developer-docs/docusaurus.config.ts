@@ -98,8 +98,8 @@ const config: Config = {
                 },
                 {
                     type: "docSidebar",
-                    sidebarId: "publishAgent",
-                    label: "Publish an Agent",
+                    sidebarId: "buildAgent",
+                    label: "Build an Agent",
                     position: "left",
                 },
                 {

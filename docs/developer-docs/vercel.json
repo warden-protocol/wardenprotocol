@@ -45,9 +45,8 @@
         {"source":"/category/use-the-http-plugin","destination":"/", "statusCode": 301},
         {"source":"/category/use-the-price-prediction-plugin","destination":"/", "statusCode": 301},
         {"source":"/category/precompiles","destination":"/", "statusCode": 301},
-        {"source":"/build-an-agent/:path*","destination":"/", "statusCode": 301},
-        {"source":"/category/warden-agent-kit","destination":"/", "statusCode": 301},
-        {"source":"/category/build-an-onchain-ai-agent","destination":"/", "statusCode": 301},   
+        {"source":"/category/warden-agent-kit","destination":"/build-an-agent/developer-tools/warden-code", "statusCode": 301},
+        {"source":"/category/build-an-onchain-ai-agent","destination":"/build-an-agent/introduction", "statusCode": 301},   
         {"source":"/build-a-keychain/:path*","destination":"/", "statusCode": 301},
         {"source":"/category/operate-a-keychain","destination":"/", "statusCode": 301},
         {"source":"/category/implementations","destination":"/", "statusCode": 301},
@@ -71,6 +70,8 @@
         {"source":"/category/ward-token","destination":"/ward/introduction", "statusCode": 301},
 
         {"source":"/learn/cosmos-modules/:path*","destination":"/learn/modules", "statusCode": 301}, 
-        {"source":"/category/cosmos-modules","destination":"/learn/modules", "statusCode": 301}
+        {"source":"/category/cosmos-modules","destination":"/learn/modules", "statusCode": 301},
+        {"source":"/publish-an-agent/:path*","destination":"/build-an-agent/introduction", "statusCode": 301},
+        {"source":"/publish-an-agent/publish-your-agent","destination":"/build-an-agent/publish-on-warden", "statusCode": 301}
     ]
 }

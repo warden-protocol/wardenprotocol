@@ -8,7 +8,7 @@ sidebar_position: 1
 
 **Warden Code** is a CLI for scaffolding production-ready AI Agents **compatible with Warden**.
 
-Generated Agents also support open standards such as athe **A2A protocol**, **x402 payments**, and **ERC-8004 identity**, which allows them to function across the broader Agent ecosystem.
+Generated Agents also support open standards such as the **A2A protocol**, **x402 payments**, and **ERC-8004 identity**, which allows them to function across the broader Agent ecosystem.
 
 This article is a reference covering the main features of Warden Code. For getting started with Agent development, see [Build an Agent with Warden Code](/category/build-an-agent-with-warden-code).
 
@@ -111,7 +111,7 @@ Run `warden` to initiate Warden Code and use the following commands:
     <td>`/register`</td>
     <td>Register the Agent onchain (ERC-8004)</td>
     <td rowSpan={3}>
-      [Register on ERC-8004](../build-an-agent/configure-the-agent)
+      [Register on ERC-8004](../register-on-erc-8004)
     </td>
   </tr>
 
@@ -236,7 +236,7 @@ You can test them when [running your Agent locally](../build-an-agent/test-the-a
 |------|--------|----------|
 | [Create Background Run](https://docs.langchain.com/langsmith/agent-server-api/thread-runs/create-background-run) | POST | `/threads/{thread_id}/runs` |
 | [Create Run, Stream Output](https://docs.langchain.com/langsmith/agent-server-api/thread-runs/create-run-stream-output) | POST | `/threads/{thread_id}/runs/stream` |
-| [Create Run, Wait for Output](https://docs.langchain.com/langsmith/agent-server-api/thread-runs/create-run-stream-output) | POST | `/threads/{thread_id}/runs/wait` |
+| [Create Run, Wait for Output](https://docs.langchain.com/langsmith/agent-server-api/thread-runs/create-run-wait-output) | POST | `/threads/{thread_id}/runs/wait` |
 
 #### Stateless runs
 

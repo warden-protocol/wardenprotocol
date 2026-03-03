@@ -74,7 +74,7 @@ To start building with AI, take these steps:
    The Agent URL is resolved automatically from the `AGENT_URL` in your `.env` file. By default, it's set to `http://localhost:3000`. If needed, you can pass the URL explicitly:
 
    ```bash
-   /chat http://localhost:3000.
+   /chat http://localhost:3000
    ```
    :::
 

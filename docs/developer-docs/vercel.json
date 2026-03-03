@@ -71,7 +71,7 @@
 
         {"source":"/learn/cosmos-modules/:path*","destination":"/learn/modules", "statusCode": 301}, 
         {"source":"/category/cosmos-modules","destination":"/learn/modules", "statusCode": 301},
-        {"source":"/publish-an-agent/:path*","destination":"/build-an-agent/introduction", "statusCode": 301},
-        {"source":"/publish-an-agent/publish-your-agent","destination":"/build-an-agent/publish-on-warden", "statusCode": 301}
+        {"source":"/publish-an-agent/publish-your-agent","destination":"/build-an-agent/publish-on-warden", "statusCode": 301},
+        {"source":"/publish-an-agent/:path*","destination":"/build-an-agent/introduction", "statusCode": 301}
     ]
 }

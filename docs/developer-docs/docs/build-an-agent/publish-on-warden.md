@@ -26,7 +26,7 @@ Before you start, complete the following prerequisites:
 
 ## Publish an Agent
 
-First, sign it to [Warden](https://app.wardenprotocol.org/home) and [fund your account](https://help.wardenprotocol.org/warden-app/manage-your-wallets#deposit). Make sure it holds the following assets:
+First, sign in to [Warden](https://app.wardenprotocol.org/home) and [fund your account](https://help.wardenprotocol.org/warden-app/manage-your-wallets#deposit). Make sure it holds the following assets:
 
 - At least **1 USDC on Base** to pay the registration fee
 - **ETH on Base** to pay the gas fee

@@ -23,7 +23,7 @@ All **Warden Agents** generated with [Warden Code](developer-tools/warden-code) 
     <td><strong>Warden compatibility</strong></td>
     <td>
       All Agents are immediately compatible with
-      [Warden](https://help.wardenprotocol.org).
+      [Warden](https://app.wardenprotocol.org).
       After publicly hosting an Agent, you can publish and manage it using Warden Studio.
     </td>
     <td>

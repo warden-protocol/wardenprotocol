@@ -35,7 +35,7 @@ After [creating a Warden Agent](create-a-new-agent), you can **run it locally** 
 
 ### Chat using the UI
 
-The fastest way to make sure your Agent is running opening the local host URL:
+The fastest way to make sure your Agent is to open the local host URL:
 
 ```text
 http://localhost:3000
@@ -224,7 +224,7 @@ The card will display your Agent's name and capabilities, along with other infor
 ```
 
 :::tip
-You can edit the Agent Card at any time. Use the [`/config`](implement-custom-logic#build-with-ai) command or update the card directly in `public/.well-known/agent-card.json`.
+You can edit the Agent Card at any time. Use the `/config` command or other methods, as shown in [Configure the Agent](configure-the-agent#update-the-a2a-agent-card).
 :::
 
 ## Next steps

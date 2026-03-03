@@ -1,4 +1,4 @@
-FROM golang:1.25-alpine AS build
+FROM golang:1.26-alpine AS build
 
 RUN set -eux; apk add --no-cache ca-certificates build-base linux-headers git curl just;
 

@@ -1,4 +1,4 @@
-FROM golang:1.25-trixie
+FROM golang:1.26-trixie
 
 # Install dependencies
 RUN apt-get update && \

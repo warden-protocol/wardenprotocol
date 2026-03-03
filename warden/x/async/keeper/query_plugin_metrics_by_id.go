@@ -53,6 +53,7 @@ func (k Keeper) PluginMetricsById(ctx context.Context, req *types.QueryPluginMet
 	precision := int64(6)
 
 	successTaskRatio := cosmosmath.LegacyNewDec(0)
+
 	if metrics.TasksCount > 0 {
 		successfulTasksCount := cosmosmath.LegacyNewDecFromIntWithPrec(cosmosmath.NewIntFromUint64(metrics.ResultsCount*uint64(math.Pow10(int(precision)))), precision)
 		allTasksCount := cosmosmath.LegacyNewDecFromIntWithPrec(cosmosmath.NewIntFromUint64(metrics.TasksCount*uint64(math.Pow10(int(precision)))), precision)

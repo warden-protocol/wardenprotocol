@@ -70,7 +70,7 @@ type pluginsInput struct {
 func (p Precompile) TaskByIdMethod(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	req, err := newTaskByIdRequest(method, args)
 	if err != nil {
@@ -94,7 +94,7 @@ func (p Precompile) TaskByIdMethod(
 	return method.Outputs.Pack(out)
 }
 
-func newTaskByIdRequest(method *abi.Method, args []interface{}) (*types.QueryTaskByIdRequest, error) {
+func newTaskByIdRequest(method *abi.Method, args []any) (*types.QueryTaskByIdRequest, error) {
 	if len(args) != 1 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
@@ -117,7 +117,7 @@ type taskByIdInput struct {
 func (p Precompile) TasksMethod(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	req, err := newTasksRequest(method, args)
 	if err != nil {
@@ -141,7 +141,7 @@ func (p Precompile) TasksMethod(
 	return method.Outputs.Pack(out)
 }
 
-func newTasksRequest(method *abi.Method, args []interface{}) (*types.QueryTasksRequest, error) {
+func newTasksRequest(method *abi.Method, args []any) (*types.QueryTasksRequest, error) {
 	if len(args) != 2 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
@@ -173,7 +173,7 @@ type tasksInput struct {
 func (p Precompile) PendingTasksMethod(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	req, err := newPendingTasksRequest(method, args)
 	if err != nil {
@@ -197,7 +197,7 @@ func (p Precompile) PendingTasksMethod(
 	return method.Outputs.Pack(out)
 }
 
-func newPendingTasksRequest(method *abi.Method, args []interface{}) (*types.QueryPendingTasksRequest, error) {
+func newPendingTasksRequest(method *abi.Method, args []any) (*types.QueryPendingTasksRequest, error) {
 	if len(args) != 1 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}

@@ -13,7 +13,7 @@ import (
 )
 
 type WardenProtocolMsg struct {
-	Warden WardenMsg `json:"warden,omitempty"`
+	Warden WardenMsg `json:"warden"`
 }
 
 type WardenMsg struct {

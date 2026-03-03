@@ -80,7 +80,7 @@ func applyFunction(fn object.Object, args []object.Object) object.Object {
 	return newError("not a function: %s", fn.Type())
 }
 
-func newError(format string, a ...interface{}) *object.Error {
+func newError(format string, a ...any) *object.Error {
 	return &object.Error{Message: fmt.Sprintf(format, a...)}
 }
 

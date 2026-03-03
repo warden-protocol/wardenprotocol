@@ -24,7 +24,7 @@ func (p *Precompile) AddTaskMethod(
 	origin common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	msgServer := actmodulekeeper.NewMsgServerImpl(p.asyncmodulekeeper)
 
@@ -51,7 +51,7 @@ func (p *Precompile) AddTaskMethod(
 	return method.Outputs.Pack(response.Id)
 }
 
-func newMsgAddTask(args []interface{}, origin common.Address, method *abi.Method) (*asynctypes.MsgAddTask, error) {
+func newMsgAddTask(args []any, origin common.Address, method *abi.Method) (*asynctypes.MsgAddTask, error) {
 	if len(args) != 4 {
 		return nil, precommon.WrongArgsNumber{Expected: 4, Got: len(args)}
 	}

@@ -2,19 +2,14 @@ package v1beta3
 
 import (
 	"fmt"
+	"slices"
 
 	"github.com/warden-protocol/wardenprotocol/shield"
 	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
 func (w *Space) IsOwner(address string) bool {
-	for _, owner := range w.Owners {
-		if owner == address {
-			return true
-		}
-	}
-
-	return false
+	return slices.Contains(w.Owners, address)
 }
 
 func (w *Space) AddOwner(address string, nonce uint64) error {

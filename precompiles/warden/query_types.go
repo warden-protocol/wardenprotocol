@@ -12,7 +12,7 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
-func newAllKeysRequest(method *abi.Method, args []interface{}) (*types.QueryAllKeysRequest, error) {
+func newAllKeysRequest(method *abi.Method, args []any) (*types.QueryAllKeysRequest, error) {
 	if len(args) != 2 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
@@ -106,7 +106,7 @@ func (o *keysOutput) Pack(args abi.Arguments) ([]byte, error) {
 	return args.Pack(o.KeysResponse, o.PageResponse)
 }
 
-func newKeyByIdRequest(method *abi.Method, args []interface{}) (*types.QueryKeyByIdRequest, error) {
+func newKeyByIdRequest(method *abi.Method, args []any) (*types.QueryKeyByIdRequest, error) {
 	if len(args) != 2 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
@@ -132,7 +132,7 @@ type keyByIdInput struct {
 	DeriveAddresses []int32
 }
 
-func newKeysBySpaceIdRequest(method *abi.Method, args []interface{}) (*types.QueryKeysBySpaceIdRequest, error) {
+func newKeysBySpaceIdRequest(method *abi.Method, args []any) (*types.QueryKeysBySpaceIdRequest, error) {
 	if len(args) != 3 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 3, Got: len(args)}
 	}
@@ -160,7 +160,7 @@ type keysBySpaceIdInput struct {
 	DeriveAddresses []int32
 }
 
-func newKeyRequestByIdRequest(method *abi.Method, args []interface{}) (*types.QueryKeyRequestByIdRequest, error) {
+func newKeyRequestByIdRequest(method *abi.Method, args []any) (*types.QueryKeyRequestByIdRequest, error) {
 	if len(args) != 1 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
@@ -187,7 +187,7 @@ func (kr *KeyRequest) Pack(args abi.Arguments) ([]byte, error) {
 	return args.Pack(kr)
 }
 
-func newKeyRequestsRequest(method *abi.Method, args []interface{}) (*types.QueryKeyRequestsRequest, error) {
+func newKeyRequestsRequest(method *abi.Method, args []any) (*types.QueryKeyRequestsRequest, error) {
 	if len(args) != 4 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 4, Got: len(args)}
 	}
@@ -248,7 +248,7 @@ func (o *keyRequestsOutput) Pack(args abi.Arguments) ([]byte, error) {
 	return args.Pack(o.KeyRequests, o.Pagination)
 }
 
-func newKeychainRequest(method *abi.Method, args []interface{}) (*types.QueryKeychainByIdRequest, error) {
+func newKeychainRequest(method *abi.Method, args []any) (*types.QueryKeychainByIdRequest, error) {
 	if len(args) != 1 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
@@ -275,7 +275,7 @@ func (k *Keychain) Pack(args abi.Arguments) ([]byte, error) {
 	return args.Pack(k)
 }
 
-func newKeychainsRequest(method *abi.Method, args []interface{}) (*types.QueryKeychainsRequest, error) {
+func newKeychainsRequest(method *abi.Method, args []any) (*types.QueryKeychainsRequest, error) {
 	if len(args) != 1 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
@@ -326,7 +326,7 @@ func (o *keychainsOutput) Pack(args abi.Arguments) ([]byte, error) {
 	return args.Pack(o.Keychains, o.Pagination)
 }
 
-func newSignRequestByIdRequest(args []interface{}) (*types.QuerySignRequestByIdRequest, error) {
+func newSignRequestByIdRequest(args []any) (*types.QuerySignRequestByIdRequest, error) {
 	if len(args) != 1 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
@@ -389,7 +389,7 @@ func (o *SignRequest) Pack(args abi.Arguments) ([]byte, error) {
 	return args.Pack(o)
 }
 
-func newSignRequestsRequest(method *abi.Method, args []interface{}) (*types.QuerySignRequestsRequest, error) {
+func newSignRequestsRequest(method *abi.Method, args []any) (*types.QuerySignRequestsRequest, error) {
 	if len(args) != 4 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 4, Got: len(args)}
 	}
@@ -480,7 +480,7 @@ func (o *signRequestsOutput) Pack(args abi.Arguments) ([]byte, error) {
 	return args.Pack(o.SignRequests, o.Pagination)
 }
 
-func newSpaceByIdRequest(args []interface{}) (*types.QuerySpaceByIdRequest, error) {
+func newSpaceByIdRequest(args []any) (*types.QuerySpaceByIdRequest, error) {
 	if len(args) != 1 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
@@ -530,7 +530,7 @@ func (o *Space) Pack(args abi.Arguments) ([]byte, error) {
 	return args.Pack(o)
 }
 
-func newSpacesRequest(method *abi.Method, args []interface{}) (*types.QuerySpacesRequest, error) {
+func newSpacesRequest(method *abi.Method, args []any) (*types.QuerySpacesRequest, error) {
 	if len(args) != 1 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
@@ -581,7 +581,7 @@ func (o *spacesOutput) Pack(args abi.Arguments) ([]byte, error) {
 	return args.Pack(o.Spaces, o.Pagination)
 }
 
-func newSpacesByOwnerRequest(method *abi.Method, args []interface{}) (*types.QuerySpacesByOwnerRequest, error) {
+func newSpacesByOwnerRequest(method *abi.Method, args []any) (*types.QuerySpacesByOwnerRequest, error) {
 	if len(args) != 2 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}

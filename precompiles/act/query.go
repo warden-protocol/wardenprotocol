@@ -26,7 +26,7 @@ func (p *Precompile) ActionsQuery(
 	ctx sdk.Context,
 	_ *vm.Contract,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	req, err := newActionsQuery(method, args)
 	if err != nil {
@@ -50,7 +50,7 @@ func (p *Precompile) ActionsQuery(
 	return method.Outputs.Pack(out)
 }
 
-func newActionsQuery(method *abi.Method, args []interface{}) (*types.QueryActionsRequest, error) {
+func newActionsQuery(method *abi.Method, args []any) (*types.QueryActionsRequest, error) {
 	if len(args) != 1 {
 		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
@@ -72,7 +72,7 @@ func (p *Precompile) ActionByIdQuery(
 	ctx sdk.Context,
 	_ *vm.Contract,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	req, err := newActionByIdQuery(args)
 	if err != nil {
@@ -96,7 +96,7 @@ func (p *Precompile) ActionByIdQuery(
 	return method.Outputs.Pack(out)
 }
 
-func newActionByIdQuery(args []interface{}) (*types.QueryActionByIdRequest, error) {
+func newActionByIdQuery(args []any) (*types.QueryActionByIdRequest, error) {
 	if len(args) != 1 {
 		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
@@ -116,7 +116,7 @@ func (p *Precompile) ActionsByAddressQuery(
 	ctx sdk.Context,
 	_ *vm.Contract,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	req, err := newActionsByAddressQuery(method, args)
 	if err != nil {
@@ -140,7 +140,7 @@ func (p *Precompile) ActionsByAddressQuery(
 	return method.Outputs.Pack(out)
 }
 
-func newActionsByAddressQuery(method *abi.Method, args []interface{}) (*types.QueryActionsByAddressRequest, error) {
+func newActionsByAddressQuery(method *abi.Method, args []any) (*types.QueryActionsByAddressRequest, error) {
 	if len(args) != 3 {
 		return nil, precommon.WrongArgsNumber{Expected: 3, Got: len(args)}
 	}
@@ -168,7 +168,7 @@ func (p *Precompile) TemplatesQuery(
 	ctx sdk.Context,
 	_ *vm.Contract,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	req, err := newTemplatesQuery(method, args)
 	if err != nil {
@@ -192,7 +192,7 @@ func (p *Precompile) TemplatesQuery(
 	return method.Outputs.Pack(out)
 }
 
-func newTemplatesQuery(method *abi.Method, args []interface{}) (*types.QueryTemplatesRequest, error) {
+func newTemplatesQuery(method *abi.Method, args []any) (*types.QueryTemplatesRequest, error) {
 	if len(args) != 2 {
 		return nil, precommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
@@ -222,7 +222,7 @@ func (p *Precompile) TemplateByIdQuery(
 	ctx sdk.Context,
 	_ *vm.Contract,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	req, err := newTemplateByIdQuery(args)
 	if err != nil {
@@ -246,7 +246,7 @@ func (p *Precompile) TemplateByIdQuery(
 	return method.Outputs.Pack(out)
 }
 
-func newTemplateByIdQuery(args []interface{}) (*types.QueryTemplateByIdRequest, error) {
+func newTemplateByIdQuery(args []any) (*types.QueryTemplateByIdRequest, error) {
 	if len(args) != 1 {
 		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}

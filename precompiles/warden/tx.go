@@ -38,7 +38,7 @@ func (p Precompile) AddKeychainAdminMethod(
 	contract *vm.Contract,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
@@ -72,7 +72,7 @@ func (p Precompile) AddKeychainWriterMethod(
 	contract *vm.Contract,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
@@ -107,7 +107,7 @@ func (p Precompile) FulfilKeyRequestMethod(
 	keyRequestStatus wardentypes.KeyRequestStatus,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
@@ -142,7 +142,7 @@ func (p Precompile) FulfilSignRequestMethod(
 	signRequestStatus wardentypes.SignRequestStatus,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
@@ -176,7 +176,7 @@ func (p Precompile) NewKeychainMethod(
 	contract *vm.Contract,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
@@ -211,7 +211,7 @@ func (p Precompile) NewSpaceMethod(
 	contract *vm.Contract,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
@@ -246,7 +246,7 @@ func (p Precompile) RemoveKeychainAdminMethod(
 	contract *vm.Contract,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
@@ -280,7 +280,7 @@ func (p Precompile) UpdateKeychainMethod(
 	contract *vm.Contract,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
@@ -315,7 +315,7 @@ func (p Precompile) AddSpaceOwnerMethod(
 	caller common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
@@ -394,7 +394,7 @@ func (p Precompile) RemoveSpaceOwnerMethod(
 	caller common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
@@ -434,7 +434,7 @@ func (p Precompile) NewKeyRequestMethod(
 	caller common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
@@ -474,7 +474,7 @@ func (p Precompile) NewSignRequestMethod(
 	caller common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
@@ -514,7 +514,7 @@ func (p Precompile) UpdateKeyMethod(
 	caller common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
@@ -554,7 +554,7 @@ func (p Precompile) UpdateSpaceMethod(
 	caller common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 

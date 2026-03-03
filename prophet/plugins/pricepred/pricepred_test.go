@@ -151,7 +151,7 @@ func TestBuildOutput(t *testing.T) {
 func TestAllMetricNamesCovered(t *testing.T) {
 	// this test assumes that the MetricName enum is mapped to the field IDs of
 	// the [BacktestingMetrics] struct
-	bmType := reflect.TypeOf(BacktestingMetrics{})
+	bmType := reflect.TypeFor[BacktestingMetrics]()
 
 	n := bmType.NumField()
 	for i := range n {

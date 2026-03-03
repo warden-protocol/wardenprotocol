@@ -22,7 +22,7 @@ func Benchmark_QueryActionsByAddress(b *testing.B) {
 
 	// create many actions, each with a unique address
 	for i := range 100_000 {
-		addr := sdk.MustBech32ifyAddressBytes(sdk.GetConfig().GetBech32AccountAddrPrefix(), []byte(fmt.Sprintf("address-%d", i)))
+		addr := sdk.MustBech32ifyAddressBytes(sdk.GetConfig().GetBech32AccountAddrPrefix(), fmt.Appendf(nil, "address-%d", i))
 
 		_, err := k.ActionKeeper.New(
 			ctx,
@@ -36,7 +36,7 @@ func Benchmark_QueryActionsByAddress(b *testing.B) {
 	}
 
 	// query actions by a single address
-	address := sdk.MustBech32ifyAddressBytes(sdk.GetConfig().GetBech32AccountAddrPrefix(), []byte(fmt.Sprintf("address-%d", 100)))
+	address := sdk.MustBech32ifyAddressBytes(sdk.GetConfig().GetBech32AccountAddrPrefix(), fmt.Appendf(nil, "address-%d", 100))
 	req := &types.QueryActionsByAddressRequest{
 		Address: address,
 		Pagination: &query.PageRequest{

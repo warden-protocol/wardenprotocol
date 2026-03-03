@@ -24,7 +24,7 @@ require (
 	cosmossdk.io/client/v2 v2.0.0-beta.11
 	cosmossdk.io/collections v1.4.0
 	cosmossdk.io/core v0.11.3
-	cosmossdk.io/errors v1.0.2
+	cosmossdk.io/errors v1.1.0
 	cosmossdk.io/log v1.6.1
 	cosmossdk.io/math v1.5.3
 	cosmossdk.io/store v1.1.2
@@ -381,7 +381,7 @@ require (
 	golang.org/x/time v0.12.0 // indirect
 	google.golang.org/api v0.247.0 // indirect
 	google.golang.org/genproto v0.0.0-20250603155806-513f23925822 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20251202230838-ff82c1b0f217 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260114163908-3f89685c29c3 // indirect
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.5.1 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect

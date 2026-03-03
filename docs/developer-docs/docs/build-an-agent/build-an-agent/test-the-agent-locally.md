@@ -47,6 +47,8 @@ If everything is fine, you'll be able to chat with your Agent through the **user
 
 ### Chat using the CLI
 
+XXX
+
 - /build -> /chat
 - /chat + URL
 
@@ -58,7 +60,7 @@ Every new Agent is immediately accessible through **A2A** and **LangGraph** serv
 For a full list, see [A2A endpoints](../developer-tools/warden-code#a2a-endpoints) and [LangGraph endpoints](../developer-tools/warden-code#langgraph-endpoints).
 :::
 
-After running your Agent, you can try any of these endpoints locally. For example, you can prompt the Agent using the [A2A POST endpoint](../developer-tools/warden-code#post-methods) with the `send` method.
+After running your Agent, you can try any of these endpoints locally. For example, you can prompt the Agent using the [A2A POST endpoint](../developer-tools/warden-code#a2a-endpoints) with the `send` method.
 
 In the request below, replace `AGENT_API_KEY` with your Agent API key for [authentication](../developer-tools/warden-code#authentication), which you can find in the `.env` file:
 

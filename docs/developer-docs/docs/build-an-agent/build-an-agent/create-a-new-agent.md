@@ -33,7 +33,7 @@ npx warden-code
 This launches an interactive CLI where you can create new agents.
 
 :::tip
-If you need to update previously installed Warden Code, run this:
+If you need to update the installed version, run this:
 
 ```bash
 npm update -g warden-code
@@ -118,9 +118,9 @@ Never expose your API keys on GitHub. Before publishing your project, you must k
 
 Now you can do the following:
 
-- [Learn more about x402 payments](configure-the-agent#configure-x402-payments)
+- [Configure your Agent](configure-the-agent)
 - [Implement custom logic](implement-custom-logic)
-- [Test your Agent locally](test-your-agent-locally)
+- [Test the Agent locally](test-the-agent-locally)
 
 :::important
 If you get stuck or have any questions, join the developer channel in our Discord: [`#developers`](https://discord.com/channels/1199357852666560654/1222892775876333629).

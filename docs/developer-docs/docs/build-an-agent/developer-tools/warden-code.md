@@ -35,16 +35,38 @@ To learn more, see [Warden Agent capabilities](../warden-agent-capabilities).
 With Warden Code, you can use the command line to generate a project, edit your code with an AI assistant, configure your Agent, and much more:
 
 ```bash
-/new - Create a new agent interactively
-/build - Enter AI-powered chat mode to build your agent
-/chat - Chat with a running agent via A2A or LangGraph
-/config - View and edit agent configuration
-/register - Register agent on-chain (ERC-8004)
-/activate - Activate a registered agent on-chain (ERC-8004)
-/deactivate - Deactivate a registered agent on-chain (ERC-8004)
+/new - Create a new Agent interactively
+/build - Enter the AI-powered mode to build your Agent
+/chat - Chat with a running Agent using A2A or LangGraph
+/config - View and edit the Agent configuration
+/register - Register the Agent onchain (ERC-8004)
+/activate - Activate a registered Agent onchain (ERC-8004)
+/deactivate - Deactivate a registered Agent onchain (ERC-8004)
 /help - Show available commands
 /clear - Clear the terminal screen
 /exit - Exit the CLI
+```
+
+### Project structure
+
+Warden Code generates the following project structure:
+
+```
+my-agent/
+├── src/
+│   ├── agent.ts      # Your Agent's logic: the handler function
+│   ├── server.ts     # Server setup, static file serving, protocol routing
+│   └── payments.ts   # x402 payment setup (created only if you enable x402)
+├── public/
+│   ├── index.html    # The chat frontend: auto-loads the A2A Agent Card, x402 wallets
+│   └── .well-known/
+│       ├── agent-card.json           # The A2A Agent Card: the identity, capabilities, skills
+│       └── agent-registration.json   # ERC-8004 registration metadata
+├── package.json
+├── tsconfig.json
+├── Dockerfile
+├── .env.example
+└── .gitignore
 ```
 
 ### Agent models
@@ -55,32 +77,6 @@ Depending on your choices you make when [creating an Agent](../build-an-agent/cr
 - **OpenAI + Multi-turn**: A GPT-powered Agent with conversation history
 - **Blank + Streaming**: A minimal streaming Agent that echoes input
 - **Blank + Multi-turn**: A minimal multi-turn conversation agent
-
-### Project structure
-
-Warden Code generates the following project structure:
-
-```
-my-agent/
-├── src/
-│   ├── agent.ts      # Your agent logic (handler function)
-│   ├── server.ts     # Server setup, static file serving, protocol routing
-│   └── payments.ts   # x402 payment setup (only when payments enabled)
-├── public/
-│   ├── index.html    # Chat front-end (auto-loads agent card, skills, x402 wallets)
-│   └── .well-known/
-│       ├── agent-card.json           # Agent identity, capabilities, skills (A2A)
-│       └── agent-registration.json   # ERC-8004 registration metadata
-├── package.json
-├── tsconfig.json
-├── Dockerfile
-├── .env.example
-└── .gitignore
-```
-
-### Frontend
-
-*Coming soon.*
 
 ## API
 
@@ -106,41 +102,41 @@ You can test them when [running your Agent locally](../build-an-agent/test-the-a
 
 | Name | Method | Endpoint |
 |------|--------|----------|
-| [Search Assistants](...) | POST | `/assistants/search` |
-| [Get Assistant](...) | GET | `/assistants/{assistant_id}` |
+| [Search Assistants](https://docs.langchain.com/langsmith/agent-server-api/assistants/search-assistants) | POST | `/assistants/search` |
+| [Get Assistant](https://docs.langchain.com/langsmith/agent-server-api/assistants/get-assistant) | GET | `/assistants/{assistant_id}` |
 
 #### Threads
 
 | Name | Method | Endpoint |
 |------|--------|----------|
-| [Create Thread](...) | POST | `/threads` |
-| [Search Threads](...) | POST | `/threads/search` |
-| [Get Thread](...) | GET | `/threads/{thread_id}` |
-| [Get Thread State](...) | GET | `/threads/{thread_id}/state` |
-| [Get Thread History](...) | GET | `/threads/{thread_id}/history` |
-| [Delete Thread](...) | DELETE | `/threads/{thread_id}` |
+| [Create Thread](https://docs.langchain.com/langsmith/agent-server-api/threads/create-thread) | POST | `/threads` |
+| [Search Threads](https://docs.langchain.com/langsmith/agent-server-api/threads/search-threads) | POST | `/threads/search` |
+| [Get Thread](https://docs.langchain.com/langsmith/agent-server-api/threads/get-thread) | GET | `/threads/{thread_id}` |
+| [Get Thread State](https://docs.langchain.com/langsmith/agent-server-api/threads/get-thread-state) | GET | `/threads/{thread_id}/state` |
+| [Get Thread History](https://docs.langchain.com/langsmith/agent-server-api/threads/get-thread-history) | GET | `/threads/{thread_id}/history` |
+| [Delete Thread](https://docs.langchain.com/langsmith/agent-server-api/threads/delete-thread) | DELETE | `/threads/{thread_id}` |
 
 #### Thread runs
 
 | Name | Method | Endpoint |
 |------|--------|----------|
-| [Create Background Run](...) | POST | `/threads/{thread_id}/runs` |
-| [Create Run, Stream Output](...) | POST | `/threads/{thread_id}/runs/stream` |
-| [Create Run, Wait for Output](...) | POST | `/threads/{thread_id}/runs/wait` |
+| [Create Background Run](https://docs.langchain.com/langsmith/agent-server-api/thread-runs/create-background-run) | POST | `/threads/{thread_id}/runs` |
+| [Create Run, Stream Output](https://docs.langchain.com/langsmith/agent-server-api/thread-runs/create-run-stream-output) | POST | `/threads/{thread_id}/runs/stream` |
+| [Create Run, Wait for Output](https://docs.langchain.com/langsmith/agent-server-api/thread-runs/create-run-stream-output) | POST | `/threads/{thread_id}/runs/wait` |
 
 #### Stateless runs
 
 | Name | Method | Endpoint |
 |------|--------|----------|
-| [Create Run, Stream Output](...) | POST | `/runs/stream` |
-| [Create Run, Wait for Output](...) | POST | `/runs/wait` |
+| [Create Run, Stream Output](https://docs.langchain.com/langsmith/agent-server-api/stateless-runs/create-run-stream-output) | POST | `/runs/stream` |
+| [Create Run, Wait for Output](https://docs.langchain.com/langsmith/agent-server-api/stateless-runs/create-run-wait-for-output) | POST | `/runs/wait` |
 
 #### System
 
 | Name | Method | Endpoint |
 |------|--------|----------|
-| [Server Information](...) | GET | `/info` |
-| [Health Check](...) | GET | `/ok` |
+| [Server Information](https://docs.langchain.com/langsmith/agent-server-api/system/server-information) | GET | `/info` |
+| [Health Check](https://docs.langchain.com/langsmith/agent-server-api/system/health-check) | GET | `/ok` |
 
 ## Functions
 

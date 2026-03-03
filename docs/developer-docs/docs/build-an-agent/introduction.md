@@ -58,7 +58,7 @@ The key advantages of publishing on Warden include the following:
 
 ## Section overview
 
-- [Warden Agent capabilities](/category/warden-agent-capabilities)  
+- [Warden Agent capabilities](warden-agent-capabilities)  
   A list of key Warden Agent capablities with usage instructions and links to guides. 
 
 - [Build an Agent with Warden Code](/category/build-an-agent-with-warden-code)  

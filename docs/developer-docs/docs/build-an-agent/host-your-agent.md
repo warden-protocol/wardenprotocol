@@ -88,6 +88,10 @@ If everything is fine, you'll be able to chat with your Agent through the **user
 
 ![The user interface for chatting with Agents, provided by Warden Code](../../static/img/warden-code-ui.png)
 
+### Chat using the CLI
+
+XXX
+
 ### Chat using the API
 
 Every new Agent is immediately accessible through **A2A** and **LangGraph** server endpoints exposed by Warden Code.
@@ -96,7 +100,7 @@ Every new Agent is immediately accessible through **A2A** and **LangGraph** serv
 For a full list, see [A2A endpoints](developer-tools/warden-code#a2a-endpoints) and [LangGraph endpoints](developer-tools/warden-code#langgraph-endpoints).
 :::
 
-After deploying your Agent, you can try any of these endpoints. For example, you can prompt the Agent using the [A2A POST endpoint](developer-tools/warden-code#post-methods) with the `send` method.
+After deploying your Agent, you can try any of these endpoints. For example, you can prompt the Agent using the [A2A POST endpoint](developer-tools/warden-code#a2a-endpoints) with the `send` method.
 
 In the request below, specify the following:
 

@@ -124,7 +124,7 @@ Warden Agent Hub solves tech's hardest problem—distribution. Instead of launch
 
 ![Agent development: Agent types](../../static/img/manifesto-7.png)
 
-Our belief is that all applications will use AI. **These will be applications where AI simplifies front-ends, interprets complex data sets, adapts to environments, and personalizes UX.** Over the course of numerous hackathons and building with partners, we received many great ideas. Below is a curated list of Agents we currently focus on:
+Our belief is that all applications will use AI. **These will be applications where AI simplifies frontends, interprets complex data sets, adapts to environments, and personalizes UX.** Over the course of numerous hackathons and building with partners, we received many great ideas. Below is a curated list of Agents we currently focus on:
 
 - **Financial Agents**: Simplifying all the complexities in DeFi—from swapping assets and bridging across chains to abstracting gas and providing a "*one screen, all the apps*" experience.
 - **Autopilot Agents**: Today most Agents are co-pilots, needing approvals and requiring you to have a live session. The next frontier are Agents that operate when the user is offline. Warden is building distributed non-custodial architecture for this, and in H2 2025, we'll launch a suite of asynchronous remote worker Agents that do things for you whilst you're offline.

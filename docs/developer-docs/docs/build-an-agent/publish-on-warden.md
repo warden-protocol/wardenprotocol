@@ -20,7 +20,7 @@ In Warden Studio, you can do the following:
 Before you start, complete the following prerequisites:
 
 - [Build an Agent with Warden Code](/category/build-an-agent-with-warden-code)
-- [Host your Agent](../host-your-agent)
+- [Host your Agent](host-your-agent)
 - Note down your **public API URL** and the **Agent API key**
 - Optionally, prepare a publicly hosted image for your Agent
 

@@ -26,7 +26,7 @@ To update your Agent's settings, take these steps:
    /config
    ```
 
-3. Select one of the available group of settings and make the necessary updates:
+3. Select one of the available groups of settings and make the necessary updates:
 
    - **Identity**: Name, description, URL, version (shown in the Agent Card)
    - **Server**: Port, host, Agent URL, API key, model
@@ -35,11 +35,7 @@ To update your Agent's settings, take these steps:
 
 ## Update the A2A Agent Card
 
-XXX
-
-- /config
-- /build
-- public/.well-known/agent-card.json
+*Coming soon*.
 
 ## Configure x402 payments
 

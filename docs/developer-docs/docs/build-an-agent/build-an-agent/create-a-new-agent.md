@@ -48,22 +48,7 @@ Create a directory for your new project, navigate there, and run Warden Code:
 warden
 ```
 
-You'll see the list of available commands:
-
-```bash 
-Available Commands:
-
-/new - Create a new agent interactively
-/build - Enter AI-powered chat mode to build your agent
-/chat - Chat with a running agent via A2A or LangGraph
-/config - View and edit agent configuration
-/register - Register agent on-chain (ERC-8004)
-/activate - Activate a registered agent on-chain (ERC-8004)
-/deactivate - Deactivate a registered agent on-chain (ERC-8004)
-/help - Show available commands
-/clear - Clear the terminal screen
-/exit - Exit the CLI
-```
+You'll see the list of [available commands](../developer-tools/warden-code#cli-commands).
 
 ## 3. Create an Agent
 

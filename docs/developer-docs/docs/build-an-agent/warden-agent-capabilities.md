@@ -84,4 +84,15 @@ All **Warden Agents** generated with [Warden Code](developer-tools/warden-code) 
       [Host your Agent](host-your-agent)
     </td>
   </tr>
+
+  <tr>
+    <td><strong>Chat UI</strong></td>
+    <td>
+      All Agents include a chat frontend. It allows you to interact with your Agent and test x402 payments through a user interface, locally or in production.
+    </td>
+    <td>
+      [Test the Agent locally](build-an-agent/test-the-agent-locally#chat-using-the-ui)<br />
+      [Host your Agent](host-your-agent#chat-using-the-ui)
+    </td>
+  </tr>
 </table>

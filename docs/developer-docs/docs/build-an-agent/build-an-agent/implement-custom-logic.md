@@ -78,7 +78,7 @@ To start building with AI, take these steps:
    ```
    :::
 
-9. To exit the chat and the build mode, use this command:
+9. To exit the chat and the build modes, use this command:
 
    ```bash
    /exit

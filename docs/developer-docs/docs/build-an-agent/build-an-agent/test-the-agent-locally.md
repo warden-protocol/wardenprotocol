@@ -41,16 +41,40 @@ The fastest way to make sure your Agent is running opening the local host URL:
 http://localhost:3000
 ```
 
-If everything is fine, you'll be able to chat with your Agent through the **user interface** provided by Warden Code:
+If everything is fine, you'll be able to chat with your Agent through the user interface provided by Warden Code:
 
 ![The user interface for chatting with Agents, provided by Warden Code](../../../static/img/warden-code-ui.png)
 
 ### Chat using the CLI
 
-XXX
+To chat with your Agent through the CLI, take these steps:
 
-- /build -> /chat
-- /chat + URL
+1. Navigate to your project's root directory and initiate Warden Code:
+
+   ```bash
+   warden
+   ```
+
+2. Enter the chat mode and specify the Agent URL:
+   
+   ```bash
+   /chat http://localhost:3000
+   ```
+
+   Alternatively, you can chat with the Agent in the build mode:
+
+   ```bash
+   /build
+   /chat
+   ```
+
+3. Chat with your Agent. Warden Code automatically detects whether the agent supports A2A, LangGraph, or both, and prompts you to choose when multiple protocols are available.
+
+4. To exit the chat mode, type this:
+
+   ```bash
+   /exit
+   ```
 
 ### Chat using the API
 

@@ -18,38 +18,136 @@ Warden Code is available on GitHub: [`warden-code`](https://github.com/warden-pr
 
 ## Key features
 
-Agents generated with Warden Code support the following key features:
+Agents generated with Warden Code support the following key capabilities:
 
 - Compatibility with [Warden](https://help.wardenprotocol.org)
 - Discoverability outside of Warden through [ERC-8004 identity registries](https://eips.ethereum.org/EIPS/eip-8004)
 - Interaction with other Agents through the [A2A protocol](https://a2a-protocol.org/latest/)
 - Monetization through [x402 payments](https://www.x402.org)
 - Endpoints compatible with the [LangGraph Agent Server API](https://docs.langchain.com/langsmith/server-api-ref)
+- Built-in chat UI that automatically loads the A2A Agent Card and x402 wallets
 
 To learn more, see [Warden Agent capabilities](../warden-agent-capabilities).
 
+In addition, Warden Code provides the AI-powered build mode allowing you to [implement custom Agent logic](../build-an-agent/implement-custom-logic#build-with-ai) with an AI assistant.
+
 ## Basics
+
+### Installation
+
+Use the `npm` commands below to install, update, and run Warden Code. This requires [Node.js](https://nodejs.org/en/download) 18 or higher.
+
+Install globally:
+
+```bash
+npm install -g warden-code
+```
+
+Update:
+
+```bash
+npm install -g warden-code
+```
+
+Run:
+
+```bash
+warden
+```
+
 
 ### CLI commands
 
-With Warden Code, you can use the command line to generate a project, edit your code with an AI assistant, configure your Agent, and much more:
+With Warden Code, you can use the command line to generate a project, edit your code with an AI assistant, configure your Agent, and much more.
 
-```bash
-/new - Create a new Agent interactively
-/build - Enter the AI-powered mode to build your Agent
-/chat - Chat with a running Agent using A2A or LangGraph
-/config - View and edit the Agent configuration
-/register - Register the Agent onchain (ERC-8004)
-/activate - Activate a registered Agent onchain (ERC-8004)
-/deactivate - Deactivate a registered Agent onchain (ERC-8004)
-/help - Show available commands
-/clear - Clear the terminal screen
-/exit - Exit the CLI
-```
+Run `warden` to initiate Warden Code and use the following commands:
+
+<table style={{ width: "100%", tableLayout: "fixed" }}>
+  <colgroup>
+    <col style={{ width: "110px" }} />
+    <col />
+    <col style={{ width: "220px" }} />
+  </colgroup>
+
+  <tr>
+    <th>Command</th>
+    <th>Description</th>
+    <th>Guides</th>
+  </tr>
+
+  <tr>
+    <td>`/new`</td>
+    <td>Create a new Agent interactively</td>
+    <td>
+      [Create a new Agent](../build-an-agent/create-a-new-agent)
+    </td>
+  </tr>
+
+  <tr>
+    <td>`/build`</td>
+    <td>Enter the AI-powered mode to build your Agent</td>
+    <td>
+      [Implement custom logic](../build-an-agent/implement-custom-logic#build-with-ai)
+       </td>
+  </tr>
+
+  <tr>
+    <td>`/chat`</td>
+    <td>Chat with a running Agent using A2A or LangGraph</td>
+    <td>
+      [Test the Agent locally](../build-an-agent/test-the-agent-locally#chat-using-the-cli)
+    </td>
+  </tr>
+
+  <tr>
+    <td>`/config`</td>
+    <td>View and edit the Agent configuration</td>
+    <td>
+      [Configure the Agent](../build-an-agent/configure-the-agent)
+    </td>
+  </tr>
+
+  <tr>
+    <td>`/register`</td>
+    <td>Register the Agent onchain (ERC-8004)</td>
+    <td rowSpan={3}>
+      [Register on ERC-8004](../build-an-agent/configure-the-agent)
+    </td>
+  </tr>
+
+  <tr>
+    <td>`/activate`</td>
+    <td>Activate a registered Agent onchain (ERC-8004)</td>
+  </tr>
+
+  <tr>
+    <td>`/deactivate`</td>
+    <td>Deactivate a registered Agent onchain (ERC-8004)</td>
+  </tr>
+
+  <tr>
+    <td>`/help`</td>
+    <td>Show available commands</td>
+    <td>N/A</td>
+  </tr>
+
+  <tr>
+    <td>`/clear`</td>
+    <td>Clear the terminal screen</td>
+    <td>N/A</td>
+  </tr>
+
+  <tr>
+    <td>`/exit`</td>
+    <td>Exit the CLI</td>
+    <td>N/A</td>
+  </tr>
+
+</table>
 
 ### Project structure
 
-Warden Code generates the following project structure:
+When you [create a new Agent](../build-an-agent/create-a-new-agent#3-create-an-agent), Warden Code generates the following project structure:
 
 ```
 my-agent/
@@ -71,12 +169,28 @@ my-agent/
 
 ### Agent models
 
-Depending on your choices you make when [creating an Agent](../build-an-agent/create-a-new-agent#3-create-an-agent), Warden Code uses one of the supported Agent models:
+Depending on the choices you make when [creating an Agent](../build-an-agent/create-a-new-agent#3-create-an-agent), Warden Code uses one of the supported Agent models:
 
 - **OpenAI + Streaming**: A GPT-powered Agent with streaming responses
 - **OpenAI + Multi-turn**: A GPT-powered Agent with conversation history
 - **Blank + Streaming**: A minimal streaming Agent that echoes input
 - **Blank + Multi-turn**: A minimal multi-turn conversation agent
+
+### Running the Agent
+
+The `npm` commands below allow you to build and initiate your Agent. Navigate to your project's root directory and run them in a separate terminal window.
+
+Build:
+
+```bash
+npm run build
+```
+
+Run:
+
+```bash
+npm start
+```
 
 ## API
 

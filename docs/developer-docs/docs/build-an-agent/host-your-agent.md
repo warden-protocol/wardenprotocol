@@ -82,15 +82,35 @@ Congratulations! Now your Agent and the supported API endpoints will be availabl
 
 ### Chat using the UI
 
-The fastest way to make sure your Agent is accessible is opening the **public URL** provided by the hosting.
+The fastest way to make sure your Agent is accessible is opening the public URL provided by the hosting.
 
-If everything is fine, you'll be able to chat with your Agent through the **user interface** provided by Warden Code:
+If everything is fine, you'll be able to chat with your Agent through the user interface provided by Warden Code:
 
 ![The user interface for chatting with Agents, provided by Warden Code](../../static/img/warden-code-ui.png)
 
 ### Chat using the CLI
 
-XXX
+To chat with your Agent through the CLI, take these steps:
+
+1. Navigate to your project's root directory and initiate Warden Code:
+
+   ```bash
+   warden
+   ```
+
+2. Enter the chat mode and specify the Agent's public URL provided by the hosting:
+   
+   ```bash
+   /chat PUBLIC_URL
+   ```
+
+3. Chat with your Agent. Warden Code automatically detects whether the agent supports A2A, LangGraph, or both, and prompts you to choose when multiple protocols are available.
+
+4. To exit the chat mode, type this:
+
+   ```bash
+   /exit
+   ```
 
 ### Chat using the API
 
@@ -104,12 +124,12 @@ After deploying your Agent, you can try any of these endpoints. For example, you
 
 In the request below, specify the following:
 
-- `BASE_URL`: Your public URL
+- `PUBLIC_URL`: Your public URL
 - `AGENT_API_KEY`: Your Agent API key for [authentication](developer-tools/warden-code#authentication):
 
 <Tabs>
 <TabItem value="postman" label="Postman" default>
-**POST** `BASE_URL`  
+**POST** `PUBLIC_URL`  
 **Headers**: `Content-Type`: `application/json`  
 **Authorization**: Type: Bearer Token, Token: `AGENT_API_KEY`  
 **Body**:
@@ -140,7 +160,7 @@ In the request below, specify the following:
 <TabItem value="curl" label="cURL" default>
 
 ```bash
-curl BASE_URL \
+curl PUBLIC_URL \
   --request POST \
   --header 'Content-Type: application/json' \
   --header 'Authorization: Bearer AGENT_API_KEY' \
@@ -214,10 +234,10 @@ If everything is fine, you'll receive a response including your prompt, assistan
 
 As part of the A2A protocol support, Warden Code exposes an endpoint for the **A2A Agent Card**, which advertises your Agent's skills, allowing other Agents and clients to discover it.
 
-To check the Agent Card accessibility, replace `BASE_URL` with the public URL and run this:
+To check the Agent Card accessibility, replace `PUBLIC_URL` with the public URL and run this:
    
 ```text
-BASE_URL/.well-known/agent-card.json
+PUBLIC_URL/.well-known/agent-card.json
 ```
 
 The card will display your Agent's name and capabilities, along with other information:
@@ -226,7 +246,7 @@ The card will display your Agent's name and capabilities, along with other infor
 {
   "name": "general-test",
   "description": "A helpful AI agent named general-test",
-  "url": "BASE_URL",
+  "url": "PUBLIC_URL",
   "version": "0.1.0",
   "capabilities": {
     "streaming": true

@@ -11,7 +11,7 @@ import (
 )
 
 type WardenProtocolQuery struct {
-	Warden WardenQuery `json:"warden,omitempty"`
+	Warden WardenQuery `json:"warden"`
 }
 
 type WardenQuery struct {

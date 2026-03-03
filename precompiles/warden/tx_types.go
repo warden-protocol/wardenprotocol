@@ -14,7 +14,7 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
-func newMsgAddKeychainAdmin(args []interface{}, origin common.Address) (*types.MsgAddKeychainAdminRequest, *common.Address, error) {
+func newMsgAddKeychainAdmin(args []any, origin common.Address) (*types.MsgAddKeychainAdminRequest, *common.Address, error) {
 	if len(args) != 2 {
 		return nil, nil, wardencommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
@@ -39,7 +39,7 @@ func newMsgAddKeychainAdmin(args []interface{}, origin common.Address) (*types.M
 	}, &newAdminAddress, nil
 }
 
-func newMsgAddKeychainWriter(args []interface{}, origin common.Address) (*types.MsgAddKeychainWriter, *common.Address, error) {
+func newMsgAddKeychainWriter(args []any, origin common.Address) (*types.MsgAddKeychainWriter, *common.Address, error) {
 	if len(args) != 2 {
 		return nil, nil, wardencommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
@@ -64,7 +64,7 @@ func newMsgAddKeychainWriter(args []interface{}, origin common.Address) (*types.
 	}, &newWriterAddress, nil
 }
 
-func newMsgFulfilKeyRequest(args []interface{}, keyRequestStatus types.KeyRequestStatus, origin common.Address) (*types.MsgFulfilKeyRequest, error) {
+func newMsgFulfilKeyRequest(args []any, keyRequestStatus types.KeyRequestStatus, origin common.Address) (*types.MsgFulfilKeyRequest, error) {
 	if len(args) != 2 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
@@ -113,7 +113,7 @@ func newMsgFulfilKeyRequest(args []interface{}, keyRequestStatus types.KeyReques
 	}
 }
 
-func newMsgFulfilSignRequest(args []interface{}, signRequestStatus types.SignRequestStatus, origin common.Address) (*types.MsgFulfilSignRequest, error) {
+func newMsgFulfilSignRequest(args []any, signRequestStatus types.SignRequestStatus, origin common.Address) (*types.MsgFulfilSignRequest, error) {
 	if len(args) != 2 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
@@ -162,7 +162,7 @@ func newMsgFulfilSignRequest(args []interface{}, signRequestStatus types.SignReq
 	}
 }
 
-func newMsgNewKeychain(method *abi.Method, args []interface{}, origin common.Address) (*types.MsgNewKeychain, error) {
+func newMsgNewKeychain(method *abi.Method, args []any, origin common.Address) (*types.MsgNewKeychain, error) {
 	if len(args) != 5 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 5, Got: len(args)}
 	}
@@ -192,7 +192,7 @@ type newKeyChainInput struct {
 	KeybaseId    string
 }
 
-func newMsgNewSpace(args []interface{}, origin common.Address) (*types.MsgNewSpace, error) {
+func newMsgNewSpace(args []any, origin common.Address) (*types.MsgNewSpace, error) {
 	if len(args) != 5 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 5, Got: len(args)}
 	}
@@ -239,7 +239,7 @@ func newMsgNewSpace(args []interface{}, origin common.Address) (*types.MsgNewSpa
 	}, nil
 }
 
-func newMsgRemoveKeychainAdmin(args []interface{}, origin common.Address) (*types.MsgRemoveKeychainAdminRequest, *common.Address, error) {
+func newMsgRemoveKeychainAdmin(args []any, origin common.Address) (*types.MsgRemoveKeychainAdminRequest, *common.Address, error) {
 	if len(args) != 2 {
 		return nil, nil, wardencommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
@@ -263,7 +263,7 @@ func newMsgRemoveKeychainAdmin(args []interface{}, origin common.Address) (*type
 	}, &admin, nil
 }
 
-func newMsgUpdateKeychain(method *abi.Method, args []interface{}, origin common.Address) (*types.MsgUpdateKeychain, error) {
+func newMsgUpdateKeychain(method *abi.Method, args []any, origin common.Address) (*types.MsgUpdateKeychain, error) {
 	if len(args) != 6 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 6, Got: len(args)}
 	}
@@ -295,7 +295,7 @@ type updateKeyChainInput struct {
 	KeybaseId    string
 }
 
-func newMsgAddSpaceOwner(args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, error) {
+func newMsgAddSpaceOwner(args []any, origin common.Address, act string) (*actTypes.MsgNewAction, error) {
 	if len(args) != 6 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 6, Got: len(args)}
 	}
@@ -354,7 +354,7 @@ func newMsgAddSpaceOwner(args []interface{}, origin common.Address, act string) 
 	}, nil
 }
 
-func newMsgRemoveSpaceOwner(args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, error) {
+func newMsgRemoveSpaceOwner(args []any, origin common.Address, act string) (*actTypes.MsgNewAction, error) {
 	if len(args) != 6 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 6, Got: len(args)}
 	}
@@ -426,7 +426,7 @@ type newKeyRequestInput struct {
 	ExpectedRejectExpression  string
 }
 
-func newMsgNewKeyRequest(method *abi.Method, args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, error) {
+func newMsgNewKeyRequest(method *abi.Method, args []any, origin common.Address, act string) (*actTypes.MsgNewAction, error) {
 	if len(args) != 10 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 10, Got: len(args)}
 	}
@@ -494,7 +494,7 @@ type newSignRequestInput struct {
 	BroadcastType             uint8
 }
 
-func newMsgNewSignRequest(method *abi.Method, args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, error) {
+func newMsgNewSignRequest(method *abi.Method, args []any, origin common.Address, act string) (*actTypes.MsgNewAction, error) {
 	if len(args) != 10 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 10, Got: len(args)}
 	}
@@ -552,7 +552,7 @@ func newMsgNewSignRequest(method *abi.Method, args []interface{}, origin common.
 	}, nil
 }
 
-func newMsgUpdateKey(args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, error) {
+func newMsgUpdateKey(args []any, origin common.Address, act string) (*actTypes.MsgNewAction, error) {
 	if len(args) != 6 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 6, Got: len(args)}
 	}
@@ -610,7 +610,7 @@ func newMsgUpdateKey(args []interface{}, origin common.Address, act string) (*ac
 	}, nil
 }
 
-func newMsgUpdateSpace(args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, error) {
+func newMsgUpdateSpace(args []any, origin common.Address, act string) (*actTypes.MsgNewAction, error) {
 	if len(args) != 9 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 9, Got: len(args)}
 	}

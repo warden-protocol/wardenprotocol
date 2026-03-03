@@ -53,7 +53,7 @@ func (ae *AbiEncoder) IsSupportedType(typeName string) bool {
 	return ok
 }
 
-func (ae *AbiEncoder) Encode(typeName string, value interface{}) ([]byte, error) {
+func (ae *AbiEncoder) Encode(typeName string, value any) ([]byte, error) {
 	encoder, ok := ae.supportedTypeEncoders[typeName]
 	if !ok {
 		return nil, fmt.Errorf("unsupported type: %s", typeName)
@@ -68,7 +68,7 @@ func (ae *AbiEncoder) Encode(typeName string, value interface{}) ([]byte, error)
 	return data, nil
 }
 
-func (ae *AbiEncoder) Decode(typeName string, data []byte) (interface{}, error) {
+func (ae *AbiEncoder) Decode(typeName string, data []byte) (any, error) {
 	encoder, ok := ae.supportedTypeEncoders[typeName]
 	if !ok {
 		return nil, fmt.Errorf("unsupported type: %s", typeName)

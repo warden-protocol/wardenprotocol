@@ -35,12 +35,14 @@ var generateCmd = &cobra.Command{
 		keybin := crypto.FromECDSA(key)
 
 		w := os.Stdout
+
 		if output != "" {
 			f, err := os.OpenFile(output, os.O_CREATE|os.O_WRONLY, 0o600)
 			if err != nil {
 				return fmt.Errorf("opening output file: %w", err)
 			}
 			defer f.Close()
+
 			w = f
 		}
 
@@ -62,11 +64,13 @@ var publicKeyCmd = &cobra.Command{
 		}
 
 		in := os.Stdin
+
 		if keyFile != "" {
 			f, err := os.Open(keyFile)
 			if err != nil {
 				return fmt.Errorf("opening key file: %w", err)
 			}
+
 			in = f
 		}
 
@@ -134,11 +138,13 @@ var signCmd = &cobra.Command{
 		}
 
 		in := os.Stdin
+
 		if messageFile != "" {
 			f, err := os.Open(messageFile)
 			if err != nil {
 				return fmt.Errorf("opening message file: %w", err)
 			}
+
 			in = f
 		}
 

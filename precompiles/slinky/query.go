@@ -22,7 +22,7 @@ const (
 func (p Precompile) GetPriceQuery(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	req, err := newGetPriceRequest(method, args)
 	if err != nil {
@@ -68,7 +68,7 @@ func (o *GetPriceResponse) FromResponse(res *oracletypes.GetPriceResponse) (*Get
 	return o, nil
 }
 
-func newGetPriceRequest(method *abi.Method, args []interface{}) (*oracletypes.GetPriceRequest, error) {
+func newGetPriceRequest(method *abi.Method, args []any) (*oracletypes.GetPriceRequest, error) {
 	if len(args) != 2 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}

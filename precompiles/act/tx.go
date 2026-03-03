@@ -27,7 +27,7 @@ func (p *Precompile) CheckActionMethod(
 	origin common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	msgServer := actmodulekeeper.NewMsgServerImpl(p.actmodulekeeper)
 
@@ -54,7 +54,7 @@ func (p *Precompile) CheckActionMethod(
 	return method.Outputs.Pack(response.Status)
 }
 
-func newMsgCheckAction(args []interface{}, origin common.Address) (*acttypes.MsgCheckAction, error) {
+func newMsgCheckAction(args []any, origin common.Address) (*acttypes.MsgCheckAction, error) {
 	if len(args) != 1 {
 		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
@@ -78,7 +78,7 @@ func (p *Precompile) NewTemplateMethod(
 	origin common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	msgServer := actmodulekeeper.NewMsgServerImpl(p.actmodulekeeper)
 
@@ -105,7 +105,7 @@ func (p *Precompile) NewTemplateMethod(
 	return method.Outputs.Pack(response.Id)
 }
 
-func newMsgNewTemplate(args []interface{}, origin common.Address) (*acttypes.MsgNewTemplate, error) {
+func newMsgNewTemplate(args []any, origin common.Address) (*acttypes.MsgNewTemplate, error) {
 	if len(args) != 2 {
 		return nil, precommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
@@ -135,7 +135,7 @@ func (p *Precompile) RevokeActionMethod(
 	origin common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	msgServer := actmodulekeeper.NewMsgServerImpl(p.actmodulekeeper)
 
@@ -162,7 +162,7 @@ func (p *Precompile) RevokeActionMethod(
 	return method.Outputs.Pack(true)
 }
 
-func newMsgRevokeAction(args []interface{}, origin common.Address) (*acttypes.MsgRevokeAction, error) {
+func newMsgRevokeAction(args []any, origin common.Address) (*acttypes.MsgRevokeAction, error) {
 	if len(args) != 1 {
 		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
@@ -186,7 +186,7 @@ func (p *Precompile) UpdateTemplateMethod(
 	origin common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	msgServer := actmodulekeeper.NewMsgServerImpl(p.actmodulekeeper)
 
@@ -213,7 +213,7 @@ func (p *Precompile) UpdateTemplateMethod(
 	return method.Outputs.Pack(true)
 }
 
-func newMsgUpdateTemplate(args []interface{}, origin common.Address) (*acttypes.MsgUpdateTemplate, error) {
+func newMsgUpdateTemplate(args []any, origin common.Address) (*acttypes.MsgUpdateTemplate, error) {
 	if len(args) != 3 {
 		return nil, precommon.WrongArgsNumber{Expected: 3, Got: len(args)}
 	}
@@ -250,7 +250,7 @@ func (p *Precompile) VoteForActionMethod(
 	caller common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	msgServer := actmodulekeeper.NewMsgServerImpl(p.actmodulekeeper)
 
@@ -281,7 +281,7 @@ func (p *Precompile) VoteForActionMethod(
 	return method.Outputs.Pack(response.Status)
 }
 
-func newMsgVoteForAction(args []interface{}, origin common.Address) (*acttypes.MsgVoteForAction, error) {
+func newMsgVoteForAction(args []any, origin common.Address) (*acttypes.MsgVoteForAction, error) {
 	if len(args) != 2 {
 		return nil, precommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}

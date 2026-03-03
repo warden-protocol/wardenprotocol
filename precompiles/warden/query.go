@@ -28,7 +28,7 @@ func (p Precompile) AllKeysMethod(
 	ctx sdk.Context,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	req, err := newAllKeysRequest(method, args)
 	if err != nil {
@@ -57,7 +57,7 @@ func (p Precompile) KeyByIdMethod(
 	ctx sdk.Context,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	req, err := newKeyByIdRequest(method, args)
 	if err != nil {
@@ -86,7 +86,7 @@ func (p Precompile) KeysBySpaceIdMethod(
 	ctx sdk.Context,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	req, err := newKeysBySpaceIdRequest(method, args)
 	if err != nil {
@@ -115,7 +115,7 @@ func (p Precompile) KeyRequestMethod(
 	ctx sdk.Context,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	req, err := newKeyRequestByIdRequest(method, args)
 	if err != nil {
@@ -144,7 +144,7 @@ func (p Precompile) KeyRequestsMethod(
 	ctx sdk.Context,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	req, err := newKeyRequestsRequest(method, args)
 	if err != nil {
@@ -173,7 +173,7 @@ func (p Precompile) KeychainMethod(
 	ctx sdk.Context,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	req, err := newKeychainRequest(method, args)
 	if err != nil {
@@ -202,7 +202,7 @@ func (p Precompile) KeychainsMethod(
 	ctx sdk.Context,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	req, err := newKeychainsRequest(method, args)
 	if err != nil {
@@ -231,7 +231,7 @@ func (p Precompile) SignRequestByIdMethod(
 	ctx sdk.Context,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	req, err := newSignRequestByIdRequest(args)
 	if err != nil {
@@ -260,7 +260,7 @@ func (p Precompile) SignRequestsMethod(
 	ctx sdk.Context,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	req, err := newSignRequestsRequest(method, args)
 	if err != nil {
@@ -289,7 +289,7 @@ func (p Precompile) SpaceByIdMethod(
 	ctx sdk.Context,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	req, err := newSpaceByIdRequest(args)
 	if err != nil {
@@ -318,7 +318,7 @@ func (p Precompile) SpacesMethod(
 	ctx sdk.Context,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	req, err := newSpacesRequest(method, args)
 	if err != nil {
@@ -347,7 +347,7 @@ func (p Precompile) SpacesByOwnerMethod(
 	ctx sdk.Context,
 	stateDB vm.StateDB,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	req, err := newSpacesByOwnerRequest(method, args)
 	if err != nil {

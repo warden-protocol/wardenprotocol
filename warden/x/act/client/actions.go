@@ -146,7 +146,7 @@ func addFlagsFromMsg(msg sdk.Msg, cmd *cobra.Command) {
 			case reflect.Uint8:
 				cmd.Flags().BytesBase64(flagName, nil, "")
 			case reflect.Struct:
-				if v.Field(i).Type().Elem().AssignableTo(reflect.TypeOf(sdk.Coin{})) {
+				if v.Field(i).Type().Elem().AssignableTo(reflect.TypeFor[sdk.Coin]()) {
 					cmd.Flags().StringSlice(flagName, nil, "(e.g. 10uward)")
 				} else {
 					panic(fmt.Sprintf("unsupported slice type %v (for field %s)", v.Field(i).Type().Elem().Kind(), fieldName))
@@ -156,7 +156,7 @@ func addFlagsFromMsg(msg sdk.Msg, cmd *cobra.Command) {
 			}
 		case reflect.Pointer:
 			switch v.Field(i).Type().Elem() {
-			case reflect.TypeOf(codectypes.Any{}):
+			case reflect.TypeFor[codectypes.Any]():
 				cmd.Flags().String(flagName, "", "")
 			default:
 				panic(fmt.Sprintf("unsupported pointer type %v (for field %s)", v.Field(i).Type().Elem().Kind(), fieldName))
@@ -185,8 +185,8 @@ func populateFromFlags(msg sdk.Msg, cmd *cobra.Command, cdc codec.Codec) error {
 		// try to parse enum type from protobuf tags
 		var enumProtoType string
 
-		tags := strings.Split(v.Type().Field(i).Tag.Get("protobuf"), ",")
-		for _, tag := range tags {
+		tags := strings.SplitSeq(v.Type().Field(i).Tag.Get("protobuf"), ",")
+		for tag := range tags {
 			if strings.HasPrefix(tag, "enum") {
 				enumProtoType = strings.TrimPrefix(tag, "enum=")
 			}
@@ -247,7 +247,7 @@ func populateFromFlags(msg sdk.Msg, cmd *cobra.Command, cdc codec.Codec) error {
 
 				v.Field(i).Set(reflect.ValueOf(value))
 			case reflect.Struct:
-				if v.Field(i).Type().Elem().AssignableTo(reflect.TypeOf(sdk.Coin{})) {
+				if v.Field(i).Type().Elem().AssignableTo(reflect.TypeFor[sdk.Coin]()) {
 					coinsStrings, err := cmd.Flags().GetStringSlice(flagName)
 					if err != nil {
 						return err
@@ -267,7 +267,7 @@ func populateFromFlags(msg sdk.Msg, cmd *cobra.Command, cdc codec.Codec) error {
 			}
 		case reflect.Pointer:
 			switch v.Field(i).Type().Elem() {
-			case reflect.TypeOf(codectypes.Any{}):
+			case reflect.TypeFor[codectypes.Any]():
 				jvalue, err := cmd.Flags().GetString(flagName)
 				if err != nil {
 					return err

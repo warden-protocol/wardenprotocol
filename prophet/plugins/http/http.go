@@ -103,7 +103,7 @@ func (h *Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {
 		return nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
-	var responseData interface{}
+	var responseData any
 
 	contentType := resp.Header.Get("Content-Type")
 	if strings.Contains(contentType, "application/json") {

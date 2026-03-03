@@ -167,9 +167,11 @@ func (app *App) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAddrs []str
 		for i := range red.Entries {
 			red.Entries[i].CreationHeight = 0
 		}
+
 		if iterErr = app.StakingKeeper.SetRedelegation(ctx, red); iterErr != nil {
 			return true
 		}
+
 		return false
 	}); err != nil {
 		return err
@@ -184,9 +186,11 @@ func (app *App) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAddrs []str
 		for i := range ubd.Entries {
 			ubd.Entries[i].CreationHeight = 0
 		}
+
 		if iterErr = app.StakingKeeper.SetUnbondingDelegation(ctx, ubd); iterErr != nil {
 			return true
 		}
+
 		return false
 	}); err != nil {
 		return err
@@ -242,6 +246,7 @@ func (app *App) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAddrs []str
 			if iterErr = app.SlashingKeeper.SetValidatorSigningInfo(ctx, addr, info); iterErr != nil {
 				return true
 			}
+
 			return false
 		},
 	); err != nil {

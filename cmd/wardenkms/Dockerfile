@@ -20,7 +20,7 @@ RUN --mount=type=bind,source=.,target=.,readonly\
     --mount=type=cache,target=/go/pkg/mod,sharing=locked \
     OUTPUT_DIR=/dist LINK_STATIC=true just wardend build wardenkms
 
-FROM alpine:3.18 AS runtime
+FROM alpine:3.23 AS runtime
 RUN set -eux; apk add --no-cache ca-certificates curl;
 
 RUN addgroup -S -g 1000 warden && \

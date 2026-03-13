@@ -17,47 +17,55 @@ To learn more, see the sections below.
 
 ## Build with AI
 
-You can edit your Agent through the CLI, in the **AI-powered build mode**. It supports the following LLM providers:
+You can edit your Agent through the CLI, in the **AI-powered build mode**.
 
-- **OpenAI** (default)
-- **Anthropic**
+For a list of commands available in this mode, see [Build mode](../developer-tools/warden-code#build-mode).
 
 To start building with AI, take these steps:
 
-1. If your Agent is running, stop it with CTRL + C.
-
-2. Navigate to your project's root directory and initiate Warden Code:
+1. If your Agent is running, stop it with **CTRL+C**. Navigate to your project's root directory and initiate Warden Code:
 
    ```bash
    warden
    ```
 
-3. Then enter the build mode:
+2. Then enter the build mode:
 
    ```bash
    /build
    ```
 
-4. If needed, set your LLM provider and model:
+3. On the first run, you'll be prompted to select an LLM provider (**OpenAI** or **Anthropic**) and set a **model** and the **API key**.
+
+   :::tip
+   You can configure multiple providers. The configuration file is located in the user home directory at `.warden/config.json` and shared across all projects.
+   :::
+
+4. If needed, add another provider or switch between providers and models:
 
    ```bash
    /model
    ```
-   :::tip
-   If you created an OpenAI Agent and specified a correct API key, no action is required. Otherwise, select and configure one of the supported LLM providers: **OpenAI** or **Anthropic**.
-   :::
 
-5. Prompt the assistant to update the main Agent code or any file in the project.
+   Switching models within the same provider preserves your conversation history. To go back during selection, press **ESC**. 
+
+5. Prompt the assistant to update the main Agent code or any file in the project. Responses stream token-by-token with real-time display.
 
    :::tip
    If you update your Agent's skills, [reflect it in the Agent Card](configure-the-agent#update-the-a2a-agent-card).
    :::
 
-6. Build your Agent:
+6. After the AI applies code changes, the project is automatically rebuilt.
+
+   You can also manually rebuild your Agent:
 
    ```bash
    /rebuild
    ```
+   
+   :::note
+   Code changes trigger `npm run build`. If `package.json` was modified, `npm install` runs first. If the build fails, the error output is fed back to the AI for automatic correction (up to 2 retries).
+   :::
 
 7. In a separate terminal window, navigate to your project and run the Agent:
 
@@ -70,15 +78,14 @@ To start building with AI, take these steps:
    ```bash
    /chat
    ```
-   :::tip
+   
    The Agent URL is resolved automatically from the `AGENT_URL` in your `.env` file. By default, it's set to `http://localhost:3000`. If needed, you can pass the URL explicitly:
 
    ```bash
    /chat http://localhost:3000
    ```
-   :::
 
-9. To exit the chat and the build modes, use this command:
+9. To exit the chat and the build modes, use this:
 
    ```bash
    /exit

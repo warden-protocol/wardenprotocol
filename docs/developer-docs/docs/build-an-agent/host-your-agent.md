@@ -62,7 +62,7 @@ To set up a hosting service, take these steps:
      When you create an Agent, Warden Code generates the Agent API key and stores it in the `.env` file. If you wish to disable authentication, omit this variable.
      :::
 
-   - Additional variables for Agents using [x402 payments](build-an-agent/configure-the-agent#configure-x402-payments)
+   - Additional variables for Agents using [x402 payments](developer-tools/warden-code#parameters).
    
    
 3. Set a build command:

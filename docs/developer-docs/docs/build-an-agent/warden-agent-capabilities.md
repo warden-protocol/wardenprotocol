@@ -87,6 +87,17 @@ All **Warden Agents** generated with [Warden Code](developer-tools/warden-code) 
   </tr>
 
   <tr>
+    <td><strong>Build mode</strong></td>
+    <td>
+      Warden Code supports the AI-powered build mode allowing you to implement custom Agent logic with an AI assistant
+    </td>
+    <td>
+      [Implement custom logic](build-an-agent/implement-custom-logic#build-with-ai)<br />
+      [Build mode](developer-tools/warden-code#build-mode)
+    </td>
+  </tr>
+
+  <tr>
     <td><strong>Chat UI</strong></td>
     <td>
       All Agents include a chat frontend. It allows you to interact with your Agent and test x402 payments through a user interface, locally or in production.
@@ -96,4 +107,5 @@ All **Warden Agents** generated with [Warden Code](developer-tools/warden-code) 
       [Host your Agent](host-your-agent#chat-using-the-ui)
     </td>
   </tr>
+
 </table>

@@ -47,7 +47,7 @@ Warden Code generates all Agents with Agent Cards, based on the information prov
   Run `warden` and type the `/config` command. If you edit **Identity** and **Skills**, these updates will be reflected in the card.
 
 - **`/build`**  
-  Run `warden` and type the `/build` command to enter the AI-powered [build mode](implement-custom-logic#build-with-ai). Here you can ask the AI assistant to update the agent card for you.
+  Run `warden` and type the `/build` command to enter the AI-powered [build mode](implement-custom-logic#build-with-ai). Here you can ask the AI assistant to update the Agent Card for you.
 
 - **Manual update**  
   You can find the Agent Card in `src/public/.well-known/agent-card.json`.

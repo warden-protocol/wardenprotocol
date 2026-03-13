@@ -33,9 +33,8 @@ To update your Agent's settings, take these steps:
    - **Skills**: Agent capabilities advertised in the Agent Card
    - **Payments**: x402 wallets, pricing, networks
 
-   :::tip
    To learn more about x402 settings, see [x402 parameters](../developer-tools/warden-code#parameters).
-   :::
+   
 
 ## Update the A2A Agent Card
 

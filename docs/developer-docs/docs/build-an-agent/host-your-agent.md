@@ -52,11 +52,18 @@ To set up a hosting service, take these steps:
 
 2. In the service configuration, set the required environment variables:
 
-   - `AGENT_API_KEY`: The Agent API key for authorization
    - `OPENAI_API_KEY`/other: The API key for OpenAI or other LLM
+
    - `OPENAI_MODEL`/other: The preferred LLM model
 
-   If your Agent uses x402 payments, you'll need to add more variables. See [Configure x402 payments](build-an-agent/configure-the-agent#configure-x402-payments).
+   - `AGENT_API_KEY` (optional): The Agent API key for [authentication](developer-tools/warden-code#api-server)
+
+     :::tip
+     When you create an Agent, Warden Code generates the Agent API key and stores it in the `.env` file. If you wish to disable authentication, omit this variable.
+     :::
+
+   - Additional variables for Agents using [x402 payments](build-an-agent/configure-the-agent#configure-x402-payments)
+   
    
 3. Set a build command:
    
@@ -96,7 +103,7 @@ To chat with your Agent through the CLI, take these steps:
    warden
    ```
 
-2. Enter the chat mode and specify the Agent's public URL assigned by your hosting provider.:
+2. Enter the chat mode and specify the Agent's public URL assigned by your hosting provider:
    
    ```bash
    /chat PUBLIC_URL
@@ -115,15 +122,15 @@ To chat with your Agent through the CLI, take these steps:
 Every new Agent is immediately accessible through **A2A** and **LangGraph** server endpoints exposed by Warden Code.
 
 :::tip
-For a full list, see [A2A endpoints](developer-tools/warden-code#a2a-endpoints) and [LangGraph endpoints](developer-tools/warden-code#langgraph-endpoints).
+For a full list, see [A2A endpoints & methods](developer-tools/warden-code#a2a-endpoints--methods) and [LangGraph endpoints](developer-tools/warden-code#langgraph-endpoints).
 :::
 
-After deploying your Agent, you can try any of these endpoints. For example, you can prompt the Agent using the [A2A POST endpoint](developer-tools/warden-code#a2a-endpoints) with the `send` method.
+After deploying your Agent, you can try any of these endpoints. For example, you can prompt the Agent using the [A2A POST endpoint](developer-tools/warden-code#json-rpc-endpoint) with the `message/send` method.
 
 In the request below, specify the following:
 
 - `PUBLIC_URL`: Your public URL
-- `AGENT_API_KEY`: Your Agent API key for [authentication](developer-tools/warden-code#authentication):
+- `AGENT_API_KEY`: Your Agent API key for [authentication](developer-tools/warden-code#api-server):
 
 <Tabs>
 <TabItem value="postman" label="Postman" default>

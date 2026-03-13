@@ -62,7 +62,7 @@ Just check the following sections in [Warden Studio](https://studio.wardenprotoc
 
 ## Manage your Agent
 
-After [publishing an Agent](publish-an-agent), you can edit, freeze/unfreeze, and delete it:
+After [publishing an Agent](#publish-an-agent), you can edit, freeze/unfreeze, and delete it:
 
 1. Log in: 👉 [Warden Studio](https://studio.wardenprotocol.org)
 2. In the left menu, select **Agents**.

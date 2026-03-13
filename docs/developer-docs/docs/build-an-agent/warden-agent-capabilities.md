@@ -40,7 +40,8 @@ All **Warden Agents** generated with [Warden Code](developer-tools/warden-code) 
     </td>
     <td>
       [Create a new Agent](build-an-agent/create-a-new-agent)<br />
-      [Configure the Agent](build-an-agent/configure-the-agent#configure-x402-payments)
+      [Configure the Agent](build-an-agent/configure-the-agent#update-agent-settings)<br />
+      [x402 payments](developer-tools/warden-code#x402-payments)
     </td>
   </tr>
 
@@ -64,7 +65,7 @@ All **Warden Agents** generated with [Warden Code](developer-tools/warden-code) 
       You can update the Agent Card at any time and test the A2A endpoints locally or in production.
     </td>
     <td>
-      [A2A endpoints](developer-tools/warden-code#a2a-endpoints)<br />
+      [A2A endpoints & methods](developer-tools/warden-code#a2a-endpoints--methods)<br />
       [Configure the Agent](build-an-agent/configure-the-agent#update-the-a2a-agent-card)<br />
       [Test the Agent locally](build-an-agent/test-the-agent-locally#chat-using-the-api)<br />
       [Host your Agent](host-your-agent#chat-using-the-api)

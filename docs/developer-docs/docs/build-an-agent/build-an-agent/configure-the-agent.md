@@ -33,6 +33,10 @@ To update your Agent's settings, take these steps:
    - **Skills**: Agent capabilities advertised in the Agent Card
    - **Payments**: x402 wallets, pricing, networks
 
+:::tip
+To learn more about x402 settings, see [x402 parameters](../developer-tools/warden-code#parameters).
+:::
+
 ## Update the A2A Agent Card
 
 [A2A Agent Card](https://agent2agent.info/docs/concepts/agentcard/) is a JSON file describing your Agent's capabilities. It enables clients or other Agents to discover and understand what functionalities the Agent offers.
@@ -51,10 +55,6 @@ Warden Code generates all Agents with Agent Cards, based on the information prov
   :::tip
   To use the AI assistant, you may need to run `/mode` and configure one of the supported LLM providers: **OpenAI** or **Anthropic**. If you created an OpenAI Agent and specified a correct API key, no action is required.
   :::
-
-## Configure x402 payments
-
-*Coming soon*.
 
 ## Next steps
 

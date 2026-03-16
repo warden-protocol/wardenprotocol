@@ -46,6 +46,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 
+## [v1.0.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v1.0.1) - 2026-03-23
+
+This update fixes a bug related to pruning of blocks. This update doesn't
+require a coordinated network upgrade, so it is recommended to do as soon as
+possible, especially if pruning is configured but doesn't seem to be working.
+
+### Bug Fixes
+
+- chore: bump cosmos/iavl to 1.2.6
+
 ## [v1.0.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v1.0.0) - 2026-03-03
 
 This upgrade re-aligns the network binary version after the v0.7.6 emergency

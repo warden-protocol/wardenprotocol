@@ -28,7 +28,7 @@ Agents generated with Warden Code support the following key capabilities:
 - Interaction with other Agents through the [A2A protocol](https://a2a-protocol.org/latest/)
 - Monetization through [x402 payments](https://www.x402.org)
 - Endpoints compatible with the [LangGraph Agent Server API](https://docs.langchain.com/langsmith/server-api-ref)
-- Built-in chat UI that automatically loads the A2A Agent Card and x402 wallets
+- Built-in [frontend](#frontend) that automatically loads the A2A Agent Card and x402 wallets
 - The AI-powered [build mode](#build-mode) allowing you to implement custom Agent logic with an AI assistant
 
 To learn more, see [Warden Agent capabilities](../warden-agent-capabilities).
@@ -217,12 +217,33 @@ In the build mode, you can prompt the assistant and use the following commands:
 | `/chat` | Chat with the Agent. The URL is resolved from `.env`. |
 | `/exit` | Exit the build mode. |
 
+### Frontend
+
+Every generated Agent includes a **chat frontend** allowing you to interact with Agents through a user interface.
+
+[In production](../host-your-agent), the frontend available on your Agent's public URL. When [testing an Agent locally](../build-an-agent/test-the-agent-locally), you can access it on the local host:
+
+```text
+http://localhost:3000/
+```
+
+This frontend implementation supports the following features:
+
+- **Chat**  
+  You can chat with your Agent through a user interface. Responses are rendered as GitHub-flavored Markdown, including headings, code blocks, lists, tables, and links.
+- **Agent Card**  
+  The frontend loads the [Agent Card](#get-agent-card) from `src/public/.well-known/agent-card.json` and displays the Agent name, description, capabilities, and provider info. If the Agent Card has an image field, it's used as the page favicon. Skills are shown as clickable example prompts.
+- **x402 payments**  
+  When [x402 payments](#x402-payments) are enabled, the frontend reads `src/public/.well-known/agent-registration.json` on page load and displays a button for connecting to MetaMask. Transaction hashes included in payment responses link to a block explorer.
+
+![The user interface for chatting with Agents, provided by Warden Code](../../../static/img/warden-code-ui.png)
+
 ### API server
 
-Agents generated with Warden Code use a server that exposes two types of endpoints: [A2A](#a2a-endpoints--methods) and [LangGraph](#langgraph-endpoints). For more details, see the reference sections below.
+Agents generated with Warden Code use a server that exposes two types of endpoints: [A2A](#a2a-endpoints--methods) and [LangGraph](#langgraph-endpoints). For more details, see the reference sections below. For usage examples, see [Test the Agent locally](../build-an-agent/test-the-agent-locally#chat-using-the-api) and [Host your Agent](../host-your-agent#chat-using-the-api).
 
 :::note
-You can find the server setup `src/server.ts`.
+You can find the server setup in `src/server.ts`.
 :::
 
 When you create an Agent, Warden Code generates a random **Agent API key**. By default, the server requires it for **authentication**.
@@ -263,7 +284,11 @@ x402 payments are disabled by default. This is how you can enable them:
 - After creating an Agent, [run `/config`](../build-an-agent/configure-the-agent) and select **Payments**.
 - You can also directly edit [x402 parameters](#parameters) in the `.env` file.
 
-To disable x402 payments for testing purposes, you can do the following:
+:::note
+When x402 are enabled, the [frontend](#frontend) displays a button for connecting to Metamask.
+:::
+
+After this, you can temporarily disable x402 payments for testing purposes:
 
 - [Start the Agent](../build-an-agent/test-the-agent-locally) with `X402=false npm start`
 - Remove all `X402_<PREFIX>_PAY_TO` values from the `.env` file
@@ -352,30 +377,61 @@ All Warden Agents are immediately compatible with the **A2A protocol**, supporti
 
 To learn more, see the [A2A specification](https://a2a-protocol.org/latest/specification).
 
-### Agent Card
+For usage examples, see [Test the Agent locally](../build-an-agent/test-the-agent-locally#chat-using-the-api) and [Host your Agent](../host-your-agent#chat-using-the-api).
+
+### Get Agent Card
 
 | Name | Method | Endpoint |
 | ---- | ------ | -------- |
 | Get Agent Card | GET  | `/.well-known/agent-card.json` |
-| A2A JSON-RPC | POST  | `/` |
+
+An [A2A Agent Card](https://a2a-protocol.org/latest/specification/#8-agent-discovery-the-agent-card) is a JSON file that describes your Agent's capabilities. It enables clients and other Agents to discover and understand what the Agent can do.
+
+:::tip
+You can change this metadata at any moment, as explained in [Update the Agent Card](../build-an-agent/configure-the-agent#update-the-a2a-agent-card).
+:::
+
+Typically, Agent Cards look like this:
+
+```json
+{
+    "name": "general-test",
+    "description": "A helpful AI agent named general-test",
+    "url": "http://localhost:3000",
+    "version": "0.1.0",
+    "capabilities": {
+        "streaming": true,
+        "multiTurn": false
+    },
+    "skills": [],
+    "defaultInputModes": [
+        "text"
+    ],
+    "defaultOutputModes": [
+        "text"
+    ]
+}
+```
 
 ### JSON-RPC endpoint
+
+The [A2A JSON-RPC](https://a2a-protocol.org/latest/specification/#9-json-rpc-protocol-binding) endpoint allows initiating various [A2A operations](https://a2a-protocol.org/latest/specification/#3-a2a-protocol-operations) such as sending messages and managing tasks. It uses just the base URL:
 
 | Name | Method | Endpoint |
 | ---- | ------ | -------- |
 | A2A JSON-RPC | POST  | `/` |
 
-This endpoint uses just the base URL. To run a specific **A2A method**, specify it in the request body:
+To run a particular A2A method, specify it in the JSON-RPC request body:
 
-| Name | Method | JSON-RPC method |
-|------|--------|-----------------|
-| [Send Message](#send-message) | POST | `message/send` |
-| [Send Streaming Message](#send-streaming-message) | POST | `message/stream` |
-| [Get Task](#get-task) | POST | `tasks/get` |
-| [Cancel Task](#cancel-task) | POST | `tasks/cancel` |
-| [Subscribe to Task](#subscribe-to-task) | POST | `tasks/resubscribe` |
+| Name | JSON-RPC method |
+| ---- | --------------- |
+| [Send Message](#send-message) | `message/send` |
+| [Send Streaming Message](#send-streaming-message) | `message/stream` |
+| [Get Task](#get-task)| `tasks/get` |
+| [Cancel Task](#cancel-task) | `tasks/cancel` |
+| [Subscribe to Task](#subscribe-to-task) | `tasks/resubscribe` |
 
-You can find detailed descriptions of all methods in the sections below.
+You can find detailed descriptions of each method in the sections below.
 
 ### Send Message
 

@@ -6,7 +6,7 @@ sidebar_position: 3
 
 ## Overview
 
-After [creating a Warden Agent](create-a-new-agent), you can update the initial configuration at any moment, including the A2A Agent Card metadata and x402 payments.
+After [creating a Warden Agent](create-a-new-agent), you can update the initial configuration at any moment, including the [A2A Agent Card](../developer-tools/warden-code#get-agent-card) metadata and [x402 payments](../developer-tools/warden-code#x402-payments).
 
 This guide explains how to do it.
 
@@ -28,17 +28,18 @@ To update your Agent's settings, take these steps:
 
 3. Select one of the available groups of settings and make the necessary updates:
 
-   - **Identity**: Name, description, URL, version (shown in the Agent Card)
+   - **Identity**: Name, description, URL, version (shown in the [Agent Card](../developer-tools/warden-code#get-agent-card))
    - **Server**: Port, host, Agent URL, API key, model
    - **Skills**: Agent capabilities advertised in the Agent Card
    - **Payments**: x402 wallets, pricing, networks
 
    To learn more about x402 settings, see [x402 parameters](../developer-tools/warden-code#parameters).
    
+![Configure your Agent using Warden Code](../../../static/img/configure-the-agent.png)
 
 ## Update the A2A Agent Card
 
-An [A2A Agent Card](https://agent2agent.info/docs/concepts/agentcard/) is a JSON file that describes your Agent's capabilities. It enables clients and other Agents to discover and understand what the Agent can do.
+An [A2A Agent Card](../developer-tools/warden-code#get-agent-card) is a JSON file that describes your Agent's capabilities. It enables clients and other Agents to discover and understand what the Agent can do.
 
 Warden Code generates all Agents with Agent Cards, based on the information provided on Agent creation. If you need to change the Agent Card data later, use one of these methods:
 

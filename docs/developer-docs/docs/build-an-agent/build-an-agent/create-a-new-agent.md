@@ -75,7 +75,7 @@ To create an Agent, take the following steps:
 5. Optionally, provide skills describing what your Agent can do. This does not affect the real capabilities of the Agent—you'll need to [implement custom logic](implement-custom-logic) later.
 
    :::note
-   Your Agent's skills are advertised in the [A2A Agent Card](https://a2a-protocol.org/latest/tutorials/python/3-agent-skills-and-card/). This allows them to be discovered by other Agents and clients.
+   Your Agent's skills are advertised in the [A2A Agent Card](../developer-tools/warden-code#get-agent-card). This allows them to be discovered by other Agents and clients.
    :::
 
 6. Optionally, enable x402 payments. You'll need to select a network and provide your wallet address for receiving payments. To learn more, see [x402 parameters](../developer-tools/warden-code#parameters).

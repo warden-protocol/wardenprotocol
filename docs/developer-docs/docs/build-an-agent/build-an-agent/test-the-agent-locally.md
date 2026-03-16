@@ -53,7 +53,7 @@ The fastest way to make sure your Agent is running is to open the local host URL
 http://localhost:3000
 ```
 
-If everything is fine, you'll be able to chat with your Agent through the user interface provided by Warden Code:
+Here you can chat with your Agent through the [user interface](../developer-tools/warden-code#frontend) provided by Warden Code. If [x402 payments](../developer-tools/warden-code#x402-payments) are enabled, you'll see a button for connecting to MetaMask.
 
 ![The user interface for chatting with Agents, provided by Warden Code](../../../static/img/warden-code-ui.png)
 
@@ -210,7 +210,7 @@ If everything is fine, you'll receive a response including your prompt, assistan
 
 ### Check the Agent Card
 
-As part of the A2A protocol support, Warden Code exposes an endpoint for the **A2A Agent Card**, which advertises your Agent's skills. It allows other Agents and clients to discover your Agent once you [publicly host it](../host-your-agent#check-the-agent-card).
+As part of the A2A protocol support, Warden Code exposes an endpoint for the [A2A Agent Card](../developer-tools/warden-code#get-agent-card), which advertises your Agent's skills. It allows other Agents and clients to discover your Agent once you [publicly host it](../host-your-agent#check-the-agent-card).
 
 To check the Agent Card accessibility, run this:
    

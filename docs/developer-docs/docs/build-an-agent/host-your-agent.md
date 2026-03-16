@@ -89,7 +89,7 @@ Congratulations! Now your Agent and the supported API endpoints will be availabl
 
 To verify that your Agent is accessible, open the public URL assigned by your hosting provider.
 
-If everything is fine, you'll be able to chat with your Agent through the user interface provided by Warden Code:
+If everything is fine, you'll be able to chat with your Agent through the [user interface](developer-tools/warden-code#frontend) provided by Warden Code:
 
 ![The user interface for chatting with Agents, provided by Warden Code](../../static/img/warden-code-ui.png)
 
@@ -237,7 +237,7 @@ If everything is fine, you'll receive a response including your prompt, assistan
 ```
 ### Check the Agent Card
 
-As part of the A2A protocol support, Warden Code exposes an endpoint for the **A2A Agent Card**, which advertises your Agent's skills, allowing other Agents and clients to discover it.
+As part of the A2A protocol support, Warden Code exposes an endpoint for the [A2A Agent Card](developer-tools/warden-code#get-agent-card), which advertises your Agent's skills, allowing other Agents and clients to discover it.
 
 To check the Agent Card accessibility, replace `PUBLIC_URL` with the public URL and run this:
    

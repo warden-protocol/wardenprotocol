@@ -38,7 +38,7 @@ To update your Agent's settings, take these steps:
 
 ## Update the A2A Agent Card
 
-[A2A Agent Card](https://agent2agent.info/docs/concepts/agentcard/) is a JSON file describing your Agent's capabilities. It enables clients or other Agents to discover and understand what functionalities the Agent offers.
+An [A2A Agent Card](https://agent2agent.info/docs/concepts/agentcard/) is a JSON file that describes your Agent's capabilities. It enables clients and other Agents to discover and understand what the Agent can do.
 
 Warden Code generates all Agents with Agent Cards, based on the information provided on Agent creation. If you need to change the Agent Card data later, use one of these methods:
 

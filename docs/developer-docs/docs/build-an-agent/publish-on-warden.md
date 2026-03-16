@@ -43,7 +43,7 @@ Then take the following steps in Warden Studio:
    - The preferred billing model (per inference or free)
 6. Click **Register agent** and wait.
 
-If everything is fine, your Agent will soon appear on the **Agents** section in Warden Studio. You'll also see the Agent on Warden: just open the [Agent Hub](https://help.wardenprotocol.org/warden-app/explore-ai-agents#access-agents) and check the **Community** tab.
+If everything is fine, your Agent will soon appear in the **Agents** section in Warden Studio. You'll also see the Agent on Warden: just open the [Agent Hub](https://help.wardenprotocol.org/warden-app/explore-ai-agents#access-agents) and check the **Community** tab.
 
 For additional visibility, we encourage you to submit a pull request to the `community-agents` repository, listing your Agent in [`README.md`](https://github.com/warden-protocol/community-agents/blob/main/README.md#-community-agents-and-tools).
 
@@ -74,7 +74,7 @@ After [publishing an Agent](#publish-an-agent), you can edit, freeze/unfreeze, a
 
 :::tip Tips
 - You can't edit the API URL. To add a new URL, register a new Agent.
-- Users can't interact with frozen Agent or see them in the Agent Hub.
+- Users can't interact with frozen Agents or see them in the Agent Hub.
 :::
 
 ![Manage an Agent in Warden Studio](../../static/img/warden-studio-3.png)

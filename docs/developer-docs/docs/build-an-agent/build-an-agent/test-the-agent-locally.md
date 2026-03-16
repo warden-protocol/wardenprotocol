@@ -39,7 +39,7 @@ After [creating a Warden Agent](create-a-new-agent), you can **run it locally** 
    http://localhost:3000
    ```
 
-   While the Agent running, you can interact with it as shown in the sections below.
+   While the Agent is running, you can interact with it as shown in the sections below.
 
    To stop the Agent, press **CTRL+C**. Don't forget to rebuild it each time you update the code.
 
@@ -47,7 +47,7 @@ After [creating a Warden Agent](create-a-new-agent), you can **run it locally** 
 
 ### Chat using the UI
 
-The fastest way to make sure your Agent is to open the local host URL:
+The fastest way to make sure your Agent is running is to open the local host URL:
 
 ```text
 http://localhost:3000

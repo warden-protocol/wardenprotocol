@@ -26,7 +26,7 @@ jobs:
             | jq -r '.[0].metadata.container.tags[0]')
           echo "latest_tag=$LATEST_TAG" >> $GITHUB_ENV
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.30.0
+        uses: aquasecurity/trivy-action@0.35.0
         with:
           image-ref: "ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}:${{ env.latest_tag }}"
           format: "sarif"

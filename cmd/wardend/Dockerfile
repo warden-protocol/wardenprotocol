@@ -27,7 +27,7 @@ ARG WARDEND_VERSION="unknown"
 COPY --from=build /dist/wardend /wardend-$WARDEND_VERSION-$TARGETOS-$TARGETARCH
 ENTRYPOINT ["/wardend-$WARDEND_VERSION-$TARGETOS-$TARGETARCH"]
 
-FROM alpine:3.18 AS runtime
+FROM alpine:3.23 AS runtime
 RUN set -eux; apk add --no-cache ca-certificates curl bash;
 
 RUN addgroup -S -g 1000 warden && \

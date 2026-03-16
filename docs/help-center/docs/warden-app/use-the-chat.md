@@ -8,9 +8,13 @@ sidebar_position: 3
 
 The **AI-powered chat** is the main way to interact with Warden.
 
-Use simple **text or voice** commands to send and swap your assets, check your balance, or ask questions about the app, Warden Protocol, and the crypto market.
+Use simple commands to send and swap your assets, check your balance, or ask questions about the app, Warden Protocol, and the crypto market.
 
-You can start chatting with the default **Warden Agent** or select another [AI Agent](explore-ai-agents), as described in the sections below.
+:::tip
+You can type or dictate your prompts.
+:::
+
+Start chatting with the default **Warden Agent** or select another [AI Agent](explore-ai-agents), as described in the sections below.
 
 ## Access the chat
 

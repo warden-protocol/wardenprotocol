@@ -22,7 +22,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **New features**:
 
-- [Warden Agent](explore-ai-agents#warden-agent): Added the voice-to-text feature.
+- [Agents](explore-ai-agents): Added the voice-to-text feature.
 
 **Improvements**:
 

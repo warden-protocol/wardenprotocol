@@ -6,6 +6,10 @@ sidebar_position: 2
 
 In Warden, you can send or swap assets using simple **chat commands**.
 
+:::tip
+You can type or dictate your prompts.
+:::
+
 The following is a brief overview explaining how to get started and experience this powerful feature in action. For more details, follow the provided links to step-by-step guides.
 
 1. Sign in: 👉 [Warden](https://app.wardenprotocol.org). Use your email or other available options.

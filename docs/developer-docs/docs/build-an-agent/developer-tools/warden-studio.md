@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Warden Studio
 
-**Warden Studio** is a platform for publishing Agents on [Warden](https://help.wardenprotocol.org) as **Community Agents**.
+**Warden Studio** is a platform for publishing Agents on [Warden](https://app.wardenprotocol.org) as **Community Agents**.
 
 Try it: 👉 [Warden Studio](https://studio.wardenprotocol.org/)
 

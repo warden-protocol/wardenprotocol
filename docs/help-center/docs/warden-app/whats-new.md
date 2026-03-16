@@ -8,6 +8,34 @@ sidebar_position: 13
 
 Here you'll find the latest Warden release highlights, including new features, improvements, and bug fixes. This section helps you quickly see what's changed and how it can enhance your experience.
 
+## March 11, 2026
+
+**Fixes**:
+
+- [$WARD airdrop](ward-airdrop): Improved the airdrop claiming flow
+- [Earn rewards](earn-rewards): Improved leaderboard and ranking performance
+- Other:
+  - Optimized Agent execution
+  - Made various backend improvements and fixes
+
+## February 19, 2026
+
+**New features**:
+
+- [Warden Agent](explore-ai-agents#warden-agent): Added the voice-to-text feature.
+
+**Improvements**:
+
+- [Trading](trade): Made an improvement in the Strategies UI.
+
+**Fixes**:
+
+- [Warden Agent](explore-ai-agents#warden-agent): Fixed an issue with WETH on Solana not being recognized.
+- [Trading](trade): Optimized the leaderboard.
+- [Predictions](predict): Made UI fixes.
+- [Staking](stake-ward): Fixed a UI issue with cancelled stakes.
+- Other: Solved an issue with application freezes.
+
 ## February 18, 2026
 
 **Improvements**:

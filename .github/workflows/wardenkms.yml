@@ -2,22 +2,10 @@
 name: Release WardenKMS development image
 
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - main
-    paths:
-      - "go.mod"
-      - "cmd/wardenkms/**"
-      - "go-client/**"
-      - "keychain-sdk/**"
     tags:
       - "wardenkms/v*"
-  pull_request:
-    paths:
-      - "go.mod"
-      - "cmd/wardenkms/**"
-      - "go-client/**"
-      - "keychain-sdk/**"
 
 jobs:
   lint:

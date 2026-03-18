@@ -2,8 +2,9 @@
 name: Integration tests
 
 on:
-  schedule:
-    - cron: "0 */4 * * *"
+  push:
+    branches:
+      - main
 
 jobs:
   integration-test:

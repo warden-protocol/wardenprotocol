@@ -70,15 +70,15 @@ To create an Agent, take the following steps:
 4. Select the communication style:
 
    - **Streaming**: Tokens stream in real-time as the model generates, leading to a faster perceived response.
-   - **Mulit-turn converstions**: Responses arrive all at once after completion, which is simpler to work with.
+   - **Multi-turn conversations**: Responses arrive all at once after completion, which is simpler to work with.
 
 5. Optionally, provide skills describing what your Agent can do. This does not affect the real capabilities of the Agent—you'll need to [implement custom logic](implement-custom-logic) later.
 
    :::note
-   You Agent's skills are advertised in the [A2A Agent Card](https://a2a-protocol.org/latest/tutorials/python/3-agent-skills-and-card/). This allows them to be discovered by other Agents and clients.
+   Your Agent's skills are advertised in the [A2A Agent Card](https://a2a-protocol.org/latest/tutorials/python/3-agent-skills-and-card/). This allows them to be discovered by other Agents and clients.
    :::
 
-6. Optionally, enable x402 payments. You'll need to select a network and provide your wallet address for receiving payments. To learn more, see [Configure x402 payments](configure-the-agent#configure-x402-payments).
+6. Optionally, enable x402 payments. You'll need to select a network and provide your wallet address for receiving payments. To learn more, see [x402 parameters](../developer-tools/warden-code#parameters).
 
 7. Confirm Agent creation.
 
@@ -93,10 +93,10 @@ Depending on your choices, Warden Code generates a new project based one of the 
 This [project structure](../developer-tools/warden-code#project-structure) includes the following key files:
 
 - `src/agent.ts`: Your Agent's logic
-- `.env`: Your API key for [authentication](../developer-tools/warden-code#authentication), the LLM key (if provided), and more
+- `.env`: Your API key for [authentication](../developer-tools/warden-code#api-server), the LLM key (if provided), and more
 
 :::warning
-Never expose your API keys on GitHub. Before publishing your project, you must keep the API key in a safe space and delete it from the `.env` file.
+Keep your `.env` file private. Never commit it to a repository or share your API keys.
 :::
 
 ## Next steps

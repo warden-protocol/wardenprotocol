@@ -24,18 +24,30 @@ After [creating a Warden Agent](create-a-new-agent), you can **run it locally** 
    ```bash
    npm start
    ```
-   
-   Congratulations! Your Agent is available on `http://localhost:3000`. While it's running, you can interact with it as shown below.
 
-   :::tip
-   To stop the Agent, press CTRL+C. Don't forget to rebuild it each time you update the code.
-   :::
+   If you need to temporarily disable [x402 payments](../developer-tools/warden-code#x402-payments) at start, run this command:
+
+   ```bash
+   X402=false npm start
+   ```
+
+   It skips the payment middleware only for the current process: your `.env` file with x402 settings will stay untouched, and payments will resume on the next start.
+   
+3. Congratulations! Your Agent is available on the local host:
+
+   ```text
+   http://localhost:3000
+   ```
+
+   While the Agent running, you can interact with it as shown in the sections below.
+
+   To stop the Agent, press **CTRL+C**. Don't forget to rebuild it each time you update the code.
 
 ## 2. Interact with the Agent
 
 ### Chat using the UI
 
-The fastest way to make sure your Agent is running opening the local host URL:
+The fastest way to make sure your Agent is to open the local host URL:
 
 ```text
 http://localhost:3000
@@ -70,6 +82,10 @@ To chat with your Agent through the CLI, take these steps:
 
 3. Chat with your Agent. Warden Code automatically detects whether the agent supports A2A, LangGraph, or both, and prompts you to choose when multiple protocols are available.
 
+   :::tip
+   The `/chat` command automatically uses [API key authentication](../developer-tools/warden-code#api-server) to bypass [x402 payments](../developer-tools/warden-code#x402-payments). It'll work if you keep the `AGENT_API_KEY` variable in the `.env` file.
+   :::
+
 4. To exit the chat mode, type this:
 
    ```bash
@@ -81,12 +97,12 @@ To chat with your Agent through the CLI, take these steps:
 Every new Agent is immediately accessible through **A2A** and **LangGraph** server endpoints exposed by Warden Code.
 
 :::tip
-For a full list, see [A2A endpoints](../developer-tools/warden-code#a2a-endpoints) and [LangGraph endpoints](../developer-tools/warden-code#langgraph-endpoints).
+For a full list, see [A2A endpoints & methods](../developer-tools/warden-code#a2a-endpoints--methods) and [LangGraph endpoints](../developer-tools/warden-code#langgraph-endpoints).
 :::
 
-After running your Agent, you can try any of these endpoints locally. For example, you can prompt the Agent using the [A2A POST endpoint](../developer-tools/warden-code#a2a-endpoints) with the `send` method.
+After running your Agent, you can try any of these endpoints locally. For example, you can prompt the Agent using the [A2A POST endpoint](../developer-tools/warden-code#json-rpc-endpoint) with the `message/send` method.
 
-In the request below, replace `AGENT_API_KEY` with your Agent API key for [authentication](../developer-tools/warden-code#authentication), which you can find in the `.env` file:
+In the request below, replace `AGENT_API_KEY` with your Agent API key for [authentication](../developer-tools/warden-code#api-server), which you can find in the `.env` file:
 
 <Tabs>
 <TabItem value="postman" label="Postman" default>
@@ -224,7 +240,7 @@ The card will display your Agent's name and capabilities, along with other infor
 ```
 
 :::tip
-You can edit the Agent Card at any time. Use the [`/config`](implement-custom-logic#build-with-ai) command or update the card directly in `public/.well-known/agent-card.json`.
+You can edit the Agent Card at any time. Use the `/config` command or other methods, as shown in [Configure the Agent](configure-the-agent#update-the-a2a-agent-card).
 :::
 
 ## Next steps

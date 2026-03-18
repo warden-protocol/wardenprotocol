@@ -34,17 +34,15 @@ Many platforms expose this variable automatically, for example: `RENDER_EXTERNAL
 
 Now you need to publish your Agent on GitHub:
 
-1. Keep your environment variables from the `.env` file in a safe space. This includes the **Agent API key** for authorization, the **LLM API key**, and other parameters.
+1. Create a new repository on GitHub and copy your code into it.
 
-2. Delete the `.env` file. 
+2. Before committing the changes, add your `.env` file to `.gitignore`.
 
    :::warning
-   Never expose your API keys on GitHub.
+   Never expose your `.env` file or expose API keys in your repository. When [deploying](#3-deploy-your-agent), you'll store all secrets in your hosting provider's settings.
    :::
 
-3. Create a new repository on GitHub.
-
-4. Push your Agent code to the repository.
+3. Commit your Agent code to the repository.
 
 ## 3. Deploy your Agent
 
@@ -54,35 +52,42 @@ To set up a hosting service, take these steps:
 
 2. In the service configuration, set the required environment variables:
 
-   - `AGENT_API_KEY`: The Agent API key for authorization
    - `OPENAI_API_KEY`/other: The API key for OpenAI or other LLM
+
    - `OPENAI_MODEL`/other: The preferred LLM model
 
-   If your Agent uses x402 payments, you'll need to add more variables. See [Configure x402 payments](build-an-agent/configure-the-agent#configure-x402-payments).
+   - `AGENT_API_KEY` (optional): The Agent API key for [authentication](developer-tools/warden-code#api-server)
+
+     :::tip
+     When you create an Agent, Warden Code generates the Agent API key and stores it in the `.env` file. If you wish to disable authentication, omit this variable.
+     :::
+
+   - Additional variables for Agents using [x402 payments](developer-tools/warden-code#parameters).
+   
    
 3. Set a build command:
    
    ```bash
-   npm build
+   npm run build
    ```
 
 4. Set a start command: 
    
    ```bash
-   npm run start
+   npm start
    ```
 
 5. Connect your repository with the hosting service.
 
 6. Trigger the deployment if it doesn't start automatically.
 
-Congratulations! Now your Agent and the supported API endpoints will be available on a **public URL** provided by your hosting service.
+Congratulations! Now your Agent and the supported API endpoints will be available on a **public URL** assigned by your hosting provider.
 
 ## 4. Verify deployment
 
 ### Chat using the UI
 
-The fastest way to make sure your Agent is accessible is opening the public URL provided by the hosting.
+To verify that your Agent is accessible, open the public URL assigned by your hosting provider.
 
 If everything is fine, you'll be able to chat with your Agent through the user interface provided by Warden Code:
 
@@ -98,7 +103,7 @@ To chat with your Agent through the CLI, take these steps:
    warden
    ```
 
-2. Enter the chat mode and specify the Agent's public URL provided by the hosting:
+2. Enter the chat mode and specify the Agent's public URL assigned by your hosting provider:
    
    ```bash
    /chat PUBLIC_URL
@@ -117,15 +122,15 @@ To chat with your Agent through the CLI, take these steps:
 Every new Agent is immediately accessible through **A2A** and **LangGraph** server endpoints exposed by Warden Code.
 
 :::tip
-For a full list, see [A2A endpoints](developer-tools/warden-code#a2a-endpoints) and [LangGraph endpoints](developer-tools/warden-code#langgraph-endpoints).
+For a full list, see [A2A endpoints & methods](developer-tools/warden-code#a2a-endpoints--methods) and [LangGraph endpoints](developer-tools/warden-code#langgraph-endpoints).
 :::
 
-After deploying your Agent, you can try any of these endpoints. For example, you can prompt the Agent using the [A2A POST endpoint](developer-tools/warden-code#a2a-endpoints) with the `send` method.
+After deploying your Agent, you can try any of these endpoints. For example, you can prompt the Agent using the [A2A POST endpoint](developer-tools/warden-code#json-rpc-endpoint) with the `message/send` method.
 
 In the request below, specify the following:
 
 - `PUBLIC_URL`: Your public URL
-- `AGENT_API_KEY`: Your Agent API key for [authentication](developer-tools/warden-code#authentication):
+- `AGENT_API_KEY`: Your Agent API key for [authentication](developer-tools/warden-code#api-server):
 
 <Tabs>
 <TabItem value="postman" label="Postman" default>

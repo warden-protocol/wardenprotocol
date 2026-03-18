@@ -18,9 +18,9 @@ To view the list of currently available Warden Agents, log in to [Warden](https:
 
 ## Open Agent ecosystem
 
-Warden Agents generated with [Warden Code](#warden-code) aren't limited with distribution on Warden.
+Warden Agents generated with [Warden Code](#warden-code) aren't limited to distribution on Warden.
 
-They support open standards such as the **A2A protocol**, **x402 payments**, and **ERC-8004 identity**, which allows them to function across the broader Agent ecosystem.
+They support open standards such as the **A2A protocol**, **x402 payments**, and **ERC-8004 identity**, which allow them to function across the broader Agent ecosystem.
 
 The supported features include:
 
@@ -59,7 +59,7 @@ The key advantages of publishing on Warden include the following:
 ## Section overview
 
 - [Warden Agent capabilities](warden-agent-capabilities)  
-  A list of key Warden Agent capablities with usage instructions and links to guides. 
+  A list of key Warden Agent capabilities with usage instructions and links to guides. 
 
 - [Build an Agent with Warden Code](/category/build-an-agent-with-warden-code)  
   Here you can learn how to create and test a new Agent with Warden Code.
@@ -71,7 +71,7 @@ The key advantages of publishing on Warden include the following:
   Learn how to publish and manage your Agent on Warden using Warden Studio.
 
 - [Register on ERC-8004](register-on-erc-8004)  
-  Learn how register your Agent on ERC-8004 using Warden Code.
+  Learn how to register your Agent on ERC-8004 using Warden Code.
 
 - [Developer tools](/category/developer-tools)  
   This section provides reference documentation for Warden Code and Warden Studio.

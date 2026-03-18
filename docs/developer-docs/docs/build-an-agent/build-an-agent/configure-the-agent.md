@@ -33,13 +33,23 @@ To update your Agent's settings, take these steps:
    - **Skills**: Agent capabilities advertised in the Agent Card
    - **Payments**: x402 wallets, pricing, networks
 
+   To learn more about x402 settings, see [x402 parameters](../developer-tools/warden-code#parameters).
+   
+
 ## Update the A2A Agent Card
 
-*Coming soon*.
+[A2A Agent Card](https://agent2agent.info/docs/concepts/agentcard/) is a JSON file describing your Agent's capabilities. It enables clients or other Agents to discover and understand what functionalities the Agent offers.
 
-## Configure x402 payments
+Warden Code generates all Agents with Agent Cards, based on the information provided on Agent creation. If you need to change the Agent Card data later, use one of these methods:
 
-*Coming soon*.
+- **`/config`**  
+  Run `warden` and type the `/config` command. If you edit **Identity** and **Skills**, these updates will be reflected in the card.
+
+- **`/build`**  
+  Run `warden` and type the `/build` command to enter the AI-powered [build mode](implement-custom-logic#build-with-ai). Here you can ask the AI assistant to update the Agent Card for you.
+
+- **Manual update**  
+  You can find the Agent Card in `src/public/.well-known/agent-card.json`.
 
 ## Next steps
 

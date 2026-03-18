@@ -13,7 +13,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 **New features**:
 
 - [Earn rewards](earn-rewards): Updated the leaderboard to support the new [reward campaign](earn-rewards#get-ward).
-- Other: Added internal changes in preparation upcoming features.
+- Other: Added internal changes in preparation forupcoming features.
 
 ## March 11, 2026
 
@@ -33,7 +33,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **Improvements**:
 
-- [Trading](trade): Made an improvement in the Strategies UI.
+- [Trading](trade): Improved the Strategies UI.
 
 **Fixes**:
 

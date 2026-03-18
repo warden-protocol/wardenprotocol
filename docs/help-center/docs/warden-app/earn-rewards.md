@@ -10,8 +10,8 @@ In this section, you'll discover how to start **earning rewards** in Warden:
 
 1. [Create a coin](#create-your-coin): Create your own coin.
 2. [Earn reWARD points](#earn-reward-points): Stay active in Warden to boost your coin's rank.
-3. [Check you rank](#check-your-rank): Check your rank on the leaderboard.
-3. [Get $WARD](#get-ward): The most active users will be rewarded with $WARD.
+3. [Check your rank](#check-your-rank): Check your rank on the leaderboard.
+4. [Get $WARD](#get-ward): The most active users will be rewarded with $WARD.
 
 ## Create your coin
 
@@ -40,7 +40,7 @@ There are multiple ways to earn reWARDs:
 The more reWARDs you earn, the higher [your coin](#create-your-coin) climbs on the [leaderboard](#check-your-rank).
 
 :::note
-Your rank also depends on [fees](fees) your pay in Warden. To learn how exactly the rank and $WARD rewards are calculated, see [Get $WARD](#get-ward).
+Your position also depends on [fees](fees) you pay in Warden. To learn how exactly the rank and $WARD rewards are calculated, see [Get $WARD](#get-ward).
 :::
 
 ### Complete tasks

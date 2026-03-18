@@ -285,7 +285,7 @@ The market data for the chart and order book is provided by [Hyperliquid](https:
 
 ### Earn reWARDs
 
-Once your all-time total trade volume reaches **$100**, you qualify to join the **League of Traders** and start receiving [reWARDs](earn-rewards#earn-reward-points)—points that reward your activity in Warden.
+Once your all-time total trade volume reaches **$100**, you qualify to join the **League of Traders** and start receiving [reWARDs](earn-rewards#rewards)—points that reward your activity in Warden.
 
 You earn rewards for every position closed within a **15-minute** cycle (when reWARDs are distributed):
 

@@ -99,7 +99,7 @@ To access this data, open the **Rewards** section and scroll down to the leaderb
 
 The most active Warden users will be rewarded with [$WARD](https://docs.wardenprotocol.org/ward/introduction). In the current season, we'll distribute **5,000,000 $WARD** to the **top 500** users on [leaderboard](#check-your-rank).
 
-In the current [reward campaign](https://wardenprotocol.org/blog/season-04-leaderboard-update-full-transparency-real-rewards), $WARD distribution is based on your [reWARD points](#rewards) and [fees](fees). Note that you're competing on your share of total system activity and fees, not on absolute numbers. For example, if everyone trades more, your share can drop.
+In the [current reward campaign](https://wardenprotocol.org/blog/season-04-leaderboard-update-full-transparency-real-rewards), $WARD distribution is based on your [reWARD points](#rewards) and [fees](fees). Note that you're competing on your share of total system activity and fees, not on absolute numbers. For example, if everyone trades more, your share can drop.
 
 :::tip
 To learn more about fees in Warden, see [Fees](fees).

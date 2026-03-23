@@ -56,7 +56,7 @@ To set up a hosting service, take these steps:
 
    - `OPENAI_MODEL`/other: The preferred LLM model
 
-   - `AGENT_API_KEY` (optional): The Agent API key for [authentication](developer-tools/warden-code#api-server)
+   - `AGENT_API_KEY` (optional): The Agent API key for [authentication](developer-tools/warden-code#api-key-authentication)
 
      :::tip
      When you create an Agent, Warden Code generates the Agent API key and stores it in the `.env` file. If you wish to disable authentication, omit this variable.
@@ -130,7 +130,7 @@ After deploying your Agent, you can try any of these endpoints. For example, you
 In the request below, specify the following:
 
 - `PUBLIC_URL`: Your public URL
-- `AGENT_API_KEY`: Your Agent API key for [authentication](developer-tools/warden-code#api-server):
+- `AGENT_API_KEY`: Your Agent API key for [authentication](developer-tools/warden-code#api-key-authentication):
 
 <Tabs>
 <TabItem value="postman" label="Postman" default>

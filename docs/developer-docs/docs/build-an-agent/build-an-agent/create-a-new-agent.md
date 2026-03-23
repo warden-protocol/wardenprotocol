@@ -93,7 +93,7 @@ Depending on your choices, Warden Code generates a new project based one of the 
 This [project structure](../developer-tools/warden-code#project-structure) includes the following key files:
 
 - `src/agent.ts`: Your Agent's logic
-- `.env`: Your API key for [authentication](../developer-tools/warden-code#api-server), the LLM key (if provided), and more
+- `.env`: Your API key for [authentication](../developer-tools/warden-code#api-key-authentication), the LLM key (if provided), and more
 
 :::warning
 Keep your `.env` file private. Never commit it to a repository or share your API keys.

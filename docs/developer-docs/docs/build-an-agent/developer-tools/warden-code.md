@@ -240,13 +240,25 @@ This frontend implementation supports the following features:
 
 ### API server
 
-Agents generated with Warden Code use a server that exposes two types of endpoints: [A2A](#a2a-endpoints--methods) and [LangGraph](#langgraph-endpoints). For more details, see the reference sections below. For usage examples, see [Test the Agent locally](../build-an-agent/test-the-agent-locally#chat-using-the-api) and [Host your Agent](../host-your-agent#chat-using-the-api).
+Agents generated with Warden Code use a server that is compatible with the **A2A protocol** and  **LangGraph Agent Server API**. By default, the server requires [API key authentication](#api-key-authentication).
 
 :::note
 You can find the server setup in `src/server.ts`.
 :::
 
-When you create an Agent, Warden Code generates a random **Agent API key**. By default, the server requires it for **authentication**.
+For details about the exposed endpoints, see the reference sections below:
+
+- [A2A endpoints](#a2a-endpoints--methods)
+- [LangGraph ednpoints](#langgraph-endpoints)
+
+For usage examples, see these articles:
+
+- [Test the Agent locally](../build-an-agent/test-the-agent-locally#chat-using-the-api)
+- [Host your Agent](../host-your-agent#chat-using-the-api)
+
+### API key authentication
+
+When you create an Agent, Warden Code generates a random **Agent API key**. By default, the [API server](#api-server) requires it for **authentication**.
 
 :::important 
 The Agent API key is stored in the `.env` file as `AGENT_API_KEY`.
@@ -294,7 +306,7 @@ After this, you can temporarily disable x402 payments for testing purposes:
 - Remove all `X402_<PREFIX>_PAY_TO` values from the `.env` file
 
 :::tip
-Alternatively, you can keep [API key authentication](#api-server) enabled and bypass payments in the [chat mode](../build-an-agent/test-the-agent-locally#chat-using-the-cli).
+Alternatively, you can keep [API key authentication](#api-key-authentication) enabled and bypass payments in the [chat mode](../build-an-agent/test-the-agent-locally#chat-using-the-cli).
 :::
 
 ### Parameters
@@ -371,7 +383,41 @@ Clients that support x402 (such as `@x402/fetch`) handle the payment flow automa
 2. The client signs a USDC transaction.
 3. The server verifies the payment before processing the request.
 
+## Agent runtime
+
+Agents generated with Warden Code expose a minimal runtime for handling input, executing tools, and integrating with external services. The following classes and functions define the Agent's behavior and execution model.
+
+### AgentServer
+
+The `AgentServer` class hosts the Agent runtime and exposes it over supported protocols. It invokes the [`handler()`](#handler) function to process incoming requests.
+
+### callProvider()
+
+The `callProvider()` function executes a request against a configured provider and returns the response.
+
+### configureProvider()
+
+The `configureProvider()` function configures a provider (e.g., API or external service), including connection details and authentication.
+
+### executeTool()
+
+The `executeTool()` function executes a tool call within the Agent runtime.
+
+### handler()
+
+The `handler(context)` function defines the Agent's behavior. This asynchronous generator is implemented by the developer and invoked by the runtime to process input and yield execution updates.
+
+### handleAgentInput()
+
+The `handleAgentInput()` function processes input through the Agent execution loop, coordinating tool calls and generating responses.
+
+### registerTool()
+
+The `registerTool()` function registers registers a tool that the Agent can invoke during execution.
+
 ## A2A endpoints & methods
+
+### A2A protocol
 
 All Warden Agents are immediately compatible with the **A2A protocol**, supporting the **Agent Card** and the **JSON-RPC** endpoint with the core methods.
 
@@ -698,6 +744,8 @@ In `params.id`, specify the **task ID**. You can obtain this value from `result.
 
 ## LangGraph endpoints
 
+### LangGraph Agent Server API
+
 All Warden Agents are immediately compatible with the **LangGraph Agent Server API**.
 
 Warden Code exposes a subset of this API. Below, you can find a full list of supported endpoints with links to the [LangGraph API reference](https://docs.langchain.com/langsmith/server-api-ref).
@@ -741,35 +789,3 @@ Warden Code exposes a subset of this API. Below, you can find a full list of sup
 | ---- | ------ | -------- |
 | [Server Information](https://docs.langchain.com/langsmith/agent-server-api/system/server-information) | GET | `/info` |
 | [Health Check](https://docs.langchain.com/langsmith/agent-server-api/system/health-check) | GET | `/ok` |
-
-## Agent execution model
-
-Agents generated with Warden Code expose a minimal runtime for handling input, executing tools, and integrating with external services. The following concepts and functions define the Agent's behavior and execution model.
-
-### handler()
-
-The `handler(context)` function defines the Agent's behavior. This asynchronous generator is implemented by the developer and invoked by the runtime to process input and yield execution updates.
-
-### AgentServer
-
-Hosts the Agent runtime and exposes it over supported protocols. It invokes the [`handler()`](#handler) function to process incoming requests.
-
-### registerTool()
-
-Registers a function as a callable tool that the Agent can invoke during execution.
-
-### executeTool()
-
-Executes a tool call within the Agent runtime.
-
-### handleAgentInput()
-
-Processes input through the Agent execution loop, coordinating tool calls and generating responses.
-
-### configureProvider()
-
-Configures a provider (e.g., API or external service), including connection details and authentication.
-
-### callProvider()
-
-Executes a request against a configured provider and returns the response.

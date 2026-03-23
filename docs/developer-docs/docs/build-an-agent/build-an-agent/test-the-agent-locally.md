@@ -83,7 +83,7 @@ To chat with your Agent through the CLI, take these steps:
 3. Chat with your Agent. Warden Code automatically detects whether the agent supports A2A, LangGraph, or both, and prompts you to choose when multiple protocols are available.
 
    :::tip
-   The `/chat` command automatically uses [API key authentication](../developer-tools/warden-code#api-server) to bypass [x402 payments](../developer-tools/warden-code#x402-payments). It'll work if you keep the `AGENT_API_KEY` variable in the `.env` file.
+   The `/chat` command automatically uses [API key authentication](../developer-tools/warden-code#api-key-authentication) to bypass [x402 payments](../developer-tools/warden-code#x402-payments). It'll work if you keep the `AGENT_API_KEY` variable in the `.env` file.
    :::
 
 4. To exit the chat mode, type this:
@@ -102,7 +102,7 @@ For a full list, see [A2A endpoints & methods](../developer-tools/warden-code#a2
 
 After running your Agent, you can try any of these endpoints locally. For example, you can prompt the Agent using the [A2A POST endpoint](../developer-tools/warden-code#json-rpc-endpoint) with the `message/send` method.
 
-In the request below, replace `AGENT_API_KEY` with your Agent API key for [authentication](../developer-tools/warden-code#api-server), which you can find in the `.env` file:
+In the request below, replace `AGENT_API_KEY` with your Agent API key for [authentication](../developer-tools/warden-code#api-key-authentication), which you can find in the `.env` file:
 
 <Tabs>
 <TabItem value="postman" label="Postman" default>

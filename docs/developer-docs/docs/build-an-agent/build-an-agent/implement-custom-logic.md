@@ -95,7 +95,7 @@ To start building with AI, take these steps:
 
 You can directly edit your Agent's code in `src/agent.ts`.
 
-To implement custom logic, use the [functions exposed by Warden Code](../developer-tools/warden-code#functions).
+To implement custom logic, explore the [Agent execution model](../developer-tools/warden-code#agent-execution-model).
 
 ## Next steps
 

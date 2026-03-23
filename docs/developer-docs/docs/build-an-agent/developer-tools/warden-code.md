@@ -742,6 +742,34 @@ Warden Code exposes a subset of this API. Below, you can find a full list of sup
 | [Server Information](https://docs.langchain.com/langsmith/agent-server-api/system/server-information) | GET | `/info` |
 | [Health Check](https://docs.langchain.com/langsmith/agent-server-api/system/health-check) | GET | `/ok` |
 
-## Functions
+## Agent execution model
 
-*Coming soon.*
+Agents generated with Warden Code expose a minimal runtime for handling input, executing tools, and integrating with external services. The following concepts and functions define the Agent's behavior and execution model.
+
+### handler()
+
+The `handler(context)` function defines the Agent's behavior. This asynchronous generator is implemented by the developer and invoked by the runtime to process input and yield execution updates.
+
+### AgentServer
+
+Hosts the Agent runtime and exposes it over supported protocols. It invokes the [`handler()`](#handler) function to process incoming requests.
+
+### registerTool()
+
+Registers a function as a callable tool that the Agent can invoke during execution.
+
+### executeTool()
+
+Executes a tool call within the Agent runtime.
+
+### handleAgentInput()
+
+Processes input through the Agent execution loop, coordinating tool calls and generating responses.
+
+### configureProvider()
+
+Configures a provider (e.g., API or external service), including connection details and authentication.
+
+### callProvider()
+
+Executes a request against a configured provider and returns the response.

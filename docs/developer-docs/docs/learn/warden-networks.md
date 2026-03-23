@@ -19,7 +19,7 @@ Warden networks use two chain IDs on different layers. The Cosmos chain ID is th
 <table>
   <tr>
     <td>**Binary**</td>
-    <td>[v1.0.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v1.0.0)</td>
+    <td>[v1.0.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v1.0.1)</td>
   </tr>
   <tr>
     <td>Endpoints</td>
@@ -58,7 +58,7 @@ Warden networks use two chain IDs on different layers. The Cosmos chain ID is th
 <table>
   <tr>
     <td>**Binary**</td>
-    <td>[v1.0.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v1.0.0)</td>
+    <td>[v1.0.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v1.0.1)</td>
   </tr>
   <tr>
     <td>Endpoints</td>

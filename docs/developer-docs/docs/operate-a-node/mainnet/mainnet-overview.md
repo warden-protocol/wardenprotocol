@@ -17,7 +17,7 @@ Mainnet is our new EVM network, currently available only to selected validators.
 | [v0.7.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.2) | 745500       | October 24, 2025  | [Upgrade to v0.7.2](upgrade/v0.7.2)   |
 | [v0.7.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.3) | 745501       | November 19, 2025 | [Upgrade to v0.7.3](upgrade/v0.7.3)   |
 | [v0.7.6](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.7.6) | 3427000      | January 15, 2026  | [Upgrade to v0.7.6](upgrade/v0.7.6)   |
-| [v1.0.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v1.0.0) | 5418000      | March 3, 2026  | [Upgrade to v1.0.0](upgrade/v1.0.0)   |
+| [v1.0.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v1.0.0) | 5418000      | March 19, 2026  | [Upgrade to v1.0.0](upgrade/v1.0.0)   |
 
 You can also see the [binary changelog](https://github.com/warden-protocol/wardenprotocol/blob/main/CHANGELOG.md).
 

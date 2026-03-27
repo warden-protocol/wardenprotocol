@@ -40,7 +40,7 @@ Within Warden, you can do the following:
 7. [Earn rewards](warden-app/earn-rewards)
 8. [Stake $WARD](warden-app/stake-ward)
 
-Additionally, you can use the [Warden Browser Extension](manage-your-wallets#warden-browser-extension) to access your Warden account from anywhere on the web.
+Additionally, you can use the [Warden Browser Extension](warden-app/manage-your-wallets#warden-browser-extension) to access your Warden account from anywhere on the web.
 
 ![The main features of Warden](../../static/img/warden-app/introduction-1.png)
 

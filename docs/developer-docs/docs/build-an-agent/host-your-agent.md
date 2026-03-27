@@ -263,7 +263,7 @@ The card will display your Agent's name and capabilities, along with other infor
 ```
 
 :::tip
-Most likely, the `url` field will display the local host URL instead of the public URL. To fix this issue, update the Agent Card, as shown in the next step.
+Most likely, the `url` field will display the local host URL instead of the public URL. To address this, update the Agent Card, as shown in the next step.
 :::
 
 ## 5. Update the Agent Card

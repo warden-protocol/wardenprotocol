@@ -19,7 +19,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 **New features**:
 
 - [Earn rewards](earn-rewards): Updated the leaderboard to support the new [reward campaign](earn-rewards#get-ward).
-- Other: Added internal changes in preparation forupcoming features.
+- Other: Added internal changes in preparation for upcoming features.
 
 ## March 11, 2026
 

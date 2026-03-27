@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 3
+sidebar_position: 7
 ---
 
 # Warden Studio
@@ -8,14 +8,14 @@ sidebar_position: 3
 
 Try it: 👉 [Warden Studio](https://studio.wardenprotocol.org/)
 
-Here you can register and monetize any Agent that was built with [Warden Code](warden-code) and [publicly hosted](../host-your-agent).
+Here you can register and monetize any Agent that was built with [Warden Code](warden-code/introduction) and [publicly hosted](host-your-agent).
 
 To learn about all Warden Studio features, see these guides:
 
-- [Publish an Agent](../publish-on-warden#publish-an-agent)
-- [Monitor your Agent](../publish-on-warden#monitor-your-agent)
-- [Manage your Agent](../publish-on-warden#manage-your-agent)
-- [Manage your account](../publish-on-warden#manage-your-account)
+- [Publish an Agent](publish-on-warden#publish-an-agent)
+- [Monitor your Agent](publish-on-warden#monitor-your-agent)
+- [Manage your Agent](publish-on-warden#manage-your-agent)
+- [Manage your account](publish-on-warden#manage-your-account)
 
 :::note
 The key advantages of publishing on Warden include the following:

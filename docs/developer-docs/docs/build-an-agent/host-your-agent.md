@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 4
+sidebar_position: 3
 ---
 
 import Tabs from '@theme/Tabs';
@@ -56,13 +56,13 @@ To set up a hosting service, take these steps:
 
    - `OPENAI_MODEL`/other: The preferred LLM model
 
-   - `AGENT_API_KEY` (optional): The Agent API key for [authentication](developer-tools/warden-code#api-key-authentication)
+   - `AGENT_API_KEY` (optional): The Agent API key for [authentication](warden-code/basics#api-key-authentication)
 
      :::tip
      When you create an Agent, Warden Code generates the Agent API key and stores it in the `.env` file. If you wish to disable authentication, omit this variable.
      :::
 
-   - Additional variables for Agents using [x402 payments](developer-tools/warden-code#parameters).
+   - Additional variables for Agents using [x402 payments](warden-code/x402-payments#parameters).
    
    
 3. Set a build command:
@@ -89,7 +89,7 @@ Congratulations! Now your Agent and the supported API endpoints will be availabl
 
 To verify that your Agent is accessible, open the public URL assigned by your hosting provider.
 
-If everything is fine, you'll be able to chat with your Agent through the [user interface](developer-tools/warden-code#frontend) provided by Warden Code:
+If everything is fine, you'll be able to chat with your Agent through the [user interface](warden-code/basics#frontend) provided by Warden Code:
 
 ![The user interface for chatting with Agents, provided by Warden Code](../../static/img/warden-code-ui.png)
 
@@ -122,15 +122,15 @@ To chat with your Agent through the CLI, take these steps:
 Every new Agent is immediately accessible through **A2A** and **LangGraph** server endpoints exposed by Warden Code.
 
 :::tip
-For a full list, see [A2A endpoints & methods](developer-tools/warden-code#a2a-endpoints--methods) and [LangGraph endpoints](developer-tools/warden-code#langgraph-endpoints).
+For a full list, see [A2A endpoints & methods](warden-code/a2a-endpoints-and-methods) and [LangGraph endpoints](warden-code/langgraph-endpoints).
 :::
 
-After deploying your Agent, you can try any of these endpoints. For example, you can prompt the Agent using the [A2A POST endpoint](developer-tools/warden-code#json-rpc-endpoint) with the `message/send` method.
+After deploying your Agent, you can try any of these endpoints. For example, you can prompt the Agent using the A2A POST endpoint with the [`message/send` method](warden-code/a2a-endpoints-and-methods#send-message).
 
 In the request below, specify the following:
 
 - `PUBLIC_URL`: Your public URL
-- `AGENT_API_KEY`: Your Agent API key for [authentication](developer-tools/warden-code#api-key-authentication):
+- `AGENT_API_KEY`: Your Agent API key for [authentication](warden-code/basics#api-key-authentication):
 
 <Tabs>
 <TabItem value="postman" label="Postman" default>
@@ -237,7 +237,7 @@ If everything is fine, you'll receive a response including your prompt, assistan
 ```
 ### Check the Agent Card
 
-As part of the A2A protocol support, Warden Code exposes an endpoint for the [A2A Agent Card](developer-tools/warden-code#get-agent-card), which advertises your Agent's skills, allowing other Agents and clients to discover it.
+As part of the A2A protocol support, Warden Code exposes an endpoint for the [A2A Agent Card](warden-code/a2a-endpoints-and-methods#get-agent-card), which advertises your Agent's skills, allowing other Agents and clients to discover it.
 
 To check the Agent Card accessibility, replace `PUBLIC_URL` with the public URL and run this:
    
@@ -251,7 +251,7 @@ The card will display your Agent's name and capabilities, along with other infor
 {
   "name": "general-test",
   "description": "A helpful AI agent named general-test",
-  "url": "PUBLIC_URL",
+  "url": "AGENT_URL",
   "version": "0.1.0",
   "capabilities": {
     "streaming": true
@@ -263,8 +263,56 @@ The card will display your Agent's name and capabilities, along with other infor
 ```
 
 :::tip
-Most likely, the `url` field will display the local host URL instead of the public URL. To fix this issue, [update the Agent Card](build-an-agent/configure-the-agent#update-agent-settings).
+Most likely, the `url` field will display the local host URL instead of the public URL. To fix this issue, update the Agent Card, as shown in the next step.
 :::
+
+## 5. Update the Agent Card
+
+Optionally, add the production URL to your Agent Card.
+
+This update is necessary for [registering on ERC-8004](register-on-erc-8004).
+
+1. Navigate to your project and run Warden Code:
+
+   ```bash
+   warden
+   ```
+
+2. Run this command to start configuring you Agent:
+   
+   ```bash
+   /config
+   ```
+   
+3. Select **Identity** and then edit **Agent URL**.
+
+4. Select **Done** to confirm.
+
+   :::tip
+   If successful, you'll see the correct URL here: `src/public/.well-known/agent-card.json`.
+   :::
+
+6. Push local changes to your repository.
+
+7. Wait for re-deployment and check the Agent Card in production:
+
+   ```text
+   PUBLIC_URL/.well-known/agent-card.json
+   ```
+
+## 6. Add an avatar
+
+Optionally, you can add an avatar for your Agent:
+
+1. Add an `icon.png` file to `src/public`.
+
+2. Push the update to your repository.
+
+3. Wait for re-deployment, and make sure the image is available here:
+
+   ```text
+   PUBLIC_URL/icon.png
+   ``` 
 
 ## Next steps
 

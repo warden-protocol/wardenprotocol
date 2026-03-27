@@ -14,42 +14,38 @@ We start with users rather than infrastructure, delivering [Warden](https://ward
 
 You can find a detailed overview of our mission in [Warden Manifesto](warden-manifesto).
 
-## AI Agents
+## Warden Agents
 
-An **AI Agent** is an AI-driven program that supports both offchain and onchain operations. Agents perform complex actions through simple chat commands—for example, bridging, minting, trading, staking, or conducting deep research.
-
-Below is a curated list of Agents we currently focus on:
-
-- **Financial Agents**: Simplifying all the complexities in DeFi: swapping assets, bridging across chains, and abstracting gas.
-- **Autopilot Agents**: Warden is building distributed non-custodial architecture for autopilot Agents operating when the user is offline.
-- **Institutional Agents**: These Agents manage portfolios in real time, apply dynamic risk controls, and guard against hacks.
-- **Ecosystem Agents**: Core participants in blockchain ecosystems. They monitor networks for risks, curate proposals, and support governance.
+A **Warden Agent** is an AI-driven program that supports both offchain and onchain operations. Agents perform complex actions through simple chat commands—for example, bridging, minting, trading, staking, or conducting deep research.
 
 Any developer can build a **Community Agent** and register it on Warden, making it available to the entire user base and extending the capabilities of the ecosystem.
 
+Warden Protocol manages the entire life cycle of Agents in [Warden Agent Network](#warden-agent-network):
+
+1. Developers build Agents with [Warden Code](/build-an-agent/warden-code/introduction) and register them in [Warden Studio](#warden-studio).
+2. Agents are published directly on [Warden Chain](#warden-chain).
+3. Users discover Agents in [Warden](#warden)'s [Agent Hub](#warden-agent-hub).
+
+To learn more about Agent development, see [Build an Agent](/build-an-agent/introduction).
+
 ## Warden Agent Network
 
-We capture the entire lifecycle of Agents in our **Agent Network**:
+**Warden Agent Network** is the infrastructure that supports the entire life cycle of [Warden Agents](#warden-agents).
 
-- Developers register Community Agents in [Warden Studio](#warden-studio).
-- Agents are published directly on [Warden Chain](#warden-chain).
-- Users discover Agents in [Warden](#warden)'s [Agent Hub](#warden-agent-hub).
-
-The core infrastructure elements making this possible are outlined below.
+The core elements making this possible are outlined below.
 
 ### Warden Studio
 
-**Warden Studio** is a platform that equips builders with the tools they need to launch and monetize their AI Agents—directly to [Warden](#warden) users.
+**Warden Studio** is a platform where AI Agent developers can register and monetize their AI Agents, publishing them directly to [Warden](#warden) users.
 
 The core features of Warden Studio include the following:
 
-- **Instant launch and global reach:** Skip registrations and approvals—list your Agent in under a minute and reach millions of users from day one.
-- **Global onchain identity:** Your Agent identity gets published onchain, making it discoverable and accessible from anywhere, fully compatible with ERC8004 and X402.
-- **Stablecoin payments**: Predictable and flexible dollar-stable pricing, where funds arrive in minutes not days or weeks.
-- **Flexible pricing**: Supports per-inference billing and subscriptions out of the box.
-- **Future proof**: Compatible with the newest frameworks, protocols and standards.
+- **Discoverability**: Once registered, your Agent is instantly accessible to Warden users.
+- **Monetization**: Community Agents support built-in monetization models.
+- **Reach**: Access a growing audience of millions.
 
-Try it out: [Warden Studio](https://studio.wardenprotocol.org).
+Learn more: [Warden Studio documentation](/build-an-agent/publish-on-warden).  
+Try it out: 👉 [Warden Studio](https://studio.wardenprotocol.org)
 
 ### Warden Chain
 
@@ -74,7 +70,8 @@ This is what Warden offers developers and users:
 - **Complex, made simple**: Users perform even the most advanced workflows through simple chat commands.
 - **All your financial tools in one place**: Paired with an AI co-pilot, you can trade, predict, research, and manage your finances all from one interface. 
 
-Try it out: [Warden](https://app.wardenprotocol.org).
+Learn more: [Warden documentation](https://help.wardenprotocol.org/warden-app/introduction).  
+Try it out: 👉 [Warden](https://app.wardenprotocol.org)
 
 ### Warden Agent Hub
 

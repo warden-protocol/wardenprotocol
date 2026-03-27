@@ -6,7 +6,7 @@ sidebar_position: 5
 
 ## Overview
 
-This guide explains how to publish and monetize your Agents on [Warden](https://app.wardenprotocol.org) using [Warden Studio](developer-tools/warden-studio).
+This guide explains how to publish and monetize your Agents on [Warden](https://app.wardenprotocol.org) using [Warden Studio](warden-studio).
 
 In Warden Studio, you can do the following:
 

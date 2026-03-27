@@ -45,7 +45,7 @@
         {"source":"/category/use-the-http-plugin","destination":"/", "statusCode": 301},
         {"source":"/category/use-the-price-prediction-plugin","destination":"/", "statusCode": 301},
         {"source":"/category/precompiles","destination":"/", "statusCode": 301},
-        {"source":"/category/warden-agent-kit","destination":"/build-an-agent/developer-tools/warden-code", "statusCode": 301},
+        {"source":"/category/warden-agent-kit","destination":"/build-an-agent/warden-code/introduction", "statusCode": 301},
         {"source":"/category/build-an-onchain-ai-agent","destination":"/build-an-agent/introduction", "statusCode": 301},   
         {"source":"/build-a-keychain/:path*","destination":"/", "statusCode": 301},
         {"source":"/category/operate-a-keychain","destination":"/", "statusCode": 301},

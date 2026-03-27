@@ -47,7 +47,7 @@ After [creating a Warden Agent](create-a-new-agent), you can **run it locally** 
 
 ### Chat using the UI
 
-The fastest way to make sure your Agent is running is to open the local host URL:
+The fastest way to make sure your Agent is running is to open the localhost URL:
 
 ```text
 http://localhost:3000

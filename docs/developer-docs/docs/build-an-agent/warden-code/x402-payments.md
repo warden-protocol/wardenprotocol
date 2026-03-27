@@ -44,7 +44,7 @@ When enabling x402 payments, you need to specify x402 parameters, which are stor
 
 The available **payment networks** are listed below.
 
-Each network has its own set of [parameters](#parameters) in the `.env` file, differentiated by prefixes, and the default [facilitator](#facilitators).
+Each network has its own set of [parameters](#parameters) in the `.env` file, differentiated by prefixes, and its default [facilitator](#facilitators).
 
 | Network | ID | Currency | Facilitator | Prefix |
 | ------- | -- | -------- | ----------- | ------ |

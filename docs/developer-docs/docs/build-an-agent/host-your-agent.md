@@ -1,4 +1,4 @@
-﻿---
+﻿--
 sidebar_position: 3
 ---
 
@@ -263,7 +263,7 @@ The card will display your Agent's name and capabilities, along with other infor
 ```
 
 :::tip
-Most likely, the `url` field will display the local host URL instead of the public URL. To address this, update the Agent Card, as shown in the next step.
+Most likely, the `url` field will display the localhost URL instead of the public URL. To address this, update the Agent Card, as shown in the next step.
 :::
 
 ## 5. Update the Agent Card
@@ -292,9 +292,9 @@ This update is necessary for [registering on ERC-8004](register-on-erc-8004).
    If successful, you'll see the correct URL here: `src/public/.well-known/agent-card.json`.
    :::
 
-6. Push local changes to your repository.
+5. Push local changes to your repository.
 
-7. Wait for re-deployment and check the Agent Card in production:
+6. Wait for re-deployment and check the Agent Card in production:
 
    ```text
    PUBLIC_URL/.well-known/agent-card.json

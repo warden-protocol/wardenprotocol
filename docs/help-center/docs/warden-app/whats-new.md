@@ -12,7 +12,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 
 **New features**:
 
-- [Warden Browser Extension](manage-your-wallets#warden-browser-extension): Introduced a browser extension that allows accessing Warden accounts from anywhere in the web.
+- [Warden Browser Extension](manage-your-wallets#warden-browser-extension): Introduced a browser extension that allows accessing Warden accounts from anywhere on the web.
 
 ## March 17, 2026
 

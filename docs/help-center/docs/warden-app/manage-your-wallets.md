@@ -179,4 +179,4 @@ You can log in with your Warden credentials and do the following:
 3. Connect to dApps
 4. Configure your wallet
 
-![The available wallet settings in Warden](../../static/img/warden-app/manage-your-wallets-extension.png)
+![The Warden Browser Extension](../../static/img/warden-app/manage-your-wallets-extension.png)

@@ -99,6 +99,6 @@ When x402 is enabled, the following packages are added to the generated Agent's 
 
 Clients that support x402 (such as `@x402/fetch`) handle the payment flow automatically:
 
-1. The server returns a HTTP 402 response with payment requirements.
+1. The server returns an HTTP 402 response with payment requirements.
 2. The client signs a USDC transaction.
 3. The server verifies the payment before processing the request.

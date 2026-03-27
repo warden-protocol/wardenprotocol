@@ -88,7 +88,7 @@ To create an Agent, take the following steps:
 
 ## Result
 
-Depending on your choices, Warden Code generates a new project based one of the supported [Agent models](../warden-code/basics#agent-models).
+Depending on your choices, Warden Code generates a new project based on one of the supported [Agent models](../warden-code/basics#agent-models).
 
 This [project structure](../warden-code/basics#project-structure) includes the following key files:
 

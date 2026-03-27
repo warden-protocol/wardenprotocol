@@ -17,7 +17,7 @@ By default, x402 payments are disabled. This is how you can enable them:
 - You can also directly edit [x402 parameters](#parameters) in the `.env` file.
 
 :::note
-When x402 are enabled, the [frontend](basics#frontend) displays a button for connecting to Metamask.
+When x402 payments are enabled, the [frontend](basics#frontend) displays a button for connecting to Metamask.
 :::
 
 After this, you can temporarily disable x402 payments for testing purposes:
@@ -51,7 +51,7 @@ Each network has its own set of [parameters](#parameters) in the `.env` file, di
 | **Base Sepolia** (testnet) | `eip155:84532` | test USDC | [x402.org](https://x402.org/facilitator) | `X402_BASE_SEPOLIA` |
 | **Base** (mainnet) | `eip155:8453` | real USDC | [PayAI](https://facilitator.payai.network) | `X402_BASE` |
 
-You can find all networks with their parameters `.env.example`:
+You can find all networks with their parameters in `.env.example`:
 
 ```text
 X402_FACILITATOR_URL=https://x402.org/facilitator
@@ -71,7 +71,7 @@ X402_BASE_SEPOLIA_NETWORK=eip155:84532
 
 A **payment facilitator** is a service that handles verifying and submitting x402 payments.
 
-When you enable x402, Warden code automatically selects one of the following facilitators (based on the network):
+When you enable x402, Warden Code automatically selects one of the following facilitators (based on the network):
 
 - Testnets: [x402.org](https://x402.org/facilitator) 
 - Mainnets: [PayAI](https://facilitator.payai.network)

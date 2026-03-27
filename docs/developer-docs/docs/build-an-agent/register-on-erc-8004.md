@@ -30,7 +30,7 @@ Warden Code supports [30 EVM chains](warden-code/erc-8004-registration#networks)
 
 ## 2. Prepare the metadata 
 
-**ERC-8004 metadata** is a JSON document describing the Agent's identity, capabilities, and other details. Once your register your Agent, its metadata will be publicly available and linked to your Agent's NFT.
+**ERC-8004 metadata** is a JSON document describing the Agent's identity, capabilities, and other details. Once you register your Agent, its metadata will be publicly available and linked to your Agent's NFT.
 
 Before starting, prepare the correct data:
 
@@ -41,7 +41,7 @@ Before starting, prepare the correct data:
 During registration, Warden Code will automatically update the ERC-8004 metadata using data from your Agent Card. You can find both in your project:
 
 - `src/public/.well-known/agent-registration.json`
-- `src/public/.well-known/agent-code.json`
+- `src/public/.well-known/agent-card.json`
 :::
 
 ## 3. Register   
@@ -52,7 +52,7 @@ During registration, Warden Code will automatically update the ERC-8004 metadata
    warden
    ```
 
-2. Run this command to start registering you Agent:
+2. Run this command to start registering your Agent:
    
    ```bash
    /register
@@ -159,7 +159,7 @@ To verify the NFT creation, take these steps:
 
 4. Now find a section where you can query the contract. 
 
-   On Sepolia Ehterscan, navigate to [Contract > Read as Proxy](https://sepolia.etherscan.io/address/0x8004A818BFB912233c491871b3d84c89A494BD9e#readProxyContract).
+   On Sepolia Etherscan, navigate to [Contract > Read as Proxy](https://sepolia.etherscan.io/address/0x8004A818BFB912233c491871b3d84c89A494BD9e#readProxyContract).
 
 5. Click a function for getting the Agent URI.
 

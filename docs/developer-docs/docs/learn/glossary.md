@@ -221,7 +221,7 @@ Learn more: [Warden networks](/learn/warden-networks).
 
 Warden Code is a CLI for scaffolding production-ready [AI Agents](#ai-agent) compatible with [Warden](#warden). Developers can use [Warden Studio](#warden-studio) to publish such Agents on Warden as [Community Agents](#community-agent).
 
-Generated Agents also support open standards such as the [A2A protocol](https://a2a-protocol.org/latest/), [x402 payments](https://www.x402.org), and [ERC-8004 identity](https://eips.ethereum.org/EIPS/eip-8004), which allows them to function across the broader Agent ecosystem.
+Generated Agents also support open standards such as the [A2A protocol](https://a2a-protocol.org/latest/), [x402 payments](https://www.x402.org), and [ERC-8004 identity](https://eips.ethereum.org/EIPS/eip-8004), which allow them to function across the broader Agent ecosystem.
 
 Learn more: [Warden Code documentation](/build-an-agent/warden-code/introduction).  
 Try it out: 👉 [Warden Code](https://github.com/warden-protocol/warden-code)

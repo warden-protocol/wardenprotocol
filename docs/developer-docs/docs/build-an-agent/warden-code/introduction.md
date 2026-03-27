@@ -8,7 +8,7 @@ sidebar_position: 1
 
 **Warden Code** is a CLI for scaffolding production-ready AI Agents **compatible with Warden**.
 
-Generated Agents also support open standards such as the **A2A protocol**, **x402 payments**, and **ERC-8004 identity**, which allows them to function across the broader Agent ecosystem.
+Generated Agents also support open standards such as the **A2A protocol**, **x402 payments**, and **ERC-8004 identity**, which allow them to function across the broader Agent ecosystem.
 
 This article is a reference covering the main features of Warden Code. For getting started with Agent development, see [Build an Agent with Warden Code](/category/build-an-agent-with-warden-code).
 

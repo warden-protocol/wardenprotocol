@@ -8,6 +8,10 @@ sidebar_position: 4
 
 Explore the **Agent Hub** to unlock the full potential of Warden with **AI Agents**! They allow you to swap, bridge, research, and much more through a simple chat interface.
 
+:::tip
+You can type or dictate your prompts.
+:::
+
 We support the following Agents:
 
 - [Warden Agent](#warden-agent): The default Agent for managing your assets.

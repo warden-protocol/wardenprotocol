@@ -10,7 +10,8 @@ In this section, you'll discover how to start **earning rewards** in Warden:
 
 1. [Create a coin](#create-your-coin): Create your own coin.
 2. [Earn reWARD points](#earn-reward-points): Stay active in Warden to boost your coin's rank.
-3. [Get rewards](#get-rewards): The top reWARD holders will be rewarded.
+3. [Check your rank](#check-your-rank): Check your rank on the leaderboard.
+4. [Get $WARD](#get-ward): The most active users will be rewarded with $WARD.
 
 ## Create your coin
 
@@ -26,15 +27,21 @@ Congratulations! Now you can start earning reWARD points.
 
 ## Earn reWARD points
 
-### Check your rank
+### reWARDs
 
-**reWARD points** are your reward for activity in Warden. The more reWARDs you earn, the higher your coin climbs on the leaderboard.
+In Warden, you can earn **reWARD points**—your reward for activity in the application.
 
-The top reWARD holders will [be rewarded](#get-rewards).
+There are multiple ways to earn reWARDs:
 
-To check your coin's rank, open the **Rewards** tab and scroll down to the **reWARD Leaderboard**:
+- [Complete tasks](#complete-tasks)
+- [Tap to reWARD](#tap-to-reward)
+- [Trade](#trade)
 
-![View the reWARD leaderboard in Warden](../../static/img/warden-app/earn-rewards-2.png)
+The more reWARDs you earn, the higher [your coin](#create-your-coin) climbs on the [leaderboard](#check-your-rank).
+
+:::note
+Your position also depends on [fees](fees) you pay in Warden. To learn how exactly the rank and $WARD rewards are calculated, see [Get $WARD](#get-ward).
+:::
 
 ### Complete tasks
 
@@ -72,8 +79,41 @@ You can either participate in perpetual trading or play our trading game:
 - [Trade](trade#earn-rewards)
 - [Play Betflix](play-betflix#earn-rewards)
 
-## Get rewards
+## Check your rank
 
-The most active Warden users will gain priority access to upcoming features and other rewards.
+All [coins](#create-your-coin) compete on the **leaderboard**. The top users will be rewarded with [$WARD](https://docs.wardenprotocol.org/ward/introduction).
 
-Keep [earning reWARDs](#earn-reward-points) and stay tuned for updates!
+You position depends on the amount of [reWARDs](#rewards) you earned and [fees](fees) you paid in Warden. To learn how exactly the rank and $WARD rewards are calculated, see [Get $WARD](#get-ward).
+
+The leaderboard displays the following information:
+
+- Your coin's rank
+- The number of reWARDs you earned
+- The estimated $WARD reward
+
+To access this data, open the **Rewards** section and scroll down to the leaderboard:
+
+![View the reWARD leaderboard in Warden](../../static/img/warden-app/earn-rewards-2.png)
+
+## Get $WARD
+
+The most active Warden users will be rewarded with [$WARD](https://docs.wardenprotocol.org/ward/introduction). In the current season, we'll distribute **5,000,000 $WARD** to the **top 500** users on [leaderboard](#check-your-rank).
+
+In the [current reward campaign](https://wardenprotocol.org/blog/season-04-leaderboard-update-full-transparency-real-rewards), $WARD distribution is based on your [reWARD points](#rewards) and [fees](fees). Note that you're competing on your share of total system activity and fees, not on absolute numbers. For example, if everyone trades more, your share can drop.
+
+:::tip
+To learn more about fees in Warden, see [Fees](fees).
+:::
+
+Your estimated **$WARD reward** is displayed on the leaderboard. This number is calculated from two values:
+
+- **70% of your fees** divided by total fees
+- **30% of your reWARDs** divided by total reWARDs
+
+The $WARD amount you'll get is a sum of these values multiplied by 5,000,000.
+
+:::note
+If you have **8% of total fees** and **10% of total reWARDs**, then your total share = 8% × 70% + 10% × 30% = 5.6% + 3% = **8.6% of the pool**.
+
+![Reward formula for the Warden leaderboard](../../static/img/warden-app/earn-rewards-5.png)
+:::

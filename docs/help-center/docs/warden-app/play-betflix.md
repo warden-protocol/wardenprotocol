@@ -51,7 +51,7 @@ To start playing, you need **USDC on Solana** (**$6** or more):
 
 By playing Betflix, you join the **League of Traders**: each swipe contributes to your **hourly**, **daily**, and **weekly** rankings, based on profit and streaks.
 
-Top traders earn [reWARDs](earn-rewards#earn-reward-points)—points that reward your activity in Warden:
+Top traders earn [reWARDs](earn-rewards#rewards)—points that reward your activity in Warden:
 
 - Hourly league: 1st–3rd ranks
 - Daily league: 1st–5th ranks

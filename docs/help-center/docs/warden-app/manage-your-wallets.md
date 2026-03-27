@@ -172,8 +172,6 @@ Learn more: [Betflix wallet](play-betflix#betflix-wallet).
 
 The **Warden Browser Extension** allows you to take your [main Warden account](#main-account) anywhere on the web, similar to MetaMask or Phantom.
 
-Try it: 👉 [Warden Browser Extension](https://app.wardenprotocol.org)
-
 You can log in with your Warden credentials and do the following:
 
 1. Deposit funds

@@ -8,11 +8,47 @@ sidebar_position: 13
 
 Here you'll find the latest Warden release highlights, including new features, improvements, and bug fixes. This section helps you quickly see what's changed and how it can enhance your experience.
 
-## March XXX, 2026
+## March 19, 2026
 
 **New features**:
 
 - [Warden Browser Extension](manage-your-wallets#warden-browser-extension): Introduced a browser extension that allows accessing Warden accounts from anywhere in the web.
+
+## March 17, 2026
+
+**New features**:
+
+- [Earn rewards](earn-rewards): Updated the leaderboard to support the new [reward campaign](earn-rewards#get-ward).
+- Other: Added internal changes in preparation forupcoming features.
+
+## March 11, 2026
+
+**Fixes**:
+
+- [$WARD airdrop](ward-airdrop): Improved the airdrop claiming flow
+- [Earn rewards](earn-rewards): Improved leaderboard and ranking performance
+- Other:
+  - Optimized Agent execution
+  - Made various backend improvements and fixes
+
+## February 19, 2026
+
+**New features**:
+
+- [Agents](explore-ai-agents): Added the voice-to-text feature.
+
+**Improvements**:
+
+- [Trading](trade): Improved the Strategies UI.
+
+**Fixes**:
+
+- [Warden Agent](explore-ai-agents#warden-agent): Fixed an issue with WETH on Solana not being recognized.
+- [Trading](trade): Optimized the leaderboard.
+- [Predictions](predict): Made UI fixes.
+- [Staking](stake-ward): Fixed a UI issue with cancelled stakes.
+- Other: Solved an issue with application freezes.
+>>>>>>> origin/main
 
 ## February 18, 2026
 

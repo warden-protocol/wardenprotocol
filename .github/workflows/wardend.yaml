@@ -2,24 +2,10 @@
 name: Release Wardend development image
 
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - main
-    paths:
-      - "go.mod"
-      - "cmd/wardend/**"
-      - "warden/**"
-      - "precompiles/**"
-      - "prophet/**"
     tags:
       - "wardend/v*"
-  pull_request:
-    paths:
-      - "go.mod"
-      - "cmd/wardend/**"
-      - "warden/**"
-      - "precompiles/**"
-      - "prophet/**"
 
 env:
   modules: "./warden/... ./cmd/wardend/... ./prophet/... ./precompiles/..."

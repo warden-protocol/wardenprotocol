@@ -34,7 +34,7 @@ require (
 	cosmossdk.io/x/tx v0.14.0
 	cosmossdk.io/x/upgrade v0.2.0
 	github.com/CosmWasm/wasmd v0.61.2
-	github.com/CosmWasm/wasmvm/v3 v3.0.2
+	github.com/CosmWasm/wasmvm/v3 v3.0.3
 	github.com/Jeffail/gabs/v2 v2.7.0
 	github.com/aws/aws-sdk-go-v2 v1.41.1
 	github.com/aws/aws-sdk-go-v2/config v1.32.7

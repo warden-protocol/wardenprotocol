@@ -6,7 +6,7 @@ sidebar_position: 4
 
 ## Overview
 
-Every scaffolded Agent includes [x402 payment](https://x402.org) infrastructure—Coinbase's **HTTP 402** payment protocol.
+Every scaffolded Agent includes [x402 payments](https://x402.org) infrastructure—Coinbase's **HTTP 402** payment protocol.
 
 ## Enabling/disabling
 
@@ -17,7 +17,7 @@ By default, x402 payments are disabled. This is how you can enable them:
 - You can also directly edit [x402 parameters](#parameters) in the `.env` file.
 
 :::note
-When x402 payments are enabled, the [frontend](basics#frontend) displays a button for connecting to Metamask.
+When x402 payments are enabled, the [frontend](basics#frontend) displays a button for connecting to MetaMask.
 :::
 
 After this, you can temporarily disable x402 payments for testing purposes:

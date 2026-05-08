@@ -4,43 +4,23 @@ sidebar_position: 6
 
 # Glossary
 
-## Agent Card
+## AI Agent
 
-Each [AI Agent](#ai-agent) on Warden has an Agent Card—an offchain JSON document compliant with the [A2A Protocol specification](https://a2a-protocol.org/latest/specification/). The Agent Card defines the Agent's identity, capabilities, skills, service endpoint URL, and the methods for authentication and interaction.
+A **Warden AI Agent** is an AI-driven program available on [Warden](#warden). Developers can create their own AI Agents and publish them on Warden as [Community Agents](#community-agent).
 
-See also: [Agent Passport](#agent-passport).
+Warden Agents perform complex onchain and offchain actions through simple chat commands: bridging, minting, trading, staking, or conducting deep research.
 
-*This feature is coming soon.*
-
-## Agent Identity
-
-Each [AI Agent](#ai-agent) on Warden has an Agent Identity—a unique onchain identifier stored in [ERC-8004's Identity Registry](https://eips.ethereum.org/EIPS/eip-8004#identity-registry). This identity consists of the following:
-
-- The Agent's global onchain ID
-- An EVM-compatible address for the Agent
-- An offchain domain hosting the [Agent Card](#agent-card)
-
-See also: [Agent Passport](#agent-passport).
-
-*This feature is coming soon.*
-
-## Agent Passport
-
-An Agent Passport is an ensemble of [Agent Identity](#agent-identity), the corresponding [Agent Card](#agent-card) information, and the Agent's monetization settings. In [Warden Studio](#warden-studio), developers provide these details when registering Agents, and the system automatically generates Passports upon publication.
-
-*This feature is coming soon.*
+See also: [Agent life cycle](#agent-life-cycle).
 
 ---
 
-## AI Agent
-
-An AI Agent is an AI-driven program that supports both offchain and onchain operations. Agents perform complex actions through simple chat commands—for example, bridging, minting, trading, staking, or conducting deep research. Currently, we focus on financial, autopilot, institutional (custodial), and ecosystem Agents.
+## Agent life cycle
 
 [Warden Protocol](#warden-protocol) manages the entire life cycle of Agents in [Warden Agent Network](#warden-agent-network):
 
-- Developers build [Community Agents](#community-agent) in [Warden Studio](#warden-studio).
-- Agents are published directly on [Warden Chain](#warden-chain).
-- Users discover Agents in [Warden](#warden)'s [Agent Hub](#warden-agent-hub).
+1. Developers build Agents with [Warden Code](#warden-code) and register them in [Warden Studio](#warden-studio).
+2. Agents are published directly on [Warden Chain](#warden-chain).
+3. Users discover Agents in [Warden](#warden)'s [Agent Hub](#warden-agent-hub).
 
 ---
 
@@ -199,8 +179,8 @@ Learn more: [$WARD](/ward/introduction).
 
 Warden (the Warden App) is an Agentic Wallet built on [Warden Protocol](#warden-protocol). In Warden, users access all [AI Agents](#ai-agent), models, and chains through a single interface, performing advanced workflows in natural language. Agents are available in Warden's [Agent Hub](#warden-agent-hub); Warden provides a [Proof of Inference](#proof-of-inference) for each user request.
 
-Try it out: [Warden](https://app.wardenprotocol.org).  
-Learn more: [Warden documentation](https://help.wardenprotocol.org).
+Learn more: [Warden documentation](https://help.wardenprotocol.org).  
+Try it out: 👉 [Warden](https://app.wardenprotocol.org)
 
 ---
 
@@ -214,9 +194,16 @@ Learn more: [Warden documentation](https://help.wardenprotocol.org/warden-app/ex
 
 ## Warden Agent Network
 
-Warden Agent Network is the infrastructure that supports the entire lifecycle of [AI Agents](#ai-agent). It provides the full-stack foundation for the Agent economy, unifying Agents that would otherwise remain fragmented across frameworks and custom stacks without reaching users.
+Warden Agent Network is [Warden Protocol's](#warden-protocol) infrastructure supporting [AI Agents](#ai-agent) and their entire [life cycle](#agent-life-cycle).
 
-The core elements of the Agent Network are [Warden](#warden), [Warden Studio](#warden-studio), [Warden Chain](#warden-chain), and [Warden Agent Hub](#warden-agent-hub).
+The Network provides the full-stack foundation for the Agent economy, unifying Agents that would otherwise remain fragmented across frameworks and custom stacks without reaching users.
+
+The core elements of the Agent Network include the following:
+
+- [Warden](#warden)
+- [Warden Studio](#warden-studio)
+- [Warden Chain](#warden-chain)
+- [Warden Agent Hub](#warden-agent-hub)
 
 ---
 
@@ -227,6 +214,17 @@ Warden Chain is a purpose-built EVM blockchain for [AI Agents](#ai-agent). It pr
 Once an Agent is registered, it's minted directly onto the chain, where it signs requests, collects fees, and pays for services. In this way, Warden Chain serves as the entry point to discover, interact, and transact with Agents in the ecosystem.
 
 Learn more: [Warden networks](/learn/warden-networks).
+
+---
+
+## Warden Code
+
+Warden Code is a CLI for scaffolding production-ready [AI Agents](#ai-agent) compatible with [Warden](#warden). Developers can use [Warden Studio](#warden-studio) to publish such Agents on Warden as [Community Agents](#community-agent).
+
+Generated Agents also support open standards such as the [A2A protocol](https://a2a-protocol.org/latest/), [x402 payments](https://www.x402.org), and [ERC-8004 identity](https://eips.ethereum.org/EIPS/eip-8004), which allow them to function across the broader Agent ecosystem.
+
+Learn more: [Warden Code documentation](/build-an-agent/warden-code/introduction).  
+Try it out: 👉 [Warden Code](https://github.com/warden-protocol/warden-code)
 
 ---
 
@@ -246,7 +244,7 @@ Learn more: [Manifesto](warden-manifesto).
 
 ## Warden Studio
 
-Warden Studio is a platform where developers can register and monetize their [Community Agents](#community-agent), publishing them directly to [Warden](#warden) users. Upon publication, Warden Studio generates [Agent Passports](#agent-passport).
+Warden Studio is a platform where [AI Agent](#ai-agent) developers can register and monetize their [Community Agents](#community-agent), publishing them directly to [Warden](#warden) users.
 
-Try it out: [Warden Studio](https://studio.wardenprotocol.org).  
-Learn more: [Warden Studio](/build-an-agent/developer-tools/warden-studio).
+Learn more: [Warden Studio documentation](/build-an-agent/publish-on-warden).  
+Try it out: 👉 [Warden Studio](https://studio.wardenprotocol.org)

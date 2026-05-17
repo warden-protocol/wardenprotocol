@@ -10,10 +10,10 @@ The first snapshot for a portion of the airdrop of $WARD has been completed for 
 
 **Subsequent stages** will also encompass participants in our final testnet, **Docas**, and users of [Warden](/learn/glossary#warden).
 
-## Stage 2 
+## Stage 2
 
-If you are reading this, it has begun. Hint: [Warden](/learn/glossary#warden).
+The Pre-TGE campaign has been completed. Thank you to everyone who participated.
 
-Our guiding principle will be rewarding builders and real users.
+Our guiding principle has been to reward real users and contributors.
 
-Sybil farmers beware. You'll be eliminated.
+You can check your allocation and claim your $WARD through our [airdrop portal](https://airdrop.wardenprotocol.org/).

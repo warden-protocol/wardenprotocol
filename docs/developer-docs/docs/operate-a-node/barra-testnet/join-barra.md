@@ -179,4 +179,4 @@ After joining Barra, you can take these steps:
 
 - If you want to create a [validator](/learn/glossary#validator), follow the instructions in the [Create a validator](create-a-validator) guide.
 - To learn more about `wardend` commands for interacting with the node, see [Node commands](../node-commands).
-- Don't forget to join our community in [Discord](https://discord.com/invite/wardenprotocol).
+- Don't forget to join our community in [Discord](https://discord.gg/nEww9WsAUa).

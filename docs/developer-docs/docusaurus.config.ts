@@ -122,7 +122,7 @@ const config: Config = {
                 {
                     'aria-label': 'Discord Invite',
                     'className': 'navbar--discord-link',
-                    'href': 'https://discord.com/invite/wardenprotocol',
+                    'href': 'https://discord.gg/nEww9WsAUa',
                     'position': 'right',
                 },
                 {

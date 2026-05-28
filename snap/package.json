@@ -28,10 +28,10 @@
     "test": "jest"
   },
   "dependencies": {
-    "@metamask/keyring-api": "^4.0.1",
+    "@metamask/keyring-api": "^23.1.0",
     "@metamask/snaps-sdk": "^3.0.1",
     "buffer": "^6.0.3",
-    "uuid": "^9.0.1"
+    "uuid": "^14.0.0"
   },
   "devDependencies": {
     "@jest/globals": "^29.5.0",

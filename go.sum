@@ -941,8 +941,8 @@ github.com/cosmos/cosmos-proto v1.0.0-beta.5 h1:eNcayDLpip+zVLRLYafhzLvQlSmyab+R
 github.com/cosmos/cosmos-proto v1.0.0-beta.5/go.mod h1:hQGLpiIUloJBMdQMMWb/4wRApmI9hjHH05nefC0Ojec=
 github.com/cosmos/cosmos-sdk v0.53.6 h1:aJeInld7rbsHtH1qLHu2aZJF9t40mGlqp3ylBLDT0HI=
 github.com/cosmos/cosmos-sdk v0.53.6/go.mod h1:N6YuprhAabInbT3YGumGDKONbvPX5dNro7RjHvkQoKE=
-github.com/cosmos/evm v0.6.0 h1:jwJerLS7btDgDpZOYy7lUC+1rNRCGGE80TJ6r4guufo=
-github.com/cosmos/evm v0.6.0/go.mod h1:QnaJDtxqon2mywiYqxM8VwW8FKeFazi0au0qzVpFAG8=
+github.com/cosmos/evm v0.6.2 h1:kePXMs5Kauw97j7zLuqZrmZRjF8QQ/u64be0wBSrAk4=
+github.com/cosmos/evm v0.6.2/go.mod h1:QnaJDtxqon2mywiYqxM8VwW8FKeFazi0au0qzVpFAG8=
 github.com/cosmos/go-bip39 v1.0.0 h1:pcomnQdrdH22njcAatO0yWojsUnCO3y2tNoV1cb6hHY=
 github.com/cosmos/go-bip39 v1.0.0/go.mod h1:RNJv0H/pOIVgxw6KS7QeX2a0Uo0aKUlfhZ4xuwvCdJw=
 github.com/cosmos/go-ethereum v1.16.2-cosmos-1 h1:QIaIS6HIdPSBdTvpFhxswhMLUJgcr4irbd2o9ZKldAI=

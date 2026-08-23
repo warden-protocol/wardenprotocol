@@ -42,6 +42,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Consensus Breaking Changes
 
+- x/evm: update cosmos/evm to v0.6.2, which snapshots an account's locked
+  balance in the statedb so its total bank balance is reconstructed correctly
+  when the locked balance is modified through a precompile.
+- app/ante: reject `MsgCreateVestingAccount`,
+  `MsgCreatePermanentLockedAccount` and `MsgCreatePeriodicVestingAccount`.
+  Vesting accounts defined in genesis are unaffected.
+
 ### Features (non-breaking)
 
 ### Bug Fixes

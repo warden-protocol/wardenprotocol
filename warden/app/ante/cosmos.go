@@ -21,9 +21,12 @@ func newCosmosAnteHandler(ctx sdk.Context, options HandlerOptions) sdk.AnteHandl
 
 	return sdk.ChainAnteDecorators(
 		cosmosante.NewRejectMessagesDecorator(), // reject MsgEthereumTxs
+		NewRejectVestingMsgsDecorator(),         // reject vesting account creation
 		cosmosante.NewAuthzLimiterDecorator( // disable the Msg types that cannot be included on an authz.MsgExec msgs field
 			sdk.MsgTypeURL(&evmtypes.MsgEthereumTx{}),
 			sdk.MsgTypeURL(&sdkvesting.MsgCreateVestingAccount{}),
+			sdk.MsgTypeURL(&sdkvesting.MsgCreatePermanentLockedAccount{}),
+			sdk.MsgTypeURL(&sdkvesting.MsgCreatePeriodicVestingAccount{}),
 		),
 		ante.NewSetUpContextDecorator(),
 		ante.NewExtensionOptionsDecorator(options.ExtensionOptionChecker),

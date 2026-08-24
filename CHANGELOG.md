@@ -48,6 +48,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - app/ante: reject `MsgCreateVestingAccount`,
   `MsgCreatePermanentLockedAccount` and `MsgCreatePeriodicVestingAccount`.
   Vesting accounts defined in genesis are unaffected.
+- app: ignore misbehaviour evidence reported at or below height 10136091.
+  Equivocation above that height is still slashed.
 
 ### Features (non-breaking)
 

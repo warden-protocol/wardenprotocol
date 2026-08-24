@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"cosmossdk.io/core/comet"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
@@ -70,6 +71,13 @@ func (app App) RegisterUpgradeHandlers() {
 
 		return app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
 	})
+
+	// No state changes. Registered so that nodes still on the previous binary
+	// halt at the upgrade height instead of diverging once misbehaviour is
+	// reported at or below recoveryEvidenceHeight.
+	app.UpgradeKeeper.SetUpgradeHandler("v1.0.3", func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+		return app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
+	})
 }
 
 var emergencyUpgradeHeight int64 = 4476100
@@ -102,3 +110,28 @@ func (app *App) emergencyUpgrade4476100(ctx sdk.Context) error {
 
 	return nil
 }
+
+// recoveryEvidenceHeight is the last height replaced by the 2026-08-23 recovery
+// restart. Misbehaviour reported at or below it is ignored; every height above
+// it is still slashed.
+const recoveryEvidenceHeight int64 = 10136091
+
+type recoveryFilteredBlockInfo struct{ comet.BlockInfo }
+
+func (b recoveryFilteredBlockInfo) GetEvidence() comet.EvidenceList {
+	src := b.BlockInfo.GetEvidence()
+	kept := make(filteredEvidenceList, 0, src.Len())
+
+	for i := 0; i < src.Len(); i++ {
+		if ev := src.Get(i); ev.Height() > recoveryEvidenceHeight {
+			kept = append(kept, ev)
+		}
+	}
+
+	return kept
+}
+
+type filteredEvidenceList []comet.Evidence
+
+func (l filteredEvidenceList) Len() int                 { return len(l) }
+func (l filteredEvidenceList) Get(i int) comet.Evidence { return l[i] }

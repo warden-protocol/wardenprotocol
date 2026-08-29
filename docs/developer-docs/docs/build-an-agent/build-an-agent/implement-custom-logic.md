@@ -19,7 +19,7 @@ To learn more, see the sections below.
 
 You can edit your Agent through the CLI, in the **AI-powered build mode**.
 
-For a list of commands available in this mode, see [Build mode](../developer-tools/warden-code#build-mode).
+For a list of commands available in this mode, see [Build mode](../warden-code/basics#build-mode).
 
 To start building with AI, take these steps:
 
@@ -95,7 +95,7 @@ To start building with AI, take these steps:
 
 You can directly edit your Agent's code in `src/agent.ts`.
 
-To implement custom logic, use the [functions exposed by Warden Code](../developer-tools/warden-code#functions).
+To implement custom logic, explore the [Agent runtime](../warden-code/agent-runtime).
 
 ## Next steps
 

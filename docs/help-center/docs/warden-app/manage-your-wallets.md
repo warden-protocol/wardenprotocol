@@ -160,10 +160,23 @@ Currently, withdrawals aren't allowed.
 
 The **trading wallet** is a dedicated place where Warden stores your perpetual trading balance to protect assets in the [main account](#main-account).
 
-Learn more: [Perpetual trading](trade#trading-wallet).
+Learn more: [Trading wallet](trade#trading-wallet).
 
 ### Betflix
 
 The **Betflix wallet** is a dedicated place where Warden stores your Betflix balance to protect assets in the [main account](#main-account).
 
-Learn more: [Play Betflix](play-betflix#betflix-wallet).
+Learn more: [Betflix wallet](play-betflix#betflix-wallet).
+
+## Warden Browser Extension
+
+The **Warden Browser Extension** allows you to take your [main Warden account](#main-account) anywhere on the web, similar to MetaMask or Phantom.
+
+You can log in with your Warden credentials and do the following:
+
+1. Deposit funds
+2. View your assets and activity
+3. Connect to dApps
+4. Configure your wallet
+
+![The Warden Browser Extension](../../static/img/warden-app/manage-your-wallets-extension.png)

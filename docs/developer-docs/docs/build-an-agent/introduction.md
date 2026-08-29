@@ -28,7 +28,7 @@ The supported features include:
 - Interaction with other agents through the [A2A protocol](https://a2a-protocol.org/latest/)
 - Monetization through [x402 payments](https://www.x402.org)
 
-To learn more, see [Warden Agent capabilities](warden-agent-capabilities).
+To learn more, see [Agent capabilities](warden-code/agent-capabilities).
 
 ## Warden Code
 
@@ -36,7 +36,7 @@ To learn more, see [Warden Agent capabilities](warden-agent-capabilities).
 
 With Warden Code, you can use the command-line interface to generate a project, configure your Agent, edit your code with an AI assistant, and much more.
 
-For details, see [Warden Code](developer-tools/warden-code) and [Warden Agent capabilities](warden-agent-capabilities).
+For details, see the [Warden Code documentation](warden-code/introduction).
 
 ## Warden Studio
 
@@ -58,9 +58,6 @@ The key advantages of publishing on Warden include the following:
 
 ## Section overview
 
-- [Warden Agent capabilities](warden-agent-capabilities)  
-  A list of key Warden Agent capabilities with usage instructions and links to guides. 
-
 - [Build an Agent with Warden Code](/category/build-an-agent-with-warden-code)  
   Here you can learn how to create and test a new Agent with Warden Code.
 
@@ -73,8 +70,8 @@ The key advantages of publishing on Warden include the following:
 - [Register on ERC-8004](register-on-erc-8004)  
   Learn how to register your Agent on ERC-8004 using Warden Code.
 
-- [Developer tools](/category/developer-tools)  
-  This section provides reference documentation for Warden Code and Warden Studio.
+- [Warden Code](warden-code/introduction) & [Warden Studio](warden-studio)  
+  These sections provide reference documentation for Warden Code and Warden Studio.
 
 ## Get started
 

@@ -2,9 +2,9 @@
 sidebar_position: 2
 ---
 
-# Warden Agent capabilities
+# Agent capabilities
 
-All **Warden Agents** generated with [Warden Code](developer-tools/warden-code) support the following key capabilities:
+All Agents generated with Warden Code support the following key capabilities:
 
 <table style={{ width: "100%", tableLayout: "fixed" }}>
   <colgroup>
@@ -27,7 +27,8 @@ All **Warden Agents** generated with [Warden Code](developer-tools/warden-code) 
       After publicly hosting an Agent, you can publish and manage it using Warden Studio.
     </td>
     <td>
-      [Publish on Warden](publish-on-warden)
+      [Warden Studio](../warden-studio)<br />
+      [Publish on Warden](../publish-on-warden)
     </td>
   </tr>
 
@@ -39,9 +40,9 @@ All **Warden Agents** generated with [Warden Code](developer-tools/warden-code) 
       Enable this feature when creating an Agent with Warden Code or configure later.
     </td>
     <td>
-      [Create a new Agent](build-an-agent/create-a-new-agent)<br />
-      [Configure the Agent](build-an-agent/configure-the-agent#update-agent-settings)<br />
-      [x402 payments](developer-tools/warden-code#x402-payments)
+      [x402 payments](x402-payments)<br />
+      [Create a new Agent](../build-an-agent/create-a-new-agent)<br />
+      [Configure the Agent](../build-an-agent/configure-the-agent#update-agent-settings)      
     </td>
   </tr>
 
@@ -49,11 +50,12 @@ All **Warden Agents** generated with [Warden Code](developer-tools/warden-code) 
     <td><strong>ERC-8004 registration</strong></td>
     <td>
       After publicly hosting your Agent, you can register it on
-      [ERC-8004 identity registries](https://eips.ethereum.org/EIPS/eip-8004)
+      [ERC-8004 Identity Registry](https://eips.ethereum.org/EIPS/eip-8004)
       using Warden Code.
     </td>
     <td>
-      [Register on ERC-8004](register-on-erc-8004)
+      [ERC-8004 registration](erc-8004-registration)
+      [Register on ERC-8004](../register-on-erc-8004)
     </td>
   </tr>
 
@@ -65,10 +67,10 @@ All **Warden Agents** generated with [Warden Code](developer-tools/warden-code) 
       You can update the Agent Card at any time and test the A2A endpoints locally or in production.
     </td>
     <td>
-      [A2A endpoints & methods](developer-tools/warden-code#a2a-endpoints--methods)<br />
-      [Configure the Agent](build-an-agent/configure-the-agent#update-the-a2a-agent-card)<br />
-      [Test the Agent locally](build-an-agent/test-the-agent-locally#chat-using-the-api)<br />
-      [Host your Agent](host-your-agent#chat-using-the-api)
+      [A2A endpoints & methods](a2a-endpoints-and-methods)<br />
+      [Configure the Agent](../build-an-agent/configure-the-agent#update-the-a2a-agent-card)<br />
+      [Test the Agent locally](../build-an-agent/test-the-agent-locally#chat-using-the-api)<br />
+      [Host your Agent](../host-your-agent#chat-using-the-api)
     </td>
   </tr>
 
@@ -80,9 +82,7 @@ All **Warden Agents** generated with [Warden Code](developer-tools/warden-code) 
       You can test the supported endpoints locally or in production.
     </td>
     <td>
-      [LangGraph endpoints](developer-tools/warden-code#langgraph-endpoints)<br />
-      [Test the Agent locally](build-an-agent/test-the-agent-locally)<br />
-      [Host your Agent](host-your-agent)
+      [LangGraph endpoints](langgraph-endpoints)
     </td>
   </tr>
 
@@ -92,19 +92,20 @@ All **Warden Agents** generated with [Warden Code](developer-tools/warden-code) 
       Warden Code supports the AI-powered build mode allowing you to implement custom Agent logic with an AI assistant
     </td>
     <td>
-      [Implement custom logic](build-an-agent/implement-custom-logic#build-with-ai)<br />
-      [Build mode](developer-tools/warden-code#build-mode)
+      [Build mode](basics#build-mode)<br />
+      [Implement custom logic](../build-an-agent/implement-custom-logic#build-with-ai)
     </td>
   </tr>
 
   <tr>
-    <td><strong>Chat UI</strong></td>
+    <td><strong>Frontend</strong></td>
     <td>
       All Agents include a chat frontend. It allows you to interact with your Agent and test x402 payments through a user interface, locally or in production.
     </td>
     <td>
-      [Test the Agent locally](build-an-agent/test-the-agent-locally#chat-using-the-ui)<br />
-      [Host your Agent](host-your-agent#chat-using-the-ui)
+      [Frontend](basics#frontend)<br /> 
+      [Test the Agent locally](../build-an-agent/test-the-agent-locally#chat-using-the-ui)<br />
+      [Host your Agent](../host-your-agent#chat-using-the-ui)     
     </td>
   </tr>
 

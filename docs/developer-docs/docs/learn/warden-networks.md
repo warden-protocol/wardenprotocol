@@ -31,27 +31,9 @@ Warden networks use two chain IDs on different layers. The Cosmos chain ID is th
       gRPC: `https://grpc.wardenprotocol.org/`<br />
     </td>
   </tr>
-  <tr>
-    <td>**Cosmos chain ID**</td>
-    <td>`warden_8765-1`</td>
-  </tr>
-  <tr>
-    <td>**EVM chain ID**</td>
-    <td>`8765`</td>
-  </tr>
-  <tr>
-    <td>**Denomination**</td>
-    <td>`award` (1 award = 10^-18 [$WARD](/ward/introduction))</td>
-  </tr>
-  <tr>
-    <td>**Validator guides**</td>
-    <td>[Operate a node: Mainnet](/category/mainnet)</td>
-  </tr>
-  <tr>
-    <td>**Block explorer**</td>
-    <td>[Warden Protocol explorer](https://explorer.wardenprotocol.org)</td>
-  </tr>
 </table>
+
+> Live latency benchmarks for these endpoints (p50/p90/p99, 3 regions, updated every 60 s): [OpenChainBench Warden RPC](https://openchainbench.com/benchmarks/warden-rpc)
 
 ## Barra testnet
 

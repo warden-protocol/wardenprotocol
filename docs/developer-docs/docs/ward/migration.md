@@ -9,7 +9,7 @@ description: Official guide to the $WARD migration from Warden Chain to a LayerZ
 This is the official guide to the $WARD migration for holders, exchanges, trackers and partners. If another source contradicts this page, this page is correct.
 
 :::info Last updated
-Version 1, 19 October 2026. This page will be updated on 22 October (snapshot blocks, new pools and completion).
+Version 1, 16 October 2026. The migration date of 22 October is provisional and will be confirmed during the week of 19 October. This page will be updated on the migration day (snapshot blocks, new pools and completion).
 :::
 
 ## Overview
@@ -22,6 +22,10 @@ Version 1, 19 October 2026. This page will be updated on 22 October (snapshot bl
 ## Key times
 
 All times are on **Thursday 22 October 2026, UTC**.
+
+:::caution Provisional date
+22 October is a provisional date. The final date and times will be confirmed on this page during the week of 19 October.
+:::
 
 | Time                    | What happens                                                                                    |
 | ----------------------- | ----------------------------------------------------------------------------------------------- |

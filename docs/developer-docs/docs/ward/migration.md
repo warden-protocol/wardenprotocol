@@ -1,0 +1,133 @@
+---
+sidebar_position: 2
+title: WARD migration
+description: Official guide to the $WARD migration from Warden Chain to a LayerZero OFT on Base, BNB Chain and Robinhood Chain.
+---
+
+# WARD migration
+
+This is the official guide to the $WARD migration for holders, exchanges, trackers and partners. If another source contradicts this page, this page is correct.
+
+:::info Last updated
+Version 1, 19 October 2026. This page will be updated on 22 October (snapshot blocks, new pools and completion).
+:::
+
+## Overview
+
+- $WARD is moving from Warden Chain to a [LayerZero OFT](https://docs.layerzero.network/v2/developers/evm/oft/quickstart) on **Base**, **BNB Chain** and **Robinhood Chain**. The migration was approved by governance in [proposal #6](https://staking.wardenprotocol.org/governance/6).
+- The ticker stays **$WARD**. Balances migrate **1:1** and **automatically**. There is nothing to claim.
+- Only addresses holding **at least 1 $WARD** at the snapshot receive the airdrop.
+- The max supply, previously unlimited, is now capped at **2,000,000,000 $WARD**. Total supply and circulating supply stay the same, and the release schedule doesn't change.
+
+## Key times
+
+All times are on **Thursday 22 October 2026, UTC**.
+
+| Time                    | What happens                                                                                    |
+| ----------------------- | ----------------------------------------------------------------------------------------------- |
+| 07:00                   | Exchanges suspend $WARD deposits and withdrawals, unless your exchange announces a different time. Liquidity providers should have removed liquidity. |
+| 08:00                   | Snapshot on Warden Chain, BNB Chain, Base and Robinhood Chain.                                  |
+| 12:00                   | The airdrop of new $WARD starts.                                                                |
+| After completion notice | Exchanges reopen deposits and withdrawals on the new contracts.                                 |
+
+## New WARD contract addresses
+
+These are the **only** official $WARD contracts after the migration.
+
+| Chain           | Contract address                                                                                                                       | Decimals |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| Base (main)     | [0x174a0de0FA1c4771cA980A42553C0041016E5A67](https://basescan.org/token/0x174a0de0FA1c4771cA980A42553C0041016E5A67)                    | 18       |
+| BNB Chain       | [0xf5cB7cc90040aa717a16887C8b7D7c10a7c60984](https://bscscan.com/token/0xf5cB7cc90040aa717a16887C8b7D7c10a7c60984)                     | 18       |
+| Robinhood Chain | [0x425343244492A0D6f6D9676A7d627045656eaB80](https://robin.etherscan.io/token/0x425343244492A0D6f6D9676A7d627045656eaB80)              | 18       |
+
+Use the symbol **WARD** and **18** decimals when you add the token to a wallet.
+
+## Where you receive new WARD
+
+| You hold $WARD on               | You receive new $WARD on                                                 |
+| ------------------------------- | ------------------------------------------------------------------------ |
+| Warden Chain                    | Base, at the same address (the EVM `0x` format of your `warden1` address) |
+| Base                            | Base                                                                     |
+| BNB Chain                       | BNB Chain                                                                |
+| Robinhood Chain (bridged $WARD) | Robinhood Chain                                                          |
+
+## If you use a self-custody wallet
+
+1. **Do nothing to claim.** Keep your $WARD in your wallet through 08:00 UTC on 22 October.
+2. **Warden Chain holders:** your new $WARD arrives on Base at the `0x` address that matches your `warden1` address. Both addresses come from the same key. To see your balance, import the same seed phrase or private key into an EVM wallet such as MetaMask or Rabby, and switch the network to Base.
+
+   :::caution
+   Warden Chain uses `ethsecp256k1` keys, the same key type as Ethereum. Wallets that derive your Warden address this way, such as Keplr with an `ethsecp256k1` key, give you the same `0x` address in MetaMask or Rabby. Before the snapshot, check that the `0x` address your EVM wallet shows matches your `warden1` address.
+   :::
+
+3. **Add the new contract** to your wallet after 12:00 UTC, using the [contract addresses](#new-ward-contract-addresses) above.
+4. **Staked $WARD:** your staked $WARD and any staking rewards you haven't claimed are included in the airdrop. They're sent to your staker address, the wallet that is staking. You don't need to unstake or claim rewards before the snapshot.
+5. **Don't move $WARD** to a bridge or a new wallet around the snapshot.
+
+## If you hold WARD on an exchange
+
+1. **Nothing to do.** Your exchange credits you 1:1.
+2. **Expect a pause.** Deposits and withdrawals are suspended from 07:00 UTC on 22 October, or from the time your exchange announces, until your exchange reopens on the new contracts.
+3. **Check your exchange's announcement** for more details.
+
+:::warning
+Don't withdraw to a wallet during the pause. Don't deposit old $WARD after 08:00 UTC on 22 October: it won't be credited.
+:::
+
+## If you provide liquidity on a DEX
+
+:::danger
+Remove your $WARD liquidity from every DEX pool **before 07:00 UTC on Thursday 22 October**.
+:::
+
+After the snapshot, old $WARD has no value, but old pools still hold real USDT, BNB or ETH. Anyone can sell old $WARD into these pools and drain the paired asset.
+
+- **Liquidity left in pools:** the $WARD side of your position is credited to you at the snapshot. The paired asset (USDT, BNB, ETH or other) is **not** protected.
+- **Farms and gauges:** unstake your LP tokens first, then remove liquidity.
+- **Official new pools:** the list of official pools will be published here once they're live. Only provide liquidity to the pools listed on this page.
+
+## After the snapshot
+
+- Old $WARD is deprecated on every chain, including the previous bridged contracts on Base and BNB Chain. Don't buy, sell or deposit it.
+- Warden Chain will halt in the hours following the snapshot. All legacy bridge routes for $WARD will stop working too.
+- The snapshot block heights on each chain and the list of excluded addresses (bridges, pools, module accounts and the zero address) will be published here.
+
+## Safety
+
+- The only official contracts are listed in [New WARD contract addresses](#new-ward-contract-addresses).
+- Warden will **never** ask you to send tokens, connect to a claim site or share your seed phrase. There is no claim: the airdrop is automatic.
+- Follow official announcements on [X](https://x.com/wardenprotocol) and [Discord](https://discord.gg/nEww9WsAUa).
+
+## FAQ
+
+### Will my balance change?
+
+No. Balances migrate 1:1.
+
+### Is there a minimum balance?
+
+Yes. Only addresses holding at least 1 $WARD at the snapshot receive the airdrop.
+
+### Does the ticker change?
+
+No. The ticker stays $WARD.
+
+### Do I need to claim my new WARD?
+
+No. The airdrop is automatic. Any site asking you to claim or connect your wallet is a scam.
+
+### What happens to my staked WARD?
+
+Your staked $WARD and unclaimed staking rewards are airdropped to your staker address, the wallet that is staking. For Warden Chain stakers, that's the `0x` address on Base that matches your `warden1` address.
+
+### What is the max supply?
+
+The max supply was previously unlimited. It's now capped at 2,000,000,000 $WARD.
+
+### Do the total supply, circulating supply or release schedule change?
+
+No. Total supply and circulating supply stay the same, and the release schedule doesn't change.
+
+### Where are the snapshot details?
+
+See [After the snapshot](#after-the-snapshot).

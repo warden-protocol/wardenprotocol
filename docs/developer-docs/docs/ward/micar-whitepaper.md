@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 8
 title: MiCAR White Paper
 description: WARD Token MiCAR White Paper, drawn up in accordance with Regulation (EU) 2023/1114.
 ---

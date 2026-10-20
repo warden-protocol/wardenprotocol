@@ -9,7 +9,7 @@ description: Official guide to the $WARD migration from Warden Chain to a LayerZ
 This is the official guide to the $WARD migration for holders, exchanges, trackers and partners. If another source contradicts this page, this page is correct.
 
 :::info Last updated
-Version 1, 16 October 2026. The migration date of 22 October is provisional and will be confirmed during the week of 19 October. This page will be updated on the migration day (snapshot blocks, new pools and completion).
+Version 2, 20 October 2026. This page will be updated on the migration day (snapshot blocks, new pools and completion).
 :::
 
 ## Overview
@@ -21,11 +21,7 @@ Version 1, 16 October 2026. The migration date of 22 October is provisional and 
 
 ## Key times
 
-All times are on **Thursday 22 October 2026, UTC**.
-
-:::caution Provisional date
-22 October is a provisional date. The final date and times will be confirmed on this page during the week of 19 October.
-:::
+All times are on **Thursday 29 October 2026, UTC**.
 
 | Time                    | What happens                                                                                    |
 | ----------------------- | ----------------------------------------------------------------------------------------------- |
@@ -57,7 +53,7 @@ Use the symbol **WARD** and **18** decimals when you add the token to a wallet.
 
 ## If you use a self-custody wallet
 
-1. **Do nothing to claim.** Keep your $WARD in your wallet through 08:00 UTC on 22 October.
+1. **Do nothing to claim.** Keep your $WARD in your wallet through 08:00 UTC on 29 October.
 2. **Warden Chain holders:** your new $WARD arrives on Base at the `0x` address that matches your `warden1` address. Both addresses come from the same key. To see your balance, import the same seed phrase or private key into an EVM wallet such as MetaMask or Rabby, and switch the network to Base.
 
    :::caution
@@ -71,17 +67,17 @@ Use the symbol **WARD** and **18** decimals when you add the token to a wallet.
 ## If you hold WARD on an exchange
 
 1. **Nothing to do.** Your exchange credits you 1:1.
-2. **Expect a pause.** Deposits and withdrawals are suspended from 07:00 UTC on 22 October, or from the time your exchange announces, until your exchange reopens on the new contracts.
+2. **Expect a pause.** Deposits and withdrawals are suspended from 07:00 UTC on 29 October, or from the time your exchange announces, until your exchange reopens on the new contracts.
 3. **Check your exchange's announcement** for more details.
 
 :::warning
-Don't withdraw to a wallet during the pause. Don't deposit old $WARD after 08:00 UTC on 22 October: it won't be credited.
+Don't withdraw to a wallet during the pause. Don't deposit old $WARD after 08:00 UTC on 29 October: it won't be credited.
 :::
 
 ## If you provide liquidity on a DEX
 
 :::danger
-Remove your $WARD liquidity from every DEX pool **before 07:00 UTC on Thursday 22 October**.
+Remove your $WARD liquidity from every DEX pool **before 07:00 UTC on Thursday 29 October**.
 :::
 
 After the snapshot, old $WARD has no value, but old pools still hold real USDT, BNB or ETH. Anyone can sell old $WARD into these pools and drain the paired asset.

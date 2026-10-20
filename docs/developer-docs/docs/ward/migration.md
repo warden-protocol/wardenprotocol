@@ -68,11 +68,24 @@ Use the symbol **WARD** and **18** decimals when you add the token to a wallet.
 
 1. **Nothing to do.** Your exchange credits you 1:1.
 2. **Expect a pause.** Deposits and withdrawals are suspended from 07:00 UTC on 29 October, or from the time your exchange announces, until your exchange reopens on the new contracts.
-3. **Check your exchange's announcement** for more details.
+3. **Check your exchange's announcement** for more details. See [Centralized Exchange Support](#centralized-exchange-support) below.
 
 :::warning
 Don't withdraw to a wallet during the pause. Don't deposit old $WARD after 08:00 UTC on 29 October: it won't be credited.
 :::
+
+### Centralized Exchange Support
+
+This table lists the exchanges that support the migration. It will be updated as exchanges confirm and publish their announcements.
+
+| Exchange | Migration support    | Announcement                                                     |
+| -------- | -------------------- | ---------------------------------------------------------------- |
+| Kraken   | Confirmed            | [Kraken announcement](https://support.kraken.com/articles/ward-migration) |
+| Bitget   | Confirmed            | Pending                                                          |
+| HTX      | Confirmed            | Pending                                                          |
+| KuCoin   | Confirmed            | Pending                                                          |
+| Gate     | Pending confirmation | Pending                                                          |
+| MEXC     | Confirmed            | Pending                                                          |
 
 ## If you provide liquidity on a DEX
 

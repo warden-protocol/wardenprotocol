@@ -85,7 +85,7 @@ This table lists the exchanges that support the migration. It will be updated as
 | HTX      | Confirmed            | Pending                                                          |
 | KuCoin   | Confirmed            | Pending                                                          |
 | Gate     | Pending confirmation | Pending                                                          |
-| MEXC     | Confirmed            | [MEXC announcement](https://www.mexc.com/announcements/article/17827791539302) |
+| MEXC     | Confirmed            | [MEXC announcement](https://www.mexc.com/announcements/article/mexc-to-support-the-warden-ward-contract-swap-17827791539302) |
 
 ## If you provide liquidity on a DEX
 

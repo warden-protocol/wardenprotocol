@@ -9,7 +9,7 @@ description: Official guide to the $WARD migration from Warden Chain to a LayerZ
 This is the official guide to the $WARD migration for holders, exchanges, trackers and partners. If another source contradicts this page, this page is correct.
 
 :::info Last updated
-Version 2, 20 October 2026. This page will be updated on the migration day (snapshot blocks, new pools and completion).
+Version 2, 23 October 2026. This page will be updated on the migration day (snapshot blocks, new pools and completion).
 :::
 
 ## Overview

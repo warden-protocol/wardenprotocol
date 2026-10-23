@@ -53,6 +53,8 @@ Use the symbol **WARD** and **18** decimals when you add the token to a wallet.
 
 ## If you use a self-custody wallet
 
+A self-custody wallet is a wallet where you control the seed phrase or private key, not an exchange. Examples include browser and mobile wallets such as MetaMask, Rabby, Trust Wallet, Rainbow and Keplr, and hardware wallets such as Ledger and Trezor.
+
 1. **Do nothing to claim.** Keep your $WARD in your wallet through 08:00 UTC on 29 October.
 2. **Warden Chain holders:** your new $WARD arrives on Base at the `0x` address that matches your `warden1` address. Both addresses come from the same key. To see your balance, import the same seed phrase or private key into an EVM wallet such as MetaMask or Rabby, and switch the network to Base.
 

@@ -46,7 +46,7 @@ Use the symbol **WARD** and **18** decimals when you add the token to a wallet.
 
 | You hold $WARD on               | You receive new $WARD on                                                 |
 | ------------------------------- | ------------------------------------------------------------------------ |
-| Warden Chain                    | Base, at the same address (the EVM `0x` format of your `warden1` address) |
+| Warden Chain                    | Base, at the same `0x` address                                           |
 | Base                            | Base                                                                     |
 | BNB Chain                       | BNB Chain                                                                |
 | Robinhood Chain (bridged $WARD) | Robinhood Chain                                                          |
@@ -54,12 +54,7 @@ Use the symbol **WARD** and **18** decimals when you add the token to a wallet.
 ## If you use a self-custody wallet
 
 1. **Do nothing to claim.** Keep your $WARD in your wallet through 08:00 UTC on 29 October.
-2. **Warden Chain holders:** your new $WARD arrives on Base at the `0x` address that matches your `warden1` address. Both addresses come from the same key. To see your balance, import the same seed phrase or private key into an EVM wallet such as MetaMask or Rabby, and switch the network to Base.
-
-   :::caution
-   Warden Chain uses `ethsecp256k1` keys, the same key type as Ethereum. Wallets that derive your Warden address this way, such as Keplr with an `ethsecp256k1` key, give you the same `0x` address in MetaMask or Rabby. Before the snapshot, check that the `0x` address your EVM wallet shows matches your `warden1` address.
-   :::
-
+2. **Warden Chain holders:** your new $WARD arrives on Base at the same `0x` address you used on Warden Chain. To see your balance, switch the network to Base in the same wallet.
 3. **Add the new contract** to your wallet after 12:00 UTC, using the [contract addresses](#new-ward-contract-addresses) above.
 4. **Staked $WARD:** your staked $WARD and any staking rewards you haven't claimed are included in the airdrop. They're sent to your staker address, the wallet that is staking. You don't need to unstake or claim rewards before the snapshot.
 5. **Don't move $WARD** to a bridge or a new wallet around the snapshot.
@@ -131,7 +126,7 @@ No. The airdrop is automatic. Any site asking you to claim or connect your walle
 
 ### What happens to my staked WARD?
 
-Your staked $WARD and unclaimed staking rewards are airdropped to your staker address, the wallet that is staking. For Warden Chain stakers, that's the `0x` address on Base that matches your `warden1` address.
+Your staked $WARD and unclaimed staking rewards are airdropped to your staker address, the wallet that is staking. For Warden Chain stakers, that's the same `0x` address on Base.
 
 ### What is the max supply?
 

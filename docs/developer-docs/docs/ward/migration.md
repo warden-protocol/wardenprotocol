@@ -81,7 +81,7 @@ This table lists the exchanges that support the migration. It will be updated as
 | Exchange | Migration support    | Announcement                                                     |
 | -------- | -------------------- | ---------------------------------------------------------------- |
 | Kraken   | Confirmed            | [Kraken announcement](https://support.kraken.com/articles/ward-migration) |
-| Bitget   | Confirmed            | Pending                                                          |
+| Bitget   | Confirmed            | [Bitget announcement](https://www.bitget.com/support/articles/12560603898692) |
 | HTX      | Confirmed            | Pending                                                          |
 | KuCoin   | Confirmed            | Pending                                                          |
 | Gate     | Pending confirmation | Pending                                                          |

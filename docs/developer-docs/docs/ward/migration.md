@@ -9,7 +9,7 @@ description: Official guide to the $WARD migration from Warden Chain to a LayerZ
 This is the official guide to the $WARD migration for holders, exchanges, trackers and partners. If another source contradicts this page, this page is correct.
 
 :::info Last updated
-Version 2, 26 October 2026. This page will be updated on the migration day (snapshot blocks, new pools and completion).
+Version 2, 27 October 2026. This page will be updated on the migration day (snapshot blocks, new pools and completion).
 :::
 
 ## Overview
@@ -83,6 +83,7 @@ This table lists the exchanges that support the migration. It will be updated as
 | KuCoin   | Confirmed            | Pending                                                          |
 | Gate     | Confirmed            | [Gate announcement](https://www.gate.com/announcements/article/102414) |
 | MEXC     | Confirmed            | [MEXC announcement](https://www.mexc.com/announcements/article/mexc-to-support-the-warden-ward-contract-swap-17827791539302) |
+| Binance Alpha | Confirmed       | Check [Alpha](https://www.binance.com/alpha/bsc/0x6dc200b21894af4660b549b678ea8df22bf7cfac) for more information |
 
 ## If you provide liquidity on a DEX
 

@@ -79,7 +79,7 @@ This table lists the exchanges that support the migration. It will be updated as
 | -------- | -------------------- | ---------------------------------------------------------------- |
 | Kraken   | Confirmed            | [Kraken announcement](https://support.kraken.com/articles/ward-migration) |
 | Bitget   | Confirmed            | [Bitget announcement](https://www.bitget.com/support/articles/12560603898692) |
-| HTX      | Confirmed            | Pending                                                          |
+| HTX      | Confirmed            | [HTX announcement](https://www.htx.com/support/65047305474609/) |
 | KuCoin   | Confirmed            | Pending                                                          |
 | Gate     | Confirmed            | [Gate announcement](https://www.gate.com/announcements/article/102414) |
 | MEXC     | Confirmed            | [MEXC announcement](https://www.mexc.com/announcements/article/mexc-to-support-the-warden-ward-contract-swap-17827791539302) |

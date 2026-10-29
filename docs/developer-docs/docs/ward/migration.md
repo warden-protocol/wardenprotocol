@@ -9,7 +9,11 @@ description: Official guide to the $WARD migration from Warden Chain to a LayerZ
 This is the official guide to the $WARD migration for holders, exchanges, trackers and partners. If another source contradicts this page, this page is correct.
 
 :::info Last updated
-Version 3, 29 October 2026. Snapshot block heights are now published. This page will be updated with the new pools and completion.
+Version 3, 29 October 2026. The migration is complete, and the snapshot block heights are published.
+:::
+
+:::tip Migration complete
+The $WARD migration is complete. New $WARD is live on Base, BNB Chain and Robinhood Chain. Only the [new contract addresses](#new-ward-contract-addresses) are official $WARD. Exchanges reopen deposits and withdrawals as each one announces.
 :::
 
 ## Overview

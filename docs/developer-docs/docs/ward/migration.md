@@ -9,7 +9,7 @@ description: Official guide to the $WARD migration from Warden Chain to a LayerZ
 This is the official guide to the $WARD migration for holders, exchanges, trackers and partners. If another source contradicts this page, this page is correct.
 
 :::info Last updated
-Version 2, 27 October 2026. This page will be updated on the migration day (snapshot blocks, new pools and completion).
+Version 3, 29 October 2026. Snapshot block heights are now published. This page will be updated with the new pools and completion.
 :::
 
 ## Overview
@@ -101,7 +101,16 @@ After the snapshot, old $WARD has no value, but old pools still hold real USDT, 
 
 - Old $WARD is deprecated on every chain, including the previous bridged contracts on Base and BNB Chain. Don't buy, sell or deposit it.
 - Warden Chain will halt in the hours following the snapshot. All legacy bridge routes for $WARD will stop working too.
-- The snapshot block heights on each chain and the list of excluded addresses (bridges, pools, module accounts and the zero address) will be published here.
+- The list of excluded addresses (bridges, pools, module accounts and the zero address) will be published here.
+
+### Snapshot block heights
+
+| Chain           | Snapshot block    |
+| --------------- | ----------------- |
+| Warden Chain    | 12139915          |
+| Base            | 53235727          |
+| BNB Chain       | 130437410         |
+| Robinhood Chain | To be published   |
 
 ## Safety
 

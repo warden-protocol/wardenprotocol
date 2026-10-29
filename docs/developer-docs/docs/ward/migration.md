@@ -26,7 +26,7 @@ All times are on **Thursday 29 October 2026, UTC**.
 | Time                    | What happens                                                                                    |
 | ----------------------- | ----------------------------------------------------------------------------------------------- |
 | 07:00                   | Exchanges suspend $WARD deposits and withdrawals, unless your exchange announces a different time. Liquidity providers should have removed liquidity. |
-| 08:00                   | Snapshot on Warden Chain, BNB Chain, Base and Robinhood Chain.                                  |
+| 08:00                   | Snapshot on Warden Chain, BNB Chain and Base.                                                   |
 | 12:00                   | The airdrop of new $WARD starts.                                                                |
 | After completion notice | Exchanges reopen deposits and withdrawals on the new contracts.                                 |
 
@@ -49,7 +49,6 @@ Use the symbol **WARD** and **18** decimals when you add the token to a wallet.
 | Warden Chain                    | Base, at the same `0x` address                                           |
 | Base                            | Base                                                                     |
 | BNB Chain                       | BNB Chain                                                                |
-| Robinhood Chain (bridged $WARD) | Robinhood Chain                                                          |
 
 ## If you use a self-custody wallet
 
@@ -110,7 +109,6 @@ After the snapshot, old $WARD has no value, but old pools still hold real USDT, 
 | Warden Chain    | 12139915          |
 | Base            | 53235727          |
 | BNB Chain       | 130437410         |
-| Robinhood Chain | To be published   |
 
 ## Safety
 

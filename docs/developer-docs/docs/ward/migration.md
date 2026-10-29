@@ -100,7 +100,7 @@ After the snapshot, old $WARD has no value, but old pools still hold real USDT, 
 ## After the snapshot
 
 - Old $WARD is deprecated on every chain, including the previous bridged contracts on Base and BNB Chain. Don't buy, sell or deposit it.
-- Warden Chain is halted at block **12139915**, the snapshot block. No new blocks or transactions are processed. All legacy bridge routes for $WARD have stopped working too.
+- Warden Chain halted at the snapshot block, **12139915**. No new blocks or transactions are processed. All legacy bridge routes for $WARD have stopped working too.
 - The list of excluded addresses (bridges, pools, module accounts and the zero address) will be published here.
 
 ### Snapshot block heights

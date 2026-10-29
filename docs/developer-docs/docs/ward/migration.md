@@ -98,7 +98,13 @@ After the snapshot, old $WARD has no value, but old pools still hold real USDT, 
 
 - **Liquidity left in pools:** the $WARD side of your position is credited to you at the snapshot. The paired asset (USDT, BNB, ETH or other) is **not** protected.
 - **Farms and gauges:** unstake your LP tokens first, then remove liquidity.
-- **Official new pools:** the list of official pools will be published here once they're live. Only provide liquidity to the pools listed on this page.
+- **Official new pools:** only provide liquidity to the pools listed in [Official new pools](#official-new-pools). More pools will be added as they go live.
+
+### Official new pools
+
+| Chain     | DEX         | Pair      | Pool                                                                                                                            |
+| --------- | ----------- | --------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| BNB Chain | PancakeSwap | WARD/USDT | [PancakeSwap pool](https://pancakeswap.finance/liquidity/pool/bsc/0x63e05695e17b36283d56932dd6553f9558a6cd49c7a27fe5b6fc94f9d6328bb1) |
 
 ## After the snapshot
 

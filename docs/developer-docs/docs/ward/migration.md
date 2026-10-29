@@ -9,7 +9,11 @@ description: Official guide to the $WARD migration from Warden Chain to a LayerZ
 This is the official guide to the $WARD migration for holders, exchanges, trackers and partners. If another source contradicts this page, this page is correct.
 
 :::info Last updated
-Version 2, 27 October 2026. This page will be updated on the migration day (snapshot blocks, new pools and completion).
+Version 3, 29 October 2026. The migration is complete, and the snapshot block heights are published.
+:::
+
+:::tip Migration complete
+The $WARD migration is complete. New $WARD is live on Base, BNB Chain and Robinhood Chain. Only the [new contract addresses](#new-ward-contract-addresses) are official $WARD. Exchanges reopen deposits and withdrawals as each one announces.
 :::
 
 ## Overview
@@ -26,7 +30,7 @@ All times are on **Thursday 29 October 2026, UTC**.
 | Time                    | What happens                                                                                    |
 | ----------------------- | ----------------------------------------------------------------------------------------------- |
 | 07:00                   | Exchanges suspend $WARD deposits and withdrawals, unless your exchange announces a different time. Liquidity providers should have removed liquidity. |
-| 08:00                   | Snapshot on Warden Chain, BNB Chain, Base and Robinhood Chain.                                  |
+| 08:00                   | Snapshot on Warden Chain, BNB Chain and Base.                                                   |
 | 12:00                   | The airdrop of new $WARD starts.                                                                |
 | After completion notice | Exchanges reopen deposits and withdrawals on the new contracts.                                 |
 
@@ -49,7 +53,6 @@ Use the symbol **WARD** and **18** decimals when you add the token to a wallet.
 | Warden Chain                    | Base, at the same `0x` address                                           |
 | Base                            | Base                                                                     |
 | BNB Chain                       | BNB Chain                                                                |
-| Robinhood Chain (bridged $WARD) | Robinhood Chain                                                          |
 
 ## If you use a self-custody wallet
 
@@ -100,8 +103,16 @@ After the snapshot, old $WARD has no value, but old pools still hold real USDT, 
 ## After the snapshot
 
 - Old $WARD is deprecated on every chain, including the previous bridged contracts on Base and BNB Chain. Don't buy, sell or deposit it.
-- Warden Chain will halt in the hours following the snapshot. All legacy bridge routes for $WARD will stop working too.
-- The snapshot block heights on each chain and the list of excluded addresses (bridges, pools, module accounts and the zero address) will be published here.
+- Warden Chain halted at the snapshot block, **12139915**. No new blocks or transactions are processed. All legacy bridge routes for $WARD have stopped working too.
+- The list of excluded addresses (bridges, pools, module accounts and the zero address) will be published here.
+
+### Snapshot block heights
+
+| Chain           | Snapshot block    |
+| --------------- | ----------------- |
+| Warden Chain    | 12139915          |
+| Base            | 53235727          |
+| BNB Chain       | 130437410         |
 
 ## Safety
 

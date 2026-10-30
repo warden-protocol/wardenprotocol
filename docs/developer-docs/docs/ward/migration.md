@@ -9,11 +9,11 @@ description: Official guide to the $WARD migration from Warden Chain to a LayerZ
 This is the official guide to the $WARD migration for holders, exchanges, trackers and partners. If another source contradicts this page, this page is correct.
 
 :::info Last updated
-Version 3, 29 October 2026. The migration is complete, and the snapshot block heights are published.
+Version 4, 30 October 2026. The migration is 100% complete. Exchange networks and deposit and withdrawal status are published.
 :::
 
-:::tip Migration complete
-The $WARD migration is complete. New $WARD is live on Base, BNB Chain and Robinhood Chain. Only the [new contract addresses](#new-ward-contract-addresses) are official $WARD. Exchanges reopen deposits and withdrawals as each one announces.
+:::tip Migration 100% complete
+The $WARD migration is 100% complete. New $WARD has been distributed to all eligible holders: exchanges, individual accounts, stakers and liquidity providers. New $WARD is live on Base, BNB Chain and Robinhood Chain, and only the [new contract addresses](#new-ward-contract-addresses) are official $WARD. For deposits and withdrawals on exchanges, see [Centralized Exchange Support](#centralized-exchange-support).
 :::
 
 ## Overview
@@ -76,17 +76,17 @@ Don't withdraw to a wallet during the pause. Don't deposit old $WARD after 08:00
 
 ### Centralized Exchange Support
 
-This table lists the exchanges that support the migration. It will be updated as exchanges confirm and publish their announcements.
+This table lists the exchanges that support the migration, the network each one uses for new $WARD, and whether deposits and withdrawals have reopened. It will be updated as exchanges publish their announcements.
 
-| Exchange | Migration support    | Announcement                                                     |
-| -------- | -------------------- | ---------------------------------------------------------------- |
-| Kraken   | Confirmed            | [Kraken announcement](https://support.kraken.com/articles/ward-migration) |
-| Bitget   | Confirmed            | [Bitget announcement](https://www.bitget.com/support/articles/12560603898692) |
-| HTX      | Confirmed            | [HTX announcement](https://www.htx.com/support/65047305474609/) |
-| KuCoin   | Confirmed            | Pending                                                          |
-| Gate     | Confirmed            | [Gate announcement](https://www.gate.com/announcements/article/102414) |
-| MEXC     | Confirmed            | [MEXC announcement](https://www.mexc.com/announcements/article/mexc-to-support-the-warden-ward-contract-swap-17827791539302) |
-| Binance Alpha | Confirmed       | Check [Alpha](https://www.binance.com/alpha/bsc/0x6dc200b21894af4660b549b678ea8df22bf7cfac) for more information |
+| Exchange      | Network   | Migration support | Announcement                                                                                                                | Deposits and withdrawals                                                                                                   |
+| ------------- | --------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Kraken        | BNB Chain | Confirmed         | [Kraken announcement](https://support.kraken.com/articles/ward-migration)                                                   | Not announced yet                                                                                                          |
+| Bitget        | Base      | Confirmed         | [Bitget announcement](https://www.bitget.com/support/articles/12560603898692)                                               | Reopened. See the [Bitget announcement](https://www.bitget.com/support/articles/12560603899215)                            |
+| HTX           | Base      | Confirmed         | [HTX announcement](https://www.htx.com/support/65047305474609/)                                                             | Reopened. See the [HTX announcement](https://www.htx.com/en-us/support/75047677424570/)                                    |
+| KuCoin        | Base      | Confirmed         | Pending                                                                                                                     | Not announced yet                                                                                                          |
+| Gate          | Base      | Confirmed         | [Gate announcement](https://www.gate.com/announcements/article/102414)                                                      | Not announced yet                                                                                                          |
+| MEXC          | Base      | Confirmed         | [MEXC announcement](https://www.mexc.com/announcements/article/mexc-to-support-the-warden-ward-contract-swap-17827791539302) | Not announced yet                                                                                                          |
+| Binance Alpha | BNB Chain | Confirmed         | Check [Alpha](https://www.binance.com/alpha/bsc/0x6dc200b21894af4660b549b678ea8df22bf7cfac) for more information            | Not announced yet                                                                                                          |
 
 ## If you provide liquidity on a DEX
 

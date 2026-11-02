@@ -254,3 +254,8 @@ html[data-theme='dark'] .navbar--github-link:before {
 
   border-left: 4px solid var(--ifm-alert-border-color);
 }
+
+/* Keep superseded docs (e.g. MiCAR white paper v1.0) reachable by URL but out of the sidebar */
+.sidebar-hidden {
+  display: none !important;
+}

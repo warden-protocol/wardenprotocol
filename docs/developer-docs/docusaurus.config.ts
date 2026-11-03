@@ -37,6 +37,20 @@ const config: Config = {
         },
     },
     themes: ["@docusaurus/theme-mermaid"],
+    plugins: [
+        [
+            "docusaurus-plugin-llms",
+            {
+                title: "Warden Protocol Docs",
+                description:
+                    "Developer documentation for Warden Protocol: core concepts, running a node, building and publishing agents, and the WARD token.",
+                // Docs are served at the site root (routeBasePath "/").
+                docsDir: [{ path: "docs", routeBasePath: "/" }],
+                excludeImports: true,
+                removeDuplicateHeadings: true,
+            },
+        ],
+    ],
 
     presets: [
         [

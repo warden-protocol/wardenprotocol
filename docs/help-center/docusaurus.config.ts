@@ -35,6 +35,20 @@ const config: Config = {
     },
   },
   themes: ["@docusaurus/theme-mermaid"],
+  plugins: [
+    [
+      "docusaurus-plugin-llms",
+      {
+        title: "Warden Protocol Help Center",
+        description:
+          "Help center for the Warden app (https://app.wardenprotocol.org): guides for using the app and its features.",
+        // Docs are served at the site root (routeBasePath "/").
+        docsDir: [{ path: "docs", routeBasePath: "/" }],
+        excludeImports: true,
+        removeDuplicateHeadings: true,
+      },
+    ],
+  ],
 
   presets: [
     [

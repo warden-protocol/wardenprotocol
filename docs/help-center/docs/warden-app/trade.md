@@ -4,6 +4,10 @@ sidebar_position: 6
 
 # Trade
 
+:::info
+This guide covers the Warden App as it was at the time. To trade today, use [Warden Token Terminal](https://tokens.wardenprotocol.org/?utm_source=wardenprotocol&utm_medium=referral&utm_campaign=token-terminal&utm_content=help-notice).
+:::
+
 ## Overview
 
 In Warden, you can use **perpetual contracts** (**trade perps**) to trade on future price movements of underlying token without actually owning them. Currently, Warden supports [Hyperliquid](https://hyperfoundation.org) perps.

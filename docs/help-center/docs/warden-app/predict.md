@@ -4,6 +4,10 @@ sidebar_position: 7
 
 # Predict
 
+:::info
+This guide covers the Warden App as it was at the time. To trade today, use [Warden Token Terminal](https://tokens.wardenprotocol.org/?utm_source=wardenprotocol&utm_medium=referral&utm_campaign=token-terminal&utm_content=help-notice).
+:::
+
 :::important
 This feature is currently in Beta.
 :::

@@ -4,6 +4,10 @@ sidebar_position: 11
 
 # $WARD airdrop
 
+:::info
+The WARD airdrop has ended and the claim portal is offline. For WARD today, see the [migration guide](https://docs.wardenprotocol.org/ward/migration).
+:::
+
 :::important
 **Registration for the airdrop is now closed. If you're eligible, you can claim your $WARD or will receive it automatically.**
 
@@ -11,7 +15,7 @@ For those who registered but didn't meet the final [eligibility](#eligibility--d
 :::
 
 :::warning
-Make sure that you access the Airdrop Claim Portal through [Warden](https://app.wardenprotocol.org) or directly on [https://airdrop.wardenprotocol.org](https://airdrop.wardenprotocol.org). Do not click any external or social links. 
+Make sure that you access the Airdrop Claim Portal through [Warden](https://app.wardenprotocol.org) or directly on airdrop.wardenprotocol.org. Do not click any external or social links. 
 :::
 
 ## Overview
@@ -23,7 +27,7 @@ Registration for the **$WARD airdrop** has ended. Registered users who are eligi
 Your airdrop will be available on [Warden Protocol](https://docs.wardenprotocol.org/learn/introduction-to-warden).
 
 :::important Important notes
-- All registration happened in [Warden](https://app.wardenprotocol.org), and claiming is available on the [Airdrop Claim Portal](https://airdrop.wardenprotocol.org). We'll **never** ask you to connect your wallet to any third-party website.
+- All registration happened in [Warden](https://app.wardenprotocol.org), and claiming is available on the Airdrop Claim Portal. We'll **never** ask you to connect your wallet to any third-party website.
 - To claim $WARD, you must have an active [Warden account](manage-your-wallets#main-account).
 - Users who are not registered cannot participate in the claiming phase.
 - Registration did not guarantee rewards. Only [eligible users](#eligibility--distribution) can claim $WARD.
@@ -44,7 +48,7 @@ You can claim your $WARD in the **Airdrop Claim Portal**:
 Before you proceed, make sure you understand how claim-based distribution works. You may choose to claim later and earn more.
 :::
 
-1. In [Warden](https://app.wardenprotocol.org), click the **Airdrop** icon at the top-right. You'll be redirected to the portal. Alternatively, you can access it directly: 👉 [https://airdrop.wardenprotocol.org](https://airdrop.wardenprotocol.org)
+1. In [Warden](https://app.wardenprotocol.org), click the **Airdrop** icon at the top-right. You'll be redirected to the portal.
 2. Click **Claim Rewards**.
 3. Connect your [Warden account](manage-your-wallets#main-account). Use the same credentials with which you log in to Warden.
 4. Click **Continue**. This option is displayed only if you're eligible.
@@ -58,7 +62,7 @@ Once you claim your $WARD, the following happens:
 - You can [stake your $WARD](stake-ward).
 
 :::warning
-Make sure that you access the Airdrop Claim Portal through [Warden](https://app.wardenprotocol.org) or directly on [https://airdrop.wardenprotocol.org](https://airdrop.wardenprotocol.org). Do not click any external or social links. 
+Make sure that you access the Airdrop Claim Portal through [Warden](https://app.wardenprotocol.org) or directly on airdrop.wardenprotocol.org. Do not click any external or social links. 
 :::
 
 ![Access the Airdrop Claim Portal in Warden](../../static/img/warden-app/airdrop-1.png)

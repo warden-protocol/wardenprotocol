@@ -6,6 +6,10 @@ slug: /
 
 # Introduction
 
+:::info
+This guide covers the Warden App as it was at the time. To trade today, use [Warden Token Terminal](https://tokens.wardenprotocol.org/?utm_source=wardenprotocol&utm_medium=referral&utm_campaign=token-terminal&utm_content=help-notice).
+:::
+
 ## Overview
 
 Try the app: 👉 [Warden](https://app.wardenprotocol.org)

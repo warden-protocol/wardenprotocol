@@ -4,6 +4,10 @@ sidebar_position: 9
 
 # Earn rewards
 
+:::info
+This guide covers the Warden App as it was at the time. To trade today, use [Warden Token Terminal](https://tokens.wardenprotocol.org/?utm_source=wardenprotocol&utm_medium=referral&utm_campaign=token-terminal&utm_content=help-notice).
+:::
+
 ## Overview
 
 In this section, you'll discover how to start **earning rewards** in Warden:

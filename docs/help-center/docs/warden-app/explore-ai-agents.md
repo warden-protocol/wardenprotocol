@@ -4,6 +4,10 @@ sidebar_position: 4
 
 # Explore AI Agents
 
+:::info
+This guide covers the Warden App as it was at the time. To trade today, use [Warden Token Terminal](https://tokens.wardenprotocol.org/?utm_source=wardenprotocol&utm_medium=referral&utm_campaign=token-terminal&utm_content=help-notice).
+:::
+
 ## Overview
 
 Explore the **Agent Hub** to unlock the full potential of Warden with **AI Agents**! They allow you to swap, bridge, research, and much more through a simple chat interface.

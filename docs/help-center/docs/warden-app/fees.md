@@ -4,6 +4,10 @@ sidebar_position: 12
 
 # Fees
 
+:::info
+This guide covers the Warden App as it was at the time. To trade today, use [Warden Token Terminal](https://tokens.wardenprotocol.org/?utm_source=wardenprotocol&utm_medium=referral&utm_campaign=token-terminal&utm_content=help-notice).
+:::
+
 ## Overview
 
 In this article, you'll find a detailed breakdown of fees applied to [swaps & transfers](manage-your-wallets#send-or-swap) and other interactions on Warden. Please note that some fees may vary depending on the [AI Agent](explore-ai-agents) and the [network](/#supported-networks).

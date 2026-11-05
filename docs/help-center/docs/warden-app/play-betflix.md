@@ -4,6 +4,10 @@ sidebar_position: 8
 
 # Play Betflix
 
+:::info
+This guide covers the Warden App as it was at the time. To trade today, use [Warden Token Terminal](https://tokens.wardenprotocol.org/?utm_source=wardenprotocol&utm_medium=referral&utm_campaign=token-terminal&utm_content=help-notice).
+:::
+
 ## Overview
 
 You can trade with **Betflix**, Warden's Tinder-style prediction game.

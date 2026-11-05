@@ -4,6 +4,10 @@ sidebar_position: 2
 
 # Warden Manifesto
 
+:::info
+This page describes Warden as it was before the WARD migration. Warden Chain halted on 29 October 2026 and Warden Studio is no longer available. To trade today, use [Warden Token Terminal](https://tokens.wardenprotocol.org/?utm_source=wardenprotocol&utm_medium=referral&utm_campaign=token-terminal&utm_content=docs-notice). For WARD, see the [migration guide](/ward/migration).
+:::
+
 ![Warden Manifesto: The global Agent Network](../../static/img/manifesto-cover.png)
 
 ## *Warden—The App and Network Layer for the Agent Economy*

@@ -4,6 +4,10 @@ sidebar_position: 3
 
 # Create a validator
 
+:::info
+Warden Chain halted on 29 October 2026 after the [WARD migration](/ward/migration). These node and validator guides are kept for reference only.
+:::
+
 :::important
 Mainnet is our new EVM network, currently available only to selected validators.
 :::

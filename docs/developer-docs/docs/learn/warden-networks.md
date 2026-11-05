@@ -4,6 +4,10 @@ sidebar_position: 5
 
 # Warden networks
 
+:::info
+Warden Chain halted on 29 October 2026. The endpoints on this page no longer serve requests. For WARD on Base, BNB Chain and Robinhood Chain, see the [migration guide](/ward/migration).
+:::
+
 ## Overview
 
 In this section, you'll find an overview of the available **Warden networks**.

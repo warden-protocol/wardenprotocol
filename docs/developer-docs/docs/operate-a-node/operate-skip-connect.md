@@ -4,6 +4,10 @@ sidebar_position: 5
 
 # Operate Skip:Connect
 
+:::info
+Warden Chain halted on 29 October 2026 after the [WARD migration](/ward/migration). These node and validator guides are kept for reference only.
+:::
+
 ## Overview
 
 Warden integrates with **Skip:Connect** (formerly known as Slinky)—an [oracle service](/learn/glossary#oracle-service) from **Skip Protocol**. The data provided by Connect is validated by Warden's network and written onchain.

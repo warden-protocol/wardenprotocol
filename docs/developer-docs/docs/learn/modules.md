@@ -4,6 +4,10 @@ sidebar_position: 4
 
 # Modules
 
+:::info
+Warden Chain halted on 29 October 2026 after the WARD migration. This page is kept for reference only.
+:::
+
 ## Overview
 
 In this section, you'll find descriptions of external [Cosmos SDK](https://docs.cosmos.network) modules used by Warden Protocol. For more details, follow the provided links to external documentation.

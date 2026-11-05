@@ -4,6 +4,10 @@ sidebar_position: 1
 
 # Warden 소개
 
+:::info
+This page describes Warden as it was before the WARD migration. Warden Chain halted on 29 October 2026 and Warden Studio is no longer available. To trade today, use [Warden Token Terminal](https://tokens.wardenprotocol.org/?utm_source=wardenprotocol&utm_medium=referral&utm_campaign=token-terminal&utm_content=docs-notice). For WARD, see the [migration guide](/ward/migration).
+:::
+
 ## Warden Protocol
 
 **Warden Protocol**은 **AI Agent** 경제를 구동하는 풀스택 프레임워크입니다. Agent의 생성, 배포, 수익화, 거버넌스를 가능하게 하는 로직, 표준, 도구를 포함합니다.

@@ -4,6 +4,10 @@ sidebar_position: 2
 
 # Delegation plan
 
+:::info
+Warden Chain halted on 29 October 2026 after the [WARD migration](/ward/migration). These node and validator guides are kept for reference only.
+:::
+
 ## Overview
 
 The primary objective of this delegation plan is to promote a robust, secure, and decentralized blockchain network by carefully selecting validators based on performance, reliability, community involvement, and additional services they provide to the network.

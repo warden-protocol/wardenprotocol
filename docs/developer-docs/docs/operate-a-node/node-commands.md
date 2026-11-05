@@ -4,6 +4,10 @@ sidebar_position: 7
 
 # Node commands
 
+:::info
+Warden Chain halted on 29 October 2026 after the [WARD migration](/ward/migration). These node and validator guides are kept for reference only.
+:::
+
 ## Overview
 
 **Node commands** are commands for interacting with a node through the command line. In this article, you'll find a brief overview of commands for interacting with the Warden node, `wardend`.

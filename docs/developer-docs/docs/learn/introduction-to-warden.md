@@ -4,6 +4,10 @@ sidebar_position: 1
 
 # Introduction to Warden
 
+:::info
+This page describes Warden as it was before the WARD migration. Warden Chain halted on 29 October 2026 and Warden Studio is no longer available. To trade today, use [Warden Token Terminal](https://tokens.wardenprotocol.org/?utm_source=wardenprotocol&utm_medium=referral&utm_campaign=token-terminal&utm_content=docs-notice). For WARD, see the [migration guide](/ward/migration).
+:::
+
 ## Warden Protocol
 
 **Warden Protocol** is the full-stack framework powering the **AI Agent** economy. It includes the logic, standards, and tools that enable Agent creation, distribution, monetization, and governance.

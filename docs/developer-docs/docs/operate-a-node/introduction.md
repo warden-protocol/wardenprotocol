@@ -4,6 +4,10 @@ sidebar_position: 1
 
 # Introduction
 
+:::info
+Warden Chain halted on 29 October 2026 after the [WARD migration](/ward/migration). These node and validator guides are kept for reference only.
+:::
+
 ## Warden Protocol nodes
 
 A Warden node is a server running the [Warden Chain](/learn/glossary#warden-chain) software (binary).

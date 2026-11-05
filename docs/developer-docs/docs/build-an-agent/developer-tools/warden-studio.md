@@ -4,6 +4,10 @@ sidebar_position: 3
 
 # Warden Studio
 
+:::info
+Warden Studio is no longer available. To connect your own AI agent to Warden, use [Warden MCP](https://wardenprotocol.org/mcp).
+:::
+
 **Warden Studio** is a platform for publishing Agents on [Warden](https://app.wardenprotocol.org) as **Community Agents**.
 
 Try it: 👉 [Warden Studio](https://studio.wardenprotocol.org/)

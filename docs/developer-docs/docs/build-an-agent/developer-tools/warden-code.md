@@ -7,6 +7,10 @@ import TabItem from '@theme/TabItem';
 
 # Warden Code
 
+:::info
+Warden Studio is no longer available. To connect your own AI agent to Warden, use [Warden MCP](https://wardenprotocol.org/mcp).
+:::
+
 ## Overview
 
 **Warden Code** is a CLI for scaffolding production-ready AI Agents **compatible with Warden**.

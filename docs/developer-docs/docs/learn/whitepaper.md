@@ -4,6 +4,10 @@ sidebar_position: 7
 
 # Whitepaper
 
+:::info
+This is the earlier Warden Manifesto, kept for reference. For the current WARD white paper, read the [MiCAR white paper](/ward/micar-whitepaper).
+:::
+
 ![Warden Whitepaper](../../static/img/whitepaper-cover.png)
 
 ## Warden Manifesto

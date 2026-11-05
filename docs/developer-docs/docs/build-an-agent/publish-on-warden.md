@@ -4,6 +4,10 @@ sidebar_position: 5
 
 # Publish on Warden
 
+:::info
+Warden Studio is no longer available. To connect your own AI agent to Warden, use [Warden MCP](https://wardenprotocol.org/mcp).
+:::
+
 ## Overview
 
 This guide explains how to publish and monetize your Agents on [Warden](https://app.wardenprotocol.org) using [Warden Studio](developer-tools/warden-studio).

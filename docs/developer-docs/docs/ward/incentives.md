@@ -4,6 +4,10 @@ sidebar_position: 6
 
 # Incentives
 
+:::info
+This page describes WARD before the migration. Since 29 October 2026, WARD is one token on Base, BNB Chain and Robinhood Chain. See the [migration guide](/ward/migration) for contracts and supply.
+:::
+
 Warden Protocol will distribute $WARD to stakeholders to incentivize behaviors that add value to the Warden ecosystem.
 
 Incentive programs include the following:

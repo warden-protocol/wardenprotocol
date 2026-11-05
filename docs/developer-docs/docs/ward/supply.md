@@ -4,6 +4,10 @@ sidebar_position: 7
 
 # Supply
 
+:::info
+This page describes WARD before the migration. Since 29 October 2026, WARD is one token on Base, BNB Chain and Robinhood Chain. See the [migration guide](/ward/migration) for contracts and supply.
+:::
+
 ## $WARD supply details
 
 | Property             | Details             |

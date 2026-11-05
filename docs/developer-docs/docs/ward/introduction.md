@@ -16,8 +16,8 @@ $WARD is designed to facilitate various operations—such as governance, staking
 
 ## Contract addresses
 
-:::warning
-$WARD is migrating to a LayerZero OFT on Base, BNB Chain and Robinhood Chain. The contracts below are deprecated after the snapshot at 08:00 UTC on 29 October 2026. See the [WARD migration](migration) guide for the new contract addresses.
+:::info
+WARD migrated to Base, BNB Chain and Robinhood Chain on 29 October 2026. The contracts below are deprecated. See the [migration guide](/ward/migration#new-ward-contract-addresses) for the new contract addresses.
 :::
 
 $WARD is the native token on Warden Chain. Bridged versions are also available on the following EVM chains:

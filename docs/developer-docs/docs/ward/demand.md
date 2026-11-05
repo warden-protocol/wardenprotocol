@@ -4,6 +4,10 @@ sidebar_position: 4
 
 # Demand
 
+:::info
+This page describes WARD before the migration. Since 29 October 2026, WARD is one token on Base, BNB Chain and Robinhood Chain. See the [migration guide](/ward/migration) for contracts and supply.
+:::
+
 ## Demand drivers
 
 Warden Protocol aims to drive a sustainable equilibrium between supply and demand of $WARD. To drive demand of $WARD, there will be a number of intrinsic demand drivers built into the ecosystem: 

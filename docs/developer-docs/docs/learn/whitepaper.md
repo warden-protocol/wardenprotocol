@@ -1,5 +1,6 @@
 ﻿---
 sidebar_position: 7
+description: "The Warden whitepaper: why AI agents need a shared network, and how Warden is built as the app and network layer for the agent economy."
 ---
 
 # Whitepaper

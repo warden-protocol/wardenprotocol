@@ -5,7 +5,7 @@ sidebar_position: 2
 
 ## Overview
 
-This guide explains how to create your first Agent with [Warden Code](../developer-tools/warden-code)—a CLI for developing Agents compatible with Warden.
+This guide explains how to create your first Agent with [Warden Code](../warden-code/introduction)—a CLI for developing Agents compatible with Warden.
 
 You'll install and run Warden Code, provide the required details, and the Agent will be immediately available for local testing.
 
@@ -48,7 +48,7 @@ Create a directory for your new project, navigate there, and run Warden Code:
 warden
 ```
 
-You'll see the list of [available commands](../developer-tools/warden-code#cli-commands).
+You'll see the list of [available commands](../warden-code/basics#cli-commands).
 
 ## 3. Create an Agent
 
@@ -75,10 +75,10 @@ To create an Agent, take the following steps:
 5. Optionally, provide skills describing what your Agent can do. This does not affect the real capabilities of the Agent—you'll need to [implement custom logic](implement-custom-logic) later.
 
    :::note
-   Your Agent's skills are advertised in the [A2A Agent Card](https://a2a-protocol.org/latest/tutorials/python/3-agent-skills-and-card/). This allows them to be discovered by other Agents and clients.
+   Your Agent's skills are advertised in the [A2A Agent Card](../warden-code/a2a-endpoints-and-methods#get-agent-card). This allows them to be discovered by other Agents and clients.
    :::
 
-6. Optionally, enable x402 payments. You'll need to select a network and provide your wallet address for receiving payments. To learn more, see [x402 parameters](../developer-tools/warden-code#parameters).
+6. Optionally, enable x402 payments. You'll need to select a network and provide your wallet address for receiving payments. To learn more, see [x402 parameters](../warden-code/x402-payments#parameters).
 
 7. Confirm Agent creation.
 
@@ -88,12 +88,12 @@ To create an Agent, take the following steps:
 
 ## Result
 
-Depending on your choices, Warden Code generates a new project based one of the supported [Agent models](../developer-tools/warden-code#agent-models).
+Depending on your choices, Warden Code generates a new project based on one of the supported [Agent models](../warden-code/basics#agent-models).
 
-This [project structure](../developer-tools/warden-code#project-structure) includes the following key files:
+This [project structure](../warden-code/basics#project-structure) includes the following key files:
 
 - `src/agent.ts`: Your Agent's logic
-- `.env`: Your API key for [authentication](../developer-tools/warden-code#api-server), the LLM key (if provided), and more
+- `.env`: Your API key for [authentication](../warden-code/basics#api-key-authentication), the LLM key (if provided), and more
 
 :::warning
 Keep your `.env` file private. Never commit it to a repository or share your API keys.

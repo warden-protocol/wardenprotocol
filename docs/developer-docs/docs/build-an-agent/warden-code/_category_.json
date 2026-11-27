@@ -1,8 +1,8 @@
 {
-  "position": 7,
-  "label": "Developer tools",
+  "position": 6,
+  "label": "Warden Code",
   "collapsible": true,
-  "collapsed": false,
+  "collapsed": true,
   "link": {
     "type": "generated-index",
     "title": "Developer tools"

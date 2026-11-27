@@ -25,7 +25,7 @@ After [creating a Warden Agent](create-a-new-agent), you can **run it locally** 
    npm start
    ```
 
-   If you need to temporarily disable [x402 payments](../developer-tools/warden-code#x402-payments) at start, run this command:
+   If you need to temporarily disable [x402 payments](../warden-code/x402-payments) at start, run this command:
 
    ```bash
    X402=false npm start
@@ -39,7 +39,7 @@ After [creating a Warden Agent](create-a-new-agent), you can **run it locally** 
    http://localhost:3000
    ```
 
-   While the Agent running, you can interact with it as shown in the sections below.
+   While the Agent is running, you can interact with it as shown in the sections below.
 
    To stop the Agent, press **CTRL+C**. Don't forget to rebuild it each time you update the code.
 
@@ -47,13 +47,13 @@ After [creating a Warden Agent](create-a-new-agent), you can **run it locally** 
 
 ### Chat using the UI
 
-The fastest way to make sure your Agent is to open the local host URL:
+The fastest way to make sure your Agent is running is to open the localhost URL:
 
 ```text
 http://localhost:3000
 ```
 
-If everything is fine, you'll be able to chat with your Agent through the user interface provided by Warden Code:
+Here you can chat with your Agent through the [user interface](../warden-code/basics#frontend) provided by Warden Code. If [x402 payments](../warden-code/x402-payments) are enabled, you'll see a button for connecting to MetaMask.
 
 ![The user interface for chatting with Agents, provided by Warden Code](../../../static/img/warden-code-ui.png)
 
@@ -83,7 +83,7 @@ To chat with your Agent through the CLI, take these steps:
 3. Chat with your Agent. Warden Code automatically detects whether the agent supports A2A, LangGraph, or both, and prompts you to choose when multiple protocols are available.
 
    :::tip
-   The `/chat` command automatically uses [API key authentication](../developer-tools/warden-code#api-server) to bypass [x402 payments](../developer-tools/warden-code#x402-payments). It'll work if you keep the `AGENT_API_KEY` variable in the `.env` file.
+   The `/chat` command automatically uses [API key authentication](../warden-code/basics#api-key-authentication) to bypass [x402 payments](../warden-code/x402-payments). It'll work if you keep the `AGENT_API_KEY` variable in the `.env` file.
    :::
 
 4. To exit the chat mode, type this:
@@ -97,12 +97,12 @@ To chat with your Agent through the CLI, take these steps:
 Every new Agent is immediately accessible through **A2A** and **LangGraph** server endpoints exposed by Warden Code.
 
 :::tip
-For a full list, see [A2A endpoints & methods](../developer-tools/warden-code#a2a-endpoints--methods) and [LangGraph endpoints](../developer-tools/warden-code#langgraph-endpoints).
+For a full list, see [A2A endpoints & methods](../warden-code/a2a-endpoints-and-methods) and [LangGraph endpoints](../warden-code/langgraph-endpoints).
 :::
 
-After running your Agent, you can try any of these endpoints locally. For example, you can prompt the Agent using the [A2A POST endpoint](../developer-tools/warden-code#json-rpc-endpoint) with the `message/send` method.
+After running your Agent, you can try any of these endpoints locally. For example, you can prompt the Agent using the A2A POST endpoint with the [`message/send` method](../warden-code/a2a-endpoints-and-methods#send-message).
 
-In the request below, replace `AGENT_API_KEY` with your Agent API key for [authentication](../developer-tools/warden-code#api-server), which you can find in the `.env` file:
+In the request below, replace `AGENT_API_KEY` with your Agent API key for [authentication](../warden-code/basics#api-key-authentication), which you can find in the `.env` file:
 
 <Tabs>
 <TabItem value="postman" label="Postman" default>
@@ -210,7 +210,7 @@ If everything is fine, you'll receive a response including your prompt, assistan
 
 ### Check the Agent Card
 
-As part of the A2A protocol support, Warden Code exposes an endpoint for the **A2A Agent Card**, which advertises your Agent's skills. It allows other Agents and clients to discover your Agent once you [publicly host it](../host-your-agent#check-the-agent-card).
+As part of the A2A protocol support, Warden Code exposes an endpoint for the [A2A Agent Card](../warden-code/a2a-endpoints-and-methods#get-agent-card), which advertises your Agent's skills. It allows other Agents and clients to discover your Agent once you [publicly host it](../host-your-agent#check-the-agent-card).
 
 To check the Agent Card accessibility, run this:
    

@@ -86,7 +86,7 @@ The net result for the user is that it makes crypto look and feel easy and intui
 
 ![Warden Agent Network: layers](../../static/img/manifesto-4.png)
 
-**We capture the entire lifecycle of your Agent on our Agent Network**. This is our north star: from creation to global adoption, at every stage, Warden adds value. Warden Studio gives creators the tools they need to launch their own Agents and reach users. Warden Chain gives Agents identity, trust, and payment rails to collaborate at machine speed. Warden Agent Hub solves the toughest challenge in tech: distribution. And finally, Warden, our flagship app, is the front door—where millions of people discover and interact with your Agent every day.
+**We capture the entire life cycle of your Agent on our Agent Network**. This is our north star: from creation to global adoption, at every stage, Warden adds value. Warden Studio gives creators the tools they need to launch their own Agents and reach users. Warden Chain gives Agents identity, trust, and payment rails to collaborate at machine speed. Warden Agent Hub solves the toughest challenge in tech: distribution. And finally, Warden, our flagship app, is the front door—where millions of people discover and interact with your Agent every day.
 
 ![Warden Agent Network: components](../../static/img/manifesto-5.png)
 

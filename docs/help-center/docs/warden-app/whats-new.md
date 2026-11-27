@@ -8,12 +8,18 @@ sidebar_position: 13
 
 Here you'll find the latest Warden release highlights, including new features, improvements, and bug fixes. This section helps you quickly see what's changed and how it can enhance your experience.
 
+## March 19, 2026
+
+**New features**:
+
+- [Warden Browser Extension](manage-your-wallets#warden-browser-extension): Introduced a browser extension that allows accessing Warden accounts from anywhere on the web.
+
 ## March 17, 2026
 
 **New features**:
 
 - [Earn rewards](earn-rewards): Updated the leaderboard to support the new [reward campaign](earn-rewards#get-ward).
-- Other: Added internal changes in preparation forupcoming features.
+- Other: Added internal changes in preparation for upcoming features.
 
 ## March 11, 2026
 
@@ -42,6 +48,7 @@ Here you'll find the latest Warden release highlights, including new features, i
 - [Predictions](predict): Made UI fixes.
 - [Staking](stake-ward): Fixed a UI issue with cancelled stakes.
 - Other: Solved an issue with application freezes.
+>>>>>>> origin/main
 
 ## February 18, 2026
 

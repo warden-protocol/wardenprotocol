@@ -65,7 +65,7 @@ jobs:
     needs: build-and-push
     steps:
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@0.35.0
         with:
           image-ref: ${{ needs.build-and-push.outputs.image }}
           output: "trivy.txt"
